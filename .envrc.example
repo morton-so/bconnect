@@ -1,0 +1,50 @@
+# 파일을 .envrc.local 로 복사해 값을 채워주세요.
+
+# Figma
+
+export FIGMA_ACCESS_TOKEN=your_figma_access_token
+# 발급처 : Figma | 설정 | 보안 | 개인 액세스 토큰
+# 의존성 : scripts/figma-mapping
+# 설명 : 피그마 컨텍스트 조회 토큰
+
+# GitHub
+
+export GITHUB_TOKEN=your_github_token
+# 발급처 : gh auth token
+# 의존성 : scripts/figma-mapping
+# 설명 : GitHub 이슈로 결과 보고
+
+# Sentry
+
+export SENTRY_AUTH_TOKEN=your_sentry_auth_token
+# 발급처 : [Sentry : Auth Tokens](https://sentry.io/settings/auth-tokens/)
+# 의존성 : @bconnect/config
+# 설명 : Sentry 소스맵 업로드 토큰
+
+# Vercel
+
+export VERCEL_API_TOKEN=your_vercel_api_token
+# 발급처 : [Vercel : Account Tokens](https://vercel.com/account/tokens)
+# 의존성 : infra
+# 설명 : Vercel provider 인증 토큰
+
+# 데이터베이스
+
+export DATABASE_URL=postgresql://user:password@host:5432/dbname
+# 발급처 : [Railway : postgres](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/1b00b504-e28e-4a58-a78c-dfbaba713fbc)
+# 의존성 : @bconnect/data-jobs
+# 설명 : 원클릭 적재 DB (현재 dev)
+
+# 공공데이터
+
+export DATA_GO_SERVICE_KEY=your_data_go_kr_service_key
+# 발급처 : [공공데이터포털 : 마이페이지 인증키](https://www.data.go.kr)
+# 의존성 : @bconnect/data-jobs, apps/api
+# 설명 : 국세청·국토교통부 등 공공데이터 조회 서비스 키
+
+# Slack
+
+export SLACK_WEBHOOK_URL=your_slack_webhook_url
+# 발급처 : [Slack : Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)
+# 의존성 : @bconnect/data-jobs
+# 설명 : 슬랙 모니터링 알림

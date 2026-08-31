@@ -1,0 +1,37 @@
+# 파일을 .envrc.local 로 복사해 값을 채워주세요.
+
+# Naver Search API
+
+export NAVER_CLIENT_ID=your_naver_client_id
+# 발급처 : [Naver : 애플리케이션 등록](https://developers.naver.com/apps)
+# 설명 : 검색 API 클라이언트 ID
+
+export NAVER_CLIENT_SECRET=your_naver_client_secret
+# 발급처 : [Naver : 애플리케이션 등록](https://developers.naver.com/apps)
+# 설명 : 검색 API 클라이언트 시크릿
+
+# LLM
+
+export ANTHROPIC_API_KEY=your_anthropic_api_key
+# 발급처 : [Anthropic : API Keys](https://console.anthropic.com/settings/keys)
+# 설명 : Anthropic API 키. OpenAI 보다 우선 사용. 둘 중 하나만 설정해도 동작
+
+export OPENAI_API_KEY=your_openai_api_key
+# 발급처 : [OpenAI : API keys](https://platform.openai.com/api-keys)
+# 설명 : Anthropic 미설정 시 폴백으로 사용
+
+# Notion
+
+export NOTION_TOKEN=your_notion_token
+# 발급처 : [Notion : My integrations](https://www.notion.so/my-integrations)
+# 설명 : 크롤링 결과 적재용 integration 토큰
+
+export NOTION_REVIEW_DATABASE_ID=your_notion_review_database_id
+# 발급처 : 노션 검수 DB URL에서 추출
+# 설명 : 검수 DB ID
+
+# 데이터베이스
+
+export CRAWLED_DB_URL=postgresql://user:password@host:5432/dbname
+# 발급처 : [Railway : 대시보드](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a)
+# 설명 : crawled_* 테이블 적재용 Railway dev Postgres public URL. --export-db 사용 시 필요
