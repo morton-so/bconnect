@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "prepare": "husky && sh scripts/link-env.sh",
-    "postinstall": "pnpm api:generate && pnpm -r --parallel msw:init",
     "dev": "pnpm -r --parallel dev",
     "dev:career": "pnpm --filter @bconnect/career dev",
     "dev:plan": "pnpm --filter @bconnect/plan dev",
@@ -13,13 +12,19 @@
     "build:career": "pnpm --filter @bconnect/career build",
     "build:plan": "pnpm --filter @bconnect/plan build",
     "build:company": "pnpm --filter @bconnect/company build",
-    "lint": "eslint && prettier --check . && markdownlint-cli2 && lychee '**/*.md' && terraform fmt -check -recursive infra",
-    "lint:fix": "eslint --fix && prettier --write . && markdownlint-cli2 --fix && terraform fmt",
-    "api:generate": "pnpm --filter @bconnect/api-client generate && tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint && prettier --check . && terraform fmt -check -recursive",
+    "lint:fix": "eslint --fix && prettier --write . && terraform fmt -recursive",
+    "lint:docs": "markdownlint-cli2 && lychee '**/*.md'",
+    "lint:docs:fix": "markdownlint-cli2 --fix",
+    "api:generate": "pnpm --filter @bconnect/api-client generate && pnpm typecheck",
     "figma": "node scripts/figma-mapping/index.js",
     "figma:dry": "node scripts/figma-mapping/index.js --dry-run"
   },
   "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": "24.x"
+  },
   "devDependencies": {
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",

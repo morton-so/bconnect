@@ -49,7 +49,7 @@ override.tf.json
 *_override.tf.json
 .terraform.lock.hcl
 
-### Backend ###
+# API
 HELP.md
 .gradle/
 build/
@@ -57,7 +57,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### STS ###
+# STS
 .apt_generated
 .classpath
 .factorypath
@@ -69,61 +69,47 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
+# IntelliJ IDEA
 *.iws
 *.iml
 *.ipr
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
-# 공유 설정만 추적: extensions, settings (개인 launch/tasks 등은 ignore)
+# VSCode
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
 
-### Environments ###
+# Environments
 *.env
 *.properties
 
-### Claude Code ###
+# Claude Code
 CLAUDE.local.md
 .claude/settings.local.json
 
-### ETC ###
-nul
-*.pdf
-*.sisyphus
-
-### Lambda build artifacts ###
+# Lambda
 infra/aws/lambda/**/function.zip
 
-### Generated code ###
+# Orval
 packages/api-client/src/generated/
 
-### MSW Service Worker — msw 패키지의 산출물 (workerDirectory 자동 생성) ###
-# 진짜 SoT 는 node_modules/msw — 각 앱의 public/ 은 origin-scoped 배포용 artifact.
-# fresh clone 시 npx msw init 으로 재생성 (또는 msw 패키지 install 시 자동).
+# MSW
 **/mockServiceWorker.js
 
-### Figma lint reports ###
-.claude/skills/figma-lint/figma-lint-report.md
-
-### AI agent artifacts ###
-docs/superpowers/
-
-# 임시 산출물 (분석 노트, 스크린샷 등)
+# 임시 산출물
 .tmp/
 .lycheecache
 .gstack/
 .playwright-mcp/
 
-# 시크릿 (firebase-admin 서비스계정 키 등 — 절대 커밋 금지)
+# 비밀값
 .secrets/

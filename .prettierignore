@@ -2,6 +2,4 @@ pnpm-lock.yaml
 .next
 dist
 node_modules
-postcss.config.mjs
 apps/api
-packages/api-client/src/openapi.yaml
