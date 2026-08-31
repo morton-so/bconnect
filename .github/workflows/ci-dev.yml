@@ -1,0 +1,161 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      client: ${{ steps.client.outputs.changes }}
+      api: ${{ steps.filter.outputs.api }}
+      crawler: ${{ steps.filter.outputs.crawler }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'apps/api/**'
+            crawler:
+              - 'apps/crawler/**'
+
+      - uses: dorny/paths-filter@v3
+        id: client
+        with:
+          filters: |
+            career:
+              - 'apps/career/**'
+            plan:
+              - 'apps/plan/**'
+            company:
+              - 'apps/company/**'
+            packages:
+              - 'packages/**'
+            root:
+              - '*'
+              - '.github/**'
+
+  ci-client:
+    needs: changes
+    if: ${{ needs.changes.outputs.client != '[]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Build
+        run: pnpm build
+
+  ci-api:
+    needs: changes
+    if: ${{ needs.changes.outputs.api == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install Bruno CLI
+        run: npm install -g @usebruno/cli
+
+      - name: Build with Gradle
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
+        working-directory: apps/api
+        run: ./gradlew build
+
+      - name: Start API server
+        env:
+          DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
+        working-directory: apps/api
+        run: ./gradlew bootRun > bootrun.log 2>&1 &
+
+      - name: Wait for health
+        run: |
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:8080/actuator/health; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "API 서버 기동 실패"
+          exit 1
+
+      - name: Run API integration tests
+        working-directory: apps/api/bruno
+        run: bru run --env local --exclude-tags=ws --reporter-html bruno-report.html
+
+      - name: Upload bootRun log
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: bootrun-log
+          path: apps/api/bootrun.log
+
+      - name: Upload Bruno report
+        uses: actions/upload-artifact@v6
+        with:
+          name: bruno-report
+          path: apps/api/bruno/bruno-report.html
+          if-no-files-found: error
+
+  ci-crawler:
+    needs: changes
+    if: ${{ needs.changes.outputs.crawler == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/crawler
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Run tests
+        env:
+          NAVER_CLIENT_ID: dummy
+          NAVER_CLIENT_SECRET: dummy
+          NOTION_TOKEN: dummy
+          NOTION_DATABASE_ID: dummy
+        run: uv run --dev pytest tests/ -v
