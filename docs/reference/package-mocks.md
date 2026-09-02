@@ -86,7 +86,7 @@ fetch 부수효과는 `<MSWProvider>` 안쪽에서 실행되어야 race 가 안 
 
 dev 환경에서 모든 API 요청은 MSW 가 가로채서 mock 응답으로 답합니다. MSW는 Mock Service Worker입니다.
 
-- production 빌드에선 `NODE_ENV` 가드로 `@bconnect/mocks` 가 tree-shake
+- prod 빌드에선 `NODE_ENV` 가드로 `@bconnect/mocks` 가 tree-shake
 - career·plan 둘 다 `@bconnect/mocks` 를 써서 자동 적용됨
 
 상세는 패키지 SoT 를 참고합니다.

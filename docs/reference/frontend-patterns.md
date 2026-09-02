@@ -10,7 +10,7 @@ career·plan 두 Next.js App Router 앱의 공통 프론트엔드 규칙입니�
 - 파일명이 정확히 `CLAUDE.md`가 아니라 자동 로드 안 됨
 - 명시 import한 career·plan만 로드
 - `apps/api`는 Spring Framework, `apps/crawler`는 Python이라 작업 시 안 딸려옴
-- 위반 시 dev 깨짐 또는 production 사고
+- 위반 시 dev 깨짐 또는 prod 사고
 
 ## 인증 미들웨어 · Public routes
 

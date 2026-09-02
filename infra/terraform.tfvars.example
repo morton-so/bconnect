@@ -1,75 +1,40 @@
-# 파일을 terraform.tfvars 로 복사해 값을 채워주세요.
+# 본 파일은 테라폼 환경변수의 비밀값 템플릿을 관리합니다.
+# terraform.tfvars 로 복사해 값을 채워주세요.
 
-# ─── Railway ───
+# Vercel
 
-railway_token = "your-railway-token"
-# 발급처 : [Railway : Account Tokens](https://railway.com/account/tokens)
-# 설명 : Railway provider 인증 토큰
+vercel_token = "your-vercel-token"
+# 발급처 : [Vercel : Account Tokens](https://vercel.com/account/settings/tokens)
+# 설명 : Vercel 프로바이더 인증 토큰
 
-# ─── 데이터베이스 ───
-
-db_password = "secure_password_here"
-# 발급처 : 수동 발급
-# 설명 : prod Postgres 비밀번호
-
-dev_db_password = "dev_secure_password_here"
-# 발급처 : 수동 발급
-# 설명 : dev Postgres 비밀번호. prod 와 분리된 시크릿
-
-# ─── Spring ───
-
-jwt_secret = "your-jwt-secret-base64-string"
-# 발급처 : 수동 발급
-# 설명 : JWT 서명 시크릿 (base64)
-
-dev_jwt_secret = "your-dev-jwt-secret-base64-string"
-# 발급처 : 수동 발급
-# 설명 : dev JWT 서명 시크릿 (base64). prod 와 분리된 시크릿
-
-# ─── Vercel ───
-
-vercel_api_token = "your-vercel-token"
-# 발급처 : [Vercel : Account Tokens](https://vercel.com/account/tokens)
-# 설명 : Vercel provider 인증 토큰
-
-# ─── 공공데이터 API ───
+# 원클릭 조회
 
 data_go_service_key = "your-data-go-kr-service-key"
 # 발급처 : [공공데이터포털 : 마이페이지 인증키](https://www.data.go.kr)
-# 설명 : 사업자등록정보·고용산재보험 등 조회 서비스키
-
-# ─── Solapi SMS ───
-
-solapi_api_key = "your-solapi-api-key"
-# 발급처 : [Solapi : API Key 관리](https://console.solapi.com/credentials)
-# 설명 : SMS 발송 API 키
-
-solapi_api_secret = "your-solapi-api-secret"
-# 발급처 : [Solapi : API Key 관리](https://console.solapi.com/credentials)
-# 설명 : SMS 발송 API 시크릿
-
-solapi_sender_number = "01012345678"
-# 발급처 : [Solapi : 발신번호 관리](https://console.solapi.com/senderids)
-# 설명 : 사전 등록된 SMS 발신번호
-
-# ─── Sentry ───
-
-sentry_auth_token = ""
-# 발급처 : [Sentry : Auth Tokens](https://sentry.io/settings/auth-tokens/)
-# 설명 : 소스맵 업로드 토큰. 미설정 시 업로드만 생략
-
-sentry_dsn = ""
-# 발급처 : Sentry 프로젝트 설정 > Client Keys (DSN)
-# 설명 : API 에러 트래킹 DSN
-
-# ─── Firebase ───
-
-firebase_service_account_json = ""
-# 발급처 : [GCP : 서비스 계정](https://console.cloud.google.com/iam-admin/serviceaccounts)
-# 설명 : FCM HTTP v1 서비스 계정 키 JSON. SNS 웹 푸시 credential. 비어 있으면 SNS 플랫폼 앱 생성 생략. 커밋 금지
-
-# ─── 원클릭 조회 데이터베이스 ───
+# 설명 : 공공데이터 조회 서비스 키
 
 database_url = "postgresql://user:password@host:port/dbname"
 # 발급처 : [Railway : postgres](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/1b00b504-e28e-4a58-a78c-dfbaba713fbc)
-# 설명 : 원클릭 조회 KISCON DB. Railway Postgres TCP proxy URL
+# 설명 : 원클릭 적재 DB TCP 프록시 URL (현재 prod)
+
+# Sentry
+
+sentry_auth_token = "your-sentry-auth-token"
+# 발급처 : [Sentry : Auth Tokens](https://sentry.io/settings/auth-tokens/)
+# 설명 : Sentry 소스맵 · 소스 컨텍스트 업로드 토큰
+
+# Firebase
+
+fcm_credential = "your-fcm-service-account-json"
+# 발급처 : [GCP : 서비스 계정](https://console.cloud.google.com/iam-admin/serviceaccounts)
+# 설명 : FCM HTTP v1 서비스 계정 키 JSON
+
+# GitHub Actions
+
+figma_access_token = "your-figma-access-token"
+# 발급처 : [Figma : Personal access tokens](https://www.figma.com/developers/api#access-tokens)
+# 설명 : Figma API 액세스 토큰
+
+slack_webhook_url = "https://hooks.slack.com/services/your-webhook"
+# 발급처 : [Slack : Incoming Webhooks](https://api.slack.com/messaging/webhooks)
+# 설명 : Slack 모니터링 알림 웹훅 URL

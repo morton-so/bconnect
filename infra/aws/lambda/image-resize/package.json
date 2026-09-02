@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "S3 원본 이미지(*/images/o/*) 업로드 시 webp 변형본(m: 800px, s: 400px) 생성",
+  "description": "이미지 리사이징을 위한 AWS Lambda 함수",
   "dependencies": {
     "sharp": "^0.35.3"
   }

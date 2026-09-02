@@ -14,5 +14,5 @@ terraform {
     use_lockfile = true
   }
 
-  required_version = ">= 1.2"
+  required_version = ">= 1.11"
 }

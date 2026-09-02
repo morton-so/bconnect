@@ -17,8 +17,8 @@ import re
 def handler(event, context):
     try:
         # Base64로 인코딩된 ZIP 파일 받기
-        body = event.get('body', '')
-        is_base64 = event.get('isBase64Encoded', False)
+        body = event['body']
+        is_base64 = event['isBase64Encoded']
 
         if is_base64:
             zip_data = base64.b64decode(body)
@@ -42,7 +42,7 @@ def handler(event, context):
             'statusCode': 400,
             'body': json.dumps({
                 'success': False,
-                'error': str(e) or 'ZIP 파일 처리 중 오류가 발생했습니다'
+                'error': str(e)
             }, ensure_ascii=False)
         }
 
@@ -68,11 +68,11 @@ def parse_instagram_zip(zip_data: bytes) -> list:
                         for idx, media in enumerate(data['media']):
                             posts.append({
                                 'id': f'{name}-{idx}',
-                                'uri': media.get('uri', ''),
-                                'caption': media.get('title', ''),
-                                'timestamp': media.get('creation_timestamp', 0),
+                                'uri': media['uri'],
+                                'caption': media['title'],
+                                'timestamp': media['creation_timestamp'],
                                 'type': get_media_type(media),
-                                'hasMediaFile': media.get('uri', '') in media_files
+                                'hasMediaFile': media['uri'] in media_files
                             })
                 except Exception as e:
                     print(f'Error parsing {name}: {e}')
@@ -88,7 +88,7 @@ def parse_instagram_zip(zip_data: bytes) -> list:
 
 
 def get_media_type(media: dict) -> str:
-    uri = media.get('uri', '')
+    uri = media['uri']
     metadata = media.get('media_metadata', {})
 
     if '.mp4' in uri or 'video_metadata' in metadata:

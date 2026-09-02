@@ -1,201 +1,98 @@
+# 본 파일은 테라폼 환경변수의 설정값 · 공개값 · 비밀값을 정의합니다.
+
 # =============================================================================
-# Railway & GitHub
+# 설정값 : default 필수
 # =============================================================================
 
-variable "railway_token" {
-  description = "Railway API token"
-  type        = string
-  sensitive   = true
-}
-
-variable "project_name" {
-  description = "Railway project name"
-  type        = string
-  default     = "morton"
-}
-
+# GitHub
 variable "github_repo" {
-  description = "GitHub repository URL for Railway (e.g., github.com/username/repo)"
+  description = "GitHub 원격저장소"
   type        = string
+  default     = "mortonCareer/bconnect"
 }
 
 variable "github_branch" {
-  description = "GitHub branch for Railway deployment"
+  description = "Git 배포용 브랜치"
   type        = string
   default     = "main"
 }
 
-# =============================================================================
-# Database
-# =============================================================================
-
-variable "db_user" {
-  description = "PostgreSQL username"
-  type        = string
-  default     = "morton"
-}
-
-variable "db_password" {
-  description = "PostgreSQL password"
-  type        = string
-  sensitive   = true
-}
-
-variable "db_name" {
-  description = "PostgreSQL database name"
-  type        = string
-  default     = "morton"
-}
-
-variable "dev_db_password" {
-  description = "PostgreSQL password for dev(staging) environment (prod 와 분리된 시크릿)"
-  type        = string
-  sensitive   = true
-}
-
-# =============================================================================
-# Spring App Config
-# =============================================================================
-
-variable "spring_profile" {
-  description = "Spring active profile"
-  type        = string
-  default     = "prod"
-}
-
-variable "jwt_secret" {
-  description = "JWT signing secret"
-  type        = string
-  sensitive   = true
-}
-
-variable "dev_jwt_secret" {
-  description = "JWT signing secret for dev(staging) environment (prod 와 분리된 시크릿)"
-  type        = string
-  sensitive   = true
-}
-
-# =============================================================================
-# AWS Config (for App & Terraform Backend)
-# =============================================================================
-
+# AWS
 variable "aws_region" {
-  description = "AWS region"
+  description = "AWS 기본 리전"
   type        = string
   default     = "ap-northeast-2"
 }
 
-variable "s3_bucket_name" {
-  description = "S3 bucket name for application file storage"
-  type        = string
-}
-
-variable "dev_s3_bucket_name" {
-  description = "S3 bucket name for dev(staging) environment file storage"
-  type        = string
-  default     = "morton-storage-dev"
-}
-
-# =============================================================================
-# Domain Config
-# =============================================================================
-
+# 도메인
 variable "domain" {
-  description = "Root domain for the project (e.g., bconnect.to)"
+  description = "루트 도메인"
   type        = string
+  default     = "bconnect.to"
 }
 
-variable "dev_api_url" {
-  description = "Railway staging BE base URL — dev 브랜치 Vercel 환경에서 호출 (#352, ADR-0010)"
+variable "api_url_dev" {
+  description = "API 서버 URL (dev)"
   type        = string
   default     = "https://api.dev.bconnect.to"
 }
 
-# =============================================================================
-# Vercel
-# =============================================================================
-
-variable "vercel_api_token" {
-  description = "Vercel API Token"
-  type        = string
-  sensitive   = true
-}
-
-# =============================================================================
-# External API Keys
-# =============================================================================
-
-variable "nts_api_service_key" {
-  description = "국세청 사업자등록정보 API 서비스키 (data.go.kr)"
-  type        = string
-  sensitive   = true
-}
-
-variable "kcomwel_api_service_key" {
-  description = "근로복지공단 고용/산재보험 API 서비스키 (data.go.kr)"
-  type        = string
-  sensitive   = true
-}
-
-# =============================================================================
-# Solapi (SMS)
-# =============================================================================
-
-variable "solapi_api_key" {
-  description = "Solapi API Key for SMS sending"
-  type        = string
-  sensitive   = true
-}
-
-variable "solapi_api_secret" {
-  description = "Solapi API Secret for SMS sending"
-  type        = string
-  sensitive   = true
-}
-
-variable "solapi_sender_number" {
-  description = "Solapi registered sender phone number"
-  type        = string
-  sensitive   = true
-}
-
-variable "slack_monitoring_webhook_url" {
-  description = "Slack Incoming Webhook URL - 모니터링 전용 채널 (봇 자동 알림)"
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
-variable "sentry_auth_token" {
-  description = "Sentry auth token - 소스맵 업로드"
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
-variable "sentry_dsn" {
-  description = "Sentry DSN - API 에러 트래킹"
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
-# =============================================================================
-# Firebase (Cloud Messaging)
-# =============================================================================
-
+# Firebase
 variable "firebase_project_id" {
-  description = "GCP/Firebase 프로젝트 ID (전역 고유)"
+  description = "GCP/Firebase 프로젝트 ID"
   type        = string
   default     = "bconnect-f0bee"
 }
 
 variable "firebase_project_name" {
-  description = "Firebase 프로젝트 표시 이름"
+  description = "Firebase 프로젝트 이름"
   type        = string
   default     = "bconnect"
 }
 
+# =============================================================================
+# 공개키 : default 필수
+# =============================================================================
+
+# Firebase
+variable "fcm_vapid_key" {
+  description = "FCM 인증용 VAPID 공개키"
+  type        = string
+  default     = "BGyw-MR9vfVlaY4VK-ckYyYCsIMH7a3ZywwSyH6xGGZGGgvJZQKzHhI-ucNF7plUpSmKiSVZH9JnlQop9oMsRV4"
+}
+
+# =============================================================================
+# 비밀키 : sensitive
+# =============================================================================
+
+# Vercel
+variable "vercel_token" {
+  description = "Vercel 프로바이더 인증 토큰"
+  type        = string
+  sensitive   = true
+}
+
+# 원클릭 조회
+variable "data_go_service_key" {
+  description = "공공데이터 조회 서비스 키"
+  type        = string
+  sensitive   = true
+}
+
+variable "database_url" {
+  description = "원클릭 적재 DB TCP 프록시 URL (현재 prod)"
+  type        = string
+  sensitive   = true
+}
+
+# Sentry
+variable "sentry_auth_token" {
+  description = "Sentry 소스맵 · 소스 컨텍스트 업로드 토큰"
+  type        = string
+  sensitive   = true
+}
+
+# Firebase
 variable "firebase_billing_account_id" {
   description = "결제 계정 ID (Spark 플랜이면 null)"
   type        = string
@@ -203,26 +100,21 @@ variable "firebase_billing_account_id" {
   default     = null
 }
 
-variable "firebase_vapid_key" {
-  description = "Firebase Web Push VAPID public key (Firebase Console → Cloud Messaging에서 수동 생성)"
+variable "fcm_credential" {
+  description = "FCM HTTP v1 서비스 계정 키 JSON"
   type        = string
   sensitive   = true
-  default     = ""
 }
 
-variable "firebase_service_account_json" {
-  description = "FCM(HTTP v1) 서비스 계정 키 JSON — SNS GCM 플랫폼 애플리케이션 credential 용. 절대 커밋 금지(gitignored tfvars/.secrets). 비어 있으면 SNS 플랫폼 앱 생성 생략."
+# GitHub Actions
+variable "figma_access_token" {
+  description = "Figma API 액세스 토큰"
   type        = string
   sensitive   = true
-  default     = ""
 }
 
-# =============================================================================
-# Database (Railway Postgres TCP Proxy)
-# =============================================================================
-
-variable "database_url" {
-  description = "Railway Postgres DATABASE_URL (TCP proxy) - KISCON 건설업체정보 조회"
+variable "slack_webhook_url" {
+  description = "Slack 모니터링 알림 웹훅 URL"
   type        = string
   sensitive   = true
 }

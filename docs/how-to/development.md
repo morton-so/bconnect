@@ -47,7 +47,7 @@ graph LR
 [Git-flow](https://nvie.com/posts/a-successful-git-branching-model) 전략을 따릅니다.
 
 - `main` : 제품 출시 버전을 관리하는 브랜치
-- `dev` : 다음 출시 버전을 위해 개발하는 브랜치 (메인)
+- `dev` : 다음 출시 버전을 위해 개발하는 브랜치 (기본)
 - `#XXX-<desc>` : 이슈 해결을 위해 개발하는 브랜치
 - `hotfix` : 출시된 제품의 버그를 고치기 위한 브랜치
 
