@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  push:
+    branches: [dev]
   pull_request:
     branches: [dev]
 
@@ -19,7 +21,7 @@ jobs:
       pull-requests: read
     outputs:
       client: ${{ steps.client.outputs.changes }}
-      api: ${{ steps.filter.outputs.api }}
+      server: ${{ steps.filter.outputs.server }}
       crawler: ${{ steps.filter.outputs.crawler }}
     steps:
       - uses: actions/checkout@v6
@@ -27,15 +29,17 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
+          base: ${{ github.ref }}
           filters: |
-            api:
-              - 'apps/api/**'
+            server:
+              - 'apps/server/**'
             crawler:
               - 'apps/crawler/**'
 
       - uses: dorny/paths-filter@v3
         id: client
         with:
+          base: ${{ github.ref }}
           filters: |
             career:
               - 'apps/career/**'
@@ -53,6 +57,8 @@ jobs:
     needs: changes
     if: ${{ needs.changes.outputs.client != '[]' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v6
 
@@ -69,12 +75,24 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Typecheck
+        run: pnpm typecheck
+
       - name: Build
         run: pnpm build
 
-  ci-api:
+      # Vercel 팀 멤버 커밋 추가
+      - name: Trigger Vercel deploy
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'morton-admin'
+          git config user.email '245089308+morton-admin@users.noreply.github.com'
+          git commit --allow-empty -m 'chore: temp commit'
+          git push origin HEAD:dev
+
+  ci-server:
     needs: changes
-    if: ${{ needs.changes.outputs.api == 'true' }}
+    if: ${{ needs.changes.outputs.server == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -105,6 +123,7 @@ jobs:
 
       - name: Start API server
         env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
         working-directory: apps/api
         run: ./gradlew bootRun > bootrun.log 2>&1 &

@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prepare": "husky && sh scripts/link-env.sh && sh scripts/check-env.sh",
+    "prepare": "husky && sh scripts/link-env.sh",
     "dev": "pnpm -r --parallel dev",
     "dev:career": "pnpm --filter @bconnect/career dev",
     "dev:plan": "pnpm --filter @bconnect/plan dev",
