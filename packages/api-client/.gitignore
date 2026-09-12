@@ -1,5 +1,2 @@
-# orval 자동 생성
+# orval generated files
 src/generated/
-
-# redocly bundle 출력 (build artifact)
-src/openapi.bundled.yaml

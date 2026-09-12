@@ -1,3 +1,5 @@
+# create-next-app 원문
+# https://github.com/vercel/next.js/blob/canary/packages/create-next-app/templates/app/ts/gitignore
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -31,8 +33,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env
-.env.local
+.env*
 
 # vercel
 .vercel
@@ -40,3 +41,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 저장소 고유
+
+# direnv
+!.envrc
+!.envrc.example
