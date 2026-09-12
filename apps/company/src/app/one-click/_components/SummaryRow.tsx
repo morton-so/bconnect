@@ -1,4 +1,4 @@
-import type { CheckItem } from '@bconnect/business/types'
+import type { CheckItem } from '../_lib/types'
 import { StatusBadge } from './StatusBadge'
 
 interface SummaryRowProps {

@@ -14,7 +14,7 @@
     "msw:init": "msw init public --save"
   },
   "dependencies": {
-    "@bconnect/business": "workspace:*",
+    "@bconnect/api-client": "workspace:*",
     "@bconnect/config": "workspace:*",
     "@bconnect/features": "workspace:*",
     "@bconnect/ui": "workspace:*",

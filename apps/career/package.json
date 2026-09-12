@@ -17,7 +17,6 @@
     "@aws-sdk/client-lambda": "^3.1121.0",
     "@aws-sdk/client-s3": "^3.1121.0",
     "@bconnect/api-client": "workspace:*",
-    "@bconnect/business": "workspace:*",
     "@bconnect/features": "workspace:*",
     "@bconnect/push": "workspace:*",
     "@bconnect/ui": "workspace:*",

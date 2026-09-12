@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prepare": "husky && sh scripts/link-env.sh",
+    "prepare": "husky && sh scripts/link-env.sh && sh scripts/check-env.sh",
     "dev": "pnpm -r --parallel dev",
     "dev:career": "pnpm --filter @bconnect/career dev",
     "dev:plan": "pnpm --filter @bconnect/plan dev",
@@ -19,7 +19,8 @@
     "lint:docs:fix": "markdownlint-cli2 --fix",
     "api:generate": "pnpm --filter @bconnect/api-client generate && pnpm typecheck",
     "figma": "node scripts/figma-mapping/index.js",
-    "figma:dry": "node scripts/figma-mapping/index.js --dry-run"
+    "figma:dry": "node scripts/figma-mapping/index.js --dry-run",
+    "secret:check": "sh scripts/check-env.sh"
   },
   "packageManager": "pnpm@11.22.0",
   "engines": {
@@ -29,6 +30,7 @@
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
     "@eslint/js": "catalog:",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "globals": "catalog:",
     "husky": "^9.1.7",
@@ -38,7 +40,9 @@
     "postgres": "catalog:",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "railway": "3.11.0",
     "tailwindcss": "catalog:",
+    "typescript": "catalog:",
     "typescript-eslint": "catalog:"
   },
   "lint-staged": {

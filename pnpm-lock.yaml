@@ -113,6 +113,9 @@ importers:
       '@eslint/js':
         specifier: 'catalog:'
         version: 10.0.1(eslint@10.9.1(jiti@2.7.0)(supports-color@8.1.1))
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.4.0
       eslint:
         specifier: 'catalog:'
         version: 10.9.1(jiti@2.7.0)(supports-color@8.1.1)
@@ -140,9 +143,15 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.8.1
         version: 0.8.1(prettier@3.9.6)
+      railway:
+        specifier: 3.11.0
+        version: 3.11.0
       tailwindcss:
         specifier: 'catalog:'
         version: 4.3.3
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
       typescript-eslint:
         specifier: 'catalog:'
         version: 8.68.0(eslint@10.9.1(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
@@ -158,9 +167,6 @@ importers:
       '@bconnect/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
-      '@bconnect/business':
-        specifier: workspace:*
-        version: link:../../packages/business
       '@bconnect/features':
         specifier: workspace:*
         version: link:../../packages/features
@@ -255,9 +261,9 @@ importers:
 
   apps/company:
     dependencies:
-      '@bconnect/business':
+      '@bconnect/api-client':
         specifier: workspace:*
-        version: link:../../packages/business
+        version: link:../../packages/api-client
       '@bconnect/config':
         specifier: workspace:*
         version: link:../../packages/config
@@ -432,40 +438,6 @@ importers:
       orval:
         specifier: ^8.26.0
         version: 8.26.0(@faker-js/faker@10.6.0)(prettier@3.9.6)(supports-color@8.1.1)(typescript@6.0.3)
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  packages/business:
-    dependencies:
-      '@sentry/nextjs':
-        specifier: 'catalog:'
-        version: 10.72.0(@opentelemetry/core@2.10.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.10.0(@opentelemetry/api@1.9.1))(next@16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)(webpack@5.105.3(esbuild@0.28.2)(lightningcss@1.32.0)(postcss@8.5.26))
-      cheerio:
-        specifier: 'catalog:'
-        version: 1.2.0
-      fast-xml-parser:
-        specifier: 'catalog:'
-        version: 5.11.1
-      next:
-        specifier: 'catalog:'
-        version: 16.3.3(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@26.4.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      postgres:
-        specifier: 'catalog:'
-        version: 3.4.9
-      react:
-        specifier: 'catalog:'
-        version: 19.2.8
-      server-only:
-        specifier: 'catalog:'
-        version: 0.0.1
-    devDependencies:
-      '@types/node':
-        specifier: 'catalog:'
-        version: 26.4.0
-      '@types/react':
-        specifier: 'catalog:'
-        version: 19.2.18
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1469,6 +1441,11 @@ packages:
   '@google-cloud/storage@7.22.0':
     resolution: {integrity: sha512-W98gTQOAntEeEQ7/pZxSQXxfUO5CiQcXJRsxBpUa6UU25n8YN/VtogPBi0H+MAmUrn/6bY/sBhFansoWEsr2/g==}
     engines: {node: '>=18'}
+
+  '@graphql-typed-document-node/core@3.2.0':
+    resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
   '@grpc/grpc-js@1.14.4':
     resolution: {integrity: sha512-k9Dj3DV/itK9D06Y8f190Qgop7/Ui+D0njFV3LHMPwPT75DpXLQohE9Wmz0QElrJnzsjB7KPWiKJbOl7IPDArQ==}
@@ -5156,6 +5133,10 @@ packages:
       '@types/react-dom':
         optional: true
 
+  railway@3.11.0:
+    resolution: {integrity: sha512-ehLFHCxV+gITWeBlIVaXulXaVRg4LCxqm0bq64iXSwYL1DESd0pUeLYMP/BMBhnZWeFFBYyJCREaq+Nka7Wgmw==}
+    engines: {node: '>=22'}
+
   re2js@2.8.6:
     resolution: {integrity: sha512-xLgQil4kIUCrAzVk9fRSkxkFNwmygLFjVxXrLc65aE1F0+Zsb8rxumFBy4XKyvgMCTL6kilDq3EZ0piE2dP/Dg==}
     engines: {node: '>=18.0.0'}
@@ -6751,6 +6732,10 @@ snapshots:
       - encoding
       - supports-color
     optional: true
+
+  '@graphql-typed-document-node/core@3.2.0(graphql@16.14.2)':
+    dependencies:
+      graphql: 16.14.2
 
   '@grpc/grpc-js@1.14.4':
     dependencies:
@@ -10666,6 +10651,12 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.18
       '@types/react-dom': 19.2.5(@types/react@19.2.18)
+
+  railway@3.11.0:
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.14.2)
+      graphql: 16.14.2
+      tsx: 4.23.12
 
   re2js@2.8.6: {}
 
