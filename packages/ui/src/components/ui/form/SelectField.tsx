@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold Select 합성 폼 래퍼 — label/description/error + RHF(control+name) 배선 (#426)
+ * @figma-todo Select 합성 폼 래퍼 — label/description/error + RHF(control+name) 배선 (#426)
  */
 'use client'
 

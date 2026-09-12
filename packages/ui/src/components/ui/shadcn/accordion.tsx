@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 디자인 시스템 미정 — 임시 컴포넌트
+ * @figma-todo 디자인 시스템 미정 — 임시 컴포넌트
  */
 'use client'
 

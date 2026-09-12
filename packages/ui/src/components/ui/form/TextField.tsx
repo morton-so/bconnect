@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold shadcn Form 합성 래퍼 — FormField/Item/Label/Control/Message 보일러플레이트 흡수 (#400)
+ * @figma-todo shadcn Form 합성 래퍼 — FormField/Item/Label/Control/Message 보일러플레이트 흡수 (#400)
  */
 'use client'
 

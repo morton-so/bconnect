@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 개인정보 처리방침 — 법적 고지 static 페이지, 디자인 노드 없음 (#731)
+ * @figma-todo 개인정보 처리방침 — 법적 고지 static 페이지, 디자인 노드 없음 (#731)
  */
 import type { Metadata } from 'next'
 import { PrivacyPolicyView } from '@bconnect/features/legal'

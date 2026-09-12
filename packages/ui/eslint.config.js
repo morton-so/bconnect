@@ -9,6 +9,11 @@ const uiConfig = defineConfig([
   includeIgnoreFile(gitignorePath, { gitignoreResolution: true }),
   ...base,
   {
+    rules: {
+      'no-restricted-imports': 'off',
+    },
+  },
+  {
     files: ['src/icons/**/*.tsx'],
     rules: {
       'no-restricted-syntax': 'off',

@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold shadcn/ui Label primitive (#400)
+ * @figma-todo shadcn/ui Label primitive (#400)
  */
 import * as React from 'react'
 import { Label as LabelPrimitive } from 'radix-ui'

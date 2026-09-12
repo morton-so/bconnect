@@ -13,7 +13,7 @@ import { CrawledImage, CrawledSourceBadge } from './CrawledImage'
  * TechnicianCard 와 같은 카드 골격이되 회원 전용 요소(별점·통계·메시지)는 없고,
  * 출처 표기 + 상세 패널 + 전화/출처 링크만 제공한다.
  *
- * @figma-scaffold 크롤링 카드 시안 없음 — TechnicianCard(1470:6775) 골격 준용
+ * @figma-todo 크롤링 카드 시안 없음 — TechnicianCard(1470:6775) 골격 준용
  */
 
 interface CrawledTechnicianCardProps {

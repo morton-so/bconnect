@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold shadcn/ui Form primitive — RHF 배선 컴포넌트, 비주얼 없음 (#400)
+ * @figma-todo shadcn/ui Form primitive — RHF 배선 컴포넌트, 비주얼 없음 (#400)
  */
 'use client'
 

@@ -12,7 +12,7 @@ import { CrawledImage, CrawledSourceBadge } from '../CrawledImage'
  * 회원 프로필 패널(ProfileView)과 같은 골격: 헤더(아바타+통계+메타) → 작업물.
  * 동료·추천서는 크롤링에 없는 개념이라 통계는 작업물 수만 둔다.
  *
- * @figma-scaffold 크롤링 상세 시안 없음 — PanelProfile(ProfileView) 골격 준용
+ * @figma-todo 크롤링 상세 시안 없음 — PanelProfile(ProfileView) 골격 준용
  */
 export function PanelCrawled({ crawledId }: { crawledId: number }) {
   const { closeHref, close } = usePanelNav()

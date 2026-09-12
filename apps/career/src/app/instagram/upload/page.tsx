@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 인스타그램 업로드 — 디자인 미정
+ * @figma-todo 인스타그램 업로드 — 디자인 미정
  */
 'use client'
 
