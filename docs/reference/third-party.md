@@ -23,7 +23,7 @@
 - Terraform: 자체 IaC 사용 [railway.ts](../../.railway/railway.ts)
 - Web: [Railway 프로젝트](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a?)
   - [Railway api](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/831fe58d-b966-4af1-b517-128e205c77b3)
-  - [Railway postgres](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/1b00b504-e28e-4a58-a78c-dfbaba713fbc)
+  - [Railway postgres](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/e2f6cab1-4676-4762-bff2-a03b3aefc5fc)
 - CLI: `railway`
 - MCP: `.mcp.json`
 
@@ -56,7 +56,7 @@
 
 - 사용 목적: 코드 · 이슈 · PR · CI/CD
 - Terraform: [infra/github/](../../infra/github/)
-- Web: [리포지토리](https://github.com/mortonCareer/bconnect)
+- Web: [리포지토리](https://github.com/morton-so/bconnect)
 - CLI: `gh`
 - MCP: claude.ai 커넥터 연결
 

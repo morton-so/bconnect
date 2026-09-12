@@ -6,7 +6,7 @@ import logging
 import re
 from pathlib import Path
 
-from crawler.config import settings
+from crawler.config import ANTHROPIC_MODEL, OPENAI_MODEL, settings
 from crawler.models import TRADES, RANKS, REGIONS
 
 log = logging.getLogger(__name__)
@@ -279,7 +279,7 @@ async def _classify_with_anthropic(name: str, about: str, headline: str = "") ->
     user_content = f"업체명(블로그닉네임): {name}\n한줄소개: {headline}\n소개:\n{about}"
 
     resp = await client.messages.create(
-        model=settings.anthropic_model,
+        model=ANTHROPIC_MODEL,
         max_tokens=512,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": user_content}],
@@ -305,7 +305,7 @@ async def _classify_with_openai(name: str, about: str, headline: str = "") -> tu
     user_content = f"업체명(블로그닉네임): {name}\n한줄소개: {headline}\n소개:\n{about}"
 
     resp = await client.chat.completions.create(
-        model=settings.openai_model,
+        model=OPENAI_MODEL,
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
@@ -412,7 +412,7 @@ async def _vision_with_anthropic(image_data: str, media_type: str) -> tuple[dict
 
     client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key, max_retries=0)
     resp = await client.messages.create(
-        model=settings.anthropic_model,
+        model=ANTHROPIC_MODEL,
         max_tokens=256,
         messages=[{
             "role": "user",
@@ -437,7 +437,7 @@ async def _vision_with_openai(image_data: str, media_type: str) -> tuple[dict | 
 
     client = AsyncOpenAI(api_key=settings.openai_api_key, max_retries=0)
     resp = await client.chat.completions.create(
-        model=settings.openai_model,
+        model=OPENAI_MODEL,
         messages=[{
             "role": "user",
             "content": [

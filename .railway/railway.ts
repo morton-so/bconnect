@@ -31,10 +31,10 @@ function devResources() {
   })
 
   // 수동 생성 후 IaC 관리
-  const pitrBucket = bucket('wrapped-calzone-lVgo', { region: BUCKET_REGION })
+  const pitrBucket = bucket('postgres-pitr', { region: BUCKET_REGION })
 
   const api = service('api', {
-    source: github('mortonCareer/bconnect', {
+    source: github('morton-so/bconnect', {
       branch: 'dev',
       checkSuites: true,
       rootDirectory: 'apps/api',
@@ -96,10 +96,10 @@ function prodResources() {
   })
 
   // 수동 생성 후 IaC 관리
-  const pitrBucket = bucket('efficient-cage-W1sw', { region: BUCKET_REGION })
+  const pitrBucket = bucket('postgres-pitr', { region: BUCKET_REGION })
 
   const api = service('api', {
-    source: github('mortonCareer/bconnect', {
+    source: github('morton-so/bconnect', {
       branch: 'main',
       checkSuites: true,
       rootDirectory: 'apps/api',

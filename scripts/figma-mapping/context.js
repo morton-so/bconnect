@@ -31,10 +31,6 @@ const FIGMA_REGEX = /^@figma\s+(\S+)/
 const SEARCH_ROOTS = ['apps/career', 'apps/plan', 'apps/company', 'packages/ui/src/components']
 const SEARCH_EXCLUDES = new Set(['node_modules', '.next', 'dist', 'build'])
 
-// 검사 대상
-const isSearchTarget = (file) =>
-  file.endsWith('/page.tsx') || file.startsWith('packages/ui/src/components/')
-
 /**
  * 컴포넌트 @figma 태그
  *
@@ -133,7 +129,7 @@ function walkComponent(dir, acc) {
     const fullPath = `${dir}/${entry.name}`
     if (entry.isDirectory()) {
       walkComponent(fullPath, acc)
-    } else if (entry.name.endsWith('.tsx')) {
+    } else if (/\.tsx?$/.test(entry.name)) {
       acc.push(fullPath)
     }
   }
@@ -149,7 +145,7 @@ function loadTags() {
   }
 
   const tags = []
-  for (const file of files.filter(isSearchTarget)) {
+  for (const file of files) {
     let content
     try {
       content = readFileSync(file, 'utf8')

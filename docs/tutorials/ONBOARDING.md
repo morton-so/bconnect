@@ -49,7 +49,7 @@ gh auth login
 ### Step 1. 리포지토리 클론
 
 ```bash
-git clone git@github.com:mortonCareer/bconnect.git
+git clone git@github.com:morton-so/bconnect.git
 cd bconnect
 ```
 

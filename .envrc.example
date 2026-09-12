@@ -4,7 +4,7 @@
 # 데이터베이스
 
 export DATABASE_URL=postgresql://user:password@host:5432/dbname
-# 발급처 : [Railway : postgres](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/1b00b504-e28e-4a58-a78c-dfbaba713fbc)
+# 발급처 : [Railway : postgres](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/e2f6cab1-4676-4762-bff2-a03b3aefc5fc)
 # 의존성 : @bconnect/data-jobs
 # 설명 : 원클릭 적재 DB TCP 프록시 URL (현재 prod)
 
