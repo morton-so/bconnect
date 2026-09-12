@@ -13,6 +13,7 @@ import {
   requireText,
   runSync,
   toArray,
+  toNullableText,
 } from './lib'
 
 const API_KEY = process.env.DATA_GO_SERVICE_KEY
@@ -20,7 +21,7 @@ const OPERATION = 'GongsiReg'
 const OPERATION_URL = `https://apis.data.go.kr/1613000/ConAdminInfoSvc1/${OPERATION}`
 const PAGE_SIZE = 1000
 const FULL_START_DATE = '20030101'
-const INCREMENTAL_DAYS = 7
+const INCREMENTAL_DAYS = 14
 
 if (!API_KEY) throw new Error('DATA_GO_SERVICE_KEY is required')
 
@@ -44,7 +45,7 @@ interface RegItem {
   ncrGsKname: string
   ncrGsMaster: string
   ncrItemName: string
-  ncrItemregno: string
+  ncrItemregno: string | null
   ncrGsAddr: string
   ncrAreaName: string
   ncrAreaDetailName: string
@@ -53,7 +54,7 @@ interface RegItem {
   ncrGsFlag: string
   ncrOffTel: string
   ncrGsNumber: string
-  ncrGsReason: string
+  ncrGsReason: string | null
 }
 
 async function main() {
@@ -118,7 +119,7 @@ async function main() {
       normalized_company_name: normalizeCompanyName(gsKname),
       ncr_gs_master: requireText(item.ncrGsMaster, 'ncr_gs_master', OPERATION),
       ncr_item_name: requireText(item.ncrItemName, 'ncr_item_name', OPERATION),
-      ncr_itemregno: requireText(item.ncrItemregno, 'ncr_itemregno', OPERATION),
+      ncr_itemregno: toNullableText(item.ncrItemregno),
       ncr_gs_addr: requireText(item.ncrGsAddr, 'ncr_gs_addr', OPERATION),
       ncr_area_name: requireText(item.ncrAreaName, 'ncr_area_name', OPERATION),
       ncr_area_detail_name: requireText(item.ncrAreaDetailName, 'ncr_area_detail_name', OPERATION),
@@ -127,7 +128,7 @@ async function main() {
       ncr_gs_flag: requireText(item.ncrGsFlag, 'ncr_gs_flag', OPERATION),
       ncr_off_tel: requireText(item.ncrOffTel, 'ncr_off_tel', OPERATION),
       ncr_gs_number: requireText(item.ncrGsNumber, 'ncr_gs_number', OPERATION),
-      ncr_gs_reason: requireText(item.ncrGsReason, 'ncr_gs_reason', OPERATION),
+      ncr_gs_reason: toNullableText(item.ncrGsReason),
     }
   })
 

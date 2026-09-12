@@ -54,16 +54,6 @@ export async function fetchHtml(url: string, options?: FetchOptions): Promise<st
   return response.text()
 }
 
-export async function fetchCsv(
-  url: string,
-  options: FetchOptions & { encoding?: 'utf-8' | 'euc-kr' } = {}
-): Promise<string> {
-  const response = await request(url, options)
-  const buffer = await response.arrayBuffer()
-  console.log(`[csv] 다운로드 완료: ${(buffer.byteLength / 1024 / 1024).toFixed(1)}MB`)
-  return new TextDecoder(options.encoding ?? 'utf-8').decode(buffer)
-}
-
 export async function fetchJson<T>(url: string, options?: FetchOptions): Promise<T> {
   const response = await request(url, options)
   return (await response.json()) as T

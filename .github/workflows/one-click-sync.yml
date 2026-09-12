@@ -41,7 +41,7 @@ jobs:
         id: cwma
         if: ${{ !cancelled() }}
         env:
-          CWMA_CSV_URL: ${{ vars.CWMA_CSV_URL }}
+          DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: pnpm --filter @bconnect/data-jobs cwma-sync
 
