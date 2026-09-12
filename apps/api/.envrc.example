@@ -1,13 +1,14 @@
-# 파일을 .envrc.local 로 복사해 값을 채워주세요.
+# 본 파일은 로컬 환경변수의 비밀값 템플릿을 관리합니다.
+# .envrc.local 로 복사해 값을 채워주세요.
 
 # 공공데이터 API
 
 export DATA_GO_SERVICE_KEY=your_data_go_kr_service_key
 # 발급처 : [공공데이터포털 : 마이페이지 인증키](https://www.data.go.kr)
-# 설명 : 국세청·국토교통부 등 공공데이터 조회 서비스 키
+# 설명 : 공공데이터 조회 서비스 키
 
 # Sentry
 
 export SENTRY_AUTH_TOKEN=your_sentry_auth_token
 # 발급처 : [Sentry : Auth Tokens](https://sentry.io/settings/auth-tokens/)
-# 설명 : Sentry 소스 컨텍스트 업로드 토큰
+# 설명 : Sentry 소스맵 · 소스 컨텍스트 업로드 토큰
