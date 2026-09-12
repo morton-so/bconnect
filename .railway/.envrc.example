@@ -1,0 +1,82 @@
+# 본 파일은 로컬 환경변수의 비밀값 템플릿을 관리합니다.
+# .envrc.local 로 복사해 값을 채워주세요.
+
+# [dev / GitHub dev]
+
+# 인증
+
+export JWT_SECRET_DEV=your_dev_jwt_secret
+# 발급처 : 수동 발급
+# 설명 : JWT 서명 비밀키
+
+# AWS
+
+export AWS_ACCESS_KEY_ID_DEV=your_dev_aws_access_key_id
+# 발급처 : [AWS : IAM 콘솔](https://console.aws.amazon.com/iam)
+# 설명 : 앱 전용 IAM 액세스 키
+
+export AWS_SECRET_ACCESS_KEY_DEV=your_dev_aws_secret_access_key
+# 발급처 : [AWS : IAM 콘솔](https://console.aws.amazon.com/iam)
+# 설명 : 앱 전용 IAM 시크릿 키
+
+# Solapi
+
+export SOLAPI_API_KEY_DEV=your_dev_solapi_api_key
+# 발급처 : Solapi 콘솔의 API 키 관리
+# 설명 : 문자 발송 API 키
+
+export SOLAPI_API_SECRET_DEV=your_dev_solapi_api_secret
+# 발급처 : Solapi 콘솔의 API 키 관리
+# 설명 : 문자 발송 API 시크릿
+
+# CloudFront
+
+export CLOUDFRONT_PRIVATE_KEY_DEV=your_dev_cloudfront_private_key
+# 발급처 : CloudFront 공개 키와 쌍을 이루도록 별도 생성
+# 설명 : 서명 쿠키 발급용 PEM 비밀키
+
+# 공공데이터 API
+
+export DATA_GO_SERVICE_KEY_DEV=your_dev_data_go_service_key
+# 발급처 : [공공데이터포털 : 마이페이지 인증키](https://www.data.go.kr)
+# 설명 : 공공데이터 조회 서비스 키
+
+# [prod / GitHub main]
+
+# 인증
+
+export JWT_SECRET_PROD=your_prod_jwt_secret
+# 발급처 : 수동 발급
+# 설명 : JWT 서명 비밀키
+
+# AWS
+
+export AWS_ACCESS_KEY_ID_PROD=your_prod_aws_access_key_id
+# 발급처 : [AWS : IAM 콘솔](https://console.aws.amazon.com/iam)
+# 설명 : 앱 전용 IAM 액세스 키
+
+export AWS_SECRET_ACCESS_KEY_PROD=your_prod_aws_secret_access_key
+# 발급처 : [AWS : IAM 콘솔](https://console.aws.amazon.com/iam)
+# 설명 : 앱 전용 IAM 시크릿 키
+
+# Solapi
+
+export SOLAPI_API_KEY_PROD=your_prod_solapi_api_key
+# 발급처 : Solapi 콘솔의 API 키 관리
+# 설명 : 문자 발송 API 키
+
+export SOLAPI_API_SECRET_PROD=your_prod_solapi_api_secret
+# 발급처 : Solapi 콘솔의 API 키 관리
+# 설명 : 문자 발송 API 시크릿
+
+# CloudFront
+
+export CLOUDFRONT_PRIVATE_KEY_PROD=your_prod_cloudfront_private_key
+# 발급처 : CloudFront 공개 키와 쌍을 이루도록 별도 생성
+# 설명 : 서명 쿠키 발급용 PEM 비밀키
+
+# 공공데이터 API
+
+export DATA_GO_SERVICE_KEY_PROD=your_prod_data_go_service_key
+# 발급처 : [공공데이터포털 : 마이페이지 인증키](https://www.data.go.kr)
+# 설명 : 공공데이터 조회 서비스 키
