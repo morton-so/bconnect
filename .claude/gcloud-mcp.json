@@ -1,0 +1,16 @@
+{
+  "allow": [
+    "auth list",
+    "config list",
+    "projects list",
+    "projects describe",
+    "projects get-iam-policy",
+    "services list",
+    "iam roles list",
+    "iam roles describe",
+    "iam service-accounts list",
+    "iam service-accounts describe",
+    "iam service-accounts get-iam-policy",
+    "logging read"
+  ]
+}
