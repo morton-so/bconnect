@@ -1,7 +1,7 @@
 # ADR-0005: Diataxis 4분할 + 디렉토리 구조 채택
 
 - 상태: 승인됨
-- 날짜: 2026-05-08 ([PR #289](https://github.com/mortonCareer/bconnect/pull/289) 머지일)
+- 날짜: 2026-05-08 ([PR #289](https://github.com/morton-so/bconnect/pull/289) 머지일)
 - 담당자: @manamana32321
 
 ## 개요
@@ -88,7 +88,7 @@ PR #289 직전 docs/ 상태:
 
 - 메타데이터 강제: 모든 docs 상단 `대상: ... / 학습 목표: ...` 두 줄
 - 길이 가이드 휴리스틱. 한 type = 한 파일이라 자연스레 길이 통제
-- markdownlint + lychee CI [docs-lint.yml](../../../.github/workflows/docs-lint.yml) 가 룰 위반 / 깨진 링크 자동 차단
+- markdownlint + lychee CI가 룰 위반 / 깨진 링크 자동 차단
 
 ### 근거
 
@@ -120,6 +120,6 @@ PR #289 직전 docs/ 상태:
 
 ## 참조
 
-- [#288](https://github.com/mortonCareer/bconnect/issues/288) : 메타
-- [PR #289](https://github.com/mortonCareer/bconnect/pull/289)
-- [#301](https://github.com/mortonCareer/bconnect/issues/301) : 백필
+- [#288](https://github.com/morton-so/bconnect/issues/288) : 메타
+- [PR #289](https://github.com/morton-so/bconnect/pull/289)
+- [#301](https://github.com/morton-so/bconnect/issues/301) : 백필

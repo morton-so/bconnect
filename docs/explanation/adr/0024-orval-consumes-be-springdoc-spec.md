@@ -93,4 +93,4 @@ becompat transformer 가 springdoc ↔ FE 캐논 간극을 규칙으로 흡수:
 
 - [ADR-0015](0015-be-code-as-api-ssot.md) : BE 코드 SSOT
 - [ADR-0003](0003-openapi-3-1-with-domain-split.md) : supersede 대상
-- [PR #690](https://github.com/mortonCareer/bconnect/pull/690)
+- [PR #690](https://github.com/morton-so/bconnect/pull/690)

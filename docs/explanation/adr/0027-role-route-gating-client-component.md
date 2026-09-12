@@ -124,6 +124,6 @@ Next 공식 문서가 1순위로 권하는 방식입니다.
 
 ## 참조
 
-- [#1099](https://github.com/mortonCareer/bconnect/issues/1099)
-- [#1066](https://github.com/mortonCareer/bconnect/issues/1066)
-- [PR #1083](https://github.com/mortonCareer/bconnect/pull/1083)
+- [#1099](https://github.com/morton-so/bconnect/issues/1099)
+- [#1066](https://github.com/morton-so/bconnect/issues/1066)
+- [PR #1083](https://github.com/morton-so/bconnect/pull/1083)

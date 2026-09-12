@@ -1,12 +1,12 @@
 # ADR-0003: OpenAPI 3.1 + 도메인 분리 (packing) + envelope wrap
 
 - 상태: [ADR-0024](0024-orval-consumes-be-springdoc-spec.md) 로 대체됨. 손-작성 `src/spec/` 폐기, orval 이 BE springdoc spec 직접 소비
-- 날짜: 2026-05-02 ([PR #266](https://github.com/mortonCareer/bconnect/pull/266) 머지)
+- 날짜: 2026-05-02 ([PR #266](https://github.com/morton-so/bconnect/pull/266) 머지)
 - 담당자: @manamana32321 @fine-pine
 
 ## 개요
 
-MSW migration [PR #247](https://github.com/mortonCareer/bconnect/pull/247) 코드 리뷰 중 envelope 정렬 문제 [#252](https://github.com/mortonCareer/bconnect/issues/252) 발견. 이를 출발점으로 spec 전반의 구조적 부채를 인지:
+MSW migration [PR #247](https://github.com/morton-so/bconnect/pull/247) 코드 리뷰 중 envelope 정렬 문제 [#252](https://github.com/morton-so/bconnect/issues/252) 발견. 이를 출발점으로 spec 전반의 구조적 부채를 인지:
 
 1. monolithic spec: 1,700줄 단일 `openapi.yaml`. 도메인 추가/수정 시 충돌 잦음, 가독성 ↓
 2. `allOf` 가독성: envelope wrap을 `allOf`로 표현하려는데 monolithic 안에서는 nested 깊이 통제 어려움
@@ -110,7 +110,7 @@ Bundle 파이프라인: [Redocly : CLI](https://redocly.com/docs/cli/) `split` +
   - bundle 파이프라인 추가 의존성 (`@redocly/cli`)
 - 중립적 결과:
   - PR 본문에 "시스템 동작 차원 변경 zero — BE/FE 코드 영향 없음" 명시. 의미 변경 검증 섹션이 회귀 차단의 근거.
-  - [PR #281](https://github.com/mortonCareer/bconnect/pull/281)에서 후속 typecheck drift 일괄 해소.
+  - [PR #281](https://github.com/morton-so/bconnect/pull/281)에서 후속 typecheck drift 일괄 해소.
 
 ## 메모
 
@@ -120,7 +120,7 @@ Bundle 파이프라인: [Redocly : CLI](https://redocly.com/docs/cli/) `split` +
 
 ## 참조
 
-- [#265](https://github.com/mortonCareer/bconnect/issues/265) : 메타
-- [#263](https://github.com/mortonCareer/bconnect/issues/263) : 도메인 분리
-- [#264](https://github.com/mortonCareer/bconnect/issues/264) : 3.1 업그레이드
-- [PR #266](https://github.com/mortonCareer/bconnect/pull/266)
+- [#265](https://github.com/morton-so/bconnect/issues/265) : 메타
+- [#263](https://github.com/morton-so/bconnect/issues/263) : 도메인 분리
+- [#264](https://github.com/morton-so/bconnect/issues/264) : 3.1 업그레이드
+- [PR #266](https://github.com/morton-so/bconnect/pull/266)

@@ -14,7 +14,7 @@ BConnect는 pnpm 워크스페이스 모노레포다. Vercel 프로젝트 2개 `a
 
 목표는 "본 앱 + 그 앱이 실제로 의존하는 패키지" 변경 시에만 해당 앱을 빌드하는 것이다. 모노레포 조건부 빌드에 해당한다.
 
-기존 구현은 [infra/vercel/projects.tf](../../../infra/vercel/projects.tf)의 손으로 짠 `ignore_command`다. Vercel Ignored Build Step 기능이며, `git diff <prev_sha> HEAD --quiet -- apps/<app> packages`를 수행했다. 두 가지 결함이 있었다:
+기존 구현은 손으로 짠 `ignore_command`다. Vercel Ignored Build Step 기능이며, `git diff <prev_sha> HEAD --quiet -- apps/<app> packages`를 수행했다. 두 가지 결함이 있었다:
 
 1. 견고성 결함, 실제 장애 #453: Vercel은 git을 shallow `--depth=1`로 clone한다. 두 번째 푸시부터 비교 기준 `COMPARE`는 직전 배포 SHA다. 이 커밋은 shallow 경계 커밋이라 commit 객체는 있으나 tree 스냅샷은 fetch되지 않는다. 가드 `git cat-file -e "$COMPARE"`는 commit 존재만 확인하고 통과 → `git diff`가 tree를 못 읽어 조용히 "변경 없음" exit 0 → 빌드 거짓-스킵. 결과적으로 feature 브랜치는 첫 푸시만 프리뷰가 뜨고 후속 푸시가 전부 스킵돼 팀 QA가 막혔다. #440/#443/#445는 같은 스크립트를 반복 땜질해온 이력이다.
 2. 그래프 인지 부재: `packages`를 통째 하드코딩 → 앱별 의존성 폐포를 반영하지 못한다. 오늘은 두 앱의 폐포가 동일해 우연히 일치하지만, 앱별 전용 패키지가 추가되면 깨진다.
@@ -88,8 +88,8 @@ pnpm `--filter "...[<ref>]"`·`nx affected`도 검토했으나, 둘 다 git-diff
 
 ## 참조
 
-- [#453](https://github.com/mortonCareer/bconnect/issues/453)
-- [PR #455](https://github.com/mortonCareer/bconnect/pull/455) : 머지+apply 완료
+- [#453](https://github.com/morton-so/bconnect/issues/453)
+- [PR #455](https://github.com/morton-so/bconnect/pull/455) : 머지+apply 완료
 - [ADR-0006](./0006-dev-as-staging.md)
 - [ADR-0010](./0010-dev-branch-staging-be.md)
 - [ADR-0022](./0022-drop-vercel-preview-team-owner-shared-account.md) : PR 프리뷰 폐기로 프리뷰 측면 무력화

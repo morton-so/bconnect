@@ -8,7 +8,7 @@
 variable "github_repo" {
   description = "GitHub 원격저장소"
   type        = string
-  default     = "mortonCareer/bconnect"
+  default     = "morton-so/bconnect"
 }
 
 variable "github_branch" {

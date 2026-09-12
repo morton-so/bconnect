@@ -125,4 +125,4 @@ amend. ADR-0006 본문·상태 승인됨 유지, 관련 에 본 ADR forward-link
 - [ADR-0006](./0006-dev-as-staging.md) : amends
 - [ADR-0005](./0005-orval-mock-transformer-and-no-response-wrapper.md)
 - [ADR-0009](./0009-be-db-hosting-railway-staging.md) : 자매 결정, staging 환경 제공
-- [#339](https://github.com/mortonCareer/bconnect/issues/339)
+- [#339](https://github.com/morton-so/bconnect/issues/339)

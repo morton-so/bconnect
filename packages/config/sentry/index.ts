@@ -24,7 +24,7 @@ export const clientSentryOptions = {
 /** next.config.ts용 withSentryConfig 옵션 */
 export function sentryBuildOptions(project: string) {
   return {
-    org: 'morton-2l',
+    org: 'morton-so',
     project,
     authToken: process.env.SENTRY_AUTH_TOKEN,
     silent: !process.env.CI,

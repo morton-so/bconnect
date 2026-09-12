@@ -11,7 +11,7 @@ PR 리뷰 코멘트, Slack DM, 1:1 대화에서 내려진 시스템 디자인 �
 이 ADR 작성 시점 기준 구체 사례:
 
 - 단일 S3 버킷 + prefix 분리 결정: PR 리뷰에서 합의됐으나 commit message에만 흔적, 검색 어려움
-- OpenAPI 3.1 + 도메인 분리 결정: [PR #266](https://github.com/mortonCareer/bconnect/pull/266) 본문에 정리됐으나 GitHub 검색 의존
+- OpenAPI 3.1 + 도메인 분리 결정: [PR #266](https://github.com/morton-so/bconnect/pull/266) 본문에 정리됐으나 GitHub 검색 의존
 - API response envelope `{success, data, error}` 결정: 코드와 `CLAUDE.md`에는 있으나 "왜 envelope?" 근거가 없음
 
 이런 결정들이 영구 추적 가능한 형태로 한 곳에 모이지 않으면, 다음 사람은 결정의 컨텍스트 없이 코드만 보고 "이상하다, 바꿔야겠다" 판단 → 의도하지 않은 regression 위험.
@@ -96,4 +96,4 @@ Notion에 결정 데이터베이스를 만들어 페이지 단위 기록.
 
 ## 참조
 
-- [#288](https://github.com/mortonCareer/bconnect/issues/288)
+- [#288](https://github.com/morton-so/bconnect/issues/288)

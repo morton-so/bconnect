@@ -228,4 +228,4 @@ ECS Express Mode 채택 보류 근거:
 
 - [ADR-0006](./0006-dev-as-staging.md)
 - [ADR-0009](./0009-be-db-hosting-railway-staging.md) : supersedes this
-- [#322](https://github.com/mortonCareer/bconnect/issues/322)
+- [#322](https://github.com/morton-so/bconnect/issues/322)

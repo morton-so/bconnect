@@ -96,7 +96,7 @@ BE는 스펙에서 자동 생성하는 단계가 없다. 사람이 직접 컨트
 2. [development.md](../../how-to/development.md) : "스펙 합의 → BE/FE 병렬" → "BE 구현 → 스펙 갱신 → FE 작업"
 3. [package-api-client.md](../../reference/package-api-client.md) : 스펙 기준 변경 반영
 4. `.github/workflows/ci.yml` paths-filter 단순화
-5. [#328](https://github.com/mortonCareer/bconnect/issues/328) 닫거나 재정의
+5. [#328](https://github.com/morton-so/bconnect/issues/328) 닫거나 재정의
 
 ## 참조
 
