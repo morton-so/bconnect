@@ -168,13 +168,11 @@ const paramId = (value: string | readonly string[] | undefined): number =>
   Number(typeof value === 'string' ? value : (value?.[0] ?? ''))
 
 export const profilesOverrides = [
-  getGetProfilesMockHandler(
-    (): CursorPageProfile => ({
-      content: PROFILE_SEEDS.map((seed) => profileOf(seed)),
-      hasNext: false,
-      nextCursor: undefined,
-    })
-  ),
+  getGetProfilesMockHandler((): CursorPageProfile => ({
+    content: PROFILE_SEEDS.map((seed) => profileOf(seed)),
+    hasNext: false,
+    nextCursor: undefined,
+  })),
   // /profiles/me 는 status 없는 평문 Profile — 타인 조회(ProfileDetail)와 응답형이 다르다
   getGetMyProfileMockHandler(() => withMyPicture(profileOf(PROFILE_SEEDS[0]))),
   getGetProfileMockHandler(({ params }) => PROFILES_BY_ID[paramId(params.id)] ?? PROFILES_BY_ID[1]),

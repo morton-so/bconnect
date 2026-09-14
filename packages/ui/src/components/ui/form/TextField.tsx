@@ -129,7 +129,7 @@ export function TextField<T extends FieldValues>({
                 />
               </TextFieldControl>
               {rightElement && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2">{rightElement}</div>
+                <div className="absolute top-1/2 right-3 -translate-y-1/2">{rightElement}</div>
               )}
             </div>
             <FormMessage className={fieldSlot({ layout })}>{serverError}</FormMessage>

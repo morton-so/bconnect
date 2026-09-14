@@ -20,7 +20,7 @@ export function MemoCard({ memo, renderKebab }: MemoCardProps) {
         <span className="text-xs text-gray-400">{formatMemoDate(memo.createdAt)}</span>
         {renderKebab?.(memo)}
       </div>
-      <p className="mt-2 whitespace-pre-line text-sm text-gray-900">{memo.content}</p>
+      <p className="mt-2 text-sm whitespace-pre-line text-gray-900">{memo.content}</p>
     </div>
   )
 }

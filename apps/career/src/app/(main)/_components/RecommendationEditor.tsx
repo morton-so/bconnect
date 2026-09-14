@@ -45,7 +45,7 @@ export function RecommendationEditor({
       />
 
       <Form {...form}>
-        <form onSubmit={submit} className="flex flex-1 flex-col gap-4 px-4 pb-4 pt-4">
+        <form onSubmit={submit} className="flex flex-1 flex-col gap-4 px-4 pt-4 pb-4">
           <TextareaField
             control={form.control}
             name="content"

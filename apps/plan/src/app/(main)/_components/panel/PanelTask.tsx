@@ -281,11 +281,11 @@ export function PanelTask({ taskId }: { taskId?: string }) {
                   emptyActionHref={`/?task=${taskId}&trade=${(task?.trades ?? []).join(',')}`}
                 />
               ) : (
-                <div className="flex flex-col items-center pb-4 pt-8">
+                <div className="flex flex-col items-center pt-8 pb-4">
                   <div className="flex size-[140px] items-center justify-center rounded-full bg-secondary">
                     <SearchIcon size={72} className="text-primary" />
                   </div>
-                  <p className="text-r-14 mt-4 text-gray-600">작업을 먼저 생성해주세요</p>
+                  <p className="mt-4 text-r-14 text-gray-600">작업을 먼저 생성해주세요</p>
                 </div>
               )}
             </div>

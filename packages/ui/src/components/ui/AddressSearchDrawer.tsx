@@ -1,5 +1,5 @@
 /**
- * @figma-pending 주소 검색 드로어 — 시안 미정
+ * @figma-todo 주소 검색 드로어 — 시안 미정
  */
 'use client'
 

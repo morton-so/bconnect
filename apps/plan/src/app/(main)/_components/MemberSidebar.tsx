@@ -107,7 +107,7 @@ function ProjectSection({
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="px-1 text-[11px] font-semibold uppercase tracking-[0.44px] text-gray-400">
+      <p className="px-1 text-[11px] font-semibold tracking-[0.44px] text-gray-400 uppercase">
         프로젝트
       </p>
       <div className="flex flex-col gap-1">

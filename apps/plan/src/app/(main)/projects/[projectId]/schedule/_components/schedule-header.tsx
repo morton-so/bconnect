@@ -22,7 +22,6 @@ import {
   useDocumentTitle,
 } from '@bconnect/ui'
 import { useGetProject } from '@bconnect/api-client'
-import type { Address } from '@bconnect/api-client'
 
 export type ScheduleHeaderProps = {
   projectId: string
@@ -85,7 +84,7 @@ function ProjectNameRow({ initialName }: { initialName: string }) {
       <span className={LABEL_CLASSES} style={LABEL_STYLE}>
         프로젝트명
       </span>
-      <span className="text-sb-14 shrink-0 text-gray-900">{name}</span>
+      <span className="shrink-0 text-sb-14 text-gray-900">{name}</span>
       <Button
         variant="ghost"
         type="button"
@@ -183,7 +182,7 @@ function AddressRow({ initialAddress }: { initialAddress: string }) {
       <span className={LABEL_CLASSES} style={LABEL_STYLE}>
         주소
       </span>
-      <span className="text-r-14 shrink-0" style={{ color: '#3d3d3d' }}>
+      <span className="shrink-0 text-r-14" style={{ color: '#3d3d3d' }}>
         {formatAddress(address)}
       </span>
       <Button

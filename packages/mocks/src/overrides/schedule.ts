@@ -9,7 +9,6 @@ import {
   getUpdateTaskCompanyMockHandler,
   OfferStatus,
   ProfileRole,
-  Role,
   TaskProgress,
   TaskStatus,
   Trade,

@@ -127,7 +127,7 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
             {/* 이름 + 태그 (badge: 우측 시간) */}
             <div className="flex items-center justify-between gap-2.5">
               <div className="flex min-w-0 items-center gap-2.5">
-                <span className="text-sb-14 leading-[1.6]! shrink-0 text-[#1B1B1B]">{name}</span>
+                <span className="shrink-0 text-sb-14 leading-[1.6]! text-[#1B1B1B]">{name}</span>
                 {tags.length > 0 && (
                   <div className="flex items-center gap-2 text-m-12 text-[#A5A5A5]">
                     {tags.map((tag, index) => (
@@ -159,7 +159,7 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
                 </span>
                 {isBadge && unreadCount != null && unreadCount > 0 && (
                   <div className="flex size-5 shrink-0 items-center justify-center rounded-[8px] bg-[#FF4242]">
-                    <span className="text-[12px] font-bold leading-none text-white">
+                    <span className="text-[12px] leading-none font-bold text-white">
                       {unreadCount}
                     </span>
                   </div>

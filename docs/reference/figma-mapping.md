@@ -9,8 +9,8 @@
 ## 명령어
 
 ```bash
-pnpm figma:check        # 이슈 생성
-pnpm figma:check:dry    # 이슈 미생성
+pnpm figma        # 이슈 생성
+pnpm figma:dry    # 이슈 미생성
 ```
 
 ## 패키지 구조
@@ -25,7 +25,7 @@ scripts/figma-mapping/
 
 ## 핵심 로직
 
-1. 3개 앱의 `page.tsx`와 `packages/ui/src/components`의 `.tsx`에서 `@figma` JSDoc 추출
+1. 3개 앱 디렉터리와 `packages/ui/src/components`의 `.ts`·`.tsx`에서 `@figma` JSDoc 추출
 2. Figma REST API로 파일 트리 한 번에 로드. parent 관계 포함
 3. 코드의 `@figma` URL 과 Figma 노드 양방향 대조
 4. 검출 결과를 신규 이슈로 생성

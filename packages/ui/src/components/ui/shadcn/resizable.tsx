@@ -1,3 +1,6 @@
+/**
+ * @figma-todo shadcn/ui 원본 이식
+ */
 'use client'
 
 import * as React from 'react'
@@ -30,7 +33,7 @@ function ResizableHandle({
       data-slot="resizable-handle"
       className={cn(
         'relative flex w-px items-center justify-center bg-gray-200 transition-colors hover:bg-primary data-[resize-handle-state=drag]:bg-primary',
-        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary',
+        'focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none',
         className
       )}
       {...props}

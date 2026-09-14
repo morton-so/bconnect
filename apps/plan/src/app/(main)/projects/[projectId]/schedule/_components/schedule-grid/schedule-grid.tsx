@@ -175,7 +175,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
     <div
       ref={scrollRef}
       onWheel={handleWheel}
-      className="w-full overflow-x-auto bg-white font-sans [scrollbar-color:#d0d0d0_transparent] [scrollbar-width:thin]"
+      className="w-full [scrollbar-width:thin] [scrollbar-color:#d0d0d0_transparent] overflow-x-auto bg-white font-sans"
     >
       <table
         aria-label="공정표"
@@ -200,7 +200,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
           <tr style={{ height: HEADER_HEIGHT }}>
             <th
               colSpan={4}
-              className={`${stickyCell} border-b border-r border-solid border-[#e5e5e5]`}
+              className={`${stickyCell} border-r border-b border-solid border-[#e5e5e5]`}
               style={{ left: 0 }}
             />
             <th className="border-b border-solid border-[#e5e5e5] p-0 font-normal">
@@ -211,7 +211,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
                     className={`flex items-center justify-center ${i < monthGroups.length - 1 ? 'border-r border-solid border-[#d0d0d0]' : ''}`}
                     style={{ width: g.count * DAY_WIDTH }}
                   >
-                    <span className="text-[13px] font-semibold leading-[19.5px] text-[#3d3d3d]">
+                    <span className="text-[13px] leading-[19.5px] font-semibold text-[#3d3d3d]">
                       {g.month}월
                     </span>
                   </div>
@@ -227,7 +227,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
               <th
                 key={label}
                 scope="col"
-                className={`${stickyCell} border-b border-r border-solid border-[#e5e5e5] text-sb-14 text-[#3d3d3d]`}
+                className={`${stickyCell} border-r border-b border-solid border-[#e5e5e5] text-sb-14 text-[#3d3d3d]`}
                 style={{ left: STICKY_LEFT[i], backgroundColor: '#fafafa' }}
               >
                 <span className="block text-center">{label}</span>
@@ -272,7 +272,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
             return (
               <tr key={task.id} style={{ height: ROW_HEIGHT }}>
                 <td
-                  className={`${stickyCell} border-b border-r border-solid border-b-[#f5f5f5] border-r-[#e5e5e5] align-middle`}
+                  className={`${stickyCell} border-r border-b border-solid border-r-[#e5e5e5] border-b-[#f5f5f5] align-middle`}
                   style={{ left: STICKY_LEFT[0] }}
                 >
                   <span className="flex items-center gap-1 overflow-hidden px-3">
@@ -282,19 +282,19 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
                   </span>
                 </td>
                 <td
-                  className={`${stickyCell} border-b border-r border-solid border-b-[#f5f5f5] border-r-[#e5e5e5] text-center align-middle`}
+                  className={`${stickyCell} border-r border-b border-solid border-r-[#e5e5e5] border-b-[#f5f5f5] text-center align-middle`}
                   style={{ left: STICKY_LEFT[1] }}
                 >
                   <StatusPill status={task.status} />
                 </td>
                 <td
-                  className={`${stickyCell} border-b border-r border-solid border-b-[#f5f5f5] border-r-[#e5e5e5] text-center align-middle`}
+                  className={`${stickyCell} border-r border-b border-solid border-r-[#e5e5e5] border-b-[#f5f5f5] text-center align-middle`}
                   style={{ left: STICKY_LEFT[2] }}
                 >
                   <ProgressPill progress={task.progress} />
                 </td>
                 <td
-                  className={`${stickyCell} border-b border-r border-solid border-b-[#f5f5f5] border-r-[#e5e5e5] align-middle ${assignee ? 'px-1 py-2' : 'p-2'}`}
+                  className={`${stickyCell} border-r border-b border-solid border-r-[#e5e5e5] border-b-[#f5f5f5] align-middle ${assignee ? 'px-1 py-2' : 'p-2'}`}
                   style={{ left: STICKY_LEFT[3] }}
                 >
                   {assignee ? (
@@ -320,7 +320,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
                     <Button
                       asChild
                       variant="outline"
-                      className="text-m-14 h-[33.5px] w-full rounded-[6px] border-[#c0d0ff] px-0 font-medium hover:bg-primary-50"
+                      className="h-[33.5px] w-full rounded-[6px] border-[#c0d0ff] px-0 text-m-14 font-medium hover:bg-primary-50"
                     >
                       <Link href={`/?task=${task.id}&trade=${task.trades.join(',')}`}>
                         + 기술자 탐색
@@ -356,7 +356,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
                 variant="outline"
                 type="button"
                 onClick={handleCreateTask}
-                className="text-m-14 h-[33.5px] w-full rounded-[6px] border-dashed border-[#c0d0ff] px-0 font-medium hover:bg-primary-50"
+                className="h-[33.5px] w-full rounded-[6px] border-dashed border-[#c0d0ff] px-0 text-m-14 font-medium hover:bg-primary-50"
               >
                 + 작업 생성
               </Button>

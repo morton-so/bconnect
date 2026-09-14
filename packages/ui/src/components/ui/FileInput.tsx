@@ -138,7 +138,7 @@ export function FileInput({
                 onClick={() => removeAt(i)}
                 disabled={disabled}
                 aria-label={`${nameOf(it)} 삭제`}
-                className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 outline-none transition-colors hover:bg-gray-100 hover:text-gray-700 focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors outline-none hover:bg-gray-100 hover:text-gray-700 focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <XIcon size={16} />
               </button>
@@ -158,7 +158,7 @@ export function FileInput({
           onClick={openPicker}
           disabled={disabled}
           className={cn(
-            'inline-flex h-[50px] w-full cursor-pointer items-center justify-center rounded-lg border border-primary bg-transparent text-sm font-semibold text-primary outline-none transition-all hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-[0.98] disabled:cursor-not-allowed disabled:border-transparent disabled:bg-gray-100 disabled:text-gray-400',
+            'inline-flex h-[50px] w-full cursor-pointer items-center justify-center rounded-lg border border-primary bg-transparent text-sm font-semibold text-primary transition-all outline-none hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-[0.98] disabled:cursor-not-allowed disabled:border-transparent disabled:bg-gray-100 disabled:text-gray-400',
             invalid && 'border-destructive text-destructive'
           )}
         >

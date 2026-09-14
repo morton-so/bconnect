@@ -157,7 +157,7 @@ export function PanelCrawled({ crawledId }: { crawledId: number }) {
                             href={post.sourceUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex cursor-pointer flex-col gap-1 px-4 pt-3 pb-4 transition-colors hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary active:bg-gray-100"
+                            className="flex cursor-pointer flex-col gap-1 px-4 pt-3 pb-4 transition-colors hover:bg-gray-50 focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none active:bg-gray-100"
                           >
                             {body}
                           </a>

@@ -145,7 +145,7 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
   })
 
   return (
-    <div className="px-4 pb-6 pt-5">
+    <div className="px-4 pt-5 pb-6">
       <div className="flex items-start justify-between gap-2">
         <h2 className="text-sb-16 text-gray-900">{task.title}</h2>
         <div className="flex shrink-0 items-center gap-1">

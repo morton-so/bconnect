@@ -1,5 +1,5 @@
 /**
- * @figma-pending 작업 액션시트 — 수정 (#650)
+ * @figma-todo 작업 액션시트 — 수정 (#650)
  */
 import type { SVGProps } from 'react'
 

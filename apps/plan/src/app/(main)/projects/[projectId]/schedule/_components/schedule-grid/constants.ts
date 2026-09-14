@@ -1,11 +1,4 @@
-import {
-  TASK_PROGRESS_LABELS,
-  TASK_STATUS_LABELS,
-  TaskProgress,
-  TaskStatus,
-  TRADE_LABELS,
-  type Trade,
-} from '@bconnect/api-client'
+import { TaskProgress, TaskStatus, TRADE_LABELS, type Trade } from '@bconnect/api-client'
 import type { ScheduleTask, TaskAssignee, TaskBarTone } from './types'
 
 /** 공종 배열 → 그리드 공종 컬럼/패널 타이틀 표시 라벨 ('타일 · 도배'). category 필드 대체 파생. */

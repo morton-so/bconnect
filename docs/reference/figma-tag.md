@@ -88,7 +88,7 @@
 
 ### figma-mapping
 
-- 대상 : 범위 내 `@figma` 태그를 포함한 `.ts`·`.tsx` 파일. lint 비대상 경로인 `icons/`·`_components/` 포함
+- 대상 : 3개 앱과 `packages/ui/src/components`에서 `@figma` 태그를 포함한 `.ts`·`.tsx` 파일
 - 검증 : 코드와 노드 양방향 대조
   - `not-found` : 컴포넌트 있으나 노드 없음
   - `not-ready` : 컴포넌트 있으나 Ready for dev 아님
@@ -130,7 +130,7 @@
 
 ### 컴포넌트 (lint 비대상)
 
-`icons/`·`_components/` 등이 해당합니다. 태그는 선택입니다. 붙이면 figma-mapping이 검사합니다.
+`_components/`
 
 | 컴포넌트       | 디자인    | lint | figma-mapping   | 결과            | 비고                 |
 | -------------- | --------- | ---- | --------------- | --------------- | -------------------- |

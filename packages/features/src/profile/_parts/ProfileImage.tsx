@@ -27,7 +27,7 @@ export function ProfileImage({ src, alt, onEdit, uploading }: ProfileImageProps)
           onClick={onEdit}
           disabled={uploading}
           aria-label="프로필 이미지 수정"
-          className="absolute bottom-0 right-0 flex size-6 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white outline-none transition-all hover:opacity-80 focus-visible:ring-1 focus-visible:ring-primary active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-40"
+          className="absolute right-0 bottom-0 flex size-6 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white transition-all outline-none hover:opacity-80 focus-visible:ring-1 focus-visible:ring-primary active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-40"
         >
           <EditIcon size={13} />
         </button>

@@ -20,16 +20,9 @@ export default defineConfig([
   },
   {
     rules: {
-      'no-restricted-imports': [
+      '@typescript-eslint/no-unused-vars': [
         'error',
-        {
-          patterns: [
-            {
-              group: ['../../**'],
-              message: 'uses @/ alias instead of relative path',
-            },
-          ],
-        },
+        { argsIgnorePattern: '^_', ignoreRestSiblings: true },
       ],
     },
   },

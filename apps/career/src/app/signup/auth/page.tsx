@@ -129,7 +129,7 @@ export default function SignupAuthPage() {
         <form onSubmit={handleSubmit} className="flex flex-1 flex-col gap-6 px-4 pt-3">
           {/* Title Section */}
           <div className="flex flex-col gap-4">
-            <h1 className="text-2xl font-semibold leading-[1.4] text-[#1B1B1B]">
+            <h1 className="text-2xl leading-[1.4] font-semibold text-[#1B1B1B]">
               신뢰할 수 있는 계약을 위해
               <br />
               <span className="text-primary">본인 확인</span>이 필요해요

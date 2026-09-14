@@ -270,13 +270,11 @@ const toSummary = ({
 })
 
 export const crawledOverrides = [
-  getGetCrawledMembersMockHandler(
-    (): CursorPageCrawledMemberSummary => ({
-      content: SEEDS.map(toSummary),
-      hasNext: false,
-      nextCursor: undefined,
-    })
-  ),
+  getGetCrawledMembersMockHandler((): CursorPageCrawledMemberSummary => ({
+    content: SEEDS.map(toSummary),
+    hasNext: false,
+    nextCursor: undefined,
+  })),
   // 상세는 직접 작성 — 미존재 id 를 404 로 반환해 에러 UI(isError) 경로가 로컬에서도 재현되게
   // (generated mock 은 항상 200 이라 not-found 경로를 검증할 수 없음)
   http.get('*/api/v1/crawled-members/:id', ({ params }) => {

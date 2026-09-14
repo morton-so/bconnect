@@ -2,4 +2,5 @@ pnpm-lock.yaml
 .next
 dist
 node_modules
+.terraform
 apps/api

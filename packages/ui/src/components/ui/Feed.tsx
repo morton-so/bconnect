@@ -18,7 +18,7 @@ import { ImageCarousel } from './ImageCarousel'
  * - collapsed: 접힌 상태 (기본값)
  * - expanded: 펼쳐진 상태
  */
-const feedVariants = cva('flex flex-col gap-3 items-stretch', {
+const feedVariants = cva('flex flex-col items-stretch gap-3', {
   variants: {
     variant: {
       collapsed: '',
@@ -133,7 +133,7 @@ export const Feed = React.forwardRef<HTMLDivElement, FeedProps>(
             className={cn(
               'text-m-16 text-gray-900',
               isExpanded
-                ? 'min-w-full w-[min-content] whitespace-pre-wrap leading-[1.6]'
+                ? 'w-[min-content] min-w-full leading-[1.6] whitespace-pre-wrap'
                 : 'min-w-0 flex-1 truncate leading-[25.2px]'
             )}
           >

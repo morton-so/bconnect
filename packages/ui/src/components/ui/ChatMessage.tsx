@@ -14,9 +14,9 @@ import { cn } from '../../lib/utils'
 const chatBubbleVariants = cva('inline-flex items-center px-4 text-r-14', {
   variants: {
     variant: {
-      mine: 'bg-primary text-white rounded-tl-xl rounded-bl-xl rounded-br-xl py-[9px]',
-      theirs: 'bg-gray-100 text-gray-900 rounded-tr-xl rounded-bl-xl rounded-br-xl py-3',
-      typing: 'bg-gray-100 rounded-tr-xl rounded-bl-xl rounded-br-xl py-[9px] h-10',
+      mine: 'rounded-tl-xl rounded-br-xl rounded-bl-xl bg-primary py-[9px] text-white',
+      theirs: 'rounded-tr-xl rounded-br-xl rounded-bl-xl bg-gray-100 py-3 text-gray-900',
+      typing: 'h-10 rounded-tr-xl rounded-br-xl rounded-bl-xl bg-gray-100 py-[9px]',
     },
   },
   defaultVariants: {
@@ -144,7 +144,7 @@ function ImageGrid({ images, className }: { images: ChatMessageImage[]; classNam
           alt={image.alt ?? '사진'}
           className={cn(
             'rounded-xl bg-gray-100 object-cover',
-            isSingle ? 'max-h-60 min-w-28 max-w-full' : 'size-28'
+            isSingle ? 'max-h-60 max-w-full min-w-28' : 'size-28'
           )}
         />
       ))}
@@ -159,7 +159,7 @@ function TypingDots() {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="size-2 rounded-full bg-primary animate-bounce"
+          className="size-2 animate-bounce rounded-full bg-primary"
           style={{ animationDelay: `${i * 0.15}s`, animationDuration: '0.6s' }}
         />
       ))}

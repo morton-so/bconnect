@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint && prettier --check . && terraform fmt -check -recursive",
     "lint:fix": "eslint --fix && prettier --write . && terraform fmt -recursive",
-    "lint:docs": "markdownlint-cli2 && lychee '**/*.md'",
+    "lint:docs": "markdownlint-cli2 && lychee \"**/*.md\"",
     "lint:docs:fix": "markdownlint-cli2 --fix",
     "api:generate": "pnpm --filter @bconnect/api-client generate && pnpm typecheck",
     "figma": "node scripts/figma-mapping/index.js",

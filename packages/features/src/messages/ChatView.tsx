@@ -128,7 +128,7 @@ export function ChatView(props: ChatViewProps) {
     const content = message.trim()
     if (!content) return
     if (sendMessage({ type: MessageType.TEXT, content })) setMessage('')
-  }, [message, sendMessage])
+  }, [message, sendMessage, setMessage])
 
   // 선택 즉시 업로드 → 첨부 id 를 한 메시지로 전송. 업로드 실패는 imageActions 가 자체 안내한다.
   const handlePickImages = useCallback(
