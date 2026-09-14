@@ -1,9 +1,9 @@
 /**
- * @figma-scaffold 원클릭 조회 PoC — 백엔드 검증용, 디자인 미정
+ * @figma-todo 원클릭 조회 PoC — 백엔드 검증용, 디자인 미정
  */
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
-import { getCompanyInfo } from '@bconnect/business/fetch-business'
+import { getCompanyInfo } from './_lib/one-click'
 import {
   formatRegistrationNumber,
   isValidRegistrationNumber,
@@ -54,7 +54,8 @@ async function CompanyHeaderLoader({ registrationNumber }: { registrationNumber:
 export default async function OneClickPage({ searchParams }: PageProps) {
   const { q } = await searchParams
   const parsed = q ? registrationNumberSchema.safeParse(q) : undefined
-  const isValid = parsed?.success ?? false
+  // 조회 API 는 하이픈 없는 10자리를 받는다
+  const brn = parsed?.success ? parsed.data : undefined
   const errorMessage = parsed && !parsed.success ? parsed.error.issues[0]?.message : undefined
 
   return (
@@ -65,17 +66,15 @@ export default async function OneClickPage({ searchParams }: PageProps) {
         <SearchBar defaultValue={q} />
         <TipBanner />
 
-        {q && !isValid && errorMessage && (
-          <p className="text-r-14 text-destructive">{errorMessage}</p>
-        )}
+        {q && !brn && errorMessage && <p className="text-r-14 text-destructive">{errorMessage}</p>}
 
-        {isValid && (
+        {brn && (
           <>
             <Suspense fallback={<CompanyHeaderSkeleton />}>
-              <CompanyHeaderLoader registrationNumber={q!} />
+              <CompanyHeaderLoader registrationNumber={brn} />
             </Suspense>
-            <SummarySection registrationNumber={q!} />
-            <DetailSection registrationNumber={q!} />
+            <SummarySection registrationNumber={brn} />
+            <DetailSection registrationNumber={brn} />
           </>
         )}
       </main>

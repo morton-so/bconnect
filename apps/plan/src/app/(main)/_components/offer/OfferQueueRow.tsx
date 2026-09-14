@@ -30,7 +30,7 @@ export function OfferQueueRow({
       ref={setNodeRef}
       style={style}
       className={cn(
-        'flex items-center gap-2.5 border-b border-[#f0f0f0] pb-[11px] pt-[10px]',
+        'flex items-center gap-2.5 border-b border-[#f0f0f0] pt-[10px] pb-[11px]',
         isDragging && 'opacity-60'
       )}
     >
@@ -64,7 +64,7 @@ export function OfferQueueRow({
           />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sb-14 truncate text-gray-900">{item.name}</p>
+          <p className="truncate text-sb-14 text-gray-900">{item.name}</p>
           <p className="truncate text-[11px] leading-[16.5px] text-[#a5a5a5]">
             {[item.region, item.level, item.specialty].filter(Boolean).join(' · ')}
           </p>

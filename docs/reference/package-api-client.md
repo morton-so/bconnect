@@ -10,9 +10,9 @@
 
 ## 파이프라인
 
-1. 백엔드에서 OpenAPI 명세 생성 :
-   - 명령어 : `./gradlew generateOpenApiDocs`
-   - 산출물 : `packages/api-client/src/openapi.yaml`
+1. dev API 서버가 OpenAPI 명세 서빙 :
+   - URL : `https://api.dev.bconnect.to/v3/api-docs.yaml`
+   - `orval.config.ts`의 `input.target`이 직접 조회
 2. 프론트엔드에서 Orval 실행
    - 명령어 : `orval + orval.transformer.ts`
    - 산출물 : `src/generated/*`
@@ -28,14 +28,7 @@
 | `pnpm generate`       | OpenAPI 스펙에서 코드 생성   |
 | `pnpm generate:watch` | 스펙 변경 감지하여 자동 생성 |
 
-1. 백엔드 코드 → OpenAPI 명세
-
-```bash
-cd apps/api && ./gradlew generateOpenApiDocs
-cp build/openapi.yaml ../../packages/api-client/src/openapi.yaml
-```
-
-1. OpenAPI 명세 → Orval 생성 → 컴파일
+OpenAPI 명세 URL → Orval 생성 → 컴파일
 
 ```bash
 pnpm api:generate
@@ -49,7 +42,6 @@ packages/api-client/
 ├── orval.transformer.ts   # Orval 변환 커스텀 로직
 ├── auth-supplement.ts     # OpenAPI 명세 누락 보완 (인증 필터)
 └── src/
-    ├── openapi.yaml       # OpenAPI 명세 (BE 산출물)
     ├── generated/         # Orval 산출물
     │   ├── api.ts         # TanStack Query hooks
     │   └── schemas/       # TypeScript 타입
@@ -241,7 +233,6 @@ pnpm api:generate
 
 ```text
 packages/api-client/src/
-├── openapi.yaml                # BE springdoc 산출 spec (SSOT 입력, 커밋됨)
 └── generated/                  # orval 산출물 (gitignored), FE가 참조
     ├── api.ts                  # 모든 hook + handler aggregator
     └── schemas/                # 도메인 타입 정의
@@ -289,7 +280,8 @@ function EditProfile() {
 
 ### 주의사항
 
-- BE springdoc 산출인 `src/openapi.yaml` 은 손으로 수정하지 않음
-  - BE 변경 시 ci-api-spec이 재생성·커밋
+- 스펙 입력은 dev API 서버의 `/v3/api-docs.yaml`. 리포에 spec 파일을 커밋하지 않음
+  - BE 변경은 dev 배포 후 재생성에 반영
+  - 로컬 BE 대상 생성은 `API_URL` 환경변수로 오버라이드. 예 `API_URL=http://localhost:8080 pnpm api:generate`
 - 로컬 재생성은 orval 단독인 `pnpm api:generate`. 생성물 `generated/`는 gitignored
 - 타입 불일치는 대개 BE-FE 계약 drift. BE 갱신 또는 FE 호출부 정합으로 해소

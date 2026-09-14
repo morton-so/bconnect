@@ -10,7 +10,7 @@
 
 그 설계엔 숨은 가정이 있었다. "패널은 기술자 탐색(explore) 위에만 뜬다"는 가정이다. 실제로 `/profile/5` 진입 시 children 슬롯은 항상 `(main)/default.tsx`, 즉 explore 로 떨어진다. 당시 plan 의 유일한 메인 콘텐츠가 explore 였기에 문제가 드러나지 않았다.
 
-[#375](https://github.com/mortonCareer/bconnect/issues/375) 공정표 페이지(`(main)/projects/[projectId]/schedule`)가 explore 가 아닌 첫 메인 라우트로 등장하며 한계가 드러났다.
+[#375](https://github.com/morton-so/bconnect/issues/375) 공정표 페이지(`(main)/projects/[projectId]/schedule`)가 explore 가 아닌 첫 메인 라우트로 등장하며 한계가 드러났다.
 
 - parallel slot 은 path 로 파일이 매칭된다. `@panel/profile/[profileId]/page.tsx`가 렌더되려면 URL path 가 그에 맞아야 한다.
 - 한 URL path 는 하나뿐이다. 따라서 "메인 path = `/projects/1/schedule`" 와 "패널 path = `/profile/5`"가 한 URL 에 공존할 수 없다.
@@ -79,7 +79,7 @@ PoC 로 검증했다. 검증일은 2026-06-09 다. `PanelHost`(프로필) + `(ma
 
 ## 메모
 
-- 구현 범위·순서는 [#568](https://github.com/mortonCareer/bconnect/issues/568) 및 implementation plan 참조.
+- 구현 범위·순서는 [#568](https://github.com/morton-so/bconnect/issues/568) 및 implementation plan 참조.
 - `?panel=` 값은 기존 `PanelSegment`의 leading slash 제거형으로 둔다. `PanelSegment` 예시는 `profile/5`, `profile/5/coworkers`, `messages`, `messages/3`, `notifications` 다. 기존 타입/트리거 의미를 보존하기 위함이다.
 - 필터 search param(`?trade=…`)과 공존한다. `?panel=`은 별도 key 라 nuqs 로 독립 set/clear 가 되고 기존 필터가 보존된다.
 
@@ -87,6 +87,6 @@ PoC 로 검증했다. 검증일은 2026-06-09 다. `PanelHost`(프로필) + `(ma
 
 - [ADR-0017](./0017-plan-panel-parallel-routes-shared-features.md) : 이 결정이 supersede
 - [ADR-0020](./0020-dual-shell-view-sharing-rendershell-resolved-data.md) : 공유 뷰 계약, 유지
-- [#568](https://github.com/mortonCareer/bconnect/issues/568)
-- [#375](https://github.com/mortonCareer/bconnect/issues/375) : 공정표
-- [PR #566](https://github.com/mortonCareer/bconnect/pull/566)
+- [#568](https://github.com/morton-so/bconnect/issues/568)
+- [#375](https://github.com/morton-so/bconnect/issues/375) : 공정표
+- [PR #566](https://github.com/morton-so/bconnect/pull/566)

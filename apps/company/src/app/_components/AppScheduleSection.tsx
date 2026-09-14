@@ -25,7 +25,7 @@ export function AppScheduleSection() {
 
         <div className="flex-1 text-center lg:text-left">
           <p className="text-sm font-bold tracking-wider text-primary-200">{PREVIEW.label}</p>
-          <h2 className="mt-3 text-3xl font-bold leading-snug text-white sm:text-4xl">
+          <h2 className="mt-3 text-3xl leading-snug font-bold text-white sm:text-4xl">
             {PREVIEW.title}
           </h2>
           <p className="mt-4 text-base text-primary-100/85">{PREVIEW.desc}</p>

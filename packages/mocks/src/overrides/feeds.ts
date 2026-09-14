@@ -115,42 +115,40 @@ function buildAttachments(
 }
 
 export const feedsOverrides = [
-  getGetFeedsMockHandler(
-    (): CursorPageFeed => ({
-      // Feed = { member: WithdrawableMember, profile: ProfileSummary, post: Post, task: TaskSummary | null }.
-      // ProfileSummary 엔 id/memberId/trades 없음(대표분야 primaryTrade 만) — mapper 도 대표분야 기준.
-      content: FEED_SEEDS.map((seed, i): Feed => {
-        const author = authorOf(seed.memberId)
-        const createdAt = daysAgoIso(seed.daysAgo)
-        const task = taskOf(600 + i, seed, author.trade)
-        return {
-          member: {
-            id: author.id,
-            username: author.username,
-            name: author.name,
-            picture: null,
-          },
-          profile: {
-            role: author.role,
-            primaryTrade: author.trade,
-            experience: author.experience,
-            headline: author.headline,
-            address: addressOf(author.state, author.city),
-          },
-          task,
-          post: {
-            id: 400 + i,
-            memberId: author.id,
-            taskId: task?.id ?? null,
-            attachments: buildAttachments(seed.imageCount, 400 + i, author.id, createdAt),
-            content: seed.content,
-            createdAt,
-            modifiedAt: createdAt,
-          },
-        }
-      }),
-      hasNext: false,
-      nextCursor: undefined,
-    })
-  ),
+  getGetFeedsMockHandler((): CursorPageFeed => ({
+    // Feed = { member: WithdrawableMember, profile: ProfileSummary, post: Post, task: TaskSummary | null }.
+    // ProfileSummary 엔 id/memberId/trades 없음(대표분야 primaryTrade 만) — mapper 도 대표분야 기준.
+    content: FEED_SEEDS.map((seed, i): Feed => {
+      const author = authorOf(seed.memberId)
+      const createdAt = daysAgoIso(seed.daysAgo)
+      const task = taskOf(600 + i, seed, author.trade)
+      return {
+        member: {
+          id: author.id,
+          username: author.username,
+          name: author.name,
+          picture: null,
+        },
+        profile: {
+          role: author.role,
+          primaryTrade: author.trade,
+          experience: author.experience,
+          headline: author.headline,
+          address: addressOf(author.state, author.city),
+        },
+        task,
+        post: {
+          id: 400 + i,
+          memberId: author.id,
+          taskId: task?.id ?? null,
+          attachments: buildAttachments(seed.imageCount, 400 + i, author.id, createdAt),
+          content: seed.content,
+          createdAt,
+          modifiedAt: createdAt,
+        },
+      }
+    }),
+    hasNext: false,
+    nextCursor: undefined,
+  })),
 ]

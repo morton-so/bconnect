@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 공용 액션 드로어 프리미티브 — 디자인 미정, Drawer 위 메뉴 슬롯 (#544)
+ * @figma-todo 공용 액션 드로어 프리미티브 — 디자인 미정, Drawer 위 메뉴 슬롯 (#544)
  */
 'use client'
 

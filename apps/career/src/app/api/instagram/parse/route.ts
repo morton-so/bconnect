@@ -4,18 +4,19 @@ import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda'
 // 환경변수 검증
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
-const AWS_REGION = process.env.AWS_REGION || 'ap-northeast-2'
+const AWS_REGION = process.env.AWS_REGION
 const LAMBDA_FUNCTION_NAME = 'instagram-parser'
 
 function validateEnvVars(): string | null {
   if (!AWS_ACCESS_KEY_ID) return 'AWS_ACCESS_KEY_ID is not configured'
   if (!AWS_SECRET_ACCESS_KEY) return 'AWS_SECRET_ACCESS_KEY is not configured'
+  if (!AWS_REGION) return 'AWS_REGION is not configured'
   return null
 }
 
 // Lambda 클라이언트 (환경변수 있을 때만 초기화)
 const lambdaClient =
-  AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY
+  AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY && AWS_REGION
     ? new LambdaClient({
         region: AWS_REGION,
         credentials: {

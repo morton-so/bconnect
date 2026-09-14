@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold DS Icons 에 cloud-upload 없음 (#458)
+ * @figma-todo DS Icons 에 cloud-upload 없음 (#458)
  */
 import type { SVGProps } from 'react'
 

@@ -444,12 +444,12 @@ def _markdown_to_blocks(md: str, max_blocks: int = 95) -> list[dict]:
     return blocks
 
 
-# ── 검수 DB 함수 ──────────────────────────────────────────────
+# ── 검수 DB 함수───────────────────────────────────────────
 
 
 async def find_review_duplicate(member: CrawledMember) -> str | None:
     """검수 DB에서 중복 레코드를 찾는다. 프로필 URL 기준."""
-    review_db_id = settings.notion_review_database_id
+    review_db_id = settings.crawled_notion_db_id
     if not review_db_id or not member.profile.url:
         return None
 
@@ -467,7 +467,7 @@ async def save_to_review(member: CrawledMember) -> str:
     중복이 있으면 업데이트하고 기존 page_id를 반환한다.
     새 레코드는 검수=대기중으로 생성된다.
     """
-    review_db_id = settings.notion_review_database_id
+    review_db_id = settings.crawled_notion_db_id
 
     existing = await find_review_duplicate(member)
     if existing:
@@ -489,9 +489,9 @@ async def save_to_review(member: CrawledMember) -> str:
 
 async def validate_review_schema() -> list[str]:
     """검수 DB 스키마를 검증하고 문제가 있는 프로퍼티 목록을 반환한다."""
-    review_db_id = settings.notion_review_database_id
+    review_db_id = settings.crawled_notion_db_id
     if not review_db_id:
-        return ["NOTION_REVIEW_DATABASE_ID가 설정되지 않았습니다"]
+        return ["CRAWLED_NOTION_DB_ID가 설정되지 않았습니다"]
 
     db = await notion.databases.retrieve(database_id=review_db_id)
     db_props = db["properties"]
@@ -574,7 +574,7 @@ def _review_page_to_member(props: dict) -> CrawledMember:
 
 async def find_all_review_pages() -> list[dict]:
     """검수 DB 전체 레코드를 가져온다. (패치/마이그레이션용)"""
-    review_db_id = settings.notion_review_database_id
+    review_db_id = settings.crawled_notion_db_id
     pages: list[dict] = []
     start_cursor = None
 
@@ -623,7 +623,7 @@ async def update_block_text(block_id: str, new_text: str) -> None:
 
 async def find_approved() -> list[dict]:
     """검수 DB에서 상태=승인인 레코드를 모두 가져온다."""
-    review_db_id = settings.notion_review_database_id
+    review_db_id = settings.crawled_notion_db_id
     pages: list[dict] = []
     start_cursor = None
 

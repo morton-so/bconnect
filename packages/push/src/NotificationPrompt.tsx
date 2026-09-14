@@ -1,5 +1,5 @@
 /**
- * @figma-pending 푸시 알림 권한 soft-ask 시트 — 시안 미정. Drawer(vaul) 기반.
+ * @figma-todo 푸시 알림 권한 soft-ask 시트 — 시안 미정. Drawer(vaul) 기반.
  */
 'use client'
 

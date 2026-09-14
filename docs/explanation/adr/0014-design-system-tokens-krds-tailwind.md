@@ -130,7 +130,7 @@ ADR-0012의 결정 중 일부는 그대로 유지하고, 일부는 본 ADR-0014�
 
 ### 나쁜 결과
 
-- 토큰 어휘 재명명 비용 발생. 특히 `destructive` → `danger` 등이며 현 코드 약 28파일에서 사용 중. [PR #405](https://github.com/mortonCareer/bconnect/pull/405) 머지 후 별도 PR로 정리.
+- 토큰 어휘 재명명 비용 발생. 특히 `destructive` → `danger` 등이며 현 코드 약 28파일에서 사용 중. [PR #405](https://github.com/morton-so/bconnect/pull/405) 머지 후 별도 PR로 정리.
 - 반응형 토큰 도입 비용 발생. primitive·semantic 양쪽에 mobile/desktop 값 정의 필요.
 - KRDS·Tailwind·shadcn 어휘 사이 부분 혼합. 일부 경계에서 어떤 어휘를 쓸지 판단 필요. 예: shadcn `muted` 유지 vs KRDS 식 어휘로 교체.
 
@@ -143,7 +143,7 @@ ADR-0012의 결정 중 일부는 그대로 유지하고, 일부는 본 ADR-0014�
 
 ### 후속 작업
 
-- [ ] [PR #405](https://github.com/mortonCareer/bconnect/pull/405) 머지: ADR-0012 기준의 1차 코드 반영.
+- [ ] [PR #405](https://github.com/morton-so/bconnect/pull/405) 머지: ADR-0012 기준의 1차 코드 반영.
 - [ ] 토큰 어휘 변경 PR: `destructive` → `danger`. `Input.tsx` 등 약 28 파일. 필요 시 `feedback-*` 계열 추가.
 - [ ] 반응형 토큰 도입 PR: primitive·semantic에 mobile/desktop 어휘 도입, 컴포넌트별 적용 순차.
 - [ ] tertiary brand 색: 디자이너가 앵커 확정 후 11단계 스케일 정의.
@@ -165,5 +165,5 @@ ADR-0012의 결정 중 일부는 그대로 유지하고, 일부는 본 ADR-0014�
 
 - [ADR-0012](./0012-design-system-ssot-figma.md)
 - [2026-05-29 합의](https://www.notion.so/morton-so/36f965d2888b8011b6eec951dc49c5a4)
-- [PR #405](https://github.com/mortonCareer/bconnect/pull/405)
+- [PR #405](https://github.com/morton-so/bconnect/pull/405)
 - [KRDS : 토큰 시스템](https://www.krds.go.kr/html/site/utility/utility_03.html)

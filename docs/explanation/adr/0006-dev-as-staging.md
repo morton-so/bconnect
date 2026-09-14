@@ -10,7 +10,7 @@
 
 발견 흐름:
 
-1. [PR #300](https://github.com/mortonCareer/bconnect/pull/300) 머지 후 dev dogfood 시 home `/` 의 feed 가 빈 화면. 해당 PR 은 orval 7→8 + transformer. 콘솔 errors 0, typecheck 0 의 silent failure
+1. [PR #300](https://github.com/morton-so/bconnect/pull/300) 머지 후 dev dogfood 시 home `/` 의 feed 가 빈 화면. 해당 PR 은 orval 7→8 + transformer. 콘솔 errors 0, typecheck 0 의 silent failure
 2. 디버깅: transformer 적용 부작용으로 generated MSW mock 의 wire format 이 envelope 없이 변경. customFetch 는 envelope only 처리 → silent reject
 3. 또 dev dogfood 시 Vercel preview 에서 MSW 비활성. NODE_ENV=production gate 때문. → 실제 BE 호출 시도 → BE 미준비로 실패
 
@@ -24,11 +24,11 @@
 
 3개 layer 가 한 정책 (`dev = mock-driven staging`) 으로 동기화:
 
-| Layer            | 구체                                                                                                                                        |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| 런타임 transport | `customFetch` 가 BE envelope + MSW inner-only 두 wire format 흡수 ([PR #307](https://github.com/mortonCareer/bconnect/pull/307))            |
-| MSW gate         | `NODE_ENV === 'development' \|\| NEXT_PUBLIC_VERCEL_ENV === 'preview'` ([PR #309](https://github.com/mortonCareer/bconnect/pull/309))       |
-| 인프라           | terraform `vercel_custom_environment` "dev" + `branch_tracking` equals "dev" ([PR #313](https://github.com/mortonCareer/bconnect/pull/313)) |
+| Layer            | 구체                                                                                                                                     |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 런타임 transport | `customFetch` 가 BE envelope + MSW inner-only 두 wire format 흡수 ([PR #307](https://github.com/morton-so/bconnect/pull/307))            |
+| MSW gate         | `NODE_ENV === 'development' \|\| NEXT_PUBLIC_VERCEL_ENV === 'preview'` ([PR #309](https://github.com/morton-so/bconnect/pull/309))       |
+| 인프라           | terraform `vercel_custom_environment` "dev" + `branch_tracking` equals "dev" ([PR #313](https://github.com/morton-so/bconnect/pull/313)) |
 
 장점
 
@@ -127,12 +127,11 @@ MSW provider gate         NODE_ENV + NEXT_PUBLIC_VERCEL_ENV          #309
 
 - [packages/api-client/src/client.ts](../../../packages/api-client/src/client.ts) : customFetch wire format 흡수
 - [packages/devtools/src/MSWProvider.tsx](../../../packages/devtools/src/MSWProvider.tsx) : MSW gate. career·plan 공유
-- [infra/vercel/projects.tf](../../../infra/vercel/projects.tf) : `vercel_custom_environment.career_dev`, `vercel_custom_environment.plan_dev`
 
 ## 참조
 
-- [PR #307](https://github.com/mortonCareer/bconnect/pull/307)
-- [PR #309](https://github.com/mortonCareer/bconnect/pull/309)
-- [PR #313](https://github.com/mortonCareer/bconnect/pull/313)
+- [PR #307](https://github.com/morton-so/bconnect/pull/307)
+- [PR #309](https://github.com/morton-so/bconnect/pull/309)
+- [PR #313](https://github.com/morton-so/bconnect/pull/313)
 - [ADR-0005](./0005-orval-mock-transformer-and-no-response-wrapper.md)
 - [ADR-0010](./0010-dev-branch-staging-be.md) : 이 ADR 을 amend

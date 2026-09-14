@@ -1,5 +1,5 @@
 /**
- * @figma-pending 작업 생성 진입 + 버튼 (#650)
+ * @figma-todo 작업 생성 진입 + 버튼 (#650)
  */
 import type { SVGProps } from 'react'
 

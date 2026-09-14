@@ -95,7 +95,7 @@ OTP 메시지를 어떤 채널·어떤 사업자로 보낼지 정해야 한다. 
   - 메시지 문구가 카카오 사전 승인 템플릿에 종속 → 문구 자유도 하락, 템플릿 변경 시 심사 리드타임 발생
   - 예산 55% 를 차지하는 OTP 단가의 최적화 여지가 미해결로 남음 → 향후 숙제. 뿌리오 등이 후보
 - 중립적 결과:
-  - 발송 로직을 알림톡/SMS 통합 인터페이스 + 벤더 어댑터로 두면 향후 뿌리오 등으로 교체할 때 호출부 영향이 격리된다. 이 구성은 이송목의 "BE 코드 깔끔" 제약을 반영한다. 어댑터 경계 설계는 구현 시 [#570](https://github.com/mortonCareer/bconnect/issues/570) 에서 다룬다.
+  - 발송 로직을 알림톡/SMS 통합 인터페이스 + 벤더 어댑터로 두면 향후 뿌리오 등으로 교체할 때 호출부 영향이 격리된다. 이 구성은 이송목의 "BE 코드 깔끔" 제약을 반영한다. 어댑터 경계 설계는 구현 시 [#570](https://github.com/morton-so/bconnect/issues/570) 에서 다룬다.
 
 ## 메모
 
@@ -104,7 +104,7 @@ OTP 메시지를 어떤 채널·어떤 사업자로 보낼지 정해야 한다. 
 
 ## 참조
 
-- [#570](https://github.com/mortonCareer/bconnect/issues/570) : 구현 추적
+- [#570](https://github.com/morton-so/bconnect/issues/570) : 구현 추적
 - [Solapi 콘솔 — 카카오 템플릿](https://console.solapi.com/kakao/templates)
 - [뿌리오 : 발송 API 가이드](https://www.ppurio.com/send-api/guide)
 - [카카오 비즈니스 : 알림톡 발송 예시](https://kakaobusiness.gitbook.io/main/ad/infotalk/send-example)

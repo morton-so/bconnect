@@ -1,4 +1,4 @@
-/** @figma-pending 확정 시안 전까지 ConfirmDialog 토큰을 준용한다. */
+/** @figma-todo 확정 시안 전까지 ConfirmDialog 토큰을 준용한다. */
 'use client'
 
 import { useEffect, useRef } from 'react'

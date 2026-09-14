@@ -67,7 +67,7 @@ const CLOSED_OFFER_FALLBACKS: Partial<Record<OfferStatus, string>> = {
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-start gap-2 py-1 leading-tight">
-      <span className="w-12 shrink-0 whitespace-nowrap text-m-12 leading-tight text-gray-900">
+      <span className="w-12 shrink-0 text-m-12 leading-tight whitespace-nowrap text-gray-900">
         {label}
       </span>
       <span className="text-r-12 leading-tight text-gray-900">{children}</span>
@@ -131,9 +131,9 @@ export function OfferMessageCard({
     // 일반 채팅 말풍선과 같은 방향별 모서리를 사용한다.
     <div
       className={cn(
-        'max-w-75 px-4 py-3 break-keep bg-gray-100',
+        'max-w-75 bg-gray-100 px-4 py-3 break-keep',
         isMine
-          ? 'rounded-tl-xl rounded-bl-xl rounded-br-xl'
+          ? 'rounded-tl-xl rounded-br-xl rounded-bl-xl'
           : 'rounded-tr-xl rounded-br-xl rounded-bl-xl'
       )}
     >

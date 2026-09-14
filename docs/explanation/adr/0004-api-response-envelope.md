@@ -12,7 +12,7 @@ API 응답의 success/error 표현을 어떻게 통일할지. FE-BE 양측이 �
 - BE의 새 endpoint가 응답 형태 자유 → spec과 drift
 - TanStack Query / orval-generated hooks이 응답 wrapping을 일관 처리 못 함
 
-BE 초기 당시 이미 envelope 패턴이 코드에 존재했으나 spec까지 정렬되지 않아 FE가 추측으로 사용. [PR #266](https://github.com/mortonCareer/bconnect/pull/266)에서 spec까지 정렬.
+BE 초기 당시 이미 envelope 패턴이 코드에 존재했으나 spec까지 정렬되지 않아 FE가 추측으로 사용. [PR #266](https://github.com/morton-so/bconnect/pull/266)에서 spec까지 정렬.
 
 ## 선택지
 
@@ -128,11 +128,11 @@ ApiError:
 
 ## 메모
 
-- envelope 도입 origin은 BE 초기. spec 정렬은 [PR #266](https://github.com/mortonCareer/bconnect/pull/266) Phase 1
+- envelope 도입 origin은 BE 초기. spec 정렬은 [PR #266](https://github.com/morton-so/bconnect/pull/266) Phase 1
 - [CLAUDE.md](../../../.claude/CLAUDE.md)에 "API Response Wrapper" 패턴 명시
 - 후속: void 응답 unwrap 패턴 검증. orval generated hooks의 `data` 타입이 정확히 `void`로 떨어지는지 spot check 필요
 
 ## 참조
 
-- [PR #266](https://github.com/mortonCareer/bconnect/pull/266) : spec 정렬
+- [PR #266](https://github.com/morton-so/bconnect/pull/266) : spec 정렬
 - `_shared.yaml` : 구 손-spec envelope schema. [ADR-0024](./0024-orval-consumes-be-springdoc-spec.md) 로 폐기, 현재 BE springdoc 산출

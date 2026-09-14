@@ -215,14 +215,12 @@ function flattenObjectQueryParams(api: OpenAPIObject, schemas: Record<string, Sc
         if (p.in !== 'query' || !ref) return [param]
         const target = schemas[ref.replace('#/components/schemas/', '')]
         if (!target?.properties) return [param] // enum 등 비-객체 $ref 는 유지
-        return Object.entries(target.properties).map(
-          ([name, schema]): ParameterObject => ({
-            name,
-            in: 'query',
-            required: target.required?.includes(name) ?? false,
-            schema,
-          })
-        )
+        return Object.entries(target.properties).map(([name, schema]): ParameterObject => ({
+          name,
+          in: 'query',
+          required: target.required?.includes(name) ?? false,
+          schema,
+        }))
       })
     }
   }

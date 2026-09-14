@@ -1,19 +1,24 @@
-// 건설근로자공제회 퇴직공제 가입사업장 CSV(data.go.kr) → cwma_retirement_fund (이름 기반, 전체 교체)
+// 건설근로자공제회 퇴직공제 가입사업장 (data.go.kr odcloud) → cwma_retirement_fund (이름 기반, 전체 교체)
 
 import { createDb, replaceAll } from './db'
-import { fetchCsv } from './http'
+import { fetchJson, withPage, withRetry } from './http'
 import {
   normalizeCompanyName,
   notifySlack,
-  parseCsv,
+  requireBody,
   requireNumber,
   requireText,
   runSync,
+  toNullableText,
 } from './lib'
 
-const CSV_URL =
-  process.env.CWMA_CSV_URL ||
-  'https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000003611389&fileDetailSn=1&insertDataPrcus=N'
+const API_KEY = process.env.DATA_GO_SERVICE_KEY
+
+// 건설근로자공제회_퇴직공제 가입사업장 정보(3074038), uddi는 분기 갱신
+const CWMA_URL = 'https://api.odcloud.kr/api/3074038/v1/uddi:86a88cc7-d407-46c7-b8fb-ae71cc8fb992'
+const PER_PAGE = 1000
+
+if (!API_KEY) throw new Error('DATA_GO_SERVICE_KEY is required')
 
 const sql = createDb()
 
@@ -29,30 +34,35 @@ interface CwmaItem {
 }
 
 async function main() {
-  console.log('[cwma-sync] 퇴직공제 가입사업장 CSV 크롤링...')
-  const text = await fetchCsv(CSV_URL, {
-    headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MortonSync/1.0)' },
-    timeoutMs: 120_000,
-    encoding: 'euc-kr',
-  })
+  console.log('[cwma-sync] 퇴직공제 가입사업장 조회...')
+  const items = await withPage('cwma-sync', async (page) => {
+    const body = await withRetry(() =>
+      fetchJson<{ data?: Array<Record<string, string | number>> }>(CWMA_URL, {
+        query: { serviceKey: API_KEY!, page, perPage: PER_PAGE, returnType: 'JSON' },
+      })
+    )
 
-  const items = parseCsv<CwmaItem>(text, {
-    source: 'cwma-sync',
-    minColumns: 8,
-    map: (fields) => {
-      const seq = parseInt(fields[0], 10)
-      const amount = parseFloat(fields[2])
-      return {
-        seqNo: requireNumber(seq, 'seq_no', 'cwma-sync'),
-        projectName: requireText(fields[1], 'project_name', 'cwma-sync'),
-        totalAmount: requireNumber(amount, 'total_amount', 'cwma-sync'),
-        startDate: requireText(fields[3], 'start_date', 'cwma-sync'),
-        endDate: requireText(fields[4], 'end_date', 'cwma-sync'),
-        companyName: requireText(fields[5], 'company_name', 'cwma-sync'),
-        clientOrg: requireText(fields[6], 'client_org', 'cwma-sync'),
-        address: requireText(fields[7], 'address', 'cwma-sync'),
-      }
-    },
+    const data = requireBody(body.data, 'data', 'cwma-sync')
+
+    return {
+      items: data.map((it): CwmaItem => {
+        const amountText = toNullableText(it['총공사금액(억원)'])
+        return {
+          seqNo: requireNumber(Number(it['연번']), 'seq_no', 'cwma-sync'),
+          projectName: requireText(it['공사명'], 'project_name', 'cwma-sync'),
+          totalAmount: requireNumber(
+            amountText != null ? Number(amountText) : NaN,
+            'total_amount',
+            'cwma-sync'
+          ),
+          startDate: requireText(it['공사시작일'], 'start_date', 'cwma-sync'),
+          endDate: requireText(it['공사종료일'], 'end_date', 'cwma-sync'),
+          companyName: requireText(it['업체명'], 'company_name', 'cwma-sync'),
+          clientOrg: requireText(it['수요기관'], 'client_org', 'cwma-sync'),
+          address: requireText(it['소재지주소'], 'address', 'cwma-sync'),
+        }
+      }),
+    }
   })
   console.log(`[cwma-sync] 총 ${items.length}건 수집`)
 

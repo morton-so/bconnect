@@ -94,7 +94,7 @@ export function DevPushPanel() {
         </Button>
       </div>
 
-      <p className="mt-1 text-r-12 text-gray-400 truncate">
+      <p className="mt-1 truncate text-r-12 text-gray-400">
         {token ? `토큰 …${token.slice(-12)}` : '토큰 없음 (권한 허용 필요)'}
       </p>
 

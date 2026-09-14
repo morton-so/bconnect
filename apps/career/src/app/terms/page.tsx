@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 이용약관 — 법적 고지 static 페이지, 디자인 노드 없음 (#732)
+ * @figma-todo 이용약관 — 법적 고지 static 페이지, 디자인 노드 없음 (#732)
  */
 import type { Metadata } from 'next'
 import { TermsOfServiceView } from '@bconnect/features'

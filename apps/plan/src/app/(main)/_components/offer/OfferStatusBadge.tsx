@@ -15,7 +15,7 @@ export function OfferStatusBadge({ status }: { status: OfferStatus }) {
   return (
     <span
       className={cn(
-        'inline-flex h-[22px] shrink-0 items-center justify-center whitespace-nowrap rounded-[4px] border px-2 text-[11px] leading-[16.5px]',
+        'inline-flex h-[22px] shrink-0 items-center justify-center rounded-[4px] border px-2 text-[11px] leading-[16.5px] whitespace-nowrap',
         STYLES[status]
       )}
     >

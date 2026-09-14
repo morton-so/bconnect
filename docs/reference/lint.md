@@ -23,13 +23,15 @@
 
 ## 명령어
 
-| 명령                | 대상                                           |
-| ------------------- | ---------------------------------------------- |
-| `pnpm lint`         | ESLint · Prettier · markdownlint · lychee 검사 |
-| `pnpm lint:fix`     | ESLint · Prettier 수정                         |
-| `pnpm api:generate` | Orval 클라이언트 생성 후 타입 검사             |
-| `pnpm figma`        | 피그마 매핑 실행                               |
-| `pnpm figma:dry`    | 피그마 매핑 dry-run                            |
+| 명령                 | 대상                                   |
+| -------------------- | -------------------------------------- |
+| `pnpm lint`          | ESLint · Prettier · terraform fmt 검사 |
+| `pnpm lint:fix`      | ESLint · Prettier · terraform fmt 수정 |
+| `pnpm lint:docs`     | markdownlint · lychee 검사             |
+| `pnpm lint:docs:fix` | markdownlint 수정                      |
+| `pnpm api:generate`  | Orval 클라이언트 생성 후 타입 검사     |
+| `pnpm figma`         | 피그마 매핑 실행                       |
+| `pnpm figma:dry`     | 피그마 매핑 dry-run                    |
 
 ## 파이프라인 통합
 

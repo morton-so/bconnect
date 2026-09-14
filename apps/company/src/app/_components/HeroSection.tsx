@@ -18,7 +18,7 @@ export function HeroSection() {
         <span className="mb-6 inline-flex rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium text-white ring-1 ring-white/25 backdrop-blur">
           {HERO.badge}
         </span>
-        <h1 className="text-3xl font-bold leading-tight text-white sm:text-5xl">
+        <h1 className="text-3xl leading-tight font-bold text-white sm:text-5xl">
           {HERO.titleLead}
           <br />
           <span className="text-primary-100">{HERO.titleMain}</span>

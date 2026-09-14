@@ -3,7 +3,7 @@
  */
 'use client'
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useImperativeHandle, useRef, useState } from 'react'
 import { cn } from '../../lib/utils'
 import { CheckIcon, ChevronIcon } from '../../icons'
 import { FIELD_BASE_CLASSES, FIELD_DEFAULT_VARIANT_CLASSES } from './_field-base'
@@ -66,7 +66,7 @@ export interface SelectProps {
   triggerId?: string
   describedBy?: string
   onBlur?: () => void
-  fieldRef?: React.Ref<HTMLButtonElement>
+  fieldRef?: React.Ref<{ focus(): void }>
 }
 
 /** listbox 항목 — clearable "전체"(value=null) 와 실제 옵션을 한 배열로 합쳐 키보드 인덱싱한다. */
@@ -127,11 +127,7 @@ export function Select({
   ]
   const isItemSelected = (item: NavItem) => (item.isClear ? !hasValue : isSelected(item.value!))
 
-  const setTriggerRef = (node: HTMLButtonElement | null) => {
-    triggerRef.current = node
-    if (typeof fieldRef === 'function') fieldRef(node)
-    else if (fieldRef) (fieldRef as React.MutableRefObject<HTMLButtonElement | null>).current = node
-  }
+  useImperativeHandle(fieldRef, () => ({ focus: () => triggerRef.current?.focus() }), [])
 
   const openPanel = () => {
     const selectedIdx = navItems.findIndex(isItemSelected)
@@ -248,7 +244,7 @@ export function Select({
   const triggerClass = filterMode
     ? cn(
         FILTER_TRIGGER,
-        'text-m-14 cursor-pointer',
+        'cursor-pointer text-m-14',
         'outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary',
         hasValue ? 'text-gray-900' : 'text-gray-500',
         open ? 'border-primary' : 'border-gray-300 hover:border-gray-400',
@@ -269,7 +265,7 @@ export function Select({
   return (
     <div ref={rootRef} onBlur={handleRootBlur} className={cn('relative', className)}>
       <button
-        ref={setTriggerRef}
+        ref={triggerRef}
         type="button"
         disabled={disabled}
         onClick={() => (open ? closePanel(false) : openPanel())}

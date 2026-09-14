@@ -52,7 +52,7 @@ uv run crawler --collect-raw --full --per-query 20   # → reports/raw/*.jsonl
 uv run crawler --classify-from-raw reports/raw/naver-<시각>.jsonl --labels labels.json
 #    → reports/<시각>.json 에 통과한 기술자(members[]) 저장. 라벨에 없는 블로그는 기본 LLM 이 분류.
 
-# 4) 통과한 기술자를 crawled_* DB 에 적재 (upsert, CRAWLED_DB_URL 필요)
+# 4) 통과한 기술자를 crawled_* DB 에 적재 (upsert, CRAWLED_PG_DB_URL 필요)
 uv run crawler --export-db reports/<시각>.json
 ```
 
@@ -89,25 +89,10 @@ apps/crawler/src/crawler/
 
 채널 선택은 `--channel blog|instagram|all` 옵션으로 합니다.
 
-## 환경변수
-
-`.env.example`을 `.env`로 복사한 후 값을 채웁니다.
-
-| 변수                  | 필수 | 설명                                                                 |
-| --------------------- | ---- | -------------------------------------------------------------------- |
-| `NAVER_CLIENT_ID`     | O    | [네이버 개발자 센터](https://developers.naver.com/apps) 앱 Client ID |
-| `NAVER_CLIENT_SECRET` | O    | 네이버 앱 Client Secret                                              |
-| `NOTION_TOKEN`        | O    | [Notion 인테그레이션](https://www.notion.so/my-integrations) 토큰    |
-| `NOTION_DATABASE_ID`  | O    | 대상 노션 DB ID. URL에서 추출                                        |
-| `OPENAI_API_KEY`      | △    | OpenAI API 키. Anthropic 미설정 시 필수                              |
-| `OPENAI_MODEL`        | -    | 기본값 `gpt-4o-mini`                                                 |
-| `ANTHROPIC_API_KEY`   | △    | Anthropic API 키. 설정 시 OpenAI보다 우선                            |
-| `ANTHROPIC_MODEL`     | -    | 기본값 `claude-sonnet-4-5-20250929`                                  |
-
 추가로 필요한 값입니다.
 
-- 검수 DB 사용 시 `notion_review_database_id`
-- `--export-db` 사용 시 `CRAWLED_DB_URL`
+- 검수 DB 사용 시 `crawled_notion_db_id`
+- `--export-db` 사용 시 `CRAWLED_PG_DB_URL`
 
 ## 파이프라인 흐름
 
@@ -119,7 +104,7 @@ apps/crawler/src/crawler/
 
 - LLM throttle. text 는 `_LLM_INTERVAL = 3.0s`, vision 은 `_LLM_VISION_INTERVAL = 8.0s`
   - 429 retry 는 exponential backoff. 5/10/20s 를 3회
-- DB 분리. 메인 DB 는 `notion_database_id`, 검수 DB 는 `notion_review_database_id`
+- DB 분리. 메인 DB 는 `notion_database_id`, 검수 DB 는 `crawled_notion_db_id`
   - 검수 후 승인된 레코드만 메인으로 이동
 - Concurrency. general 은 `CONCURRENCY = 5`, `--full` mode 는 `QUERY_CONCURRENCY = 3`
   - enrich mode 는 `CONCURRENCY * 4 = 20`

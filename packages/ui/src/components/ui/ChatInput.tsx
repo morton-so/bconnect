@@ -120,7 +120,7 @@ const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           // w-full/max-w-full — 부모가 flex row 등일 때도 화면 폭을 넘겨 전송 버튼이 잘리지 않게 (#1147)
           // 상·하 패딩은 입력바가 메시지를 가려 Figma(py-4 / h-20) 대비 절반으로 줄였다. min-h 도 같이
           // 줄이지 않으면 floor 에 걸려 높이가 안 변하므로 80 → 64 (#1146)
-          'flex w-full max-w-full min-h-16 flex-col justify-center bg-white px-6 py-2',
+          'flex min-h-16 w-full max-w-full flex-col justify-center bg-white px-6 py-2',
           isFocused ? 'pb-2' : 'pb-[calc(env(safe-area-inset-bottom)+0.5rem)]',
           className
         )}

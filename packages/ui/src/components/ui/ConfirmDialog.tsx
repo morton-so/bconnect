@@ -1,5 +1,5 @@
 /**
- * @figma-pending 확인 다이얼로그 — 시안 미정
+ * @figma-todo 확인 다이얼로그 — 시안 미정
  */
 'use client'
 
@@ -41,7 +41,7 @@ export function ConfirmDialog({
           className="fixed inset-0 z-50 bg-black/40"
           onClick={() => onOpenChange(false)}
         />
-        <AlertDialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2.5rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-5 focus:outline-none">
+        <AlertDialog.Content className="fixed top-1/2 left-1/2 z-50 w-[calc(100%-2.5rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-5 focus:outline-none">
           <AlertDialog.Title className="text-sb-16 text-gray-900">{title}</AlertDialog.Title>
           {description && (
             <AlertDialog.Description className="mt-2 text-r-14 text-gray-600">

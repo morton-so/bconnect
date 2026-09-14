@@ -6,7 +6,7 @@
 
 ## 개요
 
-BConnect 레포(`mortonCareer/bconnect`)는 private 이다. Vercel 은 Team → Projects 의 1:N 구조로 career·plan 2개 프로젝트를 한 Team 아래 둔다. PR 마다 자동 생성되는 프리뷰 배포의 본래 목적은 디자이너 UI 검수였다. 여기에 CTO 기능 테스트와 CEO 최종 QA 가 더해진다. 이는 [development.md](../../how-to/development.md) 의 QA 사이클이 전제로 깔고 있다.
+BConnect 레포(`morton-so/bconnect`)는 private 이다. Vercel 은 Team → Projects 의 1:N 구조로 career·plan 2개 프로젝트를 한 Team 아래 둔다. PR 마다 자동 생성되는 프리뷰 배포의 본래 목적은 디자이너 UI 검수였다. 여기에 CTO 기능 테스트와 CEO 최종 QA 가 더해진다. 이는 [development.md](../../how-to/development.md) 의 QA 사이클이 전제로 깔고 있다.
 
 이 프리뷰 구성에는 비자명한 메커니즘과 그로 인한 우회가 있다.
 
@@ -101,12 +101,12 @@ PR 프리뷰를 비활성화한다. CI 체크·코멘트도 포함이다. Morton
 ## 메모
 
 - [ADR-0018](./0018-vercel-native-skip-unaffected-projects.md) 의 always-build 동기는 프리뷰 신뢰성 확보였다. 이 동기는 PR 프리뷰 폐기로 프리뷰 측면에 한해 무력화된다. dev 자동배포 빌드는 남으므로 ADR-0018 자체를 supersede 하진 않고, 관계만 연결한다.
-- 후속: Team Owner 이전과 PR 프리뷰·체크 비활성화 실행은 [#571](https://github.com/mortonCareer/bconnect/issues/571) 에서 다룬다. 이전 방향은 개인에서 공용이다.
+- 후속: Team Owner 이전과 PR 프리뷰·체크 비활성화 실행은 [#571](https://github.com/morton-so/bconnect/issues/571) 에서 다룬다. 이전 방향은 개인에서 공용이다.
 - 동기화된 워크플로 문서: [development.md](../../how-to/development.md). QA 서술을 스프린트 단위 dev 로 정합했다.
 
 ## 참조
 
-- [#571](https://github.com/mortonCareer/bconnect/issues/571) : 구현 추적
+- [#571](https://github.com/morton-so/bconnect/issues/571) : 구현 추적
 - [ADR-0006](./0006-dev-as-staging.md)
 - [ADR-0016](./0016-environment-service-domain-naming.md)
 - [ADR-0018](./0018-vercel-native-skip-unaffected-projects.md)

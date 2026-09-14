@@ -10,7 +10,7 @@ career·plan 두 Next.js App Router 앱의 공통 프론트엔드 규칙입니�
 - 파일명이 정확히 `CLAUDE.md`가 아니라 자동 로드 안 됨
 - 명시 import한 career·plan만 로드
 - `apps/api`는 Spring Framework, `apps/crawler`는 Python이라 작업 시 안 딸려옴
-- 위반 시 dev 깨짐 또는 production 사고
+- 위반 시 dev 깨짐 또는 prod 사고
 
 ## 인증 미들웨어 · Public routes
 
@@ -274,7 +274,7 @@ packages/ui/
 
 - raw `<input>`·`<textarea>` 폼 입력. a11y 누락 위험
 - raw `<button type="submit">`. FormSubmitButton 또는 Button isLoading 사용
-- `setError('root')` 또는 onChange 마다 `clearErrors`. [PR #369](https://github.com/mortonCareer/bconnect/pull/369) 버그 클래스
+- `setError('root')` 또는 onChange 마다 `clearErrors`. [PR #369](https://github.com/morton-so/bconnect/pull/369) 버그 클래스
 - `form.watch()` 호출. `useWatch` 훅 사용. React Compiler 호환
 - `packages/ui` 가 `@bconnect/api-client` 에 import 의존. duck typing 인 `isApiErrorShape` 사용
 - shadcn primitive `ui/shadcn/*` 직접 수정. 확장은 wrapper 에서. 예로 `TextField` 가 `TextFieldControl` 로 aria 흡수

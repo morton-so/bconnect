@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 디자인 시안 미정 — TextField 미러링, 정수 값 필드 (#684)
+ * @figma-todo 디자인 시안 미정 — TextField 미러링, 정수 값 필드 (#684)
  */
 'use client'
 

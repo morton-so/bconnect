@@ -3,7 +3,7 @@ import { defineConfig } from 'orval'
 export default defineConfig({
   morton: {
     input: {
-      target: './src/openapi.yaml',
+      target: `${process.env.API_URL}/v3/api-docs.yaml`,
       override: {
         transformer: './orval.transformer.ts',
       },

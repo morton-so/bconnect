@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@bconnect/config/site'
-import { IS_PRODUCTION_DEPLOY } from '@bconnect/config/deploy-env'
+
+const isProdDeploy = (process.env.NEXT_PUBLIC_VERCEL_ENV ?? process.env.VERCEL_ENV) === 'production'
 
 export default function robots(): MetadataRoute.Robots {
-  if (!IS_PRODUCTION_DEPLOY) {
+  if (!isProdDeploy) {
     return {
       rules: {
         userAgent: '*',

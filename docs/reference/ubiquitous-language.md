@@ -65,6 +65,13 @@ graph TD
 
 | 도메인         | 영문            | 국문          | 의미                                  |
 | -------------- | --------------- | ------------- | ------------------------------------- |
+| Company        | Company         | 인테리어 업체 |                                       |
+| Project        | Project         | 프로젝트      |                                       |
+| Offer          | Offer           | 섭외          | 기술자 섭외                           |
+| Drive          | Drive           | 공유 저장소   | 원격 파일 · 이미지 저장소             |
+| Drive          | DriveMember     | 저장소 멤버   | 저장소 접근 권한                      |
+| Board          | Board           | 게시판        | 프로젝트 · 저장소별 게시판. 자동 생성 |
+| Board          | Note            | 노트          | 게시판에 작성된 글                    |
 | Member         | Member          | 회원          | 사용자                                |
 | Auth           | Otp             | 인증코드      | 본인확인용 6자리 코드                 |
 | Auth           | SignupToken     | 가입 토큰     | 미가입자 회원가입용 임시 토큰         |
@@ -86,13 +93,6 @@ graph TD
 | Credential     | Credential      | 자격 증명     | 면허 · 자격 · 보험 등                 |
 | Attachment     | Attachment      | 첨부          | 업로드 파일 메타데이터                |
 | Attachment     | Signed cookie   |               | CloudFront 접근 권한                  |
-| Company        | Company         | 인테리어 업체 |                                       |
-| Project        | Project         | 프로젝트      |                                       |
-| Offer          | Offer           | 섭외          | 기술자 섭외                           |
-| Drive          | Drive           | 공유 저장소   | 원격 파일 · 이미지 저장소             |
-| Drive          | DriveMember     | 저장소 멤버   | 저장소 접근 권한                      |
-| Board          | Board           | 게시판        | 프로젝트 · 저장소별 게시판. 자동 생성 |
-| Board          | Note            | 노트          | 게시판에 작성된 글                    |
 
 ## 열거형 (Enum)
 

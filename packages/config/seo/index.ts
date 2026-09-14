@@ -1,7 +1,7 @@
-import { IS_PRODUCTION_DEPLOY } from '../deploy-env'
+const isProdDeploy = (process.env.NEXT_PUBLIC_VERCEL_ENV ?? process.env.VERCEL_ENV) === 'production'
 
 export function noindexHeaders() {
-  if (IS_PRODUCTION_DEPLOY) return []
+  if (isProdDeploy) return []
 
   return [
     {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button, Input } from '@bconnect/ui'
-import type { VerifyOwnerResult } from '@bconnect/business/types'
+import type { VerifyOwnerResult } from '../_lib/types'
 
 interface OwnerVerifyFormProps {
   registrationNumber: string
@@ -24,7 +24,7 @@ export function OwnerVerifyForm({ registrationNumber }: OwnerVerifyFormProps) {
     setResult(null)
 
     try {
-      const res = await fetch('/api/one-click/verify-owner', {
+      const res = await fetch('/one-click/api/verify-owner', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

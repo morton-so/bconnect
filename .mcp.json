@@ -1,14 +1,49 @@
 {
   "mcpServers": {
-    "playwright": {
+    "aws-mcp": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy-for-aws@latest",
+        "https://aws-mcp.us-east-1.api.aws/mcp",
+        "--metadata",
+        "AWS_REGION=us-west-2",
+        "--read-only"
+      ]
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp",
+      "headers": { "Authorization": "Bearer ${GITHUB_TOKEN}" }
+    },
+    "railway": {
+      "type": "http",
+      "url": "https://mcp.railway.com"
+    },
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com"
+    },
+    "gcloud": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "npx -y @google-cloud/gcloud-mcp -c \"$CLAUDE_PROJECT_DIR/.claude/gcloud-mcp.json\""
+      ]
+    },
+    "firebase": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest"]
+      "args": ["-y", "firebase-tools@latest", "mcp"]
     },
     "next-devtools": {
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "next-devtools-mcp@latest"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
     },
     "agentation": {
       "type": "stdio",
