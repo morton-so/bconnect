@@ -1,9 +1,9 @@
 /**
- * @figma-scaffold 이미지 영역 시안이 placeholder("이미지" 텍스트)만 — 업로드/미리보기/빈상태 UX 신규 (#424)
+ * @figma-todo 이미지 영역 시안이 placeholder("이미지" 텍스트)만 — 업로드/미리보기/빈상태 UX 신규 (#424)
  */
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '../../lib/utils'
 import { ImageIcon } from '../../icons'
 import { XIcon } from '../../icons/XIcon'
@@ -61,19 +61,19 @@ export function ImageInput({
 }: ImageInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [localError, setLocalError] = useState<string | null>(null)
-  const [previews, setPreviews] = useState<Map<File, string>>(() => new Map())
   const [dragging, setDragging] = useState(false)
 
   const items = toItems(value)
 
-  useEffect(() => {
+  const previews = useMemo(() => {
     const map = new Map<File, string>()
     for (const it of toItems(value)) {
       if (it instanceof File) map.set(it, URL.createObjectURL(it))
     }
-    setPreviews(map)
-    return () => map.forEach((url) => URL.revokeObjectURL(url))
+    return map
   }, [value])
+
+  useEffect(() => () => previews.forEach((url) => URL.revokeObjectURL(url)), [previews])
 
   const srcOf = (it: ImageValue): string | undefined =>
     typeof it === 'string' ? it : previews.get(it)
@@ -158,7 +158,7 @@ export function ImageInput({
               disabled={disabled}
               aria-label="이미지 변경"
               className={cn(
-                'h-full w-full cursor-pointer overflow-hidden rounded-lg bg-gray-100 outline-none transition-opacity focus-visible:ring-1 focus-visible:ring-primary enabled:hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50',
+                'h-full w-full cursor-pointer overflow-hidden rounded-lg bg-gray-100 transition-opacity outline-none focus-visible:ring-1 focus-visible:ring-primary enabled:hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50',
                 invalid && 'ring-1 ring-destructive'
               )}
             >
@@ -253,7 +253,7 @@ function RemoveButton({
       }}
       disabled={disabled}
       aria-label={label}
-      className="absolute right-2 top-2 z-10 flex size-6 cursor-pointer items-center justify-center rounded-full bg-black/50 text-white outline-none transition-colors hover:bg-black/70 focus-visible:ring-1 focus-visible:ring-white disabled:cursor-not-allowed disabled:opacity-50"
+      className="absolute top-2 right-2 z-10 flex size-6 cursor-pointer items-center justify-center rounded-full bg-black/50 text-white transition-colors outline-none hover:bg-black/70 focus-visible:ring-1 focus-visible:ring-white disabled:cursor-not-allowed disabled:opacity-50"
     >
       <XIcon size={14} />
     </button>

@@ -6,7 +6,7 @@
 
 ## 개요
 
-[ADR-0004](./0004-api-response-envelope.md) 에서 모든 API 응답을 `{success, data, error}` envelope 으로 묶기로 결정. [PR #294](https://github.com/mortonCareer/bconnect/pull/294) 작업 중 orval 7 의 generated mock 한계 발견. `useExamples: true` 가 nullable union (`type: ['string', 'null']`) 과 array `items` 의 `example` 을 mock generator 로 전달 못 하는 문제.
+[ADR-0004](./0004-api-response-envelope.md) 에서 모든 API 응답을 `{success, data, error}` envelope 으로 묶기로 결정. [PR #294](https://github.com/morton-so/bconnect/pull/294) 작업 중 orval 7 의 generated mock 한계 발견. `useExamples: true` 가 nullable union (`type: ['string', 'null']`) 과 array `items` 의 `example` 을 mock generator 로 전달 못 하는 문제.
 
 근본 fix 는 orval 8.8.0+ 의 mock fix 들 ([orval-labs/orval#3081](https://github.com/orval-labs/orval/issues/3081), [orval-labs/orval#3271](https://github.com/orval-labs/orval/pull/3271), [orval-labs/orval#2896](https://github.com/orval-labs/orval/pull/2896)) 에 포함됨. 단 orval 7→8 major bump 시 두 종류 drift 발생. 이전 worktree 측정 기준:
 
@@ -71,7 +71,7 @@ orval mock 끄고 별도 fixture builder 도입.
 
 단점
 
-- stack 변경량 큼. orval 의 type-driven gate 인 spec drift 자동 검출 일부 손실. 단순 bump 는 1줄 옵션 `override.mock.format` 으로 [PR #296](https://github.com/mortonCareer/bconnect/pull/296) 에서 이미 우회. 추가 도입 가치 미미
+- stack 변경량 큼. orval 의 type-driven gate 인 spec drift 자동 검출 일부 손실. 단순 bump 는 1줄 옵션 `override.mock.format` 으로 [PR #296](https://github.com/morton-so/bconnect/pull/296) 에서 이미 우회. 추가 도입 가치 미미
 
 ## 결정사항
 
@@ -114,11 +114,11 @@ orval mock 끄고 별도 fixture builder 도입.
   | + mock overrides envelope unwrap                              | 0                           |
 
 - 미래 escape hatch 필요 시점에 별도 ADR 작성 권장. "ADR-X: customFetch variant for status-aware endpoints" 같은 형태
-- [PR #296](https://github.com/mortonCareer/bconnect/pull/296) 의 `override.mock.format.image-url` 은 orval 8 + transformer 후에도 그대로 작동. forward-compatible
+- [PR #296](https://github.com/morton-so/bconnect/pull/296) 의 `override.mock.format.image-url` 은 orval 8 + transformer 후에도 그대로 작동. forward-compatible
 - 관련 코드: [packages/api-client/orval.transformer.ts](../../../packages/api-client/orval.transformer.ts), [packages/api-client/src/client.ts](../../../packages/api-client/src/client.ts), [packages/api-client/orval.config.ts](../../../packages/api-client/orval.config.ts)
 
 ## 참조
 
-- [#297](https://github.com/mortonCareer/bconnect/issues/297)
-- [PR #300](https://github.com/mortonCareer/bconnect/pull/300)
+- [#297](https://github.com/morton-so/bconnect/issues/297)
+- [PR #300](https://github.com/morton-so/bconnect/pull/300)
 - [ADR-0004](./0004-api-response-envelope.md)

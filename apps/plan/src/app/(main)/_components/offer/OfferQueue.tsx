@@ -27,11 +27,11 @@ import { OfferQueueRow } from './OfferQueueRow'
 
 function EmptyState({ actionHref }: { actionHref?: string }) {
   return (
-    <div className="flex flex-col items-center pb-4 pt-8">
+    <div className="flex flex-col items-center pt-8 pb-4">
       <div className="flex size-[140px] items-center justify-center rounded-full bg-secondary">
         <SearchIcon size={72} className="text-primary" />
       </div>
-      <p className="text-r-14 mt-4 text-gray-600">기술자를 탐색하고 섭외해보세요</p>
+      <p className="mt-4 text-r-14 text-gray-600">기술자를 탐색하고 섭외해보세요</p>
       {actionHref && (
         <Button asChild className="mt-4 w-full">
           <Link href={actionHref}>기술자 탐색</Link>
@@ -88,7 +88,7 @@ export function OfferQueue({
           </div>
         </SortableContext>
       </DndContext>
-      <p className="text-r-12 mt-2 text-gray-500">
+      <p className="mt-2 text-r-12 text-gray-500">
         * 이미 섭외 요청이 발송된 경우 섭외 순서를 조정할 수 없어요
       </p>
 
@@ -96,7 +96,7 @@ export function OfferQueue({
         <Button
           asChild
           variant="outline"
-          className="text-m-14 mt-4 h-[33.5px] w-full rounded-[6px] border-[#c0d0ff] px-0 font-medium hover:bg-primary-50"
+          className="mt-4 h-[33.5px] w-full rounded-[6px] border-[#c0d0ff] px-0 text-m-14 font-medium hover:bg-primary-50"
         >
           <Link href={emptyActionHref}>기술자 탐색</Link>
         </Button>

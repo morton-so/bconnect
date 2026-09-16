@@ -24,7 +24,7 @@ export function TitleCountBadge({ count, className }: TitleCountBadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-destructive px-1 text-[11px] font-bold leading-none text-white',
+        'inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-destructive px-1 text-[11px] leading-none font-bold text-white',
         className
       )}
     >

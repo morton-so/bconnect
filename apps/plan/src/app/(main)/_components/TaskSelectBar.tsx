@@ -43,7 +43,7 @@ export function TaskSelectBar() {
           href={isQueueOpen ? closeHref : panelHref(`task/${taskId}`)}
           scroll={false}
           className={cn(
-            'text-m-14 inline-flex h-10 shrink-0 items-center gap-1 rounded-lg border px-3.5 font-semibold',
+            'inline-flex h-10 shrink-0 items-center gap-1 rounded-lg border px-3.5 text-m-14 font-semibold',
             isQueueOpen
               ? 'border-primary bg-secondary text-primary'
               : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'

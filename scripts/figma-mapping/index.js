@@ -21,6 +21,8 @@ async function main() {
   console.log(
     `Figma context 로딩 완료 : @figma ${ctx.tags.length}개, 노드 ${ctx.nodes.size}개 확인`
   )
+  const mappedCount = new Set(ctx.tags.flatMap((tag) => tag.nodes.map((node) => node.nodeId))).size
+  console.log(`현재 매핑된 컴포넌트 : ${mappedCount}개`)
 
   /** @type {import('./report.js').Result[]} */
   const results = []

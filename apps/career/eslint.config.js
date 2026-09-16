@@ -9,6 +9,21 @@ export default defineConfig([
   includeIgnoreFile(gitignorePath, { gitignoreResolution: true }),
   ...base,
   {
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['../../**'],
+              message: 'uses @/ alias instead of relative path',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     settings: { next: { rootDir: import.meta.dirname } },
   },
   {

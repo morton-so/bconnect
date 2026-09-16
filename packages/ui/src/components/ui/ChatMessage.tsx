@@ -195,7 +195,7 @@ function ImageGrid({ images, className }: { images: ChatMessageImage[]; classNam
           alt={image.alt ?? '사진'}
           className={cn(
             'rounded-xl bg-gray-100 object-cover',
-            isSingle ? 'max-h-60 min-w-28 max-w-full' : 'size-28'
+            isSingle ? 'max-h-60 max-w-full min-w-28' : 'size-28'
           )}
         />
       ))}
@@ -210,7 +210,7 @@ function TypingDots() {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="size-2 rounded-full bg-primary animate-bounce"
+          className="size-2 animate-bounce rounded-full bg-primary"
           style={{ animationDelay: `${i * 0.15}s`, animationDuration: '0.6s' }}
         />
       ))}

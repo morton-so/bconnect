@@ -58,7 +58,7 @@ export function LoginPromptModal({ open, onClose }: LoginPromptModalProps) {
           type="button"
           onClick={onClose}
           aria-label="닫기"
-          className="absolute right-[18px] top-[18px] flex h-6 w-6 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100"
+          className="absolute top-[18px] right-[18px] flex h-6 w-6 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100"
         >
           <XIcon size={16} />
         </button>
@@ -68,7 +68,7 @@ export function LoginPromptModal({ open, onClose }: LoginPromptModalProps) {
           <p id="login-prompt-title" className="text-sb-20 text-gray-900">
             로그인하고 기술자와 바로 연결하세요
           </p>
-          <p className="break-keep text-r-16 text-gray-700">
+          <p className="text-r-16 break-keep text-gray-700">
             검증된 기술자의 프로필과 작업물을 확인하고, 메시지로 바로 문의할 수 있어요.
           </p>
         </div>

@@ -1,5 +1,5 @@
 /**
- * @figma-pending 타인 프로필 추천서 — 본인 /profile/recommendations 화면(RecommendationList) 재사용, 읽기 전용
+ * @figma-todo 타인 프로필 추천서 — 본인 /profile/recommendations 화면(RecommendationList) 재사용, 읽기 전용
  */
 'use client'
 

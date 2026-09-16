@@ -5,7 +5,7 @@
 # 인증 필요
 
 ^https://api\.dev\.bconnect\.to
-^https://github\.com/mortonCareer/bconnect
+^https://github\.com/morton-so/bconnect
 ^https://morton-rzr9095\.slack\.com
 
 # 차단됨

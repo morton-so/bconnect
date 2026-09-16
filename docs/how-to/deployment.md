@@ -5,12 +5,10 @@
 
 ## 프론트엔드
 
-프론트엔드 서버는 GitHub Actions 워크플로우 [vercel-deploy.yml](../../.github/workflows/vercel-deploy.yml)를 통해 배포됩니다.
+플랫폼 : Vercel
 
-- PR 프리뷰는 현재 비활성화 (`preview_deployments_disabled = true`)
-- 워크플로우 수동 배포 가능
-
-### 배포 환경
+- PR 프리뷰는 현재 비활성화
+- PR 마지막 커밋 작성자가 Vercel 팀 멤버로 등록되어 있어야 자동으로 배포된다
 
 career
 
@@ -36,11 +34,7 @@ company
 | `dev`   | `dev.bconnect.to` | `dev` 브랜치 push  |
 | `prod`  | `bconnect.to`     | `main` 브랜치 push |
 
-### 배포 절차
-
 ## 백엔드
-
-### 배포 환경
 
 플랫폼: Railway
 
@@ -49,12 +43,6 @@ company
 | `local` | `localhost:8080`      | `./gradlew bootRun` | `data.sql`, `data-crawler.sql` |
 | `dev`   | `api.dev.bconnect.to` | `dev` 브랜치 push   | `data.sql`                     |
 | `prod`  | `api.bconnect.to`     | `main` 브랜치 push  | -                              |
-
-### 배포 방법
-
-- Railway 자동 배포
-- 환경 변수 주입 : [manage-variables.md](./manage-variables.md)
-- 인프라 구성 : [infra-railway.md](../reference/infra-railway.md)
 
 ## 가이드
 
@@ -114,12 +102,12 @@ TWA는 콘텐츠를 웹 URL을 통해 불러오므로 앱은 메타데이터 변
 
 TWA나 WebView 기반 앱에서 주소창을 숨기고 풀스크린 모드를 활성화하려면 Digital Asset Links 검증에 성공해야 합니다.
 
-검증 절차
+검증 절차는 다음과 같습니다 :
 
-1. 앱은 `sha256_cert_fingerprints` 배열에 하나 이상의 지문을 포함한다
-2. 앱은 호스트 `/.well-known/assetlinks.json` 지문을 확인하여 적어도 하나의 원소가 일치하면 검증을 통과한다
+1. 앱은 내부 메타 `sha256_cert_fingerprints` 배열에 하나 이상의 지문을 포함한다.
+2. 앱은 호스트 `/.well-known/assetlinks.json` 지문을 확인하여 적어도 하나의 원소가 일치하면 검증을 통과한다.
 
-웹 서비스는 다음 두 배포 경로에 대한 지문을 `./well-known/assetlinks.json`에 포함시켜야 합니다.
+따라서 호스트(웹)은 다음 두 배포 경로에 대한 지문을 `./well-known/assetlinks.json`에 포함시켜야 합니다.
 
 | 배포 경로    | Host                     | 서명 키           | 배열에 넣을 지문                        |
 | ------------ | ------------------------ | ----------------- | --------------------------------------- |
@@ -127,7 +115,7 @@ TWA나 WebView 기반 앱에서 주소창을 숨기고 풀스크린 모드를 �
 | 플레이스토어 | `career.bconnect.to`     | Play App Signing  | Google Play Console SHA-256 인증서 지문 |
 
 - 로컬 서명 지문은 `keytool -printcert -jarfile app-release-signed.apk`로 확인
-- 플레이스토어 업로드시 Play App Signing이 AAB를 재서명하여 기존 키스토어 서명을 대체합니다.
+- 플레이스토어 업로드시 Play App Signing으로 기존 서명을 덮어씀
 - 플레이스토어 지문은 'Play 콘솔 | Google Play로 보호됨'에서 확인
 
 ## 릴리스
@@ -138,13 +126,13 @@ prod 환경으로의 릴리스는 [Semantic Versioning](https://semver.org) 버�
 git fetch origin main
 git tag <tag> <commit-sha>
 git push origin <tag>
-gh release create <tag> --title <tag> --generate-notes # 릴리스 노트 자동 생성
-gh release upload <tag> <file> # 에셋(abb, apk 등) 첨부
+gh release create <tag> --title <tag> --generate-notes  # 릴리스 노트 자동 생성
+gh release upload <tag> <file>                          # 에셋(abb, apk 등) 첨부
 ```
 
 커밋을 Squash 하지 말고, Merge 커밋을 생성하세요.
 
 ## 참조
 
-- TODO 인프라 관리 문서
 - [환경변수 관리](./manage-variables.md)
+- [인프라](../reference/infra.md)

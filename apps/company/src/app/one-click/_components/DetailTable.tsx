@@ -1,4 +1,4 @@
-import type { CheckDetail } from '@bconnect/business/types'
+import type { CheckDetail } from '../_lib/types'
 
 interface DetailTableProps {
   details: CheckDetail[]

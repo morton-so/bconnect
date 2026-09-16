@@ -2,6 +2,5 @@ pnpm-lock.yaml
 .next
 dist
 node_modules
-postcss.config.mjs
+.terraform
 apps/api
-packages/api-client/src/openapi.yaml

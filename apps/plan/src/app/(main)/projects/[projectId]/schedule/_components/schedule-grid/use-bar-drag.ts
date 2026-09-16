@@ -22,16 +22,14 @@ export function useBarDrag(
   const originX = useRef(0)
   const activated = useRef(false)
 
-  function handleDown(mode: DragMode) {
-    return (e: PointerEvent<HTMLElement>) => {
-      if (e.button !== 0) return
-      e.preventDefault()
-      e.stopPropagation()
-      e.currentTarget.setPointerCapture(e.pointerId)
-      originX.current = e.clientX
-      activated.current = false
-      setDrag({ mode, deltaDays: 0 })
-    }
+  function handleDown(mode: DragMode, e: PointerEvent<HTMLElement>) {
+    if (e.button !== 0) return
+    e.preventDefault()
+    e.stopPropagation()
+    e.currentTarget.setPointerCapture(e.pointerId)
+    originX.current = e.clientX
+    activated.current = false
+    setDrag({ mode, deltaDays: 0 })
   }
 
   function handleMove(e: PointerEvent<HTMLElement>) {
@@ -59,12 +57,12 @@ export function useBarDrag(
   return {
     drag,
     moveHandleProps: {
-      onPointerDown: handleDown('move'),
+      onPointerDown: (e: PointerEvent<HTMLElement>) => handleDown('move', e),
       onPointerMove: handleMove,
       onPointerUp: handleUp,
       onPointerCancel: handleCancel,
     },
-    startHandleDown: handleDown('resize-start'),
-    endHandleDown: handleDown('resize-end'),
+    startHandleDown: (e: PointerEvent<HTMLElement>) => handleDown('resize-start', e),
+    endHandleDown: (e: PointerEvent<HTMLElement>) => handleDown('resize-end', e),
   }
 }

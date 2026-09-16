@@ -83,7 +83,7 @@ export function GanttBars({
         trigger={
           <div
             {...moveHandleProps}
-            className={`absolute flex touch-none items-center rounded pl-2.5 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] outline-none transition-[filter] hover:brightness-110 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${drag ? 'z-10 cursor-grabbing opacity-90' : 'cursor-grab'}`}
+            className={`absolute flex touch-none items-center rounded pl-2.5 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] transition-[filter] outline-none hover:brightness-110 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${drag ? 'z-10 cursor-grabbing opacity-90' : 'cursor-grab'}`}
             style={{
               left,
               top: BAR_TOP,
@@ -97,7 +97,7 @@ export function GanttBars({
             aria-label={`${task.ganttName} · ${task.startDate} ~ ${task.endDate} · ${label}`}
           >
             <p
-              className="truncate text-[12px] font-semibold leading-[18px]"
+              className="truncate text-[12px] leading-[18px] font-semibold"
               style={{ color: style.text }}
             >
               {task.ganttName}

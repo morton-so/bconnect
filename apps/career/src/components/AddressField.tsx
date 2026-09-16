@@ -1,5 +1,5 @@
 /**
- * @figma-pending 주소 입력 필드 — 시안 미정
+ * @figma-todo 주소 입력 필드 — 시안 미정
  */
 'use client'
 
@@ -121,7 +121,7 @@ export function AddressField<T extends FieldValues>({
               <button
                 type="button"
                 onClick={() => setOpen(true)}
-                className="flex h-12 w-full cursor-pointer items-center rounded-lg border border-gray-300 px-3 text-left text-sm text-gray-700 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/50"
+                className="flex h-12 w-full cursor-pointer items-center rounded-lg border border-gray-300 px-3 text-left text-sm text-gray-700 transition-colors outline-none focus:border-primary focus:ring-1 focus:ring-primary aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/50"
               >
                 {value?.street ?? <span className="text-gray-400">주소를 검색해주세요</span>}
               </button>

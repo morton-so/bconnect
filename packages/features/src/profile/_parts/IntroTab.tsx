@@ -82,7 +82,7 @@ export function IntroTab({
       <section className="flex flex-col gap-3">
         <SectionHeader title="소개" editHref={editHrefs?.about} />
         {profile?.about ? (
-          <p className="whitespace-pre-wrap text-r-14 leading-[22.4px] text-gray-900">
+          <p className="text-r-14 leading-[22.4px] whitespace-pre-wrap text-gray-900">
             {renderWithHashtags(profile.about)}
           </p>
         ) : (

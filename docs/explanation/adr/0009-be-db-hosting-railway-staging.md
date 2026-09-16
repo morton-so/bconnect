@@ -127,7 +127,7 @@ ADR-0007 대비 변경점:
 
 ### 후속 작업 : 별도 이슈
 
-- Railway staging environment 프로비저닝. BE service + Postgres, [infra/railway/](../../../infra/railway/) terraform 모듈
+- Railway staging environment 프로비저닝. BE service + Postgres, terraform 모듈
 - staging 환경변수 셋업. production 변수의 staging 오버라이드
 - 트리거 모니터링 가시화. Railway 월 청구액 추세 + 동시접속·응답시간 메트릭. 이게 없으면 트리거가 무의미해진다
 - dev 브랜치 → staging BE 연결은 [ADR-0010](./0010-dev-branch-staging-be.md)
@@ -145,4 +145,4 @@ supersede 이되 목적지 분석은 live reference. 트리거 발동 시 ADR-00
 - [ADR-0007](./0007-be-hosting-after-launch.md) : supersedes
 - [ADR-0006](./0006-dev-as-staging.md)
 - [ADR-0010](./0010-dev-branch-staging-be.md) : 자매 결정
-- [#339](https://github.com/mortonCareer/bconnect/issues/339)
+- [#339](https://github.com/morton-so/bconnect/issues/339)

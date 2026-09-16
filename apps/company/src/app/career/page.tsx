@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 기술자용 랜딩 — Figma Sites(디자인 노드 아님)를 브랜드 UI로 재구축. 원본: https://www.figma.com/site/aYOEDx8AXyQ6i6PcR2f1LM
+ * @figma-todo 기술자용 랜딩 — Figma Sites(디자인 노드 아님)를 브랜드 UI로 재구축. 원본: https://www.figma.com/site/aYOEDx8AXyQ6i6PcR2f1LM
  */
 import type { Metadata } from 'next'
 import { AppPreviewSection } from './_components/AppPreviewSection'

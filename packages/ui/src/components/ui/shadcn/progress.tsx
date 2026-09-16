@@ -1,3 +1,6 @@
+/**
+ * @figma-todo shadcn/ui 원본 이식
+ */
 'use client'
 
 import * as React from 'react'

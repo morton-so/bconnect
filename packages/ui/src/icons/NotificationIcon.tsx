@@ -1,5 +1,5 @@
 /**
- * @figma-pending 알림(벨) 아이콘 — 시안 미정. lucide `bell` 기반, TopBar 알림 진입점용.
+ * @figma-todo 알림(벨) 아이콘 — 시안 미정. lucide `bell` 기반, TopBar 알림 진입점용.
  */
 import type { SVGProps } from 'react'
 

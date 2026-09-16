@@ -6,7 +6,7 @@
 
 ## 개요
 
-업체 웹앱 plan의 기술자 탐색 화면은 우측에 393폭 패널을 띄운다. 대상은 프로필 상세 [#344](https://github.com/mortonCareer/bconnect/issues/344), 메시지 목록/대화 [#345](https://github.com/mortonCareer/bconnect/issues/345), 알림 [#347](https://github.com/mortonCareer/bconnect/issues/347)이다. 이 패널은 plan UX의 핵심이며 다음 성질을 가진다:
+업체 웹앱 plan의 기술자 탐색 화면은 우측에 393폭 패널을 띄운다. 대상은 프로필 상세 [#344](https://github.com/morton-so/bconnect/issues/344), 메시지 목록/대화 [#345](https://github.com/morton-so/bconnect/issues/345), 알림 [#347](https://github.com/morton-so/bconnect/issues/347)이다. 이 패널은 plan UX의 핵심이며 다음 성질을 가진다:
 
 - 자체 내부 네비게이션: 메시지 목록 → 대화 진입처럼 패널 안에서 더 깊이 이동한다.
 - 배경 유지: 패널은 탐색 리스트 위에 얹히고, 리스트는 살아있다.
@@ -75,17 +75,17 @@
 
 - 좋은 결과: 닫기·내부 네비·뒤로가기·새로고침이 브라우저 기본 동작. 프로필/메시지/대화가 두 앱 단일 구현. 한 곳 고치면 양쪽에 반영. intercepting 미사용으로 라우팅 단순.
 - 나쁜 결과: parallel routes는 팀에 새 패턴. `default.tsx` 규칙 숙지 필요. career 페이지를 `@bconnect/features` 마운트로 바꾸는 리팩터 비용. 점진 적용. feature view가 client라 해당 화면 RSC 서버렌더 이점 일부 포기.
-- 중립적 결과: plan 로그인 게이트 모달 `LoginPromptModal`은 별개 관심사라 현행 React-state 유지. 본 ADR 범위 밖. 알림 [#347](https://github.com/mortonCareer/bconnect/issues/347)은 career·BE에도 없어 `NotificationsView`는 net-new + notification 도메인 BE 종속.
+- 중립적 결과: plan 로그인 게이트 모달 `LoginPromptModal`은 별개 관심사라 현행 React-state 유지. 본 ADR 범위 밖. 알림 [#347](https://github.com/morton-so/bconnect/issues/347)은 career·BE에도 없어 `NotificationsView`는 net-new + notification 도메인 BE 종속.
 
 ## 메모
 
-- 롤아웃: (1) `@bconnect/features` scaffold → (2) plan `@panel` 골격 + `default.tsx` → (3) feature view 추출/구축하며 [#344](https://github.com/mortonCareer/bconnect/issues/344)/[#345](https://github.com/mortonCareer/bconnect/issues/345)/[#347](https://github.com/mortonCareer/bconnect/issues/347) 구현 → (4) career 페이지 점진 이관.
+- 롤아웃: (1) `@bconnect/features` scaffold → (2) plan `@panel` 골격 + `default.tsx` → (3) feature view 추출/구축하며 [#344](https://github.com/morton-so/bconnect/issues/344)/[#345](https://github.com/morton-so/bconnect/issues/345)/[#347](https://github.com/morton-so/bconnect/issues/347) 구현 → (4) career 페이지 점진 이관.
 - "닫기" = base 경로로 navigate. `@panel`은 `default.tsx`로 돌아간다. `default.tsx` 누락 시 slot이 이전 상태를 유지하는 Next 동작에 주의.
 - 패키지가 커지면 도메인별로 분리 가능하다. 예: `@bconnect/profile`. 현재 3~4 feature 규모는 단일 `@bconnect/features`로 시작.
 
 ## 참조
 
 - [ADR-0012](./0012-design-system-ssot-figma.md) · [ADR-0014](./0014-design-system-tokens-krds-tailwind.md) : 패키지 레이어링 맥락
-- [#344](https://github.com/mortonCareer/bconnect/issues/344) : 대상 패널
-- [#345](https://github.com/mortonCareer/bconnect/issues/345) : 대상 패널
-- [#347](https://github.com/mortonCareer/bconnect/issues/347) : 대상 패널
+- [#344](https://github.com/morton-so/bconnect/issues/344) : 대상 패널
+- [#345](https://github.com/morton-so/bconnect/issues/345) : 대상 패널
+- [#347](https://github.com/morton-so/bconnect/issues/347) : 대상 패널

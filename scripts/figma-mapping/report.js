@@ -1,6 +1,6 @@
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN
-// 저장소 : https://github.com/mortonCareer/bconnect
-const REPOSITORY = 'mortonCareer/bconnect'
+// 저장소 : https://github.com/morton-so/bconnect
+const REPOSITORY = 'morton-so/bconnect'
 const ISSUE_LABEL = '🤖 figma-drift'
 const ISSUE_TITLE = 'Figma 누락 · 불일치 항목 감지'
 

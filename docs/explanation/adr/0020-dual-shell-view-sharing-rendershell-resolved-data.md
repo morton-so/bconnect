@@ -21,7 +21,7 @@
 
 여기에 큰 제약이 하나 더 붙는다: 로그인·회원가입을 뺀 career 화면의 약 90%가 결국 plan 패널에도 들어간다. 즉 `@bconnect/features`는 곧 제품 화면 거의 전부의 원본 저장소가 된다. 지금 정하는 방식이 앞으로 수십 개 화면을 옮길 때 따라 할 본보기가 된다. 한 번의 선택이 30번 곱해진다.
 
-[#537](https://github.com/mortonCareer/bconnect/issues/537)에서 `ChatView`에 이미 "껍데기를 앱이 함수로 끼워넣는" 방식을 도입해 1번 걸림돌인 껍데기는 풀어 두었다. 남은 건 2번, 데이터를 어디서 가져오나다. 그리고 버튼·편집 링크 같은 "내 화면에만 있는 기능"을 어떻게 붙이느냐다.
+[#537](https://github.com/morton-so/bconnect/issues/537)에서 `ChatView`에 이미 "껍데기를 앱이 함수로 끼워넣는" 방식을 도입해 1번 걸림돌인 껍데기는 풀어 두었다. 남은 건 2번, 데이터를 어디서 가져오나다. 그리고 버튼·편집 링크 같은 "내 화면에만 있는 기능"을 어떻게 붙이느냐다.
 
 ## 선택지
 
@@ -165,11 +165,11 @@ apps/plan/src/app/(main)/@panel/profile/[profileId]/
 
 - 후속: 이 4단계를 `packages/features/README`에 적어 팀이 그대로 따라 하게 한다.
 - 검증: career 내 화면/남 화면을 Figma 디자인과 1:1로 맞춘다. mock 로그인으로 확인한다. 중복 파일 4개는 화면이 똑같이 나오는 걸 확인한 뒤에만 삭제. career+plan typecheck·lint·`pnpm build:plan` 통과, plan 묶음에 `useCreateCoworkerRequest`/`useCreateDirectChat`/`navigator.share` 안 섞였는지 확인.
-- 메시지 화면 `MessagesView`/`ChatView`/`MessageThread`도 같은 방식으로 따로 진행한다. [#541](https://github.com/mortonCareer/bconnect/issues/541) 하위작업 2에 해당한다.
+- 메시지 화면 `MessagesView`/`ChatView`/`MessageThread`도 같은 방식으로 따로 진행한다. [#541](https://github.com/morton-so/bconnect/issues/541) 하위작업 2에 해당한다.
 
 ## 참조
 
 - [ADR-0017](./0017-plan-panel-parallel-routes-shared-features.md) : 공유 화면 패키지를 처음 만든 결정. 이 글이 그걸 더 일반화
 - [ADR-0015](./0015-be-code-as-api-ssot.md)
-- [#541](https://github.com/mortonCareer/bconnect/issues/541) : 대상 작업
-- [#537](https://github.com/mortonCareer/bconnect/issues/537) : 앞선 사례
+- [#541](https://github.com/morton-so/bconnect/issues/541) : 대상 작업
+- [#537](https://github.com/morton-so/bconnect/issues/537) : 앞선 사례

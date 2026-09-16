@@ -1,7 +1,7 @@
 # ADR-0002: 단일 S3 버킷 + path prefix 격리
 
 - 상태: 승인됨
-- 날짜: 2026-04-17 (오프라인 합의), 2026-04-26 ([PR #227](https://github.com/mortonCareer/bconnect/pull/227) 머지)
+- 날짜: 2026-04-17 (오프라인 합의), 2026-04-26 ([PR #227](https://github.com/morton-so/bconnect/pull/227) 머지)
 - 담당자: @manamana32321 @fine-pine
 
 ## 개요
@@ -104,5 +104,5 @@ CF 도메인: `static.bconnect.to` 단일.
 
 ## 참조
 
-- [#174](https://github.com/mortonCareer/bconnect/issues/174)
-- [PR #227](https://github.com/mortonCareer/bconnect/pull/227)
+- [#174](https://github.com/morton-so/bconnect/issues/174)
+- [PR #227](https://github.com/morton-so/bconnect/pull/227)

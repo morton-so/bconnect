@@ -21,7 +21,7 @@ const OPERATION = 'GongsiAdmi'
 const OPERATION_URL = `https://apis.data.go.kr/1613000/ConAdminInfoSvc1/${OPERATION}`
 const PAGE_SIZE = 1000
 const FULL_START_DATE = '20030101'
-const INCREMENTAL_DAYS = 7
+const INCREMENTAL_DAYS = 14
 
 if (!API_KEY) throw new Error('DATA_GO_SERVICE_KEY is required')
 
@@ -45,7 +45,7 @@ interface AdmiItem {
   ncrAdmiKname: string | null
   ncrAdmiMaster: string | null
   ncrItemName: string
-  ncrItemregno: string
+  ncrItemregno: string | null
   ncrAdmiAddr: string | null
   ncrAreaName: string
   ncrAreaDetailName: string
@@ -126,7 +126,7 @@ async function main() {
       normalized_company_name: admiKname == null ? null : normalizeCompanyName(admiKname),
       ncr_admi_master: toNullableText(item.ncrAdmiMaster),
       ncr_item_name: requireText(item.ncrItemName, 'ncr_item_name', OPERATION),
-      ncr_itemregno: requireText(item.ncrItemregno, 'ncr_itemregno', OPERATION),
+      ncr_itemregno: toNullableText(item.ncrItemregno),
       ncr_admi_addr: toNullableText(item.ncrAdmiAddr),
       ncr_area_name: requireText(item.ncrAreaName, 'ncr_area_name', OPERATION),
       ncr_area_detail_name: requireText(item.ncrAreaDetailName, 'ncr_area_detail_name', OPERATION),

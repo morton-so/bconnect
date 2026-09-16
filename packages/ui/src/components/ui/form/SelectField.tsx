@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold Select 합성 폼 래퍼 — label/description/error + RHF(control+name) 배선 (#426)
+ * @figma-todo Select 합성 폼 래퍼 — label/description/error + RHF(control+name) 배선 (#426)
  */
 'use client'
 
@@ -44,7 +44,7 @@ type RHFFieldArg = {
   value: string | string[]
   onChange: (v: string | string[]) => void
   onBlur: () => void
-  ref: React.Ref<HTMLButtonElement>
+  ref: React.Ref<{ focus(): void }>
 }
 
 /** FormItem 안에서 useFormField 로 aria id 합성 (zod ∪ serverError) 후 Select 에 주입. */

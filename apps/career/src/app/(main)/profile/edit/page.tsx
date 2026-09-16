@@ -173,7 +173,7 @@ export default function ProfileEditPage() {
       />
 
       <Form {...form}>
-        <form className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 pb-24 pt-3">
+        <form className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 pt-3 pb-24">
           {/* 공종 */}
           <FormField
             control={control}

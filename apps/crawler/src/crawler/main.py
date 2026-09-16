@@ -12,7 +12,7 @@ from crawler.channels.instagram import (
 )
 from crawler.classifier import classify, format_phone, infer_region_from_address, METRO_REGIONS, _validate_result
 from crawler.classifier_rules import rule_reject
-from crawler.config import settings
+from crawler.config import ANTHROPIC_MODEL, OPENAI_MODEL, settings
 from crawler.models import (
     CrawledMember, CrawledPost, CrawledProfile,
     PLATFORM_INSTAGRAM, PLATFORM_NAVER, phone_digits, trade_enum,
@@ -626,7 +626,7 @@ async def run_full(keywords: list[str] | None = None, per_query: int = 5, dry_ru
     report = PipelineReport()
     report.mode = "전체 키워드"
     report.per_query = per_query
-    report.llm_model = settings.openai_model if settings.openai_api_key else settings.anthropic_model
+    report.llm_model = OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
 
     seen_blog_ids: set[str] = set()
     completed = 0
@@ -714,10 +714,10 @@ async def run_collect_raw(
             except Exception:
                 pass
         # 이미 DB에 적재된 것
-        if settings.crawled_db_url:
+        if settings.crawled_pg_db_url:
             try:
                 from crawler.db import load_existing_urls
-                seen_urls |= await load_existing_urls(settings.crawled_db_url)
+                seen_urls |= await load_existing_urls(settings.crawled_pg_db_url)
             except Exception as exc:
                 log.warning("DB 중복목록 조회 실패(무시하고 진행): %s", exc)
         seen_blog_ids = {b for u in seen_urls if (b := extract_blog_id(u))}
@@ -786,7 +786,7 @@ async def run_classify_from_raw(
     report = PipelineReport()
     report.mode = "원본에서 분류(classify-from-raw)" + (" +외부라벨" if labels else "")
     report.llm_model = "외부 라벨(--labels)" if labels else (
-        settings.openai_model if settings.openai_api_key else settings.anthropic_model
+        OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
     )
     report.total_searched = len(raws)
     log.info("원본 %d건 분류 시작: %s", len(raws), raw_file)
@@ -922,7 +922,7 @@ async def run_instagram_full(
     report = PipelineReport()
     report.mode = "인스타그램 전체 키워드"
     report.per_query = per_query
-    report.llm_model = settings.openai_model if settings.openai_api_key else settings.anthropic_model
+    report.llm_model = OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
 
     seen_usernames: set[str] = set()
     completed = 0
@@ -978,14 +978,14 @@ async def run_instagram_full(
 async def run_export_db(file_path: Path, truncate: bool = False) -> PipelineReport:
     """dry-run 보고서 JSON(members[])을 crawled_* DB 테이블에 적재한다 (#876).
 
-    ⚠️ BE 우회 — crawled_* 직접 INSERT. 대상 DB 는 CRAWLED_DB_URL 환경변수.
+    ⚠️ BE 우회 — crawled_* 직접 INSERT. 대상 DB 는 CRAWLED_PG_DB_URL 환경변수.
     """
     import json
 
     from crawler.db import export_members
 
-    if not settings.crawled_db_url:
-        raise ValueError("CRAWLED_DB_URL 환경변수가 설정되지 않았습니다")
+    if not settings.crawled_pg_db_url:
+        raise ValueError("CRAWLED_PG_DB_URL 환경변수가 설정되지 않았습니다")
 
     data = json.loads(file_path.read_text(encoding="utf-8"))
     members_data = data.get("members", [])
@@ -995,7 +995,7 @@ async def run_export_db(file_path: Path, truncate: bool = False) -> PipelineRepo
     members = [CrawledMember.model_validate(m) for m in members_data]
     log.info("DB 적재: %s (%d건)%s", file_path, len(members), " [truncate]" if truncate else "")
 
-    created, updated = await export_members(members, settings.crawled_db_url, truncate=truncate)
+    created, updated = await export_members(members, settings.crawled_pg_db_url, truncate=truncate)
 
     report = PipelineReport()
     report.mode = "DB 적재"
@@ -1065,7 +1065,7 @@ async def run_enrich(use_vision: bool = True, channel: str = "all") -> PipelineR
 
     report = PipelineReport()
     report.mode = "필드 보강"
-    report.llm_model = settings.openai_model if settings.openai_api_key else settings.anthropic_model
+    report.llm_model = OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
     report.total_searched = len(pages)
 
     sem = asyncio.Semaphore(CONCURRENCY * 4)  # enrich는 I/O 위주, 429 미발생 확인
@@ -1479,7 +1479,7 @@ def main():
 
     setup_file_logging()
 
-    llm_model = settings.openai_model if settings.openai_api_key else settings.anthropic_model
+    llm_model = OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
     report = PipelineReport()
     report.llm_model = llm_model
 

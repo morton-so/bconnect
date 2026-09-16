@@ -5,12 +5,29 @@
 
 ## Phase 1. 협업 도구
 
-신규 합류자에게 발급:
+[외부 서비스](../reference/third-party.md) 문서를 참조해 다음 절차 수행
 
-- GitHub 조직 초대 [바로가기](https://github.com/orgs/mortonCareer/people)
-- Figma 디자인 파일 공유 [바로가기](https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS)
-- Notion 워크스페이스 초대 [바로가기](https://www.notion.so/morton-so/27a965d2888b80b4961bcc07957776f8)
-- Slack 초대 [Slack 워크스페이스](https://morton-rzr9095.slack.com)
+1. 조직 · 워크스페이스 권한 부여
+2. CLI · MCP 설치 및 인증
+
+```bash
+pnpm i -g vercel
+vercel login
+
+npm i -g @railway/cli
+railway login
+
+npm i -g firebase-tools
+firebase login
+
+npm i -g @sentry/cli
+sentry-cli login
+
+# 수동 설치 후 인증
+aws login
+gcloud auth login
+gh auth login
+```
 
 ## Phase 2. 개발 환경 세팅
 
@@ -32,15 +49,17 @@
 ### Step 1. 리포지토리 클론
 
 ```bash
-git clone git@github.com:mortonCareer/bconnect.git
+git clone git@github.com:morton-so/bconnect.git
 cd bconnect
 ```
 
 ### Step 2. 환경변수 주입
 
-`.envrc.local` 파일 설정. [환경변수](https://www.notion.so/morton-so/384965d2888b8092be18f7bab46d0f8d) 문서 참고
+1. `.envrc.local` 파일 설정. [환경변수](https://www.notion.so/morton-so/384965d2888b8092be18f7bab46d0f8d) 문서 참고
+2. direnv hook 설정 · 디렉터리 활성화. [direnv :: hook](https://direnv.net/docs/hook.html) 문서 참고
 
 ```bash
+echo 'eval "$(direnv hook bash)"' >> ~/.bashrc # bash shell 기준
 direnv allow
 ```
 

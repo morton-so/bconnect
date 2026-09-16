@@ -42,7 +42,7 @@ const NotificationItem = React.forwardRef<HTMLDivElement, NotificationItemProps>
           <span className="text-r-12 text-[#A5A5A5]">{timestamp}</span>
         </div>
         <div className="flex shrink-0 items-center gap-1 self-center text-[#A5A5A5]">
-          <span className="whitespace-nowrap text-r-12">자세히 보기</span>
+          <span className="text-r-12 whitespace-nowrap">자세히 보기</span>
           <ChevronIcon direction="right" className="size-4" />
         </div>
       </div>

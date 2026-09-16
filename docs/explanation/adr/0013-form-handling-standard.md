@@ -10,7 +10,7 @@ BConnect 프론트엔드의 폼 처리가 페이지마다 갈라져 있다. `app
 
 이 divergence가 같은 클래스의 버그를 반복 생산했다:
 
-- [PR #369](https://github.com/mortonCareer/bconnect/pull/369) : login 입력에 에러 표시용 prop 누락. 에러 시 테두리가 안 변함. 실제 출시된 버그.
+- [PR #369](https://github.com/morton-so/bconnect/pull/369) : login 입력에 에러 표시용 prop 누락. 에러 시 테두리가 안 변함. 실제 출시된 버그.
 - 서버 에러 staleness : 잘못된 OTP 입력 후 값을 고쳐도 에러가 안 풀림.
 - 접근성 전무 : 수동 폼은 `aria-invalid`·`aria-describedby`·label 연결이 없다.
 
@@ -80,7 +80,7 @@ BConnect 프론트엔드의 폼 처리가 페이지마다 갈라져 있다. `app
 ### 3. 에러 처리
 
 - 클라이언트 zod 검증 에러는 RHF `formState`가 보유한다. `FormMessage`가 자동 표시한다.
-- 서버 에러는 derive 패턴을 쓴다. 서버 에러를 "제출 시점 입력값 스냅샷"에 묶어 저장하고, 렌더 시 현재 입력값과 비교해 파생한다. 입력이 바뀌면 그 에러는 정의상 무효이므로 자동 소거된다. `setError('root')`는 미사용한다. 필드 변경으로 안 풀리는 known issue 때문이다. onChange마다 `clearErrors`를 호출하는 명령형 방식은 금지한다. [PR #369](https://github.com/mortonCareer/bconnect/pull/369)와 동형의 "누락하면 버그" 클래스다.
+- 서버 에러는 derive 패턴을 쓴다. 서버 에러를 "제출 시점 입력값 스냅샷"에 묶어 저장하고, 렌더 시 현재 입력값과 비교해 파생한다. 입력이 바뀌면 그 에러는 정의상 무효이므로 자동 소거된다. `setError('root')`는 미사용한다. 필드 변경으로 안 풀리는 known issue 때문이다. onChange마다 `clearErrors`를 호출하는 명령형 방식은 금지한다. [PR #369](https://github.com/morton-so/bconnect/pull/369)와 동형의 "누락하면 버그" 클래스다.
 - `@bconnect/ui`의 `useServerError` 훅이 derive를 캡슐화한다. `ApiError` 의존은 `mapError` 콜백으로 분리한다. `packages/ui`가 `@bconnect/api-client`에 의존하지 않는다.
 
 ### 컴포넌트 레이어를 이렇게 정한 이유
@@ -91,7 +91,7 @@ raw shadcn primitive를 그대로 쓰면 필드 하나마다 `FormField`·`FormI
 
 ### 좋은 결과
 
-- 폼 divergence 종식. 단일 패턴으로 [PR #369](https://github.com/mortonCareer/bconnect/pull/369)·서버 에러 staleness 등 버그 클래스를 구조적으로 제거.
+- 폼 divergence 종식. 단일 패턴으로 [PR #369](https://github.com/morton-so/bconnect/pull/369)·서버 에러 staleness 등 버그 클래스를 구조적으로 제거.
 - 접근성 자동. `aria-invalid`·`aria-describedby`·label 연결. QA 접근성 기준 충족.
 - 입력 컴포넌트 SSOT. `FormInput` 2벌 폐기, `@bconnect/ui` 단일화.
 - 호출부가 원본 수동 폼보다 짧다. spike 실측 결과다. 공용 인프라인 `TextField`·`useServerError`는 1회 작성하고 전 폼에 amortize된다.
@@ -116,8 +116,8 @@ DX 검증 spike에서 실측한 마찰이다.
 
 후속 작업 (이슈):
 
-- [#400](https://github.com/mortonCareer/bconnect/issues/400) : shadcn Form suite 도입 + 입력 컴포넌트 통합. ADR 0013 구현이다. login·signup 마이그레이션, `A003` 에러 코드 정합 포함.
-- [#401](https://github.com/mortonCareer/bconnect/issues/401) : 폼 스키마 zod v3 → v4 import 정리
+- [#400](https://github.com/morton-so/bconnect/issues/400) : shadcn Form suite 도입 + 입력 컴포넌트 통합. ADR 0013 구현이다. login·signup 마이그레이션, `A003` 에러 코드 정합 포함.
+- [#401](https://github.com/morton-so/bconnect/issues/401) : 폼 스키마 zod v3 → v4 import 정리
 
 근거: 폼 처리 best-practice 조사와 DX 검증 spike. 조사는 라이브러리 표준성을 비교했다. spike는 react-hook-form·shadcn Form·`useServerError`·`TextField`를 로그인 페이지에 실제 적용해 라인 수·접근성·마찰을 실측했다.
 
@@ -125,5 +125,5 @@ DX 검증 spike에서 실측한 마찰이다.
 
 ## 참조
 
-- [#396](https://github.com/mortonCareer/bconnect/issues/396) : 작업 이슈
-- [PR #369](https://github.com/mortonCareer/bconnect/pull/369) : 계기가 된 버그
+- [#396](https://github.com/morton-so/bconnect/issues/396) : 작업 이슈
+- [PR #369](https://github.com/morton-so/bconnect/pull/369) : 계기가 된 버그

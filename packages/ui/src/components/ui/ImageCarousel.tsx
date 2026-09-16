@@ -83,7 +83,7 @@ export function ImageCarousel({
       }}
       className={cn(
         'w-full cursor-grab active:cursor-grabbing',
-        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary',
+        'focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none',
         className
       )}
     >

@@ -1,0 +1,44 @@
+# 본 파일은 로컬 환경변수의 비밀값 템플릿을 관리합니다.
+# .envrc.local 로 복사해 값을 채워주세요.
+
+# 데이터베이스
+
+export DATABASE_URL=postgresql://user:password@host:5432/dbname
+# 발급처 : [Railway : postgres](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/e2f6cab1-4676-4762-bff2-a03b3aefc5fc)
+# 의존성 : @bconnect/data-jobs
+# 설명 : 원클릭 적재 DB TCP 프록시 URL (현재 prod)
+
+# 공공데이터
+
+export DATA_GO_SERVICE_KEY=your_data_go_kr_service_key
+# 발급처 : [공공데이터포털 : 마이페이지 인증키](https://www.data.go.kr)
+# 의존성 : @bconnect/data-jobs, apps/api
+# 설명 : 공공데이터 조회 서비스 키
+
+# Sentry
+
+export SENTRY_AUTH_TOKEN=your_sentry_auth_token
+# 발급처 : [Sentry : Auth Tokens](https://sentry.io/settings/auth-tokens/)
+# 의존성 : @bconnect/config, apps/api
+# 설명 : Sentry 소스맵 · 소스 컨텍스트 업로드 토큰
+
+# GitHub
+
+export GITHUB_TOKEN=your_github_token
+# 발급처 : gh auth token
+# 의존성 : scripts/figma-mapping, infra/github
+# 설명 : GitHub 이슈 생성 · Terraform 프로바이더
+
+# Figma
+
+export FIGMA_ACCESS_TOKEN=your_figma_access_token
+# 발급처 : Figma | 설정 | 보안 | 개인 액세스 토큰
+# 의존성 : scripts/figma-mapping
+# 설명 : Figma API 액세스 토큰
+
+# Slack
+
+export SLACK_WEBHOOK_URL=your_slack_webhook_url
+# 발급처 : [Slack : Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)
+# 의존성 : @bconnect/data-jobs
+# 설명 : Slack 모니터링 알림 웹훅 URL

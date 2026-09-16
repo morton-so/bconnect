@@ -1,5 +1,5 @@
 /**
- * @figma-pending 캘린더 하단 네비 아이콘 (#650)
+ * @figma-todo 캘린더 하단 네비 아이콘 (#650)
  */
 import type { SVGProps } from 'react'
 

@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold DS 에 동의 체크박스 시안 없음 — 회원가입 약관·개인정보 동의(#733) 표준 필드.
+ * @figma-todo DS 에 동의 체크박스 시안 없음 — 회원가입 약관·개인정보 동의(#733) 표준 필드.
  */
 'use client'
 
@@ -75,7 +75,7 @@ export function AgreementField<T extends FieldValues>({
 
         return (
           <FormItem className="gap-4 rounded-xl border border-gray-200 p-4">
-            <label className="relative flex cursor-pointer select-none items-center gap-2">
+            <label className="relative flex cursor-pointer items-center gap-2 select-none">
               <input
                 type="checkbox"
                 checked={allChecked}
@@ -95,7 +95,7 @@ export function AgreementField<T extends FieldValues>({
                 return (
                   <div key={item.key} className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
-                      <label className="relative flex cursor-pointer select-none items-center gap-2">
+                      <label className="relative flex cursor-pointer items-center gap-2 select-none">
                         <input
                           type="checkbox"
                           checked={checked}

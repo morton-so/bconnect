@@ -28,5 +28,6 @@
     "**/build": true,
     "**/.turbo": true,
     "pnpm-lock.yaml": true
-  }
+  },
+  "search.useIgnoreFiles": false
 }

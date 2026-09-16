@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 인스타그램 업로드 — 디자인 미정
+ * @figma-todo 인스타그램 업로드 — 디자인 미정
  */
 'use client'
 
@@ -191,18 +191,18 @@ export default function InstagramUploadPage() {
                   </div>
 
                   {post.type === 'video' && (
-                    <div className="absolute right-2 top-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
+                    <div className="absolute top-2 right-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
                       동영상
                     </div>
                   )}
 
                   {selected.has(post.id) && (
-                    <div className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-pink-500 text-white">
+                    <div className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full bg-pink-500 text-white">
                       ✓
                     </div>
                   )}
 
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                  <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/60 to-transparent p-2">
                     <p className="text-xs text-white">{formatDate(post.timestamp)}</p>
                     {post.caption && (
                       <p className="line-clamp-1 text-xs text-white/80">{post.caption}</p>

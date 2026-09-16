@@ -15,22 +15,22 @@ import { cn } from '../../lib/utils'
  * - ghost: 회색 테두리, 회색 텍스트 (비활성_stroke)
  */
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-lg text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-transparent disabled:bg-gray-100 disabled:text-gray-400 disabled:font-medium cursor-pointer active:scale-[0.98]',
+  'inline-flex cursor-pointer items-center justify-center rounded-lg text-sm font-medium transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white focus-visible:outline-none active:scale-[0.98] disabled:pointer-events-none disabled:cursor-not-allowed disabled:border-transparent disabled:bg-gray-100 disabled:font-medium disabled:text-gray-400',
   {
     variants: {
       variant: {
         // 활성 - 파란색 배경
-        primary: 'bg-primary text-white font-semibold hover:bg-primary-600',
+        primary: 'bg-primary font-semibold text-white hover:bg-primary-600',
         // 비활성 - 회색 배경
-        secondary: 'bg-gray-100 text-gray-500 font-medium',
+        secondary: 'bg-gray-100 font-medium text-gray-500',
         // 활성_stroke - 파란색 테두리
         outline:
-          'border border-primary bg-transparent text-primary font-semibold hover:bg-primary/10',
+          'border border-primary bg-transparent font-semibold text-primary hover:bg-primary/10',
         // 비활성_stroke - 회색 테두리
-        ghost: 'border border-gray-500 bg-transparent text-gray-500 font-medium',
+        ghost: 'border border-gray-500 bg-transparent font-medium text-gray-500',
         // 파괴적 - 빨강 테두리 (삭제 등)
         destructive:
-          'border border-destructive bg-transparent text-destructive font-semibold hover:bg-destructive/10',
+          'border border-destructive bg-transparent font-semibold text-destructive hover:bg-destructive/10',
         // 텍스트형 - 테두리·채움 없음, 호버 bg (다이얼로그 액션 등)
         text: 'bg-transparent text-gray-700 hover:bg-gray-100',
       },

@@ -37,7 +37,7 @@ export default function SignupCompletePage() {
       </main>
 
       {/* Start Button */}
-      <div className="bg-white px-4 pb-8 pt-4">
+      <div className="bg-white px-4 pt-4 pb-8">
         <Button asChild variant="primary" size="full">
           <Link href="/">시작하기</Link>
         </Button>

@@ -26,8 +26,8 @@ const topBarVariants = cva('sticky top-0 z-40 flex h-15 w-full items-center bg-w
 function CountBadge({ count }: { count?: number }) {
   if (count === undefined || count <= 0) return null
   return (
-    <div className="absolute -right-[7.5px] -top-[3.5px] flex min-w-[15px] items-center justify-center rounded-full bg-destructive px-1">
-      <span className="text-[10px] font-bold leading-[15px] text-white">
+    <div className="absolute -top-[3.5px] -right-[7.5px] flex min-w-[15px] items-center justify-center rounded-full bg-destructive px-1">
+      <span className="text-[10px] leading-[15px] font-bold text-white">
         {count > 99 ? '99+' : count}
       </span>
     </div>
@@ -70,12 +70,12 @@ function UtilityIcons({
   return (
     <div className="flex items-center">
       {notifyHref && (
-        <Link href={notifyHref} className={cn(iconButtonClass, 'pl-4 pr-2')} aria-label="알림">
+        <Link href={notifyHref} className={cn(iconButtonClass, 'pr-2 pl-4')} aria-label="알림">
           <NotifyBadgeIcon count={notifyCount} />
         </Link>
       )}
       {chatHref && (
-        <Link href={chatHref} className={cn(iconButtonClass, '-mr-4 pl-2 pr-4')} aria-label="채팅">
+        <Link href={chatHref} className={cn(iconButtonClass, '-mr-4 pr-4 pl-2')} aria-label="채팅">
           <ChatBadgeIcon count={chatCount} />
         </Link>
       )}
@@ -190,7 +190,7 @@ const TopBar = React.forwardRef<HTMLElement, TopBarProps>(
     ) : leftHref ? (
       <Link
         href={leftHref}
-        className={cn(iconButtonClass, '-ml-4 pl-4 pr-2')}
+        className={cn(iconButtonClass, '-ml-4 pr-2 pl-4')}
         aria-label={leftLabel}
       >
         {leftIcon}
@@ -199,7 +199,7 @@ const TopBar = React.forwardRef<HTMLElement, TopBarProps>(
       <button
         type="button"
         onClick={onLeft}
-        className={cn(iconButtonClass, '-ml-4 pl-4 pr-2')}
+        className={cn(iconButtonClass, '-ml-4 pr-2 pl-4')}
         aria-label={leftLabel}
       >
         {leftIcon}
@@ -235,7 +235,7 @@ const TopBar = React.forwardRef<HTMLElement, TopBarProps>(
               actionHref ? (
                 <Link
                   href={actionHref}
-                  className={cn(iconButtonClass, '-mr-4 pl-2 pr-4 text-gray-900')}
+                  className={cn(iconButtonClass, '-mr-4 pr-4 pl-2 text-gray-900')}
                   aria-label={actionLabel}
                 >
                   {actionIcon}
@@ -244,7 +244,7 @@ const TopBar = React.forwardRef<HTMLElement, TopBarProps>(
                 <button
                   type="button"
                   onClick={onAction}
-                  className={cn(iconButtonClass, '-mr-4 pl-2 pr-4 text-gray-900')}
+                  className={cn(iconButtonClass, '-mr-4 pr-4 pl-2 text-gray-900')}
                   aria-label={actionLabel}
                 >
                   {actionIcon}

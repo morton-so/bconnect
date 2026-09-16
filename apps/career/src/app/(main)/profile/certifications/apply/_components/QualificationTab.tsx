@@ -93,7 +93,7 @@ export function QualificationTab({
         {/* 타이틀 + 설명 */}
         <div className="flex flex-col gap-1">
           <h3 className="text-sb-14 text-gray-900">{info.title}</h3>
-          <p className="whitespace-pre-line text-r-12 text-gray-500">
+          <p className="text-r-12 whitespace-pre-line text-gray-500">
             {info.description}
             {!isOther && info.detailHref && (
               <>

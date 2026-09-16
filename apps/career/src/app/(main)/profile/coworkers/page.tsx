@@ -52,7 +52,7 @@ export default function CoworkersPage() {
       />
 
       {/* 하단: 동료 목록 — 행 ⋮ 메뉴로 동료 관리 */}
-      <p className="px-4 pb-1 pt-3 text-r-14 text-gray-500">동료 목록</p>
+      <p className="px-4 pt-3 pb-1 text-r-14 text-gray-500">동료 목록</p>
       <CoworkerList
         coworkers={coworkers ?? []}
         isLoading={isLoading}
@@ -63,7 +63,7 @@ export default function CoworkersPage() {
             type="button"
             aria-label="동료 관리"
             onClick={() => openFor(coworker)}
-            className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 outline-none transition-colors hover:bg-gray-100 focus-visible:ring-1 focus-visible:ring-primary active:scale-95"
+            className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors outline-none hover:bg-gray-100 focus-visible:ring-1 focus-visible:ring-primary active:scale-95"
           >
             <MoreVerticalIcon size={16} />
           </button>

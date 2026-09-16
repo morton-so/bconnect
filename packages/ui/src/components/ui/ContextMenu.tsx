@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 공용 우클릭 컨텍스트 메뉴 프리미티브 — 디자인 미정 (#576)
+ * @figma-todo 공용 우클릭 컨텍스트 메뉴 프리미티브 — 디자인 미정 (#576)
  */
 'use client'
 
@@ -36,7 +36,7 @@ export function ContextMenu({ trigger, items }: ContextMenuProps) {
               disabled={item.disabled}
               onSelect={item.onSelect}
               className={cn(
-                'flex w-full cursor-pointer items-center px-3 py-2 text-r-14 outline-none hover:bg-secondary data-[highlighted]:bg-secondary data-[disabled]:cursor-not-allowed data-[disabled]:text-gray-400',
+                'flex w-full cursor-pointer items-center px-3 py-2 text-r-14 outline-none hover:bg-secondary data-[disabled]:cursor-not-allowed data-[disabled]:text-gray-400 data-[highlighted]:bg-secondary',
                 item.destructive ? 'text-[#FF4242]' : 'text-gray-900'
               )}
             >

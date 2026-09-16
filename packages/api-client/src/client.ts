@@ -9,9 +9,13 @@ import { setAuthHint, clearAuthHint } from './auth-hint'
 
 const getBaseUrl = () => {
   if (typeof window === 'undefined') {
-    return process.env.API_URL || 'http://localhost:8080'
+    const apiUrl = process.env.API_URL
+    if (!apiUrl) throw new Error('API_URL is required')
+    return apiUrl
   }
-  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  if (!apiUrl) throw new Error('NEXT_PUBLIC_API_URL is required')
+  return apiUrl
 }
 
 // Access Token 인메모리 저장
@@ -76,8 +80,7 @@ async function doRefresh(): Promise<boolean> {
       credentials: 'include',
     })
     const json = (await response.json()) as
-      | ApiSuccessResponse<{ accessToken: string }>
-      | ApiErrorResponse
+      ApiSuccessResponse<{ accessToken: string }> | ApiErrorResponse
 
     if (json.success) {
       setAccessToken(json.data.accessToken)

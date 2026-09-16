@@ -1,5 +1,5 @@
 /**
- * @figma-pending 타인 프로필 동료 목록 — 본인 /profile/coworkers 와 동일 CoworkerList 재사용
+ * @figma-todo 타인 프로필 동료 목록 — 본인 /profile/coworkers 와 동일 CoworkerList 재사용
  */
 'use client'
 
@@ -46,7 +46,7 @@ export default function MemberCoworkersPage() {
               type="button"
               aria-label="동료 관리"
               onClick={() => openFor(coworker)}
-              className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 outline-none transition-colors hover:bg-gray-100 focus-visible:ring-1 focus-visible:ring-primary active:scale-95"
+              className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors outline-none hover:bg-gray-100 focus-visible:ring-1 focus-visible:ring-primary active:scale-95"
             >
               <MoreVerticalIcon size={16} />
             </button>

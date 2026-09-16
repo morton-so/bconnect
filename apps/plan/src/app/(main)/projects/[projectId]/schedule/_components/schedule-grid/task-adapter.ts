@@ -1,9 +1,4 @@
-import {
-  OfferStatus,
-  ROLE_LABELS,
-  TaskStatus,
-  TRADE_LABELS,
-} from '@bconnect/api-client'
+import { OfferStatus, ROLE_LABELS, TaskProgress, TRADE_LABELS } from '@bconnect/api-client'
 import type {
   CompanyTask,
   Offer,

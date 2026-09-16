@@ -90,7 +90,7 @@ export function NotificationsView(props: NotificationsViewProps) {
       type="button"
       onClick={() => markAllRead()}
       disabled={isMarkingAllRead}
-      className="cursor-pointer whitespace-nowrap text-m-12 text-primary-500 disabled:opacity-50"
+      className="cursor-pointer text-m-12 whitespace-nowrap text-primary-500 disabled:opacity-50"
     >
       모두 읽음
     </button>

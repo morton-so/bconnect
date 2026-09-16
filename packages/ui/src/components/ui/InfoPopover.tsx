@@ -21,7 +21,7 @@ export function InfoPopover({ label, children, className }: InfoPopoverProps) {
       <Popover.Trigger
         aria-label={label}
         className={cn(
-          'relative flex size-[15px] cursor-pointer items-center justify-center rounded-full text-gray-500 outline-none transition-opacity hover:opacity-60 focus-visible:ring-1 focus-visible:ring-primary active:opacity-60',
+          'relative flex size-[15px] cursor-pointer items-center justify-center rounded-full text-gray-500 transition-opacity outline-none hover:opacity-60 focus-visible:ring-1 focus-visible:ring-primary active:opacity-60',
           "before:absolute before:-inset-3 before:content-['']",
           className
         )}

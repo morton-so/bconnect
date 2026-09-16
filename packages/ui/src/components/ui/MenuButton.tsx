@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 케밥(⋮) 클릭 드롭다운 메뉴 — 디자인 미정, 데스크톱 행/카드 액션 (SPRINT4 공유 저장소 pre-build)
+ * @figma-todo 케밥(⋮) 클릭 드롭다운 메뉴 — 디자인 미정, 데스크톱 행/카드 액션 (SPRINT4 공유 저장소 pre-build)
  */
 'use client'
 
@@ -35,7 +35,7 @@ export function MenuButton({ items, ariaLabel = '메뉴', className }: MenuButto
           type="button"
           aria-label={ariaLabel}
           className={cn(
-            'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-gray-500 outline-none transition-colors hover:bg-gray-100 hover:text-gray-700 focus-visible:ring-1 focus-visible:ring-primary',
+            'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors outline-none hover:bg-gray-100 hover:text-gray-700 focus-visible:ring-1 focus-visible:ring-primary',
             className
           )}
         >
@@ -54,7 +54,7 @@ export function MenuButton({ items, ariaLabel = '메뉴', className }: MenuButto
               disabled={item.disabled}
               onSelect={item.onSelect}
               className={cn(
-                'flex cursor-pointer items-center gap-2 px-3 py-2 text-m-14 outline-none data-[highlighted]:bg-gray-50 data-[disabled]:cursor-default data-[disabled]:opacity-40',
+                'flex cursor-pointer items-center gap-2 px-3 py-2 text-m-14 outline-none data-[disabled]:cursor-default data-[disabled]:opacity-40 data-[highlighted]:bg-gray-50',
                 item.destructive ? 'text-destructive' : 'text-gray-900'
               )}
             >
