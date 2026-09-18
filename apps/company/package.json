@@ -10,8 +10,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit",
-    "msw:init": "msw init public --save"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@bconnect/api-client": "workspace:*",

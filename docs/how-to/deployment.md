@@ -127,7 +127,7 @@ git fetch origin main
 git tag <tag> <commit-sha>
 git push origin <tag>
 gh release create <tag> --title <tag> --generate-notes  # 릴리스 노트 자동 생성
-gh release upload <tag> <file>                          # 에셋(abb, apk 등) 첨부
+gh release upload <tag> <file>                          # 에셋(aab, apk 등) 첨부
 ```
 
 커밋을 Squash 하지 말고, Merge 커밋을 생성하세요.

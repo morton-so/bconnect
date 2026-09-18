@@ -1,10 +1,12 @@
 locals {
   plan_env_prod = {
     NEXT_PUBLIC_API_URL = local.api_url_prod
+    API_URL             = local.api_url_prod
   }
 
   plan_env_dev = {
     NEXT_PUBLIC_API_URL = var.api_url_dev
+    API_URL             = var.api_url_dev
   }
 
   plan_env = {

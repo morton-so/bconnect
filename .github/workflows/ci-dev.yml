@@ -81,15 +81,6 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # Vercel 팀 멤버 커밋 추가
-      - name: Trigger Vercel deploy
-        if: github.event_name == 'push'
-        run: |
-          git config user.name 'morton-admin'
-          git config user.email '245089308+morton-admin@users.noreply.github.com'
-          git commit --allow-empty -m 'chore: temp commit'
-          git push origin HEAD:dev
-
   ci-server:
     needs: changes
     if: ${{ needs.changes.outputs.server == 'true' }}
