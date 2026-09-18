@@ -27,8 +27,8 @@ export function StorageFolder({ projectId, folderId }: { projectId: string; fold
   return (
     <div className="flex h-full flex-col">
       <StorageHeader projectId={projectId} folderId={folderId} />
-      <ResizablePanelGroup direction="horizontal" className="min-h-0 flex-1">
-        <ResizablePanel defaultSize={68} minSize={40}>
+      <ResizablePanelGroup orientation="horizontal" className="min-h-0 flex-1">
+        <ResizablePanel defaultSize="68" minSize="40">
           <div className="h-full overflow-y-auto p-6">
             <h2 className="mb-4 text-base font-semibold text-gray-900">이미지</h2>
             <FolderImagesView
@@ -41,7 +41,7 @@ export function StorageFolder({ projectId, folderId }: { projectId: string; fold
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={32} minSize={20}>
+        <ResizablePanel defaultSize="32" minSize="20">
           <div className="h-full overflow-y-auto">
             {file ? (
               <StorageFileDetail

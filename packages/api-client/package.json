@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@types/react": "catalog:",
-    "orval": "^8.26.0",
+    "orval": "^8.33.0",
     "typescript": "catalog:"
   },
   "peerDependencies": {
