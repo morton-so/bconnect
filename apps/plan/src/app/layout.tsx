@@ -1,4 +1,4 @@
-import '@bconnect/ui/styles'
+import '@bconnect/ui/styles.css'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
