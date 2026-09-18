@@ -5,7 +5,7 @@ export function InsightsSection() {
   return (
     <section className="bg-gray-50 py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-5 sm:px-6">
-        <SectionHead label="INSIGHTS" title="건설 시장의 변화, 품앗이가 앞서갑니다" />
+        <SectionHead label="INSIGHTS" title="인테리어 시장의 변화, 품앗이가 앞서갑니다" />
         <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2">
           {INSIGHTS.map((insight) => {
             const isDark = insight.tone === 'dark'

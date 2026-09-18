@@ -1,9 +1,9 @@
 /**
- * @figma-todo 원클릭 조회 PoC — 백엔드 검증용, 디자인 미정
+ * @figma-todo 원클릭 조회 PoC
  */
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
-import { getCompanyInfo } from './_lib/one-click'
+import { getCompanyInfo } from '@bconnect/features/one-click'
 import {
   formatRegistrationNumber,
   isValidRegistrationNumber,

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
-import '@bconnect/ui/styles'
+import '@bconnect/ui/styles.css'
 import { Toaster } from '@bconnect/ui'
 import { SERVICE_NAME, SITE_URL, BRAND_COLOR } from '@bconnect/config/site'
 import { Analytics } from '@vercel/analytics/next'
