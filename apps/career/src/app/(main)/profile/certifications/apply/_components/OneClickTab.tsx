@@ -7,7 +7,7 @@ import type { Credential, CreateCredentialRequest, CredentialType } from '@bconn
 import { Form, FormError, FormSubmitButton, TextField, toast, useServerError } from '@bconnect/ui'
 import { formatRegistrationNumber, registrationNumberSchema } from '@bconnect/config/biz-number'
 import { CredentialList } from '@/app/(main)/profile/certifications/_components/CredentialList'
-import type { CheckItem } from '@bconnect/business/types'
+import type { CheckItem } from '@bconnect/features/one-click'
 import { lookupBusinessForApply } from '../_actions/lookupBusinessForApply'
 
 interface OneClickTabProps {

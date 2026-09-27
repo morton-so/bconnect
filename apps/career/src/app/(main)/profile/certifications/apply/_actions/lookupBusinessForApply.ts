@@ -1,7 +1,7 @@
 'use server'
 
-import { fetchOwnerVerification, fetchCheckItemById } from '@bconnect/business/fetch-business'
-import type { CheckItem, CheckItemId } from '@bconnect/business/types'
+import { fetchOwnerVerification, fetchCheckItemById } from '@bconnect/features/one-click'
+import type { CheckItem, CheckItemId } from '@bconnect/features/one-click'
 
 const APPLY_CHECK_ITEM_IDS = [
   'BUSINESS_STATUS',
