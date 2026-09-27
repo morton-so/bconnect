@@ -1,5 +1,3 @@
-// @bconnect/push - FCM Web Push 공유 인프라 (career + plan)
-
 // 부수효과 / 권한
 export { usePushNotificationListener } from './use-push-notification-listener'
 export { useNotificationSoftAsk } from './use-notification-soft-ask'

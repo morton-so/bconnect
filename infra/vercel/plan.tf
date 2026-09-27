@@ -17,7 +17,7 @@ locals {
     NEXT_PUBLIC_FIREBASE_PROJECT_ID          = var.firebase_web_configs["plan"].project_id
     NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET      = var.firebase_web_configs["plan"].storage_bucket
     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = var.firebase_web_configs["plan"].messaging_sender_id
-    NEXT_PUBLIC_FIREBASE_APP_ID              = var.firebase_web_configs["plan"].app_id
+    NEXT_PUBLIC_PLAN_FIREBASE_APP_ID         = var.firebase_web_configs["plan"].app_id
     NEXT_PUBLIC_FIREBASE_VAPID_KEY           = var.fcm_vapid_key
   }
 }

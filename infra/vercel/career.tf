@@ -20,7 +20,7 @@ locals {
     NEXT_PUBLIC_FIREBASE_PROJECT_ID          = var.firebase_web_configs["career"].project_id
     NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET      = var.firebase_web_configs["career"].storage_bucket
     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = var.firebase_web_configs["career"].messaging_sender_id
-    NEXT_PUBLIC_FIREBASE_APP_ID              = var.firebase_web_configs["career"].app_id
+    NEXT_PUBLIC_CAREER_FIREBASE_APP_ID       = var.firebase_web_configs["career"].app_id
     NEXT_PUBLIC_FIREBASE_VAPID_KEY           = var.fcm_vapid_key
   }
 }

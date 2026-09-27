@@ -11,8 +11,9 @@ export interface FcmServiceWorkerConfig {
   appId: string
 }
 
-// 빌드 타임에 템플릿을 1회 로드 (파일은 런타임 내내 변하지 않음).
-// new URL(..., import.meta.url) 패턴은 @vercel/nft 가 정적 분석해 빌드 출력에 동봉한다.
+// 런타임 주입 환경변수
+export type FcmServiceWorkerInput = Record<keyof FcmServiceWorkerConfig, string | undefined>
+
 const SW_TEMPLATE = readFileSync(
   fileURLToPath(new URL('./firebase-messaging.sw.template.js', import.meta.url)),
   'utf8'
@@ -31,9 +32,16 @@ const SW_TEMPLATE = readFileSync(
  * `referencePaths` 는 알림 딥링크 목적지 표 — 앱이 소유하고, 인앱 알림 목록·토스트와 공유한다.
  */
 export function buildFcmServiceWorker(
-  config: FcmServiceWorkerConfig,
+  config: FcmServiceWorkerInput,
   referencePaths: ReferencePathMap
 ): string {
+  const missing = Object.entries(config)
+    .filter(([, value]) => !value)
+    .map(([key]) => key)
+  if (missing.length > 0) {
+    throw new Error(`FCM 환경변수 누락: ${missing.join(', ')}`)
+  }
+
   return SW_TEMPLATE.replaceAll('__FIREBASE_CONFIG__', JSON.stringify(config)).replaceAll(
     '__REFERENCE_PATH_MAP__',
     JSON.stringify(referencePaths)

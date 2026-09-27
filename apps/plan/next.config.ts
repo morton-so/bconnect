@@ -4,6 +4,7 @@ import { sentryBuildOptions } from '@bconnect/config/sentry'
 import { noindexHeaders } from '@bconnect/config/seo'
 
 const nextConfig: NextConfig = {
+  agentRules: false,
   headers: async () => noindexHeaders(),
 }
 
