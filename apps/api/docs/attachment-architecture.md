@@ -1,4 +1,5 @@
 # attachment-architecture
+
 - 위치 : `/attachment`, `/storage/attachment`, `/core/domain`
 - 범위 : 첨부파일(Attachment)
 
@@ -43,6 +44,7 @@ sequenceDiagram
 | cleanup         | Cleanup 규칙에 따라 S3 삭제  (AttachmentCleanupService)                 |  Soft Del | -  | -  |
 
 ## 컴포넌트 구성
+
 - AttachmentKeyUtils : S3 object key · Signed Cookie scope 조립
 - AttachmentFinder : Attachment 조회
 - AttachmentUrlService : 첨부 URL 조립 (조회는 Finder, URL 은 Resolver 위임)
@@ -74,6 +76,7 @@ graph TD
     Reg --> V
     DomV -.implements.-> V
 ```
+
 - AttachmentContextValidator : 컨텍스트별 presign 권한 검증 인터페이스
 - Domain Validators : 도메인별 AttachmentContextValidator 구현체
 - AttachmentContextValidatorRegistry : Validator 등록 · presign 권한 검증 위임
@@ -98,6 +101,7 @@ graph TD
     MsgS --> Linker
     Linker --> AttR
 ```
+
 - Domain Services : 엔티티 생명주기에 따라 Attachment 참조 관리
 
 ### 조회 (Finder · Resolver)
@@ -128,6 +132,7 @@ graph TD
     Url --> Res
     Fin --> AttR
 ```
+
 - AttachmentFinder : Attachment 조회 · path 조립
 - AttachmentUrlService : 첨부 URL 조립
 - UrlResolver : 첨부 URL 조립 인터페이스
@@ -146,6 +151,7 @@ graph TD
     Sched --> Clean
     Clean --> AttR
 ```
+
 - 매주 수요일 오전 6시 Pending, Orphan 엔티티 제거 (아래 표 참고)
 
 Cleanup 규칙
@@ -163,6 +169,7 @@ Cleanup 규칙
 |---|---|---|---|---|---|---|
 | 의미 | 권한 scope | scope 식별자 | 파일 종류 | 이미지 사이즈 | 파일 식별자 | 확장자 |
 | Enum | AttachmentContext | — | AttachmentType | ImageSize | — | — |
+
 - `{context}/{contextId}/{type}/{size}/{uuid}.{ext}`
 - size 세그먼트는 `IMAGE`에만 포함 (`FILE`은 생략)
 
@@ -175,5 +182,6 @@ Enum 구성
 | AttachmentType | Storage | `IMAGE`, `FILE`                                            | 파일 종류 + path         |
 | AttachmentStatus | Storage | `PENDING`, `COMPLETED`                                                  | 파일 업로드 상태            |
 | ImageSize | Attachment | `ORIGINAL`(o), `MEDIUM`(m/webp), `SMALL`(s/webp)                        | 이미지 사이즈 + path + ext |
+
 - Context : S3 저장 경로 · Signed Cookie 권한 범위를 나타냄
 - Reference : DB 참조 · 도메인 소유를 나타냄

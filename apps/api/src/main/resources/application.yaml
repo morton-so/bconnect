@@ -44,7 +44,7 @@ app:
     secret: ${JWT_SECRET}
     access-token-expiration: 1h
     refresh-token-expiration: 7d
-    cookie-domain: ${COOKIE_DOMAIN}
+    cookie-domain: ${JWT_COOKIE_DOMAIN}
 
   data-go:
     service-key: ${DATA_GO_SERVICE_KEY}

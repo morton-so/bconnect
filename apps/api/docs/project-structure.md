@@ -144,6 +144,29 @@ graph TD
 - 이벤트는 발행 패키지에, 리스너는 구독 패키지에 위치합니다.
 - 알림 이벤트 처리는 다이어그램에서 생략합니다.
 
+### 인프라 포트 · 어댑터 구조
+
+```mermaid
+graph LR
+  Consumer[Service · Controller] --> Port[[Port]]
+  subgraph infrastructure
+    Adapter -.->|prod · dev| Port
+    Logging[Logging · Noop] -.->|local · test| Port
+  end
+```
+
+| 모듈           | 포트                     | 사용처                                          | prod · dev                    | local · test            |
+|--------------|------------------------|----------------------------------------------|-------------------------------|-------------------------|
+| attachment   | `FileStorage`          | AttachmentService · AttachmentCleanupService | S3FileStorage                 | LoggingFileStorage      |
+| attachment   | `UrlResolver`          | AttachmentUrlService                         | CloudFrontUrlResolver         | NoopUrlResolver         |
+| attachment   | `SignedCookieIssuer`   | DomainController                                   | CloudFrontSignedCookieIssuer  | NoopSignedCookieIssuer  |
+| notification | `PushSender`           | NotificationPushService                      | SnsPushSender                 | LoggingPushSender       |
+| notification | `PushEndpointRegistry` | DeviceService                                | SnsEndpointRegistry           | LoggingEndpointRegistry |
+| sms          | `SmsProvider`          | SmsEventListener                             | SolapiSmsProvider             | LoggingSmsProvider      |
+
+- 포트는 인터페이스로 사용 패키지에 위치
+- 어댑터는 `infrastructure` 패키지에 위치 · `@Profile`로 프로필 설정
+
 ### 유효성 검사
 
 - 유효성 검사 위치는 다음과 같습니다
