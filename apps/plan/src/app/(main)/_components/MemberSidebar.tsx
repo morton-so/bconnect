@@ -1,18 +1,37 @@
+/**
+ * @figma-todo 프로젝트 생성 버튼 디자인 없음
+ */
 'use client'
 
 import { usePanelNav } from '@/hooks/usePanelNav'
 import { useGetMyCompany, useGetMyMember } from '@bconnect/api-client'
 import { useUnreadChatCount, useUnreadNotificationCount } from '@bconnect/features'
 import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
-import { Select } from '@bconnect/ui'
+import { Select, toast } from '@bconnect/ui'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { useGetProjects } from '@bconnect/api-client'
+import {
+  getGetProjectsQueryKey,
+  useCreateProject,
+  useGetProjects,
+  useQueryClient,
+} from '@bconnect/api-client'
+import type { Address } from '@bconnect/api-client'
 import { SidebarFooter } from './SidebarFooter'
 
 const MAX_BADGE_COUNT = 99
+
+const DEFAULT_PROJECT_ADDRESS: Address = {
+  zipcode: '04524',
+  bcode: '1114010300',
+  state: '서울',
+  city: '중구',
+  street: '서울 중구 세종대로 110',
+  latitude: 0,
+  longitude: 0,
+}
 
 function CountBadge({ count }: { count: number }) {
   if (count <= 0) return null
@@ -68,7 +87,17 @@ function ProjectSection({
   isNavPanelOpen: boolean
 }) {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const { data: projects } = useGetProjects()
+  const { mutate: createProject, isPending: isCreating } = useCreateProject<Error>({
+    mutation: {
+      onSuccess: (id) => {
+        queryClient.invalidateQueries({ queryKey: getGetProjectsQueryKey() })
+        router.push(`/projects/${id}/schedule`)
+      },
+      onError: (error) => toast({ description: error.message, variant: 'error' }),
+    },
+  })
   const projectOptions = (projects ?? []).map((p) => ({
     value: String(p.id ?? ''),
     label: p.title ?? '',
@@ -117,6 +146,23 @@ function ProjectSection({
           options={projectOptions}
           placeholder="프로젝트 선택"
           emptyLabel="아직 프로젝트가 없어요"
+          footer={
+            <button
+              type="button"
+              disabled={isCreating}
+              onClick={() =>
+                createProject({
+                  data: {
+                    title: `새로운 프로젝트 ${(projects?.length ?? 0) + 1}`,
+                    address: DEFAULT_PROJECT_ADDRESS,
+                  },
+                })
+              }
+              className="flex w-full items-center px-3 py-2 text-left text-m-14 text-gray-700 hover:bg-secondary disabled:cursor-not-allowed disabled:text-gray-400"
+            >
+              프로젝트 생성
+            </button>
+          }
         />
         {items.map((item) => {
           const active = onSelectedProject && item.slug === activeSlug
