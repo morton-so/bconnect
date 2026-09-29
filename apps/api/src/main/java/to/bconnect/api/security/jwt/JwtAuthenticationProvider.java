@@ -43,6 +43,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
             if (type == JwtType.REFRESH) {
                 sessionService.verify(username, token);
+                return new JwtAuthenticationToken(user, token, type, jwtProvider.getExpiration(token), user.getAuthorities());
             }
 
             return new JwtAuthenticationToken(user, token, type, user.getAuthorities());

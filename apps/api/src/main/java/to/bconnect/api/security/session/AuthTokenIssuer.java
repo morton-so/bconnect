@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import to.bconnect.api.security.AuthUser;
 import to.bconnect.api.security.jwt.JwtProvider;
 
+import java.util.Date;
+
 @Component
 @RequiredArgsConstructor
 public class AuthTokenIssuer {
@@ -22,9 +24,9 @@ public class AuthTokenIssuer {
         return new IssuedTokens(accessToken, refreshToken);
     }
 
-    public IssuedTokens rotate(AuthUser user) {
+    public IssuedTokens rotate(AuthUser user, Date expiration) {
         val accessToken = jwtProvider.generateAccessToken(user);
-        val refreshToken = jwtProvider.generateRefreshToken(user.getUsername());
+        val refreshToken = jwtProvider.generateRefreshToken(user.getUsername(), expiration);
 
         sessionService.rotate(user.getUsername(), refreshToken);
 

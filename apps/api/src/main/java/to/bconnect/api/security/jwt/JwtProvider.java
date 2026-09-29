@@ -73,10 +73,14 @@ public class JwtProvider {
         val now = new Date();
         val expiration = new Date(now.getTime() + refreshTokenExpiration.toMillis());
 
+        return generateRefreshToken(username, expiration);
+    }
+
+    public String generateRefreshToken(String username, Date expiration) {
         return Jwts.builder()
                 .subject(username)
                 .claim(TOKEN_TYPE_CLAIM_KEY, REFRESH_TOKEN_TYPE)
-                .issuedAt(now)
+                .issuedAt(new Date())
                 .expiration(expiration)
                 .signWith(secret, HS256)
                 .compact();
@@ -104,6 +108,10 @@ public class JwtProvider {
 
     public String getTokenType(String token) {
         return getClaims(token).get(TOKEN_TYPE_CLAIM_KEY, String.class);
+    }
+
+    public Date getExpiration(String token) {
+        return getClaims(token).getExpiration();
     }
 
     public Claims getClaims(String token) {

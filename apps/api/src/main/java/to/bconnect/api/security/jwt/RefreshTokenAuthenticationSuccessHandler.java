@@ -50,7 +50,7 @@ public class RefreshTokenAuthenticationSuccessHandler implements AuthenticationS
             }
 
             val user = (AuthUser) authToken.getPrincipal();
-            val tokens = authTokenIssuer.rotate(user);
+            val tokens = authTokenIssuer.rotate(user, authToken.getExpiration());
 
             val cookie = cookieProvider.create(tokens.refreshToken()).toString();
             response.setCharacterEncoding("UTF-8");
