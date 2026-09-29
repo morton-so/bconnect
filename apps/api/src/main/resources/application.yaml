@@ -38,13 +38,12 @@ app:
 
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGIN}
-    allowed-origin-patterns: ${CORS_ALLOWED_ORIGIN_PATTERNS}
+    allowed-origin-patterns: ${CORS_ALLOWED_ORIGIN_PATTERNS:}
 
   jwt:
     secret: ${JWT_SECRET}
     access-token-expiration: 1h
     refresh-token-expiration: 7d
-    cookie-domain: ${JWT_COOKIE_DOMAIN}
 
   data-go:
     service-key: ${DATA_GO_SERVICE_KEY}

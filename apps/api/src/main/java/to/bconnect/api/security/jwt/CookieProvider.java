@@ -13,17 +13,14 @@ public class CookieProvider {
     private static final String COOKIE_PATH = "/api/v1/auth";
 
     private final Duration refreshTokenExpiration;
-    private final String cookieDomain;
 
     public CookieProvider(ApiConfigProps apiConfigProps) {
         this.refreshTokenExpiration = apiConfigProps.jwt().refreshTokenExpiration();
-        this.cookieDomain = apiConfigProps.jwt().cookieDomain();
     }
 
     public ResponseCookie create(String refreshToken) {
         return ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, refreshToken)
                 .path(COOKIE_PATH)
-                .domain(cookieDomain)
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("Strict")
@@ -34,7 +31,6 @@ public class CookieProvider {
     public ResponseCookie delete() {
         return ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, "")
                 .path(COOKIE_PATH)
-                .domain(cookieDomain)
                 .maxAge(0)
                 .build();
     }
