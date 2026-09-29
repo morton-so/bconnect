@@ -1,4 +1,4 @@
-import { setAccessToken, setAuthHint, clearAuthHint } from '@bconnect/api-client'
+import { setAccessToken, setAuthHint, clearAuthHint, getQueryClient } from '@bconnect/api-client'
 import { syncDeviceToken } from '@bconnect/push'
 
 /** 로그인 처리 — accessToken 만 저장. member 정보는 useGetMyMember 로 별도 조회. */
@@ -14,4 +14,5 @@ export function login(accessToken: string) {
 export function logout() {
   setAccessToken(null)
   clearAuthHint()
+  getQueryClient().clear()
 }
