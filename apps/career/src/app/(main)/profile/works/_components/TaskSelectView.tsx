@@ -31,9 +31,7 @@ export function TaskSelectView({
   const filtered = useMemo(() => {
     const q = query.trim()
     if (!q) return tasks
-    return tasks.filter(
-      (t) => matchHangul(t.title, q) || matchHangul(t.company ?? '', q)
-    )
+    return tasks.filter((t) => matchHangul(t.title, q) || matchHangul(t.company ?? '', q))
   }, [tasks, query])
 
   return (

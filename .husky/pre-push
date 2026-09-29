@@ -7,3 +7,6 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     exit 1
   fi
 done
+
+pnpm lint
+pnpm typecheck

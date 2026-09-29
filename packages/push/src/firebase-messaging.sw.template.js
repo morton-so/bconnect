@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @ts-nocheck
 /* global importScripts, firebase, self */
 // Firebase Cloud Messaging Service Worker 템플릿.
 // `@bconnect/push/server` 의 buildFcmServiceWorker 가 이 파일을 읽어
