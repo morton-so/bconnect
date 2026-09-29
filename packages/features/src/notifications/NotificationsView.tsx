@@ -112,10 +112,11 @@ export function NotificationsView(props: NotificationsViewProps) {
               const content = count > 1 ? `${n.message ?? ''} · ${count}개` : (n.message ?? '')
               const item = (
                 <NotificationItem
-                  profileImage={n.senderMember?.picture ?? n.senderCompany?.picture ?? undefined}
-                  content={content}
-                  timestamp={formatRelativeTime(n.createdAt ?? '')}
+                  picture={n.senderMember?.picture ?? n.senderCompany?.picture ?? undefined}
+                  message={content}
+                  createdAt={formatRelativeTime(n.createdAt ?? '')}
                   read={unreadIds.length === 0}
+                  href={href}
                 />
               )
               return (
