@@ -98,7 +98,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    @DisplayName("create - 사업자등록증을 첨부해 등록하면 업체가 PENDING으로 저장되고 첨부가 연결되며 PLAN 권한은 부여되지 않는다")
+    @DisplayName("create - 사업자등록증을 첨부해 등록하면 업체가 PENDING으로 저장되고 첨부가 연결되며 PLAN 권한이 부여된다")
     void create_success() {
         // given
         val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
@@ -122,14 +122,14 @@ class CompanyServiceTest {
         assertThat(linkedPicture.getReferenceType()).isEqualTo(AttachmentReferenceType.COMPANY);
         assertThat(linkedPicture.getReferenceId()).isEqualTo(companyId);
         val found = memberRepository.findById(member.getId()).orElseThrow();
-        assertThat(found.getRoles()).doesNotContain(Role.PLAN);
+        assertThat(found.getRoles()).contains(Role.PLAN);
     }
 
     @Test
-    @DisplayName("accept - 대기 중인 업체일 때 승인하면 상태가 ACCEPTED로 변경되고 PLAN 권한이 부여되며 등록증 참조가 해제된다")
+    @DisplayName("accept - 대기 중인 업체일 때 승인하면 상태가 ACCEPTED로 변경되고 등록증 참조가 해제된다")
     void accept_success() {
         // given
-        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
+        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER, Role.PLAN));
         val company = companyRepository.save(CompanyFactory.entity(member.getId()));
         val certificate = attachmentRepository.save(AttachmentFactory.entity(member.getId(), member.getId()));
         certificate.complete();
@@ -141,8 +141,6 @@ class CompanyServiceTest {
         // then
         val found = companyRepository.findById(company.getId()).orElseThrow();
         assertThat(found.getStatus()).isEqualTo(CompanyStatus.ACCEPTED);
-        val granted = memberRepository.findById(member.getId()).orElseThrow();
-        assertThat(granted.getRoles()).contains(Role.PLAN);
         val unlinked = attachmentRepository.findById(certificate.getId()).orElseThrow();
         assertThat(unlinked.getReferenceType()).isNull();
         assertThat(unlinked.getReferenceId()).isNull();
@@ -151,10 +149,10 @@ class CompanyServiceTest {
     }
 
     @Test
-    @DisplayName("deny - 대기 중인 업체일 때 반려하면 상태가 DENIED로 변경되고 등록증 참조가 해제되며 PLAN 권한은 부여되지 않는다")
+    @DisplayName("deny - 대기 중인 업체일 때 반려하면 상태가 DENIED로 변경되고 등록증 참조가 해제되며 PLAN 권한이 회수된다")
     void deny_success() {
         // given
-        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
+        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER, Role.PLAN));
         val company = companyRepository.save(CompanyFactory.entity(member.getId()));
         val certificate = attachmentRepository.save(AttachmentFactory.entity(member.getId(), member.getId()));
         certificate.complete();

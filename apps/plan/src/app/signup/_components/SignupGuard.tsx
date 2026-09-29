@@ -26,17 +26,12 @@ export function SignupGuard({ children }: { children: ReactNode }) {
     () => false
   )
 
-  const sentHereByRoleGate = isLoggedIn && pathname === '/signup/corp'
-
   const redirectTo = (() => {
     if (!hydrated) return null
-    if (sentHereByRoleGate) return null
-    // 가입 토큰이 없으면 어느 단계든 성립하지 않는다 — 인증부터.
-    if (!formData.signupToken) return '/login'
-    // 업체 생성은 이름·사용자명을 함께 보내므로 그 값이 비면 앞 단계로.
-    if (pathname === '/signup/corp' && (!formData.username || !formData.name)) {
-      return '/signup/member'
-    }
+    // 로그인 상태면 회원가입은 끝났다. 남은 단계는 업체 생성뿐.
+    if (isLoggedIn) return pathname === '/signup/corp' ? null : '/signup/corp'
+    // 업체 생성은 로그인 세션, 회원가입은 가입 토큰이 필요하다. 없으면 인증부터.
+    if (pathname === '/signup/corp' || !formData.signupToken) return '/login'
     return null
   })()
 

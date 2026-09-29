@@ -27,6 +27,7 @@ export { ShareIcon } from './ShareIcon'
 export { PencilIcon } from './PencilIcon'
 export { TrashIcon } from './TrashIcon'
 export { FolderAddIcon } from './FolderAddIcon'
+export { DownloadIcon } from './DownloadIcon'
 export { HelpCircleIcon } from './HelpCircleIcon'
 export { ImageUploadIcon } from './ImageUploadIcon'
 // 액션 메뉴(수정/숨김)용 — lucide 재export (size·currentColor). 삭제는 위 TrashIcon(figma) 사용.
