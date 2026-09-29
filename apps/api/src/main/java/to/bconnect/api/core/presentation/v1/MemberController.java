@@ -24,7 +24,8 @@ import to.bconnect.api.core.presentation.v1.response.CheckUsernameResponse;
 import to.bconnect.api.core.presentation.v1.response.MemberResponse;
 import to.bconnect.api.core.presentation.v1.response.RegisterMemberResponse;
 import to.bconnect.api.security.AuthUser;
-import to.bconnect.api.security.session.SessionTokenIssuer;
+import to.bconnect.api.security.jwt.CookieProvider;
+import to.bconnect.api.security.session.AuthTokenIssuer;
 import to.bconnect.api.storage.attachment.AttachmentContext;
 import to.bconnect.api.storage.attachment.AttachmentReferenceType;
 
@@ -36,7 +37,8 @@ public class MemberController {
     private final MemberService memberService;
     private final AttachmentUrlService attachmentUrlService;
     private final SignedCookieIssuer signedCookieIssuer;
-    private final SessionTokenIssuer sessionTokenIssuer;
+    private final AuthTokenIssuer authTokenIssuer;
+    private final CookieProvider cookieProvider;
 
     @GetMapping("/me")
     public ApiResponse<MemberResponse> get(
@@ -85,9 +87,11 @@ public class MemberController {
             HttpServletRequest request,
             HttpServletResponse response) {
         val member = memberService.register(phone, body.toCommand());
-        val session = sessionTokenIssuer.login(member.id(), member.username(), member.roles(), request, response);
+        val user = new AuthUser(member.id(), member.username(), member.roles());
+        val tokens = authTokenIssuer.login(user, request.getHeader("User-Agent"), request.getRemoteAddr());
+        response.addHeader(HttpHeaders.SET_COOKIE, cookieProvider.create(tokens.refreshToken()).toString());
 
-        return ApiResponse.success(new RegisterMemberResponse(member.id(), session.accessToken()));
+        return ApiResponse.success(new RegisterMemberResponse(member.id(), tokens.accessToken()));
     }
 
     @PutMapping("/me")

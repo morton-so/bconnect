@@ -8,7 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import to.bconnect.api.ApiConfigProps;
-import org.springframework.security.core.Authentication;
+import to.bconnect.api.security.AuthUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -47,9 +47,9 @@ public class JwtProvider {
         this.refreshTokenExpiration = properties.refreshTokenExpiration();
     }
 
-    public String generateAccessToken(Authentication authentication) {
-        val username = authentication.getName();
-        val authorities = authentication.getAuthorities()
+    public String generateAccessToken(AuthUser user) {
+        val username = user.getUsername();
+        val authorities = user.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(Objects::nonNull)

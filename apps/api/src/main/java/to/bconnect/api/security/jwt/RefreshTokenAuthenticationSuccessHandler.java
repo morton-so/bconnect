@@ -17,7 +17,8 @@ import org.springframework.stereotype.Component;
 import to.bconnect.api.common.CodeException;
 import to.bconnect.api.common.CommonExceptionCode;
 import to.bconnect.api.common.response.ApiResponse;
-import to.bconnect.api.security.session.SessionService;
+import to.bconnect.api.security.AuthUser;
+import to.bconnect.api.security.session.AuthTokenIssuer;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -31,9 +32,8 @@ import static lombok.AccessLevel.PROTECTED;
 public class RefreshTokenAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private final ObjectMapper objectMapper;
-    private final JwtProvider jwtProvider;
     private final CookieProvider cookieProvider;
-    private final SessionService sessionService;
+    private final AuthTokenIssuer authTokenIssuer;
 
     @Override
     public void onAuthenticationSuccess(@NonNull HttpServletRequest request,
@@ -49,17 +49,15 @@ public class RefreshTokenAuthenticationSuccessHandler implements AuthenticationS
                 log.debug("Generate access token from refresh token");
             }
 
-            val username = authentication.getName();
-            val accessToken = jwtProvider.generateAccessToken(authentication);
-            val refreshToken = jwtProvider.generateRefreshToken(username);
-            sessionService.rotate(username, refreshToken);
+            val user = (AuthUser) authToken.getPrincipal();
+            val tokens = authTokenIssuer.rotate(user);
 
-            val cookie = cookieProvider.create(refreshToken).toString();
+            val cookie = cookieProvider.create(tokens.refreshToken()).toString();
             response.setCharacterEncoding("UTF-8");
             response.addHeader(HttpHeaders.SET_COOKIE, cookie);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.getWriter().write(objectMapper.writeValueAsString(
-                    ApiResponse.success(new RefreshTokenResponse(accessToken))
+                    ApiResponse.success(new RefreshTokenResponse(tokens.accessToken()))
             ));
         }
     }
