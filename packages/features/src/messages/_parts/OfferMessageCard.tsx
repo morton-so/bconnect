@@ -3,7 +3,7 @@
 import { OfferStatus, TRADE_LABELS } from '@bconnect/api-client'
 import type { Address, Trade } from '@bconnect/api-client'
 import { Button, cn } from '@bconnect/ui'
-import { formatPeriod } from '@bconnect/config/format'
+import { formatPeriod } from '@bconnect/config/date'
 import type { OfferActionKind } from './types'
 
 /** 앱에서 offerId로 조회해 주입하는 섭외 카드 상세. */

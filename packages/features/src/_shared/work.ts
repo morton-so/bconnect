@@ -1,7 +1,6 @@
 import { postImageUrls } from '@bconnect/api-client'
 import type { Feed } from '@bconnect/api-client'
-import { durationDays } from '@bconnect/config/date'
-import { formatDays } from '@bconnect/config/format'
+import { durationDays, formatDays } from '@bconnect/config/date'
 
 /**
  * 작업물(Post + Task) 의 화면 표시값.

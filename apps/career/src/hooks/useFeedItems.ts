@@ -11,7 +11,7 @@ import {
 } from '@bconnect/api-client'
 import type { Trade, ProfileRole } from '@bconnect/api-client'
 import { toWork } from '@bconnect/features'
-import { formatRelativeTime } from '@bconnect/config/format'
+import { formatRelativeTime } from '@bconnect/config/date'
 import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
 import { REGION_LABELS, type Region } from '@/lib/region'
 

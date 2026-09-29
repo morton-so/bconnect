@@ -23,7 +23,7 @@ import {
   isApiErrorShape,
   toast,
 } from '@bconnect/ui'
-import { formatPeriod } from '@bconnect/config/format'
+import { formatPeriod } from '@bconnect/config/date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'

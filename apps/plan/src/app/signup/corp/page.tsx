@@ -29,7 +29,7 @@ import {
   useCreateCompany,
   requireRegisterAccessToken,
 } from '@bconnect/api-client'
-import { formatRegistrationNumber } from '@bconnect/config/biz-number'
+import { formatRegistrationNumber } from '@bconnect/config/brn'
 import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/config/consent'
 import { BIRTH_PLACEHOLDER } from '@bconnect/config/signup'
 import { login } from '@bconnect/features'

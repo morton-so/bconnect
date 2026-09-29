@@ -6,6 +6,7 @@ import parsePhoneNumber, {
   isValidPhoneNumber as isValidLibPhone,
   AsYouType,
 } from 'libphonenumber-js'
+import { z } from 'zod'
 
 /**
  * 전화번호를 한국 형식으로 포맷팅 (010-1234-5678)
@@ -37,6 +38,8 @@ export function toE164(phoneNumber: string): string {
 export function isValidPhoneNumber(phoneNumber: string): boolean {
   return isValidLibPhone(phoneNumber, 'KR')
 }
+
+export const phoneField = z.string().refine(isValidPhoneNumber, '유효하지 않은 전화번호입니다.')
 
 /**
  * E.164 형식을 한국 형식으로 변환 (+821012345678 → 010-1234-5678)

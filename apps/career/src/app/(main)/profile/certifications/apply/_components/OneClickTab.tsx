@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Credential, CreateCredentialRequest, CredentialType } from '@bconnect/api-client'
 import { Form, FormError, FormSubmitButton, TextField, toast, useServerError } from '@bconnect/ui'
-import { formatRegistrationNumber, registrationNumberSchema } from '@bconnect/config/biz-number'
+import { brnField, formatRegistrationNumber } from '@bconnect/config/brn'
+import { nameField } from '@bconnect/config/name'
 import { CredentialList } from '@/app/(main)/profile/certifications/_components/CredentialList'
 import type { CheckItem } from '@bconnect/features/one-click'
 import { lookupBusinessForApply } from '../_actions/lookupBusinessForApply'
@@ -35,8 +36,8 @@ const formatOpenDate = (value: string): string => {
 }
 
 const oneClickSchema = z.object({
-  businessNumber: registrationNumberSchema,
-  ownerName: z.string().trim().min(1, '대표자 성명을 입력해주세요'),
+  businessNumber: brnField,
+  ownerName: nameField('대표자 성명'),
   openDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, '개업일자를 YYYY-MM-DD 형식으로 입력해주세요')

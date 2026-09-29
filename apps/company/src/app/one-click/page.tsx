@@ -4,11 +4,7 @@
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { getCompanyInfo } from '@bconnect/features/one-click'
-import {
-  formatRegistrationNumber,
-  isValidRegistrationNumber,
-  registrationNumberSchema,
-} from '@bconnect/config/biz-number'
+import { brnField, formatRegistrationNumber, isValidRegistrationNumber } from '@bconnect/config/brn'
 import { SearchBar } from './_components/SearchBar'
 import { TipBanner } from './_components/TipBanner'
 import { CompanyHeader } from './_components/CompanyHeader'
@@ -53,7 +49,7 @@ async function CompanyHeaderLoader({ registrationNumber }: { registrationNumber:
 
 export default async function OneClickPage({ searchParams }: PageProps) {
   const { q } = await searchParams
-  const parsed = q ? registrationNumberSchema.safeParse(q) : undefined
+  const parsed = q ? brnField.safeParse(q) : undefined
   // 조회 API 는 하이픈 없는 10자리를 받는다
   const brn = parsed?.success ? parsed.data : undefined
   const errorMessage = parsed && !parsed.success ? parsed.error.issues[0]?.message : undefined

@@ -10,7 +10,7 @@ import {
   type TaxpayerStatus,
   type Verdict,
 } from '@bconnect/api-client'
-import { formatRegistrationNumber } from '@bconnect/config/biz-number'
+import { formatRegistrationNumber } from '@bconnect/config/brn'
 
 import type { CheckCategory, CheckItem, CheckItemId, CompanyInfo, StatusType } from './types'
 import type { VerifyOwnerResult } from './types'

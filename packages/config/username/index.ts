@@ -4,9 +4,9 @@
  */
 import { z } from 'zod'
 
-export const USERNAME_MIN_LENGTH = 3
-export const USERNAME_MAX_LENGTH = 30
-export const USERNAME_PATTERN = /^[a-zA-Z0-9_.]+$/
+const USERNAME_MIN_LENGTH = 3
+const USERNAME_MAX_LENGTH = 30
+const USERNAME_PATTERN = /^[a-zA-Z0-9_.]+$/
 
 /**
  * 입력 정제 — 허용 문자(영문/숫자/`_`/`.`)만 남기고 소문자화.
