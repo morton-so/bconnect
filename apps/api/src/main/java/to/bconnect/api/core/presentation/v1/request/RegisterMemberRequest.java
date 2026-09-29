@@ -12,7 +12,7 @@ public record RegisterMemberRequest(
         @NotBlank String username,
         @NotBlank String name,
         @NotNull LocalDate birth,
-        boolean marketingConsent
+        @NotNull Boolean marketingConsent
 ) {
     public RegisterMember toCommand() {
         return new RegisterMember(username, name, birth, marketingConsent, Set.of(Role.GUEST));

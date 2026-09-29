@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useLogout, useDeleteMyMember } from '@bconnect/api-client'
 import { TopBar, ConfirmDialog, toast, isApiErrorShape } from '@bconnect/ui'
+import { SITE_URL } from '@bconnect/config/site'
 import { useSessionExit } from '@/hooks/useSessionExit'
 import { SettingsRow } from './_components/SettingsRow'
 
@@ -57,8 +58,8 @@ export default function SettingsPage() {
         <section className="flex flex-col gap-1">
           <h2 className="text-sb-16 text-gray-900">이용정책</h2>
           <div className="flex flex-col">
-            <SettingsRow label="서비스 이용약관" href="/terms" />
-            <SettingsRow label="개인정보 처리방침" href="/privacy" />
+            <SettingsRow label="서비스 이용약관" href={`${SITE_URL.company}/terms`} />
+            <SettingsRow label="개인정보 처리방침" href={`${SITE_URL.company}/privacy`} />
           </div>
         </section>
 

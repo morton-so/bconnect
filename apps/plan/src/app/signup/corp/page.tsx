@@ -80,6 +80,7 @@ export default function SignupCorpPage() {
                   birth: BIRTH_PLACEHOLDER,
                   username: formData.username,
                   name: formData.name,
+                  marketingConsent: data.agreements.marketing,
                 },
               })
             )

@@ -3,7 +3,6 @@ import re
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.alias_generators import to_camel
 
-# 노션 서비스정책문서 SSOT — 25개 + 기타
 TRADES = [
     "설계", "철거/확장", "전기", "배관", "설비",
     "조적", "목공", "창호", "방수", "미장", "단열",
@@ -56,8 +55,6 @@ CHANNEL_KR_BY_PLATFORM = {
 # BE CrawledCredentialType enum
 CREDENTIAL_TYPES = ["EDUCATION", "CERTIFICATE", "AWARD", "LICENSE"]
 
-# 검색 키워드 — 세부 시공분야 (이송목 제공)
-# 이 키워드로 검색 후, LLM이 SSOT 25개 중 하나로 매핑한다.
 SEARCH_KEYWORDS = [
     "설계", "철거", "확장", "토공", "포장", "보링", "발파", "측량",
     "내선전기", "외선전기",

@@ -19,6 +19,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/'],
     },
-    sitemap: `${SITE_URL.landing}/sitemap.xml`,
+    sitemap: `${SITE_URL.company}/sitemap.xml`,
   }
 }

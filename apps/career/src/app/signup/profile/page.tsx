@@ -113,10 +113,10 @@ export default function SignupProfilePage() {
             requireRegisterAccessToken(
               await registerMemberMutation.mutateAsync({
                 data: {
-                  // TODO(#1177): 생년월일 입력 화면이 생기면 폼 입력으로 교체
-                  birth: BIRTH_PLACEHOLDER,
+                  birth: BIRTH_PLACEHOLDER, // TODO: Date Picker로 교체
                   username: formData.username,
                   name: formData.name,
+                  marketingConsent: data.agreements.marketing,
                 },
               })
             )
@@ -169,7 +169,6 @@ export default function SignupProfilePage() {
     <div className="flex h-dvh flex-col">
       <SignupHeader step={3} onBack={() => router.back()} />
 
-      {/* Content */}
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit, scrollToError)}
@@ -182,10 +181,8 @@ export default function SignupProfilePage() {
               역할을 선택해주세요
             </h1>
 
-            {/* 공종 */}
             <TradeSelector control={control} name="fields" max={MAX_TRADES} />
 
-            {/* 대표분야 */}
             <SelectField
               control={control}
               name="primaryField"
@@ -200,7 +197,6 @@ export default function SignupProfilePage() {
               }))}
             />
 
-            {/* 경력 */}
             <NumberField
               control={control}
               name="experience"
@@ -210,7 +206,6 @@ export default function SignupProfilePage() {
               placeholder="경력을 입력해주세요 (년)"
             />
 
-            {/* 유형 */}
             <FormField
               control={control}
               name="role"
@@ -235,7 +230,6 @@ export default function SignupProfilePage() {
               )}
             />
 
-            {/* 주소 */}
             <AddressField
               control={control}
               name="address"
@@ -244,7 +238,6 @@ export default function SignupProfilePage() {
               description="정확한 매칭을 위해 일하는 곳을 기준으로 입력해주세요"
             />
 
-            {/* 한줄소개 */}
             <TextField
               control={control}
               name="headline"
@@ -254,7 +247,6 @@ export default function SignupProfilePage() {
               placeholder="한줄소개를 입력해주세요 (최대 20글자)"
             />
 
-            {/* 약관·개인정보 동의 (#733) */}
             <AgreementField control={control} name="agreements" items={CONSENT_ITEMS} />
 
             <FormError error={server.formError} />

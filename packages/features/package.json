@@ -6,7 +6,6 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./legal": "./src/legal/index.ts",
     "./one-click": "./src/one-click/index.ts"
   },
   "dependencies": {
