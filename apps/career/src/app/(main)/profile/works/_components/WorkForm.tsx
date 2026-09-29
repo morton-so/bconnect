@@ -136,9 +136,7 @@ export function WorkForm({ postId }: { postId?: number }) {
 
   const scrollToError = useScrollToError()
   const server = useServerError(form.control, (err) =>
-    err instanceof UploadError
-      ? { message: err.message }
-      : passthroughError<WorkFormValues>(undefined, '저장에 실패했어요. 다시 시도해주세요.')(err)
+    err instanceof UploadError ? { message: err.message } : passthroughError<WorkFormValues>()(err)
   )
   const onSave = form.handleSubmit(async (data) => {
     if (me?.id == null || saving) return

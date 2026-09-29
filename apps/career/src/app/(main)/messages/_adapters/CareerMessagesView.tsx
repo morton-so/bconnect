@@ -30,12 +30,8 @@ import {
   type OfferMessageDetail,
   type OfferMessageEntry,
 } from '@bconnect/features'
-import { isApiErrorShape, toast } from '@bconnect/ui'
+import { toast } from '@bconnect/ui'
 import { careerShell } from '@/app/(main)/_adapters/careerShell'
-
-function offerActionErrorMessage(error: unknown, fallback: string): string {
-  return isApiErrorShape(error) ? error.message : fallback
-}
 
 /** 메시지 목록 (/messages) — My 훅 + 병렬 Profile 보강을 resolve 해 MessagesView 로 내려준다. */
 export function CareerMessagesList() {
@@ -193,36 +189,22 @@ export function CareerChatRoom({ chatId }: { chatId: number }) {
   ])
 
   // 무효화(수락/거절 → getTasks·getTaskOffers)는 orval mutationInvalidates 가 자동 처리 (ADR-0025)
-  const accept = useAcceptOffer({
+  const accept = useAcceptOffer<Error>({
     mutation: {
       onSuccess: (_data, variables) => {
         applyOfferStatus(variables.id, OfferStatus.ACCEPTED)
         toast({ description: '섭외를 수락했어요', variant: 'success' })
       },
-      onError: (error) =>
-        toast({
-          description: offerActionErrorMessage(
-            error,
-            '섭외를 수락하지 못했어요. 다시 시도해주세요'
-          ),
-          variant: 'error',
-        }),
+      onError: (error) => toast({ description: error.message, variant: 'error' }),
     },
   })
-  const deny = useDenyOffer({
+  const deny = useDenyOffer<Error>({
     mutation: {
       onSuccess: (_data, variables) => {
         applyOfferStatus(variables.id, OfferStatus.DENIED)
         toast({ description: '섭외를 거절했어요', variant: 'success' })
       },
-      onError: (error) =>
-        toast({
-          description: offerActionErrorMessage(
-            error,
-            '섭외를 거절하지 못했어요. 다시 시도해주세요'
-          ),
-          variant: 'error',
-        }),
+      onError: (error) => toast({ description: error.message, variant: 'error' }),
     },
   })
   const pendingOfferId =
@@ -234,11 +216,10 @@ export function CareerChatRoom({ chatId }: { chatId: number }) {
 
   // 상대방이 변경한 섭외 상태는 소켓 수신 시 다시 조회한다.
   const handleOfferMessage = useCallback(() => {
-    void queryClient.invalidateQueries({ queryKey: getGetTasksQueryKey() })
+    queryClient.invalidateQueries({ queryKey: getGetTasksQueryKey() })
     // 작업 목록에서 빠진 섭외의 상세는 단건 조회 캐시에서 읽는다 — 같이 무효화하지 않으면
     // 만료·취소 후에도 옛 ACTIVE 가 남아 카드가 수락/거절 버튼을 계속 띄운다.
-    for (const id of offerIds)
-      void queryClient.invalidateQueries({ queryKey: getGetOfferQueryKey(id) })
+    for (const id of offerIds) queryClient.invalidateQueries({ queryKey: getGetOfferQueryKey(id) })
   }, [queryClient, offerIds])
 
   const data: ChatViewData = {

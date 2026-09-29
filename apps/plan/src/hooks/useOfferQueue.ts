@@ -44,10 +44,10 @@ export function useOfferQueue(taskId: string | null | undefined) {
 
   const invalidate = () => {
     if (numId == null) return
-    void queryClient.invalidateQueries({ queryKey: getGetTaskOffersQueryKey(numId) })
+    queryClient.invalidateQueries({ queryKey: getGetTaskOffersQueryKey(numId) })
     // 첫 offer 자동 ACTIVE 승격/취소가 '섭외중'·대표 기술자 파생에 반영되도록 tasks 도 갱신
     if (task?.projectId)
-      void queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: getGetProjectTasksQueryKey(Number(task.projectId)),
       })
   }

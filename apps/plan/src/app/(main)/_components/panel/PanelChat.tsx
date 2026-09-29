@@ -65,17 +65,17 @@ export function PanelChat({ chatId }: { chatId: number }) {
     const map = new Map<number, OfferMessageEntry>()
     offerIds.forEach((id, index) => {
       const query = offerQueries[index]
-      if (query?.isLoading) return void map.set(id, { isLoading: true })
-      if (query?.isError) return void map.set(id, { isError: true })
+      if (query?.isLoading) return map.set(id, { isLoading: true })
+      if (query?.isError) return map.set(id, { isError: true })
       const offer = query?.data
-      if (offer == null) return void map.set(id, {})
+      if (offer == null) return map.set(id, {})
 
       const task = taskById.get(offer.taskId)
       if (task == null) {
-        if (isTasksLoading) return void map.set(id, { isLoading: true })
-        if (isTasksIncomplete) return void map.set(id, { isError: true })
+        if (isTasksLoading) return map.set(id, { isLoading: true })
+        if (isTasksIncomplete) return map.set(id, { isError: true })
         // 작업 목록을 모두 정상 조회했는데 없는 건 — 상태만 채워 종료 섭외처럼 표시한다.
-        return void map.set(id, { detail: { offerId: offer.id, status: offer.status } })
+        return map.set(id, { detail: { offerId: offer.id, status: offer.status } })
       }
       map.set(id, {
         detail: {
@@ -96,9 +96,8 @@ export function PanelChat({ chatId }: { chatId: number }) {
   // 상대방이 변경한 섭외 상태는 소켓 수신 시 다시 조회한다.
   const handleOfferMessage = useCallback(() => {
     for (const id of projectIds)
-      void queryClient.invalidateQueries({ queryKey: getGetProjectTasksQueryKey(id) })
-    for (const id of offerIds)
-      void queryClient.invalidateQueries({ queryKey: getGetOfferQueryKey(id) })
+      queryClient.invalidateQueries({ queryKey: getGetProjectTasksQueryKey(id) })
+    for (const id of offerIds) queryClient.invalidateQueries({ queryKey: getGetOfferQueryKey(id) })
   }, [queryClient, projectIds, offerIds])
 
   const data: ChatViewData = {

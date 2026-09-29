@@ -158,7 +158,7 @@ export function PanelTask({ taskId }: { taskId?: string }) {
         setCancelOpen(true)
         return
       }
-      if (!isCreating) void confirmDraft(parsed.data)
+      if (!isCreating) confirmDraft(parsed.data)
       return
     }
     // 편집 즉시저장 debounce 대기분 유실 방지

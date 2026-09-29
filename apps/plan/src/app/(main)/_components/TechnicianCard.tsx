@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button, CertTag, SkillTag, toast, isApiErrorShape } from '@bconnect/ui'
+import { Button, CertTag, SkillTag, toast } from '@bconnect/ui'
 import { TRADE_LABELS, useAuthHint, useCreateDirectChat } from '@bconnect/api-client'
 import { usePanelNav } from '@/hooks/usePanelNav'
 import type { MemberTechnicianItem } from '@/hooks/useTechnicianItems'
@@ -67,7 +67,7 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
   // 프로필 패널 세그먼트는 profile.id 가 아니라 memberId (GET /profiles/{id} 가 memberId 조회)
   const profileHref = panelHref(`profile/${item.memberId}`)
   const gated = isAuthenticated ? undefined : requireLogin
-  const { mutate: createDirectChat, isPending: isCreatingChat } = useCreateDirectChat()
+  const { mutate: createDirectChat, isPending: isCreatingChat } = useCreateDirectChat<Error>()
 
   const metaParts = [
     item.location,
@@ -146,13 +146,7 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
                     { data: { memberId: item.memberId } },
                     {
                       onSuccess: (chatId) => openPanel(`messages/${chatId}`),
-                      onError: (error) =>
-                        toast({
-                          description: isApiErrorShape(error)
-                            ? error.message
-                            : '대화를 시작하지 못했어요. 다시 시도해주세요',
-                          variant: 'error',
-                        }),
+                      onError: (error) => toast({ description: error.message, variant: 'error' }),
                     }
                   )
                 }

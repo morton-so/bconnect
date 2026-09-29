@@ -59,7 +59,7 @@ export function NotificationsView(props: NotificationsViewProps) {
   // 개별 hook 을 N 번 부르면 성공마다 재조회가 몰리므로(thundering) raw 함수 + 단일 invalidate.
   const readOnClick = (unreadIds: number[]) => {
     if (unreadIds.length === 0) return
-    void Promise.all(unreadIds.map((id) => updateNotificationRead(id))).then(() => {
+    Promise.all(unreadIds.map((id) => updateNotificationRead(id))).then(() => {
       queryClient.invalidateQueries({ queryKey: getGetNotificationsQueryKey() })
       queryClient.invalidateQueries({ queryKey: getGetNotificationsUnreadCountQueryKey() })
     })

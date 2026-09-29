@@ -6,7 +6,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useLogout, useDeleteMyMember } from '@bconnect/api-client'
-import { TopBar, ConfirmDialog, toast, isApiErrorShape } from '@bconnect/ui'
+import { TopBar, ConfirmDialog, toast } from '@bconnect/ui'
 import { SITE_URL } from '@bconnect/config/site'
 import { useSessionExit } from '@/hooks/useSessionExit'
 import { SettingsRow } from './_components/SettingsRow'
@@ -32,12 +32,7 @@ export default function SettingsPage() {
       router.push('/')
       toast({ description: '탈퇴가 완료되었어요', variant: 'success' })
     } catch (error) {
-      toast({
-        description: isApiErrorShape(error)
-          ? error.message
-          : '탈퇴에 실패했어요. 다시 시도해주세요',
-        variant: 'error',
-      })
+      toast({ description: (error as Error).message, variant: 'error' })
     }
   }
 

@@ -10,7 +10,7 @@ import {
   AttachmentContext,
   AttachmentType,
 } from '@bconnect/api-client'
-import { toast, isApiErrorShape } from '@bconnect/ui'
+import { toast } from '@bconnect/ui'
 
 // presign → S3 PUT → confirm 2-phase 업로드 (#340 계약). MEMBER 컨텍스트의 contextId는 본인 memberId.
 async function uploadProfileImage(file: File, memberId: number): Promise<number> {
@@ -56,12 +56,7 @@ export function useProfileImageUpload(memberId: number) {
         await queryClient.invalidateQueries({ queryKey: getGetMyProfileQueryKey() })
         toast({ description: '프로필 이미지를 변경했어요', variant: 'success' })
       } catch (error) {
-        toast({
-          description: isApiErrorShape(error)
-            ? error.message
-            : '이미지 변경에 실패했어요. 다시 시도해주세요',
-          variant: 'error',
-        })
+        toast({ description: (error as Error).message, variant: 'error' })
       } finally {
         setIsUploading(false)
       }

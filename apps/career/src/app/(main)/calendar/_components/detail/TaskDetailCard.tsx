@@ -20,7 +20,6 @@ import {
   TextField,
   TextareaField,
   cn,
-  isApiErrorShape,
   toast,
 } from '@bconnect/ui'
 import { formatPeriod } from '@bconnect/config/date'
@@ -99,10 +98,7 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
   })
 
   const onError = (error: unknown) =>
-    toast({
-      description: isApiErrorShape(error) ? error.message : '다시 시도해주세요',
-      variant: 'error',
-    })
+    toast({ description: (error as Error).message, variant: 'error' })
 
   const { mutate: update, isPending: saving } = useUpdateTaskWorker({
     mutation: {

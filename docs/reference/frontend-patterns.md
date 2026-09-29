@@ -150,7 +150,6 @@ career·plan 공통 화면은 `packages/features`의 `<도메인>View` 하나로
 
 ## 참고 문서
 
-- [ADR-0020](../explanation/adr/0020-dual-shell-view-sharing-rendershell-resolved-data.md) · 듀얼 셸 화면 공유
 - [figma-tag.md](./figma-tag.md) · `@figma` 태그 · 매핑 감지 도구
 
 ---
@@ -277,6 +276,7 @@ packages/ui/
 - `setError('root')` 또는 onChange 마다 `clearErrors`. [PR #369](https://github.com/morton-so/bconnect/pull/369) 버그 클래스
 - `form.watch()` 호출. `useWatch` 훅 사용. React Compiler 호환
 - `packages/ui` 가 `@bconnect/api-client` 에 import 의존. duck typing 인 `isApiErrorShape` 사용
+- 호출부 기본 문구 분기. `customFetch` 가 모든 실패에 메시지를 담으므로 `error.message` 를 그대로 표시
 - shadcn primitive `ui/shadcn/*` 직접 수정. 확장은 wrapper 에서. 예로 `TextField` 가 `TextFieldControl` 로 aria 흡수
 - `text-bconnect-*` prefix 사용. globals.css 에 정의 없는 미정의 토큰이라 Tailwind 무시
 

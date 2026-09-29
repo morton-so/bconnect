@@ -6,7 +6,7 @@
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useGetMySentRecommendations, useUpdateRecommendation } from '@bconnect/api-client'
-import { isApiErrorShape, toast } from '@bconnect/ui'
+import { toast } from '@bconnect/ui'
 import { RecommendationEditor } from '@/app/(main)/_components/RecommendationEditor'
 
 export default function EditRecommendationPage() {
@@ -19,17 +19,14 @@ export default function EditRecommendationPage() {
   const { data: sent } = useGetMySentRecommendations()
   const initialContent = sent?.find((rec) => rec.id === id)?.content ?? ''
 
-  const { mutate, isPending } = useUpdateRecommendation({
+  const { mutate, isPending } = useUpdateRecommendation<Error>({
     mutation: {
       // 무효화(update→보낸 추천서 목록)는 orval mutationInvalidates 가 자동 처리 (ADR-0025)
       onSuccess: () => {
         toast({ description: '추천서를 수정했어요', variant: 'success' })
         router.back()
       },
-      onError: (error) =>
-        setServerError(
-          isApiErrorShape(error) ? error.message : '수정하지 못했어요. 다시 시도해주세요'
-        ),
+      onError: (error) => setServerError(error.message),
     },
   })
 

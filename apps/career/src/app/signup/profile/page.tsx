@@ -56,10 +56,7 @@ export default function SignupProfilePage() {
   })
   const { control, handleSubmit, setValue } = form
 
-  const server = useServerError(
-    control,
-    passthroughError<ProfileFormData>(undefined, '회원가입에 실패했습니다. 다시 시도해주세요.')
-  )
+  const server = useServerError(control, passthroughError<ProfileFormData>())
 
   const watchedFields = useWatch({ control, name: 'fields' })
   const watchedPrimaryField = useWatch({ control, name: 'primaryField' })

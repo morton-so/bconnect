@@ -41,10 +41,7 @@ export function TaskCreateForm() {
   })
   const { control, handleSubmit } = form
   const scrollToError = useScrollToError()
-  const server = useServerError(
-    control,
-    passthroughError<CreateTaskValues>(undefined, '작업 생성에 실패했어요. 다시 시도해주세요.')
-  )
+  const server = useServerError(control, passthroughError<CreateTaskValues>())
   const { mutate, isPending } = useCreateTaskWorker()
 
   const onSubmit = (data: CreateTaskValues) => {

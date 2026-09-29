@@ -176,6 +176,7 @@ mutation 성공 시 관련 query 캐시 무효화를 `orval.config.ts` 의 `quer
 - envelope unwrap. `{success, data}` 에서 `data` 만 반환하므로 hook 의 `data` 가 raw payload
 - 401 자동 retry. access token 만료 시 refresh 후 재시도
 - ApiError 변환. `{success: false, error}` 를 `ApiError` 로 throw
+- 그 외 실패도 `ApiError` 로 throw. 네트워크 단절·타임아웃·envelope 없는 HTTP 응답은 `알 수 없는 오류가 발생했습니다. 다시 시도해주세요.` 를 담음
 
 ## 인증 처리
 
@@ -211,9 +212,6 @@ BE `ModelResolver.enumsAsRef=true` 설정으로 enum 이 named `$ref` 로 emit �
 
 ## 참조
 
-- [ADR-0015](../explanation/adr/0015-be-code-as-api-ssot.md) · BE 코드가 API SSOT
-- [ADR-0024](../explanation/adr/0024-orval-consumes-be-springdoc-spec.md) · orval 이 springdoc spec 직접 소비. 손-작성 spec 폐기, ADR-0003 supersede
-- [ADR-0004](../explanation/adr/0004-api-response-envelope.md) · `{success, data, error}` envelope
 - [ADR-0025](../explanation/adr/0025-cache-invalidation-orval-mutationinvalidates.md) · mutation 성공 시 캐시 무효화 자동 주입
 - [development.md](../how-to/development.md) · 이슈 → 브랜치 → PR → 머지 워크플로
 

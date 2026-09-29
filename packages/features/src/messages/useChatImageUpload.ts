@@ -7,7 +7,7 @@ import {
   AttachmentContext,
   AttachmentType,
 } from '@bconnect/api-client'
-import { toast, isApiErrorShape } from '@bconnect/ui'
+import { toast } from '@bconnect/ui'
 
 // BE app.attachment 설정의 복제본 — 계약으로 노출되지 않아 프런트가 값을 들고 있을 수밖에 없다.
 // BE 쪽 값이 바뀌면 여기도 같이 바꿔야 한다 (application.yaml 의 max-batch-size · max-file-size).
@@ -91,12 +91,7 @@ export function useChatImageUpload(chatId: number) {
           setProgress((prev) => (prev ? { ...prev, done: prev.done + 1 } : prev))
         )
       } catch (error) {
-        toast({
-          description: isApiErrorShape(error)
-            ? error.message
-            : '사진을 보내지 못했어요. 다시 시도해주세요',
-          variant: 'error',
-        })
+        toast({ description: (error as Error).message, variant: 'error' })
         return []
       } finally {
         setProgress(null)

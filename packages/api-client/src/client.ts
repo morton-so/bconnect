@@ -50,6 +50,8 @@ type ApiErrorResponse = {
   }
 }
 
+const DEFAULT_ERROR_MESSAGE = '알 수 없는 오류가 발생했습니다. 다시 시도해주세요.'
+
 export class ApiError extends Error {
   constructor(
     public code: string,
@@ -137,8 +139,11 @@ export const apiClient = ky.create({
 
 /**
  * 런타임에서 ApiResponse envelope (`{ success, data }`) 을 벗기고 inner data 만
- * return + 401/403 retry + 4xx → ApiError throw. spec 단계의 type 정렬은
+ * return + 401/403 retry + 모든 실패 → ApiError throw. spec 단계의 type 정렬은
  * `orval.transformer.ts` 가 담당.
+ *
+ * BE envelope 이 있으면 BE message 를, 없으면 `DEFAULT_ERROR_MESSAGE` 를 담는다.
+ * 네트워크 단절·타임아웃·envelope 없는 HTTP 응답이 후자에 해당한다.
  */
 export async function customFetch<T>(url: string, options: RequestInit = {}): Promise<T> {
   // ky prefixUrl 은 leading slash 거부 — orval URL 이 `/api/...` 로 시작하므로 strip
@@ -167,9 +172,11 @@ export async function customFetch<T>(url: string, options: RequestInit = {}): Pr
       throw error
     }
     if (error instanceof HTTPError) {
-      const json = (await error.response.json()) as ApiErrorResponse
-      throw new ApiError(json.error.code, json.error.message, error.response.status)
+      const json = error.data as ApiErrorResponse | undefined
+      if (json?.error)
+        throw new ApiError(json.error.code, json.error.message, error.response.status)
+      throw new ApiError(error.name, DEFAULT_ERROR_MESSAGE, error.response.status)
     }
-    throw error
+    throw new ApiError((error as Error).name, DEFAULT_ERROR_MESSAGE)
   }
 }

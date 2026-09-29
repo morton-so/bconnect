@@ -21,13 +21,13 @@ export function useCalendarParams() {
   )
 
   const selectDay = (iso: string) => {
-    void setParams({ day: iso, month: monthStartOf(iso) })
+    setParams({ day: iso, month: monthStartOf(iso) })
   }
 
   const setMonth = (monthIso: string) => {
     const inThisMonth = monthIso.slice(0, 7) === today.slice(0, 7)
     const nextDay = inThisMonth ? today : `${monthIso.slice(0, 8)}01`
-    void setParams({ month: monthIso, day: nextDay })
+    setParams({ month: monthIso, day: nextDay })
   }
 
   return { month, day, today, selectDay, setMonth }

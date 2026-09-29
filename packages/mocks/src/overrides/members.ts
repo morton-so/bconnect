@@ -11,8 +11,7 @@ import { setMyMockPicture } from './profiles'
 // 랜덤 available 로 signup 이 무작위로 막히던 문제 해소 + taken 에러 흐름 시연.
 const TAKEN_USERNAMES = new Set(['admin', 'test', 'taken'])
 // register(POST /members) 실패 시나리오 — username 으로 트리거. 가입 경로 계약상
-// 토큰 문제는 400(A006·A007), 중복은 409(M001·M002) 다. 복구 목적지가 셋으로 갈리므로
-// (OTP 재인증 / 사용자명 단계 / OTP 재인증 후 로그인) 각각을 재현할 수 있게 둔다.
+// 토큰 문제는 400(A006·A007), 중복은 409(M001·M002) 다.
 const REGISTER_ERROR_BY_USERNAME = new Map([
   ['invalid-token', { code: 'A006', status: 400, message: '유효하지 않은 가입 토큰입니다.' }],
   ['expired-token', { code: 'A007', status: 400, message: '만료된 가입 토큰입니다.' }],

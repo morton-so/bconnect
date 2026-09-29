@@ -70,6 +70,7 @@ import { Button, Form, TextField } from '@bconnect/ui'
 API 실패는 `useServerError` 훅으로 처리합니다.
 
 - 기본적으로 API 공통 응답 형식의 `error.message` 를 그대로 표시합니다.
+- API 공통 응답 형식이 없는 실패는 `customFetch` 가 기본 문구를 담습니다. 호출부에서 기본 문구를 지정하지 않습니다.
 - 필드 수준이 아닌 폼 전체 에러를 표시하려면 `passthroughError`를 사용합니다.
 - 사용자가 입력을 바꾸면 에러가 자동으로 사라집니다.
 

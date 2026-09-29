@@ -107,7 +107,7 @@ export default function LoginPage() {
     if (step !== 'otp' || !isCodeValid || verifyCodeMutation.isPending) return
     if (lastAutoVerifiedCode.current === codeValue) return
     lastAutoVerifiedCode.current = codeValue
-    void verifyCode({ silent: true })
+    verifyCode({ silent: true })
   }, [step, isCodeValid, codeValue, verifyCodeMutation.isPending, verifyCode])
 
   const handleSubmit = async (e: React.FormEvent) => {

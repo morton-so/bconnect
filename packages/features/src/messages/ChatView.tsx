@@ -182,7 +182,7 @@ export function ChatView(props: ChatViewProps) {
         value={message}
         onChange={setMessage}
         onSend={handleSend}
-        onPickImages={imageActions ? (files) => void handlePickImages(files) : undefined}
+        onPickImages={imageActions ? (files) => handlePickImages(files) : undefined}
         isUploading={imageActions?.isUploading}
         uploadProgress={imageActions?.progress}
       />
