@@ -1,6 +1,6 @@
 'use client'
 
-import { readAuthHint } from '@bconnect/api-client'
+import { isApiError, readAuthHint, useGetMyMember } from '@bconnect/api-client'
 import { useSignupStore } from '@/stores/signup-store'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useSyncExternalStore, type ReactNode } from 'react'
@@ -19,17 +19,25 @@ export function SignupGuard({ children }: { children: ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
   const { formData } = useSignupStore()
-  const isLoggedIn = readAuthHint()
+  const hasAuthHint = readAuthHint()
   const hydrated = useSyncExternalStore(
     (onChange) => useSignupStore.persist.onFinishHydration(onChange),
     () => useSignupStore.persist.hasHydrated(),
     () => false
   )
+  const checksRole = hydrated && hasAuthHint
+  const { data: me, error, isPending } = useGetMyMember({ query: { enabled: checksRole } })
+  const isLoggedIn = hasAuthHint && !(isApiError(error) && error.status === 401)
 
   const redirectTo = (() => {
     if (!hydrated) return null
-    // 로그인 상태면 회원가입은 끝났다. 남은 단계는 업체 생성뿐.
-    if (isLoggedIn) return pathname === '/signup/corp' ? null : '/signup/corp'
+    // 로그인시 PLAN 권한이 있으면 루트, 없거나 조회에 실패하면 업체 생성 페이지로 이동
+    if (isLoggedIn) {
+      if (isPending) return null
+      const target = me?.roles.includes('PLAN') ? '/' : '/signup/corp'
+      return pathname === target ? null : target
+    }
+    if (pathname === '/login') return null
     // 업체 생성은 로그인 세션, 회원가입은 가입 토큰이 필요하다. 없으면 인증부터.
     if (pathname === '/signup/corp' || !formData.signupToken) return '/login'
     return null
@@ -40,7 +48,7 @@ export function SignupGuard({ children }: { children: ReactNode }) {
   }, [redirectTo, router])
 
   // 이동이 확정된 렌더에서는 본문을 그리지 않는다 — 잘못된 단계 화면이 한 프레임 보이는 것 방지.
-  if (redirectTo) return null
+  if (redirectTo || (checksRole && isPending)) return null
 
   return children
 }

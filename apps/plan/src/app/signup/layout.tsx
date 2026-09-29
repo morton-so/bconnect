@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
-import { SignupGuard } from './_components/SignupGuard'
+import { SignupGuard } from '@/components/SignupGuard'
 
 /**
  * 가입 라우트 공용 레이아웃 — 제목은 여기서, 진입 판정은 SignupGuard 에서.
