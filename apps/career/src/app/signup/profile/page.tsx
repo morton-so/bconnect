@@ -5,26 +5,15 @@
 
 import { AddressField } from '@/components/AddressField'
 import { SIGNUP_ROLES } from '@/lib/role-labels'
-import { login } from '@bconnect/features'
-import { useSignupStore } from '@/stores/signup-store'
 import {
   ROLE_LABELS,
   Trade,
   TRADE_LABELS,
-  ERROR_CODE,
-  hasErrorCode,
-  isRegisterMemberSignupSessionError,
-  readAuthHint,
   refreshAccessToken,
-  useCreateMember,
   useCreateProfile,
-  requireRegisterAccessToken,
 } from '@bconnect/api-client'
 import { isCompleteAddress } from '@bconnect/config/address'
-import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/config/consent'
-import { BIRTH_PLACEHOLDER } from '@bconnect/config/signup'
 import {
-  AgreementField,
   Form,
   FormControl,
   FormError,
@@ -38,38 +27,31 @@ import {
   SelectField,
   Tag,
   TextField,
-  toast,
   useScrollToError,
   useServerError,
 } from '@bconnect/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
-import { SignupHeader } from '../_components/SignupHeader'
+import { SignupHeader } from '@/components/SignupHeader'
 import { TradeSelector } from './_components/TradeSelector'
 import { MAX_TRADES, profileSchema, type ProfileFormData } from './schema'
 
 export default function SignupProfilePage() {
   const router = useRouter()
-  const { formData, reset: resetSignup, setRegisterError } = useSignupStore()
-  // register(POST /members)는 X-Signup-Token 헤더로 인증한다 (Bearer 아님).
-  const registerMemberMutation = useCreateMember({
-    request: { headers: { 'X-Signup-Token': formData.signupToken } },
-  })
   const createProfileMutation = useCreateProfile()
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     mode: 'onTouched',
     defaultValues: {
-      fields: formData.fields || [],
-      primaryField: formData.primaryField || undefined,
-      experience: formData.experience ?? undefined,
+      fields: [],
+      primaryField: undefined,
+      experience: undefined,
       role: undefined,
       address: undefined,
       headline: '',
-      agreements: CONSENT_DEFAULT,
     },
   })
   const { control, handleSubmit, setValue } = form
@@ -78,7 +60,6 @@ export default function SignupProfilePage() {
     control,
     passthroughError<ProfileFormData>(undefined, '회원가입에 실패했습니다. 다시 시도해주세요.')
   )
-  const [issuedAccessToken, setIssuedAccessToken] = useState<string | null>(null)
 
   const watchedFields = useWatch({ control, name: 'fields' })
   const watchedPrimaryField = useWatch({ control, name: 'primaryField' })
@@ -101,52 +82,6 @@ export default function SignupProfilePage() {
   const onSubmit = async (data: ProfileFormData) => {
     if (!isCompleteAddress(data.address)) return
     try {
-      // register 는 signupToken(X-Signup-Token 헤더)을 소비 — 실패 후 재시도 시
-      // 재호출하지 않도록 발급된 accessToken을 보관한다.
-      // 로그인 상태로 이 화면에 온 경우(RequireRole 이 보냄)는 회원이 이미 있으므로 register 를 건너뛴다.
-      // 판정 소스는 게이트와 같은 표시 쿠키 — 동기 읽기라 제출 시점에 판정이 밀리지 않는다.
-      if (!readAuthHint()) {
-        let accessToken: string
-        try {
-          accessToken =
-            issuedAccessToken ??
-            requireRegisterAccessToken(
-              await registerMemberMutation.mutateAsync({
-                data: {
-                  birth: BIRTH_PLACEHOLDER, // TODO: Date Picker로 교체
-                  username: formData.username,
-                  name: formData.name,
-                  marketingConsent: data.agreements.marketing,
-                },
-              })
-            )
-        } catch (err) {
-          // 토큰 소진·만료, 그리고 이미 가입된 번호 — 모두 가입 화면에서는 풀 수 없다.
-          // 인증부터 다시 하면 토큰 재발급 또는 기존 계정 로그인으로 이어진다.
-          if (
-            isRegisterMemberSignupSessionError(err) ||
-            hasErrorCode(err, ERROR_CODE.MEMBER.DUPLICATE_PHONE)
-          ) {
-            toast({ description: err.message, variant: 'error' })
-            resetSignup()
-            router.replace('/signup/auth')
-            return
-          }
-          // 사용자명 중복은 이 화면에 입력칸이 없다 — 안내와 함께 입력 단계로 되돌린다.
-          if (hasErrorCode(err, ERROR_CODE.MEMBER.DUPLICATE_USERNAME)) {
-            setRegisterError(err.message)
-            router.replace('/signup/username')
-            return
-          }
-          throw err
-        }
-
-        if (!issuedAccessToken) {
-          setIssuedAccessToken(accessToken)
-        }
-
-        login(accessToken)
-      }
       await createProfileMutation.mutateAsync({
         data: {
           role: data.role,
@@ -159,7 +94,7 @@ export default function SignupProfilePage() {
       })
       await refreshAccessToken()
 
-      router.push('/signup/complete')
+      window.location.assign('/signup/complete')
     } catch (err) {
       server.capture(err, data)
     }
@@ -246,8 +181,6 @@ export default function SignupProfilePage() {
               maxLength={20}
               placeholder="한줄소개를 입력해주세요 (최대 20글자)"
             />
-
-            <AgreementField control={control} name="agreements" items={CONSENT_ITEMS} />
 
             <FormError error={server.formError} />
           </div>

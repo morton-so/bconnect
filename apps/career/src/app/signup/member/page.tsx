@@ -5,59 +5,64 @@
 'use client'
 
 import { useSignupStore } from '@/stores/signup-store'
-import { checkUsername } from '@bconnect/api-client'
+import { checkUsername, requireRegisterAccessToken, useCreateMember } from '@bconnect/api-client'
+import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/config/consent'
+import { BIRTH_PLACEHOLDER } from '@bconnect/config/signup'
 import { formatUsername } from '@bconnect/config/username'
-import {
-  Form,
-  FormError,
-  FormSubmitButton,
-  TextField,
-  passthroughError,
-  useServerError,
-} from '@bconnect/ui'
+import { login } from '@bconnect/features'
+import { AgreementField, Form, FormSubmitButton, TextField, toast } from '@bconnect/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { SignupHeader } from '../_components/SignupHeader'
-import { usernameSchema, type UsernameFormData } from './schema'
+import { SignupHeader } from '@/components/SignupHeader'
+import { memberSchema, type MemberFormData } from './schema'
 
-export default function SignupUsernamePage() {
+export default function SignupMemberPage() {
   const router = useRouter()
-  const { formData, setUsername, setName, registerError, setRegisterError } = useSignupStore()
+  const { formData, reset: resetSignup } = useSignupStore()
+  const registerMemberMutation = useCreateMember({
+    request: { headers: { 'X-Signup-Token': formData.signupToken } },
+  })
 
-  const form = useForm<UsernameFormData>({
-    resolver: zodResolver(usernameSchema),
+  const form = useForm<MemberFormData>({
+    resolver: zodResolver(memberSchema),
     mode: 'onTouched',
     defaultValues: {
-      name: formData.name,
-      username: formData.username,
+      name: '',
+      username: '',
+      agreements: CONSENT_DEFAULT,
     },
   })
   const { control, handleSubmit } = form
 
-  const server = useServerError(control, passthroughError<UsernameFormData>('username'))
-
-  const onSubmit = async (data: UsernameFormData) => {
-    // 가입 단계에서 되돌아오며 받은 안내는 재제출 시점에 무효해진다.
-    setRegisterError(null)
+  const onSubmit = async (data: MemberFormData) => {
     try {
       const { available } = await checkUsername({ username: data.username })
       if (!available) {
-        form.setError('username', { message: '이미 존재하는 사용자 이름입니다.' })
+        form.setError('username', { message: '이미 사용 중인 사용자명입니다.' })
         return
       }
-      setName(data.name)
-      setUsername(data.username)
-      router.push('/signup/profile')
+      const registered = await registerMemberMutation.mutateAsync({
+        data: {
+          birth: BIRTH_PLACEHOLDER, // TODO: Date Picker로 교체
+          username: data.username,
+          name: data.name,
+          marketingConsent: data.agreements.marketing,
+        },
+      })
+      login(requireRegisterAccessToken(registered))
+      resetSignup()
+      router.replace('/signup/profile')
     } catch (err) {
-      server.capture(err, data)
+      toast({ description: (err as Error).message, variant: 'error' })
+      resetSignup()
+      router.replace('/login')
     }
   }
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <SignupHeader step={2} onBack={() => router.back()} />
-
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-6 px-4 pt-3">
           <div className="flex flex-col gap-4">
@@ -66,7 +71,6 @@ export default function SignupUsernamePage() {
               <br />
               입력해 주세요
             </h1>
-
             <TextField
               control={control}
               name="name"
@@ -76,7 +80,6 @@ export default function SignupUsernamePage() {
               required
               placeholder="이름을 입력해주세요"
             />
-
             <TextField
               control={control}
               name="username"
@@ -86,12 +89,9 @@ export default function SignupUsernamePage() {
               description="ID는 프로필과 검색에 활용되며, 한 번 설정하면 변경이 불가해요."
               placeholder="아이디를 입력해주세요"
               transform={formatUsername}
-              serverError={server.fieldError('username')}
             />
+            <AgreementField control={control} name="agreements" items={CONSENT_ITEMS} />
           </div>
-
-          <FormError error={registerError ?? undefined} />
-
           <FormSubmitButton size="full">다음으로</FormSubmitButton>
         </form>
       </Form>

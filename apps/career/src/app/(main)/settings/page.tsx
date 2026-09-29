@@ -23,7 +23,7 @@ export default function SettingsPage() {
   const handleLogout = async () => {
     // 서버 호출이 실패해도 사용자는 이탈 의사를 밝혔으므로 로컬은 정리하고 이동한다.
     await exitSession(logout.mutateAsync, { clearAuthOnFailure: true }).catch(() => undefined)
-    router.push('/signup/auth')
+    router.push('/login')
   }
 
   const handleWithdraw = async () => {

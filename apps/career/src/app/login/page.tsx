@@ -14,27 +14,27 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
-import { OtpTimer } from '../_components/OtpTimer'
-import { SignupHeader } from '../_components/SignupHeader'
-import { authSchema, type AuthFormData } from './schema'
+import { SignupHeader } from '@/components/SignupHeader'
+import { OtpTimer } from './_components/OtpTimer'
+import { loginSchema, type LoginFormData } from './schema'
 
 type Step = 'phone' | 'otp'
 
-export default function SignupAuthPage() {
+export default function LoginPage() {
   const router = useRouter()
   const { setSignupToken } = useSignupStore()
 
   const [step, setStep] = useState<Step>('phone')
   const [expiresAt, setExpiresAt] = useState<string | null>(null)
 
-  const form = useForm<AuthFormData>({
-    resolver: zodResolver(authSchema),
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
     defaultValues: { phone: '', code: '' },
     mode: 'onTouched',
   })
 
-  const phoneServer = useServerError(form.control, passthroughError<AuthFormData>('phone'))
-  const codeServer = useServerError(form.control, passthroughError<AuthFormData>('code'))
+  const phoneServer = useServerError(form.control, passthroughError<LoginFormData>('phone'))
+  const codeServer = useServerError(form.control, passthroughError<LoginFormData>('code'))
 
   const sendCodeMutation = useSendOtp()
   const verifyCodeMutation = useVerifyOtp()
@@ -88,7 +88,7 @@ export default function SignupAuthPage() {
       } else {
         // 신규 유저 — signupToken 저장 후 회원가입 진행
         setSignupToken(result.signupToken)
-        router.push('/signup/username')
+        router.push('/signup/member')
       }
     } catch (err) {
       lastFailedAttempt.current = { code, error: err }

@@ -1,6 +1,6 @@
 'use client'
 
-import { readAuthHint } from '@bconnect/api-client'
+import { isApiError, readAuthHint, useGetMyMember } from '@bconnect/api-client'
 import { useSignupStore } from '@/stores/signup-store'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useSyncExternalStore, type ReactNode } from 'react'
@@ -18,28 +18,27 @@ export function SignupGuard({ children }: { children: ReactNode }) {
   const router = useRouter()
   const pathname = usePathname()
   const { formData } = useSignupStore()
-  const isLoggedIn = readAuthHint()
+  const hasAuthHint = readAuthHint()
   const hydrated = useSyncExternalStore(
     (onChange) => useSignupStore.persist.onFinishHydration(onChange),
     () => useSignupStore.persist.hasHydrated(),
     () => false
   )
-
-  // 인증 화면은 가입 토큰을 받는 곳이라 검사 대상이 아니고, 완료 화면은 이미 토큰을
-  // 비운 뒤 도착하는 곳이라 검사하면 자기 자신을 튕겨낸다.
-  const isEntryRoute = pathname === '/signup/auth'
-  const isCompleteRoute = pathname === '/signup/complete'
-  const requiresMemberInfo = pathname === '/signup/profile'
-  const sentHereByRoleGate = isLoggedIn && pathname === '/signup/profile'
+  const checksRole = hydrated && hasAuthHint
+  const { data: me, error, isPending } = useGetMyMember({ query: { enabled: checksRole } })
+  const isLoggedIn = hasAuthHint && !(isApiError(error) && error.status === 401)
 
   const redirectTo = (() => {
     if (!hydrated) return null
-    if (isEntryRoute || isCompleteRoute) return null
-    if (sentHereByRoleGate) return null
-    // 가입 토큰이 없으면 어느 단계든 성립하지 않는다 — 인증부터.
-    if (!formData.signupToken) return '/signup/auth'
-    // 프로필 제출은 이름·사용자명을 함께 보내므로 그 값이 비면 앞 단계로.
-    if (requiresMemberInfo && (!formData.username || !formData.name)) return '/signup/username'
+    if (isLoggedIn) {
+      if (isPending) return null
+      const hasRole = me?.roles.includes('CAREER') ?? false
+      if (hasRole && pathname === '/signup/complete') return null
+      const target = hasRole ? '/' : '/signup/profile'
+      return pathname === target ? null : target
+    }
+    if (pathname === '/login' || pathname === '/signup/complete') return null
+    if (pathname === '/signup/profile' || !formData.signupToken) return '/login'
     return null
   })()
 
@@ -48,7 +47,7 @@ export function SignupGuard({ children }: { children: ReactNode }) {
   }, [redirectTo, router])
 
   // 이동이 확정된 렌더에서는 본문을 그리지 않는다 — 잘못된 단계 화면이 한 프레임 보이는 것 방지.
-  if (redirectTo) return null
+  if (redirectTo || (checksRole && isPending)) return null
 
   return children
 }
