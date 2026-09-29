@@ -1,5 +1,5 @@
 /**
- * @figma-todo 케밥(⋮) 클릭 드롭다운 메뉴 — 디자인 미정, 데스크톱 행/카드 액션 (SPRINT4 공유 저장소 pre-build)
+ * @figma-todo 드롭다운 메뉴 버튼 디자인 미정
  */
 'use client'
 

@@ -1,5 +1,5 @@
 /**
- * @figma-todo 확인 다이얼로그 — 시안 미정
+ * @figma-todo 확인 다이얼로그 디자인 미정
  */
 'use client'
 

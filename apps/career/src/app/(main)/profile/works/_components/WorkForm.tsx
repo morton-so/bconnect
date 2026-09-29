@@ -1,6 +1,6 @@
 /**
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3417-12398 (입력 전)
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3417-12441 (작업 선택 후)
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3417-12398
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3417-12441
  */
 'use client'
 

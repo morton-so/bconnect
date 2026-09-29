@@ -1,5 +1,5 @@
 /**
- * @figma-todo 디자인 없음
+ * @figma-todo 개인정보처리방침 페이지 디자인 미정
  */
 import type { Metadata } from 'next'
 import { LegalDocument, type LegalBlock } from '../_components/LegalDocument'

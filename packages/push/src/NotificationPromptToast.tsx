@@ -1,4 +1,4 @@
-/** @figma-todo 확정 시안 전까지 ConfirmDialog 토큰을 준용한다. */
+/** @figma-todo 푸시 알림 권한 요청 토스트 디자인 미정 */
 'use client'
 
 import { useEffect, useRef } from 'react'

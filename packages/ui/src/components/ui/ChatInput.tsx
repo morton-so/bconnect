@@ -140,7 +140,6 @@ const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
         )}
 
         <div className="flex w-full items-center gap-2">
-          {/* 갤러리 아이콘 */}
           <input
             ref={fileInputRef}
             type="file"
@@ -192,7 +191,6 @@ const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
             />
           </div>
 
-          {/* 전송 버튼 */}
           <button
             type="button"
             // mousedown 단계에서 input 이 blur 되며 모바일 키보드가 닫힌다 (click 은 그 이후) — 기본동작 차단으로 포커스 유지 (#1147)

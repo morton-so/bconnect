@@ -108,23 +108,19 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
         )}
         {...props}
       >
-        {/* 왼쪽: 프로필 + 정보 */}
         <div
           className={cn(
             'flex min-w-0 flex-1',
             isBadge ? 'items-start gap-2.5' : 'items-center gap-4'
           )}
         >
-          {/* 프로필 이미지 */}
           <div className="size-[50px] shrink-0 overflow-hidden rounded-full bg-[#F4F4F4]">
             {profileImage && (
               <img src={profileImage} alt={name} className="size-full object-cover" />
             )}
           </div>
 
-          {/* 텍스트 정보 */}
           <div className={cn('flex min-w-0 flex-1 flex-col', !isBadge && 'gap-1')}>
-            {/* 이름 + 태그 (badge: 우측 시간) */}
             <div className="flex items-center justify-between gap-2.5">
               <div className="flex min-w-0 items-center gap-2.5">
                 <span className="shrink-0 text-sb-14 leading-[1.6]! text-[#1B1B1B]">{name}</span>
@@ -146,7 +142,6 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
               )}
             </div>
 
-            {/* 미리보기 (badge: 우측 안읽음 수) */}
             {lastMessage && (
               <div className="flex items-start justify-between gap-2">
                 <span
@@ -169,7 +164,6 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
           </div>
         </div>
 
-        {/* default: chevron */}
         {!isBadge && showChevron && (
           <ChevronIcon direction="right" className="size-4 shrink-0 text-[#A5A5A5]" />
         )}

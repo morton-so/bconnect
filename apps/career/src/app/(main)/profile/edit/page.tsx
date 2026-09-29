@@ -174,7 +174,6 @@ export default function ProfileEditPage() {
 
       <Form {...form}>
         <form className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 pt-3 pb-24">
-          {/* 공종 */}
           <FormField
             control={control}
             name="trades"
@@ -215,7 +214,6 @@ export default function ProfileEditPage() {
             )}
           />
 
-          {/* 대표분야 */}
           <SelectField
             control={control}
             name="primaryTrade"
@@ -230,7 +228,6 @@ export default function ProfileEditPage() {
             }))}
           />
 
-          {/* 경력 */}
           <NumberField
             control={control}
             name="experience"
@@ -240,7 +237,6 @@ export default function ProfileEditPage() {
             placeholder="경력을 입력해주세요 (년)"
           />
 
-          {/* 한줄소개 */}
           <TextField
             control={control}
             name="headline"
@@ -248,7 +244,6 @@ export default function ProfileEditPage() {
             placeholder="한줄소개를 입력해주세요 (최대 20글자)"
           />
 
-          {/* 소개 */}
           <TextareaField
             control={control}
             name="about"
@@ -257,7 +252,6 @@ export default function ProfileEditPage() {
             placeholder="자기소개를 입력해주세요"
           />
 
-          {/* 주소 */}
           <AddressField
             control={control}
             name="address"

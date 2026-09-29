@@ -39,12 +39,10 @@ export default function CertificationsPage() {
     <div className="flex flex-col">
       <TopBar variant="default" title="자격 증명" showAction={false} onBack={() => router.back()} />
 
-      {/* 설명 문구 */}
       <p className="px-4 py-3 text-r-12 text-gray-500">
         자격 증명을 프로필에 표시하고 신뢰도를 높여보세요
       </p>
 
-      {/* 자격 증명 목록 */}
       {credentialsList.length > 0 ? (
         <div className="flex flex-col divide-y divide-gray-300">
           {credentialsList.map((credential) => (
@@ -61,7 +59,6 @@ export default function CertificationsPage() {
         </div>
       )}
 
-      {/* 자격 증명 추가하기 버튼 */}
       <div className="px-4 py-3">
         <Button asChild variant="primary" size="full">
           <Link href="/profile/certifications/apply">자격 증명 추가하기</Link>

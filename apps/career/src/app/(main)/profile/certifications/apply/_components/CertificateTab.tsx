@@ -76,7 +76,6 @@ export function CertificateTab({
   return (
     <div className="flex flex-col">
       <div className="flex flex-col gap-4 px-4 py-4">
-        {/* 서브 탭 */}
         <div className="flex flex-wrap gap-2">
           {CERTIFICATE_SUB_KEYS.map((key) => (
             <Tag
@@ -90,7 +89,6 @@ export function CertificateTab({
           ))}
         </div>
 
-        {/* 타이틀 + 설명 */}
         <div className="flex flex-col gap-1">
           <h3 className="text-sb-14 text-gray-900">{info.title}</h3>
           <p className="text-r-12 whitespace-pre-line text-gray-500">
@@ -111,7 +109,6 @@ export function CertificateTab({
           </p>
         </div>
 
-        {/* 폼 — 발급받기 / 파일 업로드 / (그 외) 메모 + 제출 */}
         <Form {...form}>
           <form onSubmit={submit} className="flex flex-col gap-3">
             {!isOther && info.issueHref && (
@@ -135,7 +132,6 @@ export function CertificateTab({
         </Form>
       </div>
 
-      {/* 하단 자격 증명 목록 */}
       <CredentialList
         credentials={filteredCredentials}
         isLoading={isLoading}

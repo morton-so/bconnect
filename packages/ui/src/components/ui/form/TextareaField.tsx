@@ -1,5 +1,5 @@
 /**
- * @figma-todo 디자인 시안 미정 — TextField 미러링 임시 구현, 디자이너 확정 시 갈아끼움 (#400)
+ * @figma-todo 여러 줄 텍스트 필드 디자인 미정
  */
 'use client'
 

@@ -13,7 +13,7 @@ import { CrawledImage, CrawledSourceBadge } from './CrawledImage'
  * TechnicianCard 와 같은 카드 골격이되 회원 전용 요소(별점·통계·메시지)는 없고,
  * 출처 표기 + 상세 패널 + 전화/출처 링크만 제공한다.
  *
- * @figma-todo 크롤링 카드 시안 없음 — TechnicianCard(1470:6775) 골격 준용
+ * @figma-todo 크롤링 기술자 카드 디자인 미정
  */
 
 interface CrawledTechnicianCardProps {
@@ -46,7 +46,6 @@ export function CrawledTechnicianCard({ item }: CrawledTechnicianCardProps) {
         </div>
 
         <div className="flex flex-1 flex-col gap-4">
-          {/* 이름 + 메타 + 출처 표기 */}
           <div className="flex flex-col gap-1.5">
             <div className="flex items-baseline gap-2.5">
               <p className="text-sb-20 text-gray-900">{item.name}</p>
@@ -55,10 +54,8 @@ export function CrawledTechnicianCard({ item }: CrawledTechnicianCardProps) {
             <CrawledSourceBadge />
           </div>
 
-          {/* 한 줄 소개 */}
           {item.headline && <p className="line-clamp-2 text-r-16 text-gray-900">{item.headline}</p>}
 
-          {/* 공종 태그 (primaryTrade = selected, 파란색) */}
           {item.trades.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {item.trades.map((trade: Trade) => (

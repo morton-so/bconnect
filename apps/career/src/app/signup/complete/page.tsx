@@ -21,22 +21,18 @@ export default function SignupCompletePage() {
 
   return (
     <div className="flex h-dvh flex-col bg-white">
-      {/* Content */}
       <main className="flex flex-1 flex-col items-center justify-center px-4">
-        {/* Title */}
         <h1 className="text-center text-sb-24 text-[#1B1B1B]">
           {userName}님,
           <br />
           회원가입이 완료되었어요
         </h1>
 
-        {/* Check Icon */}
         <div className="mt-8 flex size-25 items-center justify-center rounded-full bg-primary">
           <CheckIcon className="text-white" size={83} />
         </div>
       </main>
 
-      {/* Start Button */}
       <div className="bg-white px-4 pt-4 pb-8">
         <Button asChild variant="primary" size="full">
           <Link href="/">시작하기</Link>

@@ -157,7 +157,6 @@ export function OneClickTab({
         </Form>
       </div>
 
-      {/* 하단 자격 증명 목록 */}
       <CredentialList
         credentials={oneClickCredentials}
         isLoading={isLoading}

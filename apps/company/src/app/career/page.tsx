@@ -1,5 +1,5 @@
 /**
- * @figma-todo 임시 구현 https://www.figma.com/site/aYOEDx8AXyQ6i6PcR2f1LM
+ * @figma-todo 기술자 랜딩 페이지 임시 구현
  */
 import type { Metadata } from 'next'
 import { AppPreviewSection } from './_components/AppPreviewSection'

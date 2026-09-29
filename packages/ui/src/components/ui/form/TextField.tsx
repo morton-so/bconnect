@@ -1,5 +1,5 @@
 /**
- * @figma-todo shadcn Form 합성 래퍼 — FormField/Item/Label/Control/Message 보일러플레이트 흡수 (#400)
+ * @figma-todo 텍스트 필드 코드 전용
  */
 'use client'
 

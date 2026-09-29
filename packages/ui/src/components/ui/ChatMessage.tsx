@@ -15,9 +15,9 @@ import { cn } from '../../lib/utils'
 const chatBubbleVariants = cva('inline-flex items-center rounded-xl px-4 text-r-14', {
   variants: {
     variant: {
-      mine: 'bg-primary text-white py-[9px]',
-      theirs: 'bg-gray-100 text-gray-900 py-3',
-      typing: 'bg-gray-100 py-[9px] h-10',
+      mine: 'bg-primary py-[9px] text-white',
+      theirs: 'bg-gray-100 py-3 text-gray-900',
+      typing: 'h-10 bg-gray-100 py-[9px]',
     },
     /** 꼬리(각진 모서리) — 그룹 첫 메시지만 갖는다 */
     hasTail: { true: '', false: '' },
@@ -136,7 +136,7 @@ const ChatMessage = React.forwardRef<HTMLDivElement, ChatMessageProps>(
             aria-label={nickname ? `${nickname} 프로필 보기` : '프로필 보기'}
             className={cn(
               avatarClass,
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary'
+              'focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none'
             )}
           >
             {avatarImage}
@@ -147,7 +147,6 @@ const ChatMessage = React.forwardRef<HTMLDivElement, ChatMessageProps>(
           </div>
         )}
 
-        {/* 닉네임 + 버블 + 타임스탬프 */}
         <div className="flex items-end gap-2">
           <div className="flex max-w-[55vw] flex-col gap-1">
             {!grouped && nickname && <span className="text-m-12 text-gray-900">{nickname}</span>}

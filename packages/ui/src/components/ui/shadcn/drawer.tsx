@@ -1,5 +1,5 @@
 /**
- * @figma-todo shadcn/ui 원본 이식
+ * @figma-todo 드로어 shadcn 원본 이식
  */
 import * as React from 'react'
 import { Drawer as DrawerPrimitive } from 'vaul'

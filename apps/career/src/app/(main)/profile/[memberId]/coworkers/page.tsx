@@ -1,5 +1,5 @@
 /**
- * @figma-todo 타인 프로필 동료 목록 — 본인 /profile/coworkers 와 동일 CoworkerList 재사용
+ * @figma-todo 타인 동료 목록 페이지 본인 화면 재사용
  */
 'use client'
 

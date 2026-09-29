@@ -1,5 +1,5 @@
 /**
- * @figma-todo 원클릭 조회 PoC
+ * @figma-todo 원클릭 조회 페이지 PoC
  */
 import { Suspense } from 'react'
 import type { Metadata } from 'next'

@@ -1,5 +1,5 @@
 /**
- * @figma-todo Select 합성 폼 래퍼 — label/description/error + RHF(control+name) 배선 (#426)
+ * @figma-todo 선택 필드 코드 전용
  */
 'use client'
 

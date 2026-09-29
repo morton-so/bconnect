@@ -1,5 +1,5 @@
 /**
- * @figma-todo 이미지 영역 시안이 placeholder("이미지" 텍스트)만 — 업로드/미리보기/빈상태 UX 신규 (#424)
+ * @figma-todo 이미지 입력 디자인 미정
  */
 'use client'
 

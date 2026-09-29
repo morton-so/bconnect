@@ -83,7 +83,6 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
 
   return (
     <div className="flex gap-[27px] rounded-[13px] border border-gray-300 bg-white p-7">
-      {/* 좌측: 프로필 + 정보 + 태그 + 버튼 */}
       <div className="flex flex-1 gap-[18px]">
         <div className="relative h-[90px] w-[90px] shrink-0 overflow-hidden rounded-full bg-gray-100">
           <Image src={item.picture} alt={item.name} fill className="object-cover" unoptimized />
@@ -96,13 +95,11 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
             <p className="text-r-14 text-gray-500">{metaParts.join(' · ')}</p>
           </div>
 
-          {/* 한 줄 소개 */}
           {item.headline && <p className="line-clamp-2 text-r-16 text-gray-900">{item.headline}</p>}
 
           {/* 공종 + 자격 증명 태그 — Figma 1470:6779 그룹 (내부 gap 7.85 ≈ gap-2) */}
           {(item.trades.length > 0 || item.certifications.length > 0) && (
             <div className="flex flex-col gap-2">
-              {/* 공종 태그 (primaryTrade = selected, 파란색) */}
               {item.trades.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {item.trades.map((trade: Trade) => (
@@ -115,7 +112,6 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
                 </div>
               )}
 
-              {/* 자격 증명 태그 */}
               {/* TODO: 타인 프로필 credentials 조회 API 미구현 — 연동 전까진 빈 목록 */}
               {item.certifications.length > 0 && (
                 <div className="flex flex-wrap gap-1">
@@ -172,12 +168,9 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
         </div>
       </div>
 
-      {/* 세로 divider */}
       <div className="w-px shrink-0 self-stretch bg-gray-100" />
 
-      {/* 우측: 통계 + 작업물 썸네일 */}
       <div className="flex w-[422px] shrink-0 flex-col gap-[22px]">
-        {/* 통계 3개 */}
         {/* 클릭 시 프로필 패널의 해당 탭/하위 패널 진입 (PanelProfile statHrefs 와 동일 규약) */}
         <div className="flex gap-8">
           <Stat

@@ -1,6 +1,6 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1416-1534
- * @figma-state 인증오류 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15119
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15119
  */
 'use client'
 
@@ -131,15 +131,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      {/* Card */}
       <div className="flex w-120 flex-col items-center gap-8 rounded-xl border border-gray-300 p-10">
-        {/* Logo */}
         <Logo width={160} height={56} />
 
-        {/* Subtitle */}
         <p className="text-r-16 text-gray-700">신뢰할 수 있는 인테리어 하도급 섭외 · 관리 서비스</p>
 
-        {/* Form */}
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex w-100 flex-col gap-3">
             <TextField
@@ -179,7 +175,6 @@ export default function LoginPage() {
               />
             )}
 
-            {/* Submit Button */}
             <FormSubmitButton
               requireValid={false}
               size="full"

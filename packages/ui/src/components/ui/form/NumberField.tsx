@@ -1,5 +1,5 @@
 /**
- * @figma-todo 디자인 시안 미정 — TextField 미러링, 정수 값 필드 (#684)
+ * @figma-todo 숫자 필드 디자인 미정
  */
 'use client'
 

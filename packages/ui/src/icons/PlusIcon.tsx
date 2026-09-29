@@ -1,5 +1,5 @@
 /**
- * @figma-todo 작업 생성 진입 + 버튼 (#650)
+ * @figma-todo 더하기 아이콘 디자인 미정
  */
 import type { SVGProps } from 'react'
 

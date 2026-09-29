@@ -1,5 +1,5 @@
 /**
- * @figma-todo 주소 입력 필드 — 시안 미정
+ * @figma-todo 주소 입력 필드 디자인 미정
  */
 'use client'
 

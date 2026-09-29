@@ -1,7 +1,7 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=617-4394
- * @figma-state OTP대기 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=617-4405
- * @figma-state OTP에러 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=617-4420
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=617-4405
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=617-4420
  */
 'use client'
 
@@ -124,10 +124,8 @@ export default function SignupAuthPage() {
     <div className="flex min-h-screen flex-col bg-white">
       <SignupHeader step={1} onBack={() => (step === 'otp' ? setStep('phone') : router.back())} />
 
-      {/* Content */}
       <Form {...form}>
         <form onSubmit={handleSubmit} className="flex flex-1 flex-col gap-6 px-4 pt-3">
-          {/* Title Section */}
           <div className="flex flex-col gap-4">
             <h1 className="text-2xl leading-[1.4] font-semibold text-[#1B1B1B]">
               신뢰할 수 있는 계약을 위해
@@ -135,7 +133,6 @@ export default function SignupAuthPage() {
               <span className="text-primary">본인 확인</span>이 필요해요
             </h1>
 
-            {/* Phone Input */}
             <TextField
               control={form.control}
               name="phone"
@@ -151,7 +148,6 @@ export default function SignupAuthPage() {
             />
           </div>
 
-          {/* OTP Section (step === 'otp') */}
           {step === 'otp' && (
             <TextField
               control={form.control}
@@ -174,7 +170,6 @@ export default function SignupAuthPage() {
             />
           )}
 
-          {/* Submit Button */}
           {step === 'phone' ? (
             <FormSubmitButton
               requireValid={false}

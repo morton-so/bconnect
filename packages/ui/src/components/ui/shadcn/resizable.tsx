@@ -1,5 +1,5 @@
 /**
- * @figma-todo shadcn/ui 원본 이식
+ * @figma-todo 크기 조절 패널 shadcn 원본 이식
  */
 'use client'
 

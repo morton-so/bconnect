@@ -1,5 +1,5 @@
 /**
- * @figma-todo 임시 구현 https://www.figma.com/site/MNz7F2h1c5CaCHG4OeGB4g
+ * @figma-todo 사업자 랜딩 페이지 임시 구현
  */
 import type { Metadata } from 'next'
 import { AppScheduleSection } from './_components/AppScheduleSection'

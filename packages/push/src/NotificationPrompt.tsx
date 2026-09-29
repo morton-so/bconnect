@@ -1,5 +1,5 @@
 /**
- * @figma-todo 푸시 알림 권한 토스트. 디자인 미정
+ * @figma-todo 푸시 알림 권한 요청 드로어 디자인 미정
  */
 'use client'
 

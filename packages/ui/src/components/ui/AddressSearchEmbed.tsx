@@ -1,5 +1,5 @@
 /**
- * @figma-todo 주소 검색 임베드 공유 조각 — Drawer(모바일)·Dialog(데스크톱) 셸이 공통 소비
+ * @figma-todo 주소 검색 임베드 디자인 미정
  */
 'use client'
 

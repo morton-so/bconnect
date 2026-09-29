@@ -1,6 +1,6 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=617-4289
- * @figma-state 에러 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=617-4273
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=617-4273
  */
 'use client'
 
@@ -58,10 +58,8 @@ export default function SignupUsernamePage() {
     <div className="flex min-h-screen flex-col bg-white">
       <SignupHeader step={2} onBack={() => router.back()} />
 
-      {/* Content */}
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-6 px-4 pt-3">
-          {/* Title Section */}
           <div className="flex flex-col gap-4">
             <h1 className="text-2xl leading-[1.4] font-semibold text-black">
               이름과 서비스에서 사용할 ID를
@@ -69,7 +67,6 @@ export default function SignupUsernamePage() {
               입력해 주세요
             </h1>
 
-            {/* Name Input */}
             <TextField
               control={control}
               name="name"
@@ -80,7 +77,6 @@ export default function SignupUsernamePage() {
               placeholder="이름을 입력해주세요"
             />
 
-            {/* Username Input */}
             <TextField
               control={control}
               name="username"
@@ -96,7 +92,6 @@ export default function SignupUsernamePage() {
 
           <FormError error={registerError ?? undefined} />
 
-          {/* Submit Button */}
           <FormSubmitButton size="full">다음으로</FormSubmitButton>
         </form>
       </Form>

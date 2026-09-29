@@ -196,7 +196,6 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
         </colgroup>
 
         <thead>
-          {/* 월 헤더 */}
           <tr style={{ height: HEADER_HEIGHT }}>
             <th
               colSpan={4}
@@ -221,7 +220,6 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
             </th>
           </tr>
 
-          {/* 공종 / 섭외 상태 / 진행 상태 / 기술자 + 일자 헤더 */}
           <tr style={{ height: HEADER_HEIGHT }}>
             {['공종', '섭외 상태', '진행 상태', '기술자'].map((label, i) => (
               <th
@@ -346,7 +344,6 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
             )
           })}
 
-          {/* 작업 생성 행 */}
           <tr style={{ height: ROW_HEIGHT }}>
             <td
               className={`${stickyCell} border-r border-solid border-[#e5e5e5] p-2`}
