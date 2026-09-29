@@ -3,15 +3,14 @@
  * Figma 매핑 검사
  */
 
-import { loadContext } from './context.js'
-import { publishReport, printReportDryRun } from './report.js'
-import { checkFigmaMapping } from './check-mapping.js'
+import { loadContext, type FigmaContext } from './context.ts'
+import { publishReport, printReportDryRun, type Result } from './report.ts'
+import { checkFigmaMapping } from './check-mapping.ts'
 
 /**
  * 검사 목록
- * @type {Array<(ctx: any) => Promise<import('./report.js').Result[]>>}
  */
-const CHECKS = [checkFigmaMapping]
+const CHECKS: Array<(ctx: FigmaContext) => Promise<Result[]>> = [checkFigmaMapping]
 
 const isDryRun = process.argv.includes('--dry-run')
 
@@ -24,8 +23,7 @@ async function main() {
   const mappedCount = new Set(ctx.tags.flatMap((tag) => tag.nodes.map((node) => node.nodeId))).size
   console.log(`현재 매핑된 컴포넌트 : ${mappedCount}개`)
 
-  /** @type {import('./report.js').Result[]} */
-  const results = []
+  const results: Result[] = []
   for (const check of CHECKS) {
     console.log(`${check.name} 실행 중...`)
     const result = await check(ctx)

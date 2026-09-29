@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
+    "types": ["node"],
     "strict": true,
     "allowJs": true,
     "checkJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "incremental": true,
     "plugins": [

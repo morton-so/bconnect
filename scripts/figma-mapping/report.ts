@@ -4,19 +4,22 @@ const REPOSITORY = 'morton-so/bconnect'
 const ISSUE_LABEL = '🤖 figma-drift'
 const ISSUE_TITLE = 'Figma 누락 · 불일치 항목 감지'
 
-/**
- * @typedef {Object} Result
- * @property {'unmapped-node' | 'not-ready' | 'not-found'} checkName
- * @property {string} nodeId
- * @property {string} url - Figma URL
- * @property {string} [nodeName] - not-found 제외
- * @property {string} [file] - unmapped-node 제외
- * @property {string} [parentNode]
- */
+interface BaseResult {
+  nodeId: string
+  url: string // Figma URL
+  nodeName?: string // not-found 제외
+}
+
+export type Result = BaseResult &
+  (
+    | { checkName: 'unmapped-node'; parentNode: string }
+    | { checkName: 'not-ready'; file: string }
+    | { checkName: 'not-found'; file: string }
+  )
 
 const GH_API = 'https://api.github.com'
 
-async function ghFetch(path, init = {}) {
+async function ghFetch(path: string, init: RequestInit = {}) {
   if (!GITHUB_TOKEN) throw new Error('GITHUB_TOKEN env var is required')
   const res = await fetch(`${GH_API}${path}`, {
     ...init,
@@ -31,17 +34,13 @@ async function ghFetch(path, init = {}) {
   return res.json()
 }
 
-const nodeLink = (result) =>
+const nodeLink = (result: Result) =>
   `[${result.nodeName ? `${result.nodeName}(${result.nodeId})` : result.nodeId}](${result.url})`
 
-const fileLink = (result) =>
+const fileLink = (result: BaseResult & { file: string }) =>
   `[${result.file.split('/').pop()}](<https://github.com/${REPOSITORY}/blob/HEAD/${result.file}>)`
 
-/**
- * @param {Result[]} results
- * @returns {string}
- */
-function buildMarkdown(results) {
+function buildMarkdown(results: Result[]): string {
   const unmappedNode = results.filter((it) => it.checkName === 'unmapped-node')
   const notReady = results.filter((it) => it.checkName === 'not-ready')
   const notFound = results.filter((it) => it.checkName === 'not-found')
@@ -104,10 +103,8 @@ function buildMarkdown(results) {
 
 /**
  * 검사 결과를 GitHub issue로 게시
- * @async
- * @param {Result[]} results
  */
-export async function publishReport(results) {
+export async function publishReport(results: Result[]) {
   if (results.length === 0) {
     console.log('감지된 항목 0건 — issue 미생성')
     return
@@ -127,9 +124,8 @@ export async function publishReport(results) {
 
 /**
  * 검사 결과를 studio에 출력
- * @param {Result[]} results
  */
-export function printReportDryRun(results) {
+export function printReportDryRun(results: Result[]) {
   console.log(`=== Results (${results.length}) ===\n`)
   console.log(buildMarkdown(results))
 }

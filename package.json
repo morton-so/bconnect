@@ -18,8 +18,8 @@
     "lint:docs": "markdownlint-cli2 && lychee \"**/*.md\"",
     "lint:docs:fix": "markdownlint-cli2 --fix",
     "api:generate": "pnpm --filter @bconnect/api-client generate && pnpm typecheck",
-    "figma": "node scripts/figma-mapping/index.js",
-    "figma:dry": "node scripts/figma-mapping/index.js --dry-run",
+    "figma": "node scripts/figma-mapping/index.ts",
+    "figma:dry": "node scripts/figma-mapping/index.ts --dry-run",
     "secret:check": "sh scripts/check-env.sh"
   },
   "packageManager": "pnpm@11.22.0",

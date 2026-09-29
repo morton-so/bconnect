@@ -1,14 +1,13 @@
+import type { FigmaContext } from './context.ts'
+import type { Result } from './report.ts'
+
 const FIGMA_URL_BASE = 'https://www.figma.com/design'
 
-const nodeUrl = (fileKey, nodeId) =>
+const nodeUrl = (fileKey: string, nodeId: string) =>
   `${FIGMA_URL_BASE}/${fileKey}?node-id=${nodeId.replace(':', '-')}`
 
-/**
- * @param {import('./context.js').FigmaContext} ctx
- * @returns {Promise<import('./report.js').Result[]>}
- */
-export async function checkFigmaMapping(ctx) {
-  const results = []
+export async function checkFigmaMapping(ctx: FigmaContext): Promise<Result[]> {
+  const results: Result[] = []
 
   // 컴포넌트
   const nodeIds = new Set()

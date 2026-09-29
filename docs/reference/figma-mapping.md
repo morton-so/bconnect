@@ -17,10 +17,10 @@ pnpm figma:dry    # 이슈 미생성
 
 ```text
 scripts/figma-mapping/
-├── index.js
-├── check-mapping.js  # @figma 태그와 Figma 노드 매핑 검사
-├── context.js        # Figma API + @figma 컨텍스트 로딩
-└── report.js         # 이슈 생성
+├── index.ts
+├── check-mapping.ts  # @figma 태그와 Figma 노드 매핑 검사
+├── context.ts        # Figma API + @figma 컨텍스트 로딩
+└── report.ts         # 이슈 생성
 ```
 
 ## 핵심 로직

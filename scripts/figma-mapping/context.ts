@@ -33,47 +33,57 @@ const SEARCH_EXCLUDES = new Set(['node_modules', '.next', 'dist', 'build'])
 
 /**
  * 컴포넌트 @figma 태그
- *
- * @typedef {Object} FigmaTag
- * @property {string} file - 상대 경로
- * @property {Array<{url: string, nodeId: string}>} nodes - @figma @figma-todo 라인
- * @property {'figma' | 'todo' | 'unknown'} type
  */
+export interface FigmaTag {
+  file: string // 상대 경로
+  nodes: Array<{ url: string; nodeId: string }> // @figma @figma-todo 라인
+  type: 'figma' | 'todo' | 'unknown'
+}
 
 /**
  * Figma 노드
- *
- * @typedef {Object} FigmaNode
- * @property {string} id
- * @property {string} name
- * @property {string} type
- * @property {string|null} parentId
- * @property {string|null} parentName
- * @property {string[]} childIds
- * @property {boolean} readyForDev
  */
+export interface FigmaNode {
+  id: string
+  name: string
+  type: string
+  parentId: string | null
+  parentName: string | null
+  childIds: string[]
+  readyForDev: boolean
+}
 
 /**
  * Figma 컨텍스트
- *
- * @typedef {Object} FigmaContext
- * @property {string} fileKey
- * @property {Map<string, FigmaNode>} nodes - id → node
- * @property {FigmaTag[]} tags
  */
+export interface FigmaContext {
+  fileKey: string
+  nodes: Map<string, FigmaNode> // id → node
+  tags: FigmaTag[]
+}
+
+/**
+ * Figma API 노드
+ */
+interface FigmaApiNode {
+  id: string
+  name: string
+  type: string
+  devStatus?: { type: string }
+  children?: FigmaApiNode[]
+}
 
 /**
  * Node ID 정규화: "1234-5678" → "1234:5678"
  */
-function normalizeNodeId(id) {
+function normalizeNodeId(id: string) {
   return id.replace('-', ':')
 }
 
 /**
  * @figma JSDoc 태그 파싱
- * @param {string} content
  */
-function parseTags(content) {
+function parseTags(content: string): Pick<FigmaTag, 'nodes' | 'type'> {
   const blockMatch = content.match(JSDOC_BLOCK_REGEX)
   if (!blockMatch) {
     return { nodes: [], type: 'unknown' }
@@ -81,11 +91,9 @@ function parseTags(content) {
 
   const block = blockMatch[0]
 
-  /** @type {Array<{url: string, nodeId: string}>} */
-  const nodes = []
+  const nodes: Array<{ url: string; nodeId: string }> = []
 
-  /** @type {'figma' | 'todo' | 'unknown'} */
-  let type = 'unknown'
+  let type: 'figma' | 'todo' | 'unknown' = 'unknown'
 
   for (const rawLine of block.split('\n')) {
     const line = rawLine.replace(JSDOC_PREFIX_REGEX, '').trim()
@@ -112,11 +120,8 @@ function parseTags(content) {
 
 /**
  * 디렉토리 DFS 순회
- *
- * @param {string} dir
- * @param {string[]} acc
  */
-function walkComponent(dir, acc) {
+function walkComponent(dir: string, acc: string[]) {
   let entries
   try {
     entries = readdirSync(dir, { withFileTypes: true })
@@ -135,11 +140,8 @@ function walkComponent(dir, acc) {
   }
 }
 
-/**
- * @returns {FigmaTag[]}
- */
-function loadTags() {
-  const files = []
+function loadTags(): FigmaTag[] {
+  const files: string[] = []
   for (const root of SEARCH_ROOTS) {
     walkComponent(root, files)
   }
@@ -150,7 +152,7 @@ function loadTags() {
     try {
       content = readFileSync(file, 'utf8')
     } catch (e) {
-      console.error(`Failed to read ${file}: ${e.message}`)
+      console.error(`Failed to read ${file}: ${e}`)
       continue
     }
     if (!FIGMA_TAG_REGEX.test(content)) continue
@@ -162,11 +164,8 @@ function loadTags() {
 
 /**
  * Figma 파일 트리 전체 로드 · 탐색
- *
- * @param {string} fileKey
- * @returns {Promise<Map<string, FigmaNode>>}
  */
-async function loadTree(fileKey) {
+async function loadTree(fileKey: string): Promise<Map<string, FigmaNode>> {
   if (!FIGMA_TOKEN) {
     throw new Error('FIGMA_ACCESS_TOKEN env var is required')
   }
@@ -178,15 +177,12 @@ async function loadTree(fileKey) {
   }
   const json = await res.json()
 
-  /** @type {Map<string, FigmaNode>} */
-  const nodes = new Map()
+  const nodes = new Map<string, FigmaNode>()
 
   /**
    * Figma 노드 DFS 순회
-   * @param {{id: string, name: string, type: string, devStatus?: {type: string}, children?: any[]}} node
-   * @param {{id: string, name: string} | null} parent
    */
-  function walkNode(node, parent) {
+  function walkNode(node: FigmaApiNode, parent: { id: string; name: string } | null) {
     const childIds = (node.children ?? []).map((c) => c.id)
     nodes.set(node.id, {
       id: node.id,
@@ -208,9 +204,8 @@ async function loadTree(fileKey) {
 
 /**
  * 컨텍스트 로드
- * @returns {Promise<FigmaContext>}
  */
-export async function loadContext() {
+export async function loadContext(): Promise<FigmaContext> {
   const tags = loadTags()
   const nodes = await loadTree(FIGMA_FILE_KEY)
 
