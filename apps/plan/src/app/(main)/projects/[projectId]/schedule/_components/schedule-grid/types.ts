@@ -1,4 +1,4 @@
-import type { Address, TaskProgress, TaskStatus, Trade } from '@bconnect/api-client'
+import type { TaskProgress, TaskStatus, Trade } from '@bconnect/api-client'
 
 /** 간트바 색·라벨 파생 키 — 섭외/진행 두 축을 화면 표시용 한 값으로 접은 것 (도메인 값 아님). */
 export type TaskBarTone = 'completed' | 'in_progress' | 'recruited' | 'recruiting' | 'not_started'
@@ -37,7 +37,6 @@ export type ScheduleTask = {
   draft?: boolean
   /** 섭외 대기열 — SSOT. 대표 기술자(assignee)는 'offered' 멤버에서 파생(taskAssignee) */
   offerQueue?: OfferQueueItem[]
-  address?: Address
   requirement?: string
   memo?: string
   /** 대표 기술자 — 섭외 확정(workerId) 또는 ACTIVE offer 멤버에서 어댑터가 파생 */

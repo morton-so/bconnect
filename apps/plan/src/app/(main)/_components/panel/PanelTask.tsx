@@ -25,7 +25,6 @@ import {
   Trade,
   TRADE_LABELS,
   TRADE_LIST,
-  type Address,
 } from '@bconnect/api-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { usePathname } from 'next/navigation'
@@ -41,7 +40,6 @@ const taskSchema = z
     title: z.string().min(1, '작업명을 입력해주세요.'),
     start: z.string().min(1, '시작일을 선택해주세요.'),
     end: z.string().min(1, '종료일을 선택해주세요.'),
-    address: z.custom<Address>().optional(),
     trades: z.array(z.nativeEnum(Trade)).min(1, '공종을 1개 이상 선택해주세요.'),
     progress: z.nativeEnum(TaskProgress),
     requirement: z.string(),
@@ -63,7 +61,6 @@ const EMPTY_FORM: TaskFormValues = {
   title: '',
   start: '',
   end: '',
-  address: undefined,
   trades: [],
   progress: TaskProgress.TODO,
   requirement: '',
@@ -75,7 +72,6 @@ function toFormValues(task: ScheduleTask): TaskFormValues {
     title: task.title ?? '',
     start: task.start ?? '',
     end: task.end ?? '',
-    address: task.address,
     trades: task.trades ?? [],
     progress: task.progress,
     requirement: task.requirement ?? '',
@@ -218,20 +214,6 @@ export function PanelTask({ taskId }: { taskId?: string }) {
                   endName="end"
                   label="작업기간"
                   layout="row"
-                />
-                <TextField
-                  control={form.control}
-                  name="address.street"
-                  label="현장주소"
-                  layout="row"
-                  disabled
-                />
-                <TextField
-                  control={form.control}
-                  name="address.detail"
-                  label="상세주소"
-                  layout="row"
-                  disabled
                 />
                 <TagSelectField
                   control={form.control}

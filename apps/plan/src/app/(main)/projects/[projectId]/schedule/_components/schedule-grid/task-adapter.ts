@@ -8,12 +8,6 @@ import type {
 } from '@bconnect/api-client'
 import type { OfferQueueItem, ScheduleTask, TaskAssignee } from './types'
 
-/**
- * BE Task/Offer ↔ FE ScheduleTask 타입 경계. 그리드/패널/셀렉트가 쓰는 FE 모양(string id)은
- * 유지하고 변환을 이 파일 한 곳에 모은다. 섭외(status)·진행(progress) 두 축은 BE 값 그대로 쓴다.
- */
-
-/** 드래그-생성 직후 미확정 작업의 로컬 센티널 id — 서버엔 존재하지 않음 (draft-task-store). */
 export const DRAFT_TASK_ID = 'draft'
 
 export function toNumericTaskId(id: string | null | undefined): number | null {
@@ -22,7 +16,6 @@ export function toNumericTaskId(id: string | null | undefined): number | null {
   return Number.isFinite(n) ? n : null
 }
 
-/** FE OfferQueueItem.profileId 는 실제 memberId 축 (PanelProfile 후보 구성과 동일). */
 export function toOfferQueueItem(offer: Offer): OfferQueueItem {
   const trade = offer.profile?.primaryTrade
   return {
@@ -36,7 +29,6 @@ export function toOfferQueueItem(offer: Offer): OfferQueueItem {
   }
 }
 
-/** 섭외 확정(ASSIGNED) 작업의 대표 기술자 — task.workerId 로 조회한 Profile 에서 파생. */
 export function toAssigneeFromProfile(profile: Profile): TaskAssignee {
   const trade = profile.primaryTrade
   return {
@@ -80,14 +72,11 @@ export function toScheduleTask(
     progress: task.progress,
     requirement: task.requirement ?? '',
     memo: task.memo ?? '',
-    // 작업 주소 = 소속 프로젝트 주소 (BE 가 주입) — 폼에선 읽기전용
-    address: task.address ?? undefined,
     offerQueue: queue,
     assignee,
   }
 }
 
-/** FE 필드 patch 를 캐시의 BE Task 에 반영 (낙관적 업데이트용). 읽기전용 필드는 무시. */
 export function applyFePatch(
   task: CompanyTask,
   patch: Partial<Omit<ScheduleTask, 'id'>>
@@ -104,7 +93,6 @@ export function applyFePatch(
   }
 }
 
-/** UpdateProjectTaskRequest 는 부분 patch 불가 — 캐시 병합본을 풀바디 직렬화. */
 export function toUpdateRequest(task: CompanyTask): UpdateProjectTaskRequest {
   return {
     trades: task.trades,
