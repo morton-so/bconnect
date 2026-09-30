@@ -118,6 +118,7 @@ export function TextField<T extends FieldValues>({
                 <Input
                   {...field}
                   {...inputProps}
+                  value={field.value ?? ''}
                   onChange={
                     transform ? (e) => field.onChange(transform(e.target.value)) : field.onChange
                   }
