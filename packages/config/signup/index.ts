@@ -1,11 +1,10 @@
-/**
- * 회원가입 임시 대체값 — 입력 화면이 아직 없는 필수 항목을 채운다.
- *
- * BE 가 생년월일을 필수로 받기 시작했으나(#1079) 입력 UI 시안이 없어 가입 자체가 막힌다.
- * 실제 값이 아니며, 화면이 들어오면 폼 입력으로 교체하고 이 모듈째 지운다.
- *
- * 값을 명백한 과거 날짜로 두는 이유:
- * - BE 는 만 15세 미만을 막으므로(M004) 통과 가능한 날짜여야 한다
- * - 그럴듯한 날짜를 쓰면 실제 입력값과 구분이 안 된다. 이 값으로 조회하면 정리 대상 행이 그대로 나온다
- */
-export const BIRTH_PLACEHOLDER = '1900-01-01'
+import { z } from 'zod'
+import { ageInYears, isCalendarDate } from '../date'
+
+export const MIN_SIGNUP_AGE = 15
+
+export const birthField = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/, '생년월일 8자리를 입력해주세요.')
+  .refine(isCalendarDate, '올바른 날짜가 아니에요.')
+  .refine((v) => ageInYears(v) >= MIN_SIGNUP_AGE, `만 ${MIN_SIGNUP_AGE}세 미만은 가입할 수 없어요.`)

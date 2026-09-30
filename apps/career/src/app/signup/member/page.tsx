@@ -7,7 +7,7 @@
 import { useSignupStore } from '@/stores/signup-store'
 import { checkUsername, requireRegisterAccessToken, useCreateMember } from '@bconnect/api-client'
 import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/config/consent'
-import { BIRTH_PLACEHOLDER } from '@bconnect/config/signup'
+import { formatIsoDateInput } from '@bconnect/config/date'
 import { formatUsername } from '@bconnect/config/username'
 import { login } from '@bconnect/features'
 import { AgreementField, Form, FormSubmitButton, TextField, toast } from '@bconnect/ui'
@@ -29,6 +29,7 @@ export default function SignupMemberPage() {
     mode: 'onTouched',
     defaultValues: {
       name: '',
+      birth: '',
       username: '',
       agreements: CONSENT_DEFAULT,
     },
@@ -44,7 +45,7 @@ export default function SignupMemberPage() {
       }
       const registered = await registerMemberMutation.mutateAsync({
         data: {
-          birth: BIRTH_PLACEHOLDER, // TODO: Date Picker로 교체
+          birth: data.birth,
           username: data.username,
           name: data.name,
           marketingConsent: data.agreements.marketing,
@@ -79,6 +80,17 @@ export default function SignupMemberPage() {
               label="이름"
               required
               placeholder="이름을 입력해주세요"
+            />
+            <TextField
+              control={control}
+              name="birth"
+              type="text"
+              autoComplete="bday"
+              inputMode="numeric"
+              label="생년월일"
+              required
+              placeholder="0000-00-00"
+              transform={formatIsoDateInput}
             />
             <TextField
               control={control}

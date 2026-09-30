@@ -44,6 +44,24 @@ export function monthEndOf(iso: string): string {
   return toIsoDate(new Date(Date.UTC(Number(iso.slice(0, 4)), Number(iso.slice(5, 7)), 0)))
 }
 
+export function formatIsoDateInput(value: string): string {
+  const d = value.replace(/\D/g, '').slice(0, 8)
+  if (d.length <= 4) return d
+  if (d.length <= 6) return `${d.slice(0, 4)}-${d.slice(4)}`
+  return `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6)}`
+}
+
+export function isCalendarDate(iso: string): boolean {
+  const [y, m, d] = iso.split('-').map(Number)
+  const dt = new Date(Date.UTC(y, m - 1, d))
+  return dt.getUTCFullYear() === y && dt.getUTCMonth() === m - 1 && dt.getUTCDate() === d
+}
+
+export function ageInYears(birth: string, on: string = todayIso()): number {
+  const years = Number(on.slice(0, 4)) - Number(birth.slice(0, 4))
+  return on.slice(5) < birth.slice(5) ? years - 1 : years
+}
+
 const MINUTE = 60 * 1000
 const HOUR = 60 * MINUTE
 const DAY = 24 * HOUR
