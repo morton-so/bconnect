@@ -50,7 +50,7 @@ const sizeOf = (it: FileValue): string | null => {
  * 제어 파일 입력 primitive (single/multi). 파일 선택 + 파일명 칩 + 삭제 + 빈상태(outline 트리거).
  *
  * ImageInput 과 같은 계약: 실제 업로드는 하지 않는다 — 고른 File 을 value 로 보유하고, 업로드는
- * 호출부(폼 제출)가 담당한다. presign 흐름(#340) 확정 시 제출 시점에 File → URL 변환만 끼운다.
+ * 호출부(폼 제출)가 담당한다. presign 흐름 확정 시 제출 시점에 File → URL 변환만 끼운다.
  * 폼은 `FileField` 로 감싸고, 제어 상태는 이 컴포넌트를 직접 쓴다.
  */
 export function FileInput({

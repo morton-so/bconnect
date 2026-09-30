@@ -6,7 +6,7 @@ import { GRADE_VALUES, type Grade } from './grade'
  * 크롤링 프로필의 카드·상세 패널 공용 표시 파생.
  *
  * 목록/상세 두 뷰가 같은 규칙(대표자명 우선, 업체명 병기, enum→라벨)을 공유하도록 단일 함수로 통합.
- * trades·primaryTrade 는 크롤러(#826)가 BE Trade enum 코드로 저장하므로 FE 역매핑 없이 그대로 소비.
+ * trades·primaryTrade 는 크롤러가 BE Trade enum 코드로 저장하므로 FE 역매핑 없이 그대로 소비.
  */
 export interface CrawledDisplay {
   /** 실회원 name(사람 이름) 슬롯과 정합: 대표자명 우선, 없으면 업체명 폴백 */

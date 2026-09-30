@@ -34,12 +34,12 @@ interface DateRangeFieldProps<T extends FieldValues> {
   /** useServerError 의 fieldError 결과 — zod 클라이언트 에러와 한 슬롯에 합성. */
   serverError?: string
   disabled?: boolean
-  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선, #581). 기본 stacked. */
+  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선). 기본 stacked. */
   layout?: FieldLayout
 }
 
 /**
- * 시작일 ~ 종료일 범위 입력 (#581). RHF 필드 2개(startName/endName)를 한 행에 합성한다.
+ * 시작일 ~ 종료일 범위 입력. RHF 필드 2개(startName/endName)를 한 행에 합성한다.
  * 두 필드가 한 시각 단위라 `*Field` 의 단일 FormItem 모델에 안 맞아 aria 를 직접 배선
  * (label→시작일 htmlFor, 종료일은 aria-label, 에러는 aria-describedby).
  */

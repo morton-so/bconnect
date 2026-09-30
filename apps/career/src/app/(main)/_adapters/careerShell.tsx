@@ -16,14 +16,14 @@ import { TopBar } from '@bconnect/ui'
 interface CareerShellOpts {
   fill?: boolean
   utility?: { chatHref?: string; chatCount?: number; notifyHref?: string; notifyCount?: number }
-  /** 좌측 back 자리 커스텀 아이콘 라우트 (예: 프로필 '+' 작업물 생성, #966) */
+  /** 좌측 back 자리 커스텀 아이콘 라우트 (예: 프로필 '+' 작업물 생성) */
   left?: { icon: ReactNode; href: string; label: string }
   /** 우측 아이콘 라우트 (예: 프로필 설정) — TopBar action 계열로 전달. utility 와 동시 지정 시 utility 우선 */
   right?: { icon: ReactNode; href: string; label: string }
 }
 
 /**
- * 뷰가 주입하는 헤더 내용 — `title` 외 `titleCount`·`rightSlot` 은 뷰가 필요할 때만 넘긴다 (#1016).
+ * 뷰가 주입하는 헤더 내용 — `title` 외 `titleCount`·`rightSlot` 은 뷰가 필요할 때만 넘긴다.
  * 패널 셸(`PanelHeader`, plan)과 같은 슬롯 이름을 써서 듀얼셸 양쪽 헤더가 같은 한 줄 구성이 된다.
  */
 interface CareerShellSlots {

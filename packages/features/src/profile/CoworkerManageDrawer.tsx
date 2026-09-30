@@ -53,7 +53,7 @@ export interface CoworkerManageDrawerProps {
  * 기존 CoworkerRequestList 와 동일하게 즉시 실행한다.
  *
  * presentational — open 상태·mutation·토스트는 호출부(앱)가 소유.
- * career 동료 목록 행의 ⋮ 메뉴가 사용 (#870).
+ * career 동료 목록 행의 ⋮ 메뉴가 사용.
  */
 export function CoworkerManageDrawer({
   open,
@@ -131,8 +131,8 @@ export function CoworkerManageDrawer({
           messageItem,
         ]
       // 나 자신에게 할 수 있는 액션은 없다 (동료 요청·메시지 모두 무의미).
-      // 호출부가 자기 행 자체를 미리 걸러내(#870) 드로어까지 안 오는 게 정상 경로지만,
-      // status=SELF(#1157) 를 직접 받는 새 호출부가 생겨도 안전하도록 방어적으로 빈 목록을 낸다.
+      // 호출부가 자기 행 자체를 미리 걸러내 드로어까지 안 오는 게 정상 경로지만,
+      // status=SELF 를 직접 받는 새 호출부가 생겨도 안전하도록 방어적으로 빈 목록을 낸다.
       case CoworkerStatus.SELF:
         return []
       default:

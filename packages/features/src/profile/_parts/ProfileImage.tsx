@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { EditIcon } from '@bconnect/ui'
 
-// Figma profile_image 컴포넌트 (node 3393-3704) — edit 배지 표시/숨김 (#966).
+// Figma profile_image 컴포넌트 (node 3393-3704) — edit 배지 표시/숨김.
 // owner 어댑터가 onEdit 을 주입하면 배지 노출, viewer/plan 은 미주입으로 숨김.
 interface ProfileImageProps {
   src: string

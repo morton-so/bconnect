@@ -463,7 +463,7 @@ async def fetch_business_info(blog_id: str, html_fallback: dict | None = None) -
 
 
 async def fetch_external_channels(blog_id: str) -> dict:
-    """블로그 프로필에 연결된 외부 채널을 조회한다 (#1019).
+    """블로그 프로필에 연결된 외부 채널을 조회한다.
 
     프로필 화면의 링크 영역은 JS 렌더라 HTML 파싱으로 안 잡히고, 전용 API 로만 얻는다.
     반환: {"youtube": url, "instagram": url, "external": url} — 없는 키는 생략.

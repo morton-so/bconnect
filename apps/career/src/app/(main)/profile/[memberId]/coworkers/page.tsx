@@ -31,8 +31,8 @@ export default function MemberCoworkersPage() {
       <TopBar variant="default" title="동료" showAction={false} onBack={() => router.back()} />
 
       {/* 타인의 동료 목록이라 각 행의 status(= 나와 그 사람의 관계)가 NONE/SELF/SENT/RECEIVED/COWORKER
-          로 섞인다(SELF = 목록 주인과 내가 동료라 내 행도 포함된 경우, #1157). 드로어가 status 별로
-          액션을 파생한다 (#870) */}
+          로 섞인다(SELF = 목록 주인과 내가 동료라 내 행도 포함된 경우). 드로어가 status 별로
+          액션을 파생한다 */}
       <CoworkerList
         coworkers={coworkers}
         isLoading={isLoading}
@@ -40,7 +40,7 @@ export default function MemberCoworkersPage() {
         coworkerHref={(profileId) => `/profile/${profileId}`}
         renderRowMenu={(coworker) =>
           // 내가 이 사람의 동료면 목록에 내 행도 들어온다. BE 가 이런 행엔 status=SELF 를 내려주므로
-          // (#1157) 그 신호로 내 행을 걸러 메뉴 없이 프로필 링크로만 둔다.
+          // 그 신호로 내 행을 걸러 메뉴 없이 프로필 링크로만 둔다.
           coworker.status === CoworkerStatus.SELF ? null : (
             <button
               type="button"

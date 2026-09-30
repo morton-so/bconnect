@@ -19,7 +19,7 @@ import type { ScheduleTask } from '@/app/(main)/projects/[projectId]/schedule/_c
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback'
 
 /**
- * 공정표 작업 mutation 공통 파이프라인 (#767) — 그리드(use-schedule-tasks)와 작업 패널
+ * 공정표 작업 mutation 공통 파이프라인 — 그리드(use-schedule-tasks)와 작업 패널
  * (PanelTask)이 같은 경로를 타야 폼 ↔ 간트바 동기화가 유지된다.
  *
  * update: 캐시 낙관적 patch(즉각 반영) + 500ms debounce 로 풀바디 PUT

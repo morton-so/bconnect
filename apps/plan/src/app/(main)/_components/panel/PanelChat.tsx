@@ -28,7 +28,7 @@ export function PanelChat({ chatId }: { chatId: number }) {
   const { panelHref, closeHref, close } = usePanelNav()
 
   const currentUserId = useGetMyMember().data?.id
-  // TODO(#760): 단건 조회 엔드포인트 부재 → DM 목록에서 filter. 그룹 단건은 #759.
+  // TODO: 단건 조회 엔드포인트 부재 → DM 목록에서 filter.
   const { data: directChats, isLoading, isError } = useGetDirectChats()
   const chat = useMemo(
     () => toChatSummaries(directChats).find((c) => c.id === chatId),

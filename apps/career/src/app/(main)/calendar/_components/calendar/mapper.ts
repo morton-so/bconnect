@@ -1,7 +1,7 @@
 import type { AssigneeTask, WorkerTask } from '@bconnect/api-client'
 import type { CalendarTask } from './types'
 
-/** 본인 작업 → 캘린더 뷰모델. 섭외 상태가 없고 수정·삭제할 수 있다. */
+/** 기술자 생성 작업 */
 export function toWorkerCalendarTask(task: WorkerTask): CalendarTask {
   return {
     id: task.id,
@@ -19,7 +19,7 @@ export function toWorkerCalendarTask(task: WorkerTask): CalendarTask {
   }
 }
 
-/** 업체 제안 작업 → 캘린더 뷰모델. 섭외 상태와 요청사항을 가진다. */
+/** 업체 제안 작업 */
 export function toAssigneeCalendarTask(task: AssigneeTask): CalendarTask {
   return {
     id: task.id,

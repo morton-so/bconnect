@@ -22,7 +22,7 @@ export interface ChatImageUploadProgress {
   total: number
 }
 
-// presign → S3 PUT → confirm 2-phase 업로드 (#340 계약). CHAT 컨텍스트의 contextId 는 chatId.
+// presign → S3 PUT → confirm 2-phase 업로드. CHAT 컨텍스트의 contextId 는 chatId.
 async function uploadChatImages(
   files: File[],
   chatId: number,
@@ -54,7 +54,7 @@ async function uploadChatImages(
 }
 
 /**
- * 채팅 사진 첨부 업로드 (#1150). 앱 어댑터가 호출해 ChatView 의 imageActions 로 주입한다
+ * 채팅 사진 첨부 업로드. 앱 어댑터가 호출해 ChatView 의 imageActions 로 주입한다
  * (ADR-0020: features 의 View 는 mutation 을 갖지 않는다).
  *
  * 선택 즉시 업로드하고 첨부 id 만 돌려준다 — 실제 메시지 전송(STOMP publish)은 ChatView 담당.

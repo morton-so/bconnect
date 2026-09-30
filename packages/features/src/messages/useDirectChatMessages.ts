@@ -13,7 +13,7 @@ import type { CursorPageMessage, InfiniteData } from '@bconnect/api-client'
  * 채팅방 메시지 무한 조회. MessageThread 와 앱 어댑터(career·plan)가 이 훅으로 같은 캐시를 공유한다.
  * 옵션을 호출부마다 두면 queryKey·페이지네이션이 갈라져 섭외 카드가 간헐적으로 비므로 여기서만 정의한다.
  *
- * TODO(#759): 지금은 direct(1:1) 메시지 고정. 그룹 지원 시 chatKind 로 direct/group 분기.
+ * TODO: 지금은 direct(1:1) 메시지 고정. 그룹 지원 시 chatKind 로 direct/group 분기.
  */
 export function useDirectChatMessages(chatId: number) {
   return useInfiniteQuery<

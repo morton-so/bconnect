@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react'
 import { readAuthHint, subscribeAuthHint } from './auth-hint'
 
 /**
- * 로그인 표시 쿠키를 렌더에서 읽는다 (#1098). 표시는 이 쿠키 하나뿐이므로,
+ * 로그인 표시 쿠키를 렌더에서 읽는다. 표시는 이 쿠키 하나뿐이므로,
  * 갱신 실패로 쿠키가 지워지면(client.ts) 화면도 함께 로그아웃 상태가 된다.
  *
  * 서버 스냅샷은 항상 false — 쿠키는 클라이언트에서만 읽으므로, 서버 렌더 결과를

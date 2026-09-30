@@ -22,7 +22,7 @@ interface MessageThreadProps {
   offerActions?: OfferActions
   /** 말풍선 아바타 → 프로필 링크 빌더. 앱이 주입 (ChatView 와 동일 슬롯) */
   profileHref?: (memberId: number) => string
-  /** 대화 맨 위에 붙는 상대 프로필 — 스크롤과 함께 밀려 올라간다 (#1148) */
+  /** 대화 맨 위에 붙는 상대 프로필 — 스크롤과 함께 밀려 올라간다 */
   header?: ReactNode
 }
 

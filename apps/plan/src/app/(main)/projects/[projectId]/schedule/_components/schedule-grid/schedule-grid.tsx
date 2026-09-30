@@ -73,7 +73,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
   const [createRange, setCreateRange] = useState<{ start: number; end: number } | null>(null)
 
   // 범위 = (최초 start -5일)의 달 1일 ~ (최후 end +5일)의 달 말일.
-  // tasks 파생이라 drop(상태 변경) 시에만 재계산 (#6)
+  // tasks 파생이라 drop(상태 변경) 시에만 재계산
   const { startDate, endDate } = useMemo(() => {
     const start = tasks[0]?.start ?? today ?? ''
     let end = start
@@ -97,7 +97,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
     return () => observer.disconnect()
   }, [])
 
-  // 간트 영역이 컨테이너 잔여 폭을 항상 채우도록 우측 패드를 늘린다 (#3).
+  // 간트 영역이 컨테이너 잔여 폭을 항상 채우도록 우측 패드를 늘린다.
   // 콘텐츠(일자 셀)가 더 길면 기존대로 가로 스크롤.
   const daysWidth = dates.length * DAY_WIDTH
   const padWidth = Math.max(RIGHT_PAD_WIDTH, containerWidth - COL_LEFT_TOTAL - daysWidth)

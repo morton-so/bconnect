@@ -7,7 +7,7 @@ import {
 } from '@bconnect/api-client'
 import { toast } from '@bconnect/ui'
 
-// 무효화(수락/거절→받은목록·동료목록 / 취소→보낸목록)는 orval mutationInvalidates 가 자동 처리 (#843, ADR-0025)
+// 무효화(수락/거절→받은목록·동료목록 / 취소→보낸목록)는 orval mutationInvalidates 가 자동 처리 (ADR-0025)
 export function useCoworkerRequestActions() {
   const accept = useAcceptCoworkerRequest<Error>({
     mutation: {

@@ -35,7 +35,7 @@ const TAB_ITEMS = [
   { key: 'qualification', label: '자격증' },
 ]
 
-// presign → S3 PUT → confirm 2-phase 업로드 (#340 계약). CREDENTIAL 컨텍스트의 contextId는 본인 memberId.
+// presign → S3 PUT → confirm 2-phase 업로드. CREDENTIAL 컨텍스트의 contextId는 본인 memberId.
 async function uploadCredentialFile(file: File, memberId: number): Promise<number> {
   const [presigned] = await createAttachmentPresign({
     context: AttachmentContext.CREDENTIAL,

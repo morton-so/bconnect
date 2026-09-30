@@ -13,7 +13,7 @@ import { useCoworkerRequestActions } from './useCoworkerRequestActions'
 import { useMessageMember } from './useMessageMember'
 
 /**
- * 동료 목록 행 ⋮ → CoworkerManageDrawer 배선 (#870).
+ * 동료 목록 행 ⋮ → CoworkerManageDrawer 배선.
  *
  * 드로어에 넘길 상태는 목록 응답의 coworker.status 를 그대로 쓴다 — BE 가 "로그인한 나와
  * 그 사람의 관계"로 계산해 내려주므로(CoworkerController.resolveStatusMap(user.id(), ...)),

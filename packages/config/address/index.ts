@@ -6,7 +6,7 @@ import { UnknownSidoError } from '../errors/index'
 /** 카카오 우편번호 oncomplete 결과 중 우리가 읽는 부분집합 (react-daum-postcode 결과와 구조 호환) */
 export interface KakaoAddressResult {
   zonecode: string
-  /** 법정동코드 10자리 — BE Address 필수값(#1013). */
+  /** 법정동코드 10자리 — BE Address 필수값. */
   bcode: string
   roadAddress: string
   jibunAddress: string
@@ -60,7 +60,7 @@ export const addressField = (label = '주소') =>
  * latitude/longitude 는 placeholder 0 — 위경도를 0 으로 두는 유일한 지점.
  */
 export function mapKakaoAddress(r: KakaoAddressResult): Address {
-  // TODO(#280): 위경도는 placeholder 0. 후속 BE-side geocoding(카카오 Local REST)으로 대체.
+  // TODO: 위경도는 placeholder 0. 후속 BE-side geocoding(카카오 Local REST)으로 대체.
   const state = regionOfState(r.sido)
   if (state === undefined) {
     throw new UnknownSidoError(r.sido)

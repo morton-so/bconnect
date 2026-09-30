@@ -10,7 +10,7 @@ import { useOfferQueue } from '@/hooks/useOfferQueue'
 import { useAllProjectTasks } from '@/hooks/useAllProjectTasks'
 
 /**
- * 탐색 '선택 모드' 바 (#575) — 프로젝트+작업 선택 셀렉트 + 섭외 대기열 칩.
+ * 탐색 '선택 모드' 바 — 프로젝트+작업 선택 셀렉트 + 섭외 대기열 칩.
  * 선택은 useSelectedTask(URL `?project=&task=`), 큐 수는 useOfferQueue facade. 인증 사용자 전용.
  */
 export function TaskSelectBar() {

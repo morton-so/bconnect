@@ -89,7 +89,7 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
         </div>
 
         <div className="flex flex-1 flex-col gap-4">
-          {/* 이름 + 메타. 별점·리뷰·계약 행은 BE 도메인 미구현으로 미표시 (#832) */}
+          {/* 이름 + 메타. 별점·리뷰·계약 행은 BE 도메인 미구현으로 미표시 */}
           <div className="flex items-baseline gap-2.5">
             <p className="text-sb-20 text-gray-900">{item.name}</p>
             <p className="text-r-14 text-gray-500">{metaParts.join(' · ')}</p>

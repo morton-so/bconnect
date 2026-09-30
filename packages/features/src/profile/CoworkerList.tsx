@@ -58,7 +58,7 @@ export function CoworkerList({
 
 /**
  * 동료 한 명 — 분야/지역/소개는 목록 응답이 이미 실어 보내는 member·profile 요약에서 읽는다.
- * (예전엔 행마다 useGetProfile 로 by-id 재조회 → 인원수만큼 N+1 요청. 목록 응답 embed 로 제거, #851)
+ * (예전엔 행마다 useGetProfile 로 by-id 재조회 → 인원수만큼 N+1 요청. 목록 응답 embed 로 제거)
  */
 function CoworkerRow({
   coworker,

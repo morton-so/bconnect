@@ -51,7 +51,7 @@ export const membersOverrides = [
     memberId: Math.floor(Math.random() * 1_000_000),
     accessToken: `mock_access_${Date.now()}`,
   })),
-  // #966 프로필 이미지 변경 — pictureId 를 내 프로필 seed 에 반영해 재조회 시 이미지가 바뀐다.
+  // 프로필 이미지 변경 — pictureId 를 내 프로필 seed 에 반영해 재조회 시 이미지가 바뀐다.
   getUpdateMyMemberPictureMockHandler(async ({ request }) => {
     const body = (await request.json()) as UpdatePictureRequest
     if (body.pictureId != null) setMyMockPicture(body.pictureId)

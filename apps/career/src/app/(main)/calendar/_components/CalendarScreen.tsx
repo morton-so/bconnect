@@ -8,10 +8,7 @@ import { MonthCarousel } from './calendar/MonthCarousel'
 import { dayInTask, monthShift } from './calendar/date-helpers'
 import { TaskDetailCard } from './detail/TaskDetailCard'
 
-/**
- * 캘린더 화면 오케스트레이터. nuqs 월/선택일 + 데이터 훅을 묶고,
- * 셸(TopBar·헤더)은 즉시 렌더, 그리드는 API 도착 후 채움. 에러 시 그리드 자리에 재시도.
- */
+/** 캘린더 오케스트레이터 */
 export function CalendarScreen() {
   const { month, day, selectDay, setMonth } = useCalendarParams()
   const { tasks, isError, refetch } = useMonthTasks(month)

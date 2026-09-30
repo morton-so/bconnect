@@ -22,7 +22,7 @@ type NotificationsViewShellProps =
   | {
       /**
        * 풀페이지 등 비-패널 쉘 주입 (career 풀페이지 라우트).
-       * 헤더 슬롯(`titleCount`·`rightSlot`)은 패널 쉘(`PanelShell`)과 같은 이름으로 관통시킨다 (#1016).
+       * 헤더 슬롯(`titleCount`·`rightSlot`)은 패널 쉘(`PanelShell`)과 같은 이름으로 관통시킨다.
        */
       renderShell: (props: {
         title: string

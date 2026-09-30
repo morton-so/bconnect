@@ -12,10 +12,11 @@ interface CalendarMonthProps {
   onSelectDay: (iso: string) => void
 }
 
+/** 캘린더 월 그리드 */
 export function CalendarMonth({ monthIso, tasks, selectedDay, onSelectDay }: CalendarMonthProps) {
   const rows = buildWeekRows(monthIso, tasks)
   const today = todayIso()
-  // 주 경계로 분할된 같은 작업의 세그먼트들을 hover 연동 (id 단위)
+
   const [hoveredTaskId, setHoveredTaskId] = useState<number | null>(null)
 
   return (

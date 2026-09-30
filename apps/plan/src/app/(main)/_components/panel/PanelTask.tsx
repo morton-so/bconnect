@@ -84,7 +84,7 @@ function toFormValues(task: ScheduleTask): TaskFormValues {
 }
 
 /**
- * 공정표 작업 생성/편집 패널 (#582→#767). `?panel=task/new` = 빈 폼(생성),
+ * 공정표 작업 생성/편집 패널. `?panel=task/new` = 빈 폼(생성),
  * `?panel=task/draft` = 드래그-생성 로컬 draft, `?panel=task/{id}` = 편집(즉시저장).
  *
  * 서버 작업은 React Query 캐시가 SSOT — 즉시저장은 useTaskMutations 파이프라인

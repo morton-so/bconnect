@@ -52,7 +52,7 @@ type WorkFormValues = z.infer<typeof workSchema>
 /** 업로드 단계 실패 — 저장 실패와 토스트 문구를 구분하기 위한 마커. */
 class UploadError extends Error {}
 
-/** presign → S3 PUT → confirm 2-phase 업로드 (#340 계약). POST 컨텍스트의 contextId 는 본인 memberId. */
+/** presign → S3 PUT → confirm 2-phase 업로드. POST 컨텍스트의 contextId 는 본인 memberId. */
 async function uploadPostImages(files: File[], memberId: number): Promise<number[]> {
   const presigned = await createAttachmentPresign({
     context: AttachmentContext.POST,
@@ -116,7 +116,7 @@ export function WorkForm({ postId }: { postId?: number }) {
   })
 
   const taskId = useWatch({ control: form.control, name: 'taskId' })
-  // 목록에 없는 작업(편집 진입)은 feed.task 로 대체한다. TaskSummary 에는 제목이 없어(#1176)
+  // 목록에 없는 작업(편집 진입)은 feed.task 로 대체한다. TaskSummary 에는 제목이 없어
   // 그 경로에서는 제목을 만들어내지 않고 '제목 없음' 으로 표시한다.
   const selectedTask = useMemo(() => {
     const fromList = workerTasks.find((t) => t.id === taskId)

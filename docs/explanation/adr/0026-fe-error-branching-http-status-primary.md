@@ -6,7 +6,7 @@
 
 ## 개요
 
-BE 응답은 `{ success, data | error }` envelope 형식이다. 근거는 [ADR-0004](0004-api-response-envelope.md)다. 에러는 `error` 객체에 세 값을 담는다:
+BE 응답은 `{ success, data | error }` envelope 형식이다. 근거는 ADR-0004다. 에러는 `error` 객체에 세 값을 담는다:
 
 ```json
 {
@@ -17,11 +17,11 @@ BE 응답은 `{ success, data | error }` envelope 형식이다. 근거는 [ADR-0
 
 - `code` (문자열): BE 애플리케이션 에러 코드. 도메인별 `*ExceptionCode` enum이 정의한다. `CommonExceptionCode.NOT_FOUND` = `C005`, `OfferExceptionCode.NOT_PROJECT_TASK` = `OF001` 등이다. BE 내부 명명 규칙이다.
 - `status` (숫자): HTTP 상태 코드. `404`, `400`, `401` 등 프로토콜 표준.
-- `message` (문자열): 사람이 읽는 한글 설명. FE는 이를 그대로 표기한다. passthrough 원칙이며 근거는 [ADR-0015](0015-be-code-as-api-ssot.md)다.
+- `message` (문자열): 사람이 읽는 한글 설명. FE는 이를 그대로 표기한다. passthrough 원칙이며 근거는 ADR-0015다.
 
 FE에선 `customFetch`가 envelope를 벗기며 에러를 `ApiError`로 변환해 TanStack Query로 던진다. 종전 `ApiError`는 `code`+`message`만 보유했다. HTTP status는 버려졌다.
 
-`#852`(plan 공정표)에서 "없는 프로젝트 진입 시 안내 화면" 요구가 생기며 "이 에러가 not-found인가"를 FE가 판별해야 했다. 이때 무엇을 분기 기준으로 삼을지가 반복적으로 재검토됐다. 리뷰 3라운드를 거쳤다. 앞으로 모든 도메인의 에러 UX 분기에 동일한 질문이 재발하므로 원칙을 못박는다.
+plan 공정표에서 "없는 프로젝트 진입 시 안내 화면" 요구가 생기며 "이 에러가 not-found인가"를 FE가 판별해야 했다. 이때 무엇을 분기 기준으로 삼을지가 반복적으로 재검토됐다. 리뷰 3라운드를 거쳤다. 앞으로 모든 도메인의 에러 UX 분기에 동일한 질문이 재발하므로 원칙을 못박는다.
 
 ## 선택지
 
@@ -67,9 +67,9 @@ FE에선 `customFetch`가 envelope를 벗기며 에러를 `ApiError`로 변환�
 
 이를 위해 `ApiError`에 원본 HTTP `status`를 실어준다. `customFetch`의 두 throw 지점이 `response.status`를 전달한다. HTTPError는 `error.response.status`를 쓴다. 기존 `code`+`message` 시그니처는 하위호환 유지. `status`는 optional 3번째 인자다.
 
-`message`는 종전대로 BE passthrough다. 근거는 [ADR-0015](0015-be-code-as-api-ssot.md)다. 사람이 읽는 텍스트는 code/status 분기와 별개 축이다.
+`message`는 종전대로 BE passthrough다. 근거는 ADR-0015다. 사람이 읽는 텍스트는 code/status 분기와 별개 축이다.
 
-첫 적용은 #852다. plan 공정표 게이트가 `error.status === 404`면 "프로젝트를 찾을 수 없어요", 그 외 오류는 "프로젝트를 불러오지 못했어요"로 분기한다. code는 미사용이며 status만으로 충분하다.
+첫 적용은 "fix(fe): 안내 공백 2건 — 없는 프로젝트 에러·프로젝트 빈 상태"다. plan 공정표 게이트가 `error.status === 404`면 "프로젝트를 찾을 수 없어요", 그 외 오류는 "프로젝트를 불러오지 못했어요"로 분기한다. code는 미사용이며 status만으로 충분하다.
 
 ## 기대 효과
 
@@ -82,7 +82,7 @@ FE에선 `customFetch`가 envelope를 벗기며 에러를 `ApiError`로 변환�
   - "언제 2차(code)까지 가는가"가 사람 판단이라 남용/과소 사용 여지가 있다. 위 3조건으로 제약한다.
 - 중립적 결과:
   - `code`는 `ApiError`에 계속 보존한다. 2차 분기 경로와 디버깅/로깅에 쓰인다.
-  - `401`/`403`은 별도 경로로 이미 처리된다. 해당 경로는 `customFetch` afterResponse 훅의 토큰 재발급이며 [ADR-0015](0015-be-code-as-api-ssot.md) 관련이다. 본 결정의 UX 분기와 층이 다르다.
+  - `401`/`403`은 별도 경로로 이미 처리된다. 해당 경로는 `customFetch` afterResponse 훅의 토큰 재발급이며 ADR-0015 관련이다. 본 결정의 UX 분기와 층이 다르다.
 
 ## 메모
 
@@ -90,7 +90,6 @@ FE에선 `customFetch`가 envelope를 벗기며 에러를 `ApiError`로 변환�
 
 ## 참조
 
-- #852
-- PR #873
-- [ADR-0004](0004-api-response-envelope.md)
-- [ADR-0015](0015-be-code-as-api-ssot.md)
+- fix(fe): 안내 공백 2건 — 없는 프로젝트 에러·프로젝트 빈 상태
+- ADR-0004
+- ADR-0015

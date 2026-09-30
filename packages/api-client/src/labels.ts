@@ -144,7 +144,7 @@ export function getCredentialLabel(type: CredentialType): string {
   return CREDENTIAL_TYPE_LABELS[type] ?? type
 }
 
-// 지역(시/도) 한글 라벨 SSOT — 공용 Region enum(#998, BE canonical 한글값) 기반.
+// 지역(시/도) 한글 라벨 SSOT — 공용 Region enum(BE canonical 한글값) 기반.
 // career(lib/region.ts)·plan(FilterBar·크롤링 카드)이 공유. 자체 하드코딩 금지.
 // Region 값 대부분은 표시 라벨과 동일하고, 통합·특별자치 명칭만 짧은 라벨로 축약.
 export const REGION_LABELS: Record<Region, string> = {
@@ -186,7 +186,7 @@ export function regionOfState(state: string | null | undefined): Region | undefi
   if (REGION_VALUES.has(trimmed)) return trimmed as Region
   if (!reportedUnknownStates.has(trimmed)) {
     reportedUnknownStates.add(trimmed)
-    console.warn(`[regionOfState] 미등록 시/도 표기 "${trimmed}" — 지역 미상 처리 (#1000)`)
+    console.warn(`[regionOfState] 미등록 시/도 표기 "${trimmed}" — 지역 미상 처리`)
   }
   return undefined
 }

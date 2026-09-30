@@ -59,7 +59,7 @@ export function useFeedItems({
   authorId,
 }: UseFeedItemsOptions = {}) {
   const { data: feeds, isLoading, error } = useGetFeeds()
-  // 홈 피드는 public — members/me 는 인증 필요라 로그아웃 상태면 정지, isMine 전부 false (#802)
+  // 홈 피드는 public — members/me 는 인증 필요라 로그아웃 상태면 정지, isMine 전부 false
   const isAuthenticated = useAuthHint()
   const currentUserId = useGetMyMember({ query: { enabled: isAuthenticated } }).data?.id
 

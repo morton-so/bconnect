@@ -6,7 +6,6 @@ interface DayCellProps {
   isCurrentMonth: boolean
   isToday: boolean
   isSelected: boolean
-  /** 0=일 … 6=토 (주말 색상). */
   weekday: number
   overflowCount: number
   onSelect: () => void
@@ -21,14 +20,13 @@ export function DayCell({
   overflowCount,
   onSelect,
 }: DayCellProps) {
-  const weekendColor =
-    weekday === 0 ? 'text-red-500' : weekday === 6 ? 'text-blue-500' : 'text-gray-900'
+  const color = weekday === 0 ? 'text-red-500' : weekday === 6 ? 'text-blue-500' : 'text-gray-900'
 
   return (
     <button
       type="button"
       onClick={onSelect}
-      className="flex min-h-[72px] cursor-pointer flex-col items-start rounded-lg px-2 pt-1.5 transition-colors hover:bg-primary-50"
+      className="flex min-h-18 cursor-pointer flex-col items-start rounded-lg px-2 pt-1.5 transition-colors hover:bg-primary-50"
     >
       <span
         className={cn(
@@ -38,7 +36,7 @@ export function DayCell({
             : isSelected
               ? 'bg-secondary text-primary-700'
               : isCurrentMonth
-                ? weekendColor
+                ? color
                 : 'text-gray-300'
         )}
       >

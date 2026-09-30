@@ -33,7 +33,7 @@ import { http, HttpResponse } from 'msw'
 import { rememberUpload } from './_uploads'
 
 /**
- * 저장소(drives/notes/attachments) **stateful** mock (#767).
+ * 저장소(drives/notes/attachments) **stateful** mock.
  * 폴더/메모 CRUD 와 presign → PUT → confirm → 드라이브 바인딩 업로드 체인이 모듈 메모리에
  * 반영돼 재조회 시 즉시 보인다. 하드 리로드 시 시드 리셋.
  *

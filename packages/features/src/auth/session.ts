@@ -5,12 +5,12 @@ import { syncDeviceToken } from '@bconnect/push'
 export function login(accessToken: string) {
   setAccessToken(accessToken)
   setAuthHint()
-  // 앱 진입 시점 등록은 로그인 게이트에 막히므로, 세션 중 로그인은 여기서 등록(#800).
+  // 앱 진입 시점 등록은 로그인 게이트에 막히므로, 세션 중 로그인은 여기서 등록.
   // 권한 granted 아니면 내부 가드로 no-op.
   syncDeviceToken()
 }
 
-// plan 은 아직 호출부가 없다 — 로그아웃 진입점(설정·마이페이지)이 없다 (#1098).
+// plan 은 아직 호출부가 없다 — 로그아웃 진입점(설정·마이페이지)이 없다.
 export function logout() {
   setAccessToken(null)
   clearAuthHint()

@@ -33,9 +33,9 @@ export type ScheduleTask = {
   status: TaskStatus
   /** 진행 축 — 작업 기간과 무관하며 사용자가 직접 바꾼다. */
   progress: TaskProgress
-  /** 드래그-생성 직후 미확정 상태 (#575). true 면 간트바 흐리게 + 패널 닫기 가드. 폼 유효 시 해제. */
+  /** 드래그-생성 직후 미확정 상태. true 면 간트바 흐리게 + 패널 닫기 가드. 폼 유효 시 해제. */
   draft?: boolean
-  /** 섭외 대기열 (#575) — SSOT. 대표 기술자(assignee)는 'offered' 멤버에서 파생(taskAssignee) */
+  /** 섭외 대기열 — SSOT. 대표 기술자(assignee)는 'offered' 멤버에서 파생(taskAssignee) */
   offerQueue?: OfferQueueItem[]
   address?: Address
   requirement?: string

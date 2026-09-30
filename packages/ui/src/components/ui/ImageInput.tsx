@@ -41,7 +41,7 @@ const TRIGGER_BASE =
  * 제어 이미지 입력 primitive (single/multi). 파일 선택 + 로컬 미리보기 + 삭제 + 빈상태.
  *
  * 실제 업로드는 하지 않는다 — 고른 File 을 value 로 보유하고, 업로드/저장은 호출부(폼 제출)가
- * 담당한다. presign 흐름(#340)이 확정되면 제출 시점에 File → URL 변환만 끼우면 된다.
+ * 담당한다. presign 흐름이 확정되면 제출 시점에 File → URL 변환만 끼우면 된다.
  * 폼은 `ImageField` 로 감싸고, 제어 상태는 이 컴포넌트를 직접 쓴다.
  */
 export function ImageInput({

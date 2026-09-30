@@ -101,7 +101,7 @@ export interface TopBarProps
   step?: number
   totalSteps?: number
   title?: string
-  /** 제목 옆 카운트 뱃지 (0·undefined 면 렌더 안 함) — 예: 알림 안 읽음 수 (#1016) */
+  /** 제목 옆 카운트 뱃지 (0·undefined 면 렌더 안 함) — 예: 알림 안 읽음 수 */
   titleCount?: number
   /** 우측 영역 커스텀 노드 (예: 알림 '모두 읽음'). utility/actionIcon/showAction 보다 우선. */
   rightSlot?: React.ReactNode

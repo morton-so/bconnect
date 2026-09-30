@@ -15,7 +15,7 @@ import { DRAFT_TASK_ID, toNumericTaskId, toScheduleTask } from './task-adapter'
 import type { ScheduleTask } from './types'
 
 /**
- * 공정표 작업 상태 소비 훅 (#576→#767). 서버 상태 SSOT = React Query 캐시.
+ * 공정표 작업 상태 소비 훅. 서버 상태 SSOT = React Query 캐시.
  * - 섭외 진행(NONE/OPEN/OFFERED) 작업은 offers 를 붙여 대기열·대표 기술자 표시
  * - 섭외 확정(workerId 보유) 작업은 프로필 조회로 대표 기술자 파생
  *   (BE getTaskOffers 가 ACCEPTED 를 반환하지 않아 workerId 경유가 유일한 경로)

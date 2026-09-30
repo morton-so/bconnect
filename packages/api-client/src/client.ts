@@ -27,7 +27,7 @@ export const setAccessToken = (token: string | null) => {
 
 export const getAccessToken = () => accessToken
 
-// 로그인 전(OTP)·refresh 자신의 401 은 재발급 재시도가 성립하지 않는 경로 (#851).
+// 로그인 전(OTP)·refresh 자신의 401 은 재발급 재시도가 성립하지 않는 경로.
 const AUTH_ENDPOINT = /\/auth\/(otp\/|refresh$)/
 const isAuthEndpoint = (url: string) => AUTH_ENDPOINT.test(url)
 
@@ -64,7 +64,7 @@ export class ApiError extends Error {
   }
 }
 
-// 토큰 갱신 함수 — single-flight (#782). BE 가 refresh 토큰을 회전(rotate)하고
+// 토큰 갱신 함수 — single-flight. BE 가 refresh 토큰을 회전(rotate)하고
 // mismatch 시 세션을 revoke 하므로, 동시 401 들이 각자 refresh 를 쏘면 뒤의 요청이
 // 폐기된 토큰으로 세션을 죽인다. 진행 중이면 같은 promise 를 공유해 refresh 를 1회로 묶는다.
 let refreshPromise: Promise<boolean> | null = null
@@ -115,10 +115,10 @@ export const apiClient = ky.create({
     ],
     afterResponse: [
       async (request, options, response) => {
-        // 401 만 refresh 트리거 — 403 은 인가 실패(또는 BE 에러 dispatch 마스킹, #763)라
-        // refresh 로 해소되지 않는다 (#782).
+        // 401 만 refresh 트리거 — 403 은 인가 실패(또는 BE 에러 dispatch 마스킹)라
+        // refresh 로 해소되지 않는다.
         // auth 엔드포인트(로그인 전 OTP·refresh 자신)의 401 은 재발급이 성립하지 않는
-        // 경로라 제외 — 오답마다 무의미한 /auth/refresh 가 따라붙는 낭비를 막는다 (#851).
+        // 경로라 제외 — 오답마다 무의미한 /auth/refresh 가 따라붙는 낭비를 막는다.
         if (
           response.status === 401 &&
           !request.headers.get('X-Retry') &&

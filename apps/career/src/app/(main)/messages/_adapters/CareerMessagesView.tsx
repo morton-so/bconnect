@@ -38,7 +38,7 @@ export function CareerMessagesList() {
   const router = useRouter()
   const { data: me, isLoading: isMeLoading } = useGetMyMember()
   const currentUserId = me?.id
-  // 내 채팅 = DM + 그룹 병합 (통합 목록 엔드포인트 부재 → FE 병합, #759)
+  // 내 채팅 = DM + 그룹 병합 (통합 목록 엔드포인트 부재 → FE 병합)
   const dm = useGetDirectChats()
   const group = useGetGroupChats()
   const allChats = useMemo(() => toChatSummaries(dm.data, group.data), [dm.data, group.data])
@@ -90,7 +90,7 @@ export function CareerMessagesList() {
 export function CareerChatRoom({ chatId }: { chatId: number }) {
   const router = useRouter()
   const currentUserId = useGetMyMember().data?.id
-  // TODO(#760): 단건 조회 엔드포인트 부재 → DM 목록에서 filter. 그룹 단건은 #759.
+  // TODO: 단건 조회 엔드포인트 부재 → DM 목록에서 filter.
   const { data: directChats, isLoading, isError } = useGetDirectChats()
   const chat = useMemo(
     () => toChatSummaries(directChats).find((c) => c.id === chatId),

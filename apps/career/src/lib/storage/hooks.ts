@@ -119,7 +119,7 @@ export function useMemoMutations(folderId: string) {
   }
 }
 
-/** presign → S3 PUT → confirm → 드라이브 바인딩 순서의 2-phase 업로드 (#340 계약). */
+/** presign → S3 PUT → confirm → 드라이브 바인딩 순서의 2-phase 업로드. */
 export function useUploadImages(folderId: string) {
   const queryClient = useQueryClient()
   return useMutation({

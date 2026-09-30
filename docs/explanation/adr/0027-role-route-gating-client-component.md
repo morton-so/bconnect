@@ -124,6 +124,6 @@ Next 공식 문서가 1순위로 권하는 방식입니다.
 
 ## 참조
 
-- [#1099](https://github.com/morton-so/bconnect/issues/1099)
-- [#1066](https://github.com/morton-so/bconnect/issues/1066)
-- [PR #1083](https://github.com/morton-so/bconnect/pull/1083)
+- fix(fe): 프로필 미생성 · 업체 미등록 회원 진입 차단
+- fix: 프로필 미생성 · 업체 미등록 리다이렉트
+- feat(api): 회원 앱 역할 (CAREER/PLAN) 추가

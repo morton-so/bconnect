@@ -21,7 +21,7 @@ export function PanelMessages() {
   const { panelHref, closeHref, close } = usePanelNav()
   const { data: me, isLoading: isMeLoading } = useGetMyMember()
   const currentUserId = me?.id
-  // 내 채팅 = DM + 그룹 병합 (통합 목록 엔드포인트 부재 → FE 병합, #759)
+  // 내 채팅 = DM + 그룹 병합 (통합 목록 엔드포인트 부재 → FE 병합)
   const dm = useGetDirectChats()
   const group = useGetGroupChats()
   const allChats = useMemo(() => toChatSummaries(dm.data, group.data), [dm.data, group.data])

@@ -25,11 +25,11 @@ import type {
 } from '@bconnect/api-client'
 
 /**
- * 캘린더(#650) QA 시드 + **stateful** mock. 생성/수정/삭제가 모듈 메모리에 반영돼
+ * 캘린더 QA 시드 + **stateful** mock. 생성/수정/삭제가 모듈 메모리에 반영돼
  * getTasks 재조회 시 캘린더에 즉시 보인다 (실 BE 동작 모사). 하드 리로드 시 SEED 로 리셋.
  *
- * 현재 월에 앵커. 커버: 멀티데이 + 주(週) 경계 교차, 한 날 3중첩(레인/오버플로), 제안작업, 단기.
- * #1176 에서 응답이 용도별로 갈렸다 — 제안작업(업체 제안)은 offer 를 물고 오는 assigneeTasks,
+ * 현재 월에 앵커. 커버: 멀티데이 + 주(week) 경계 교차, 한 날 3중첩(레인/오버플로), 제안작업, 단기.
+ * 응답이 용도별로 갈렸다 — 제안작업(업체 제안)은 offer 를 물고 오는 assigneeTasks,
  * 본인 작업(canManage true)은 workerTasks. getTasks 는 파라미터 없이 전량 반환, FE 가 월 필터.
  */
 
@@ -58,7 +58,7 @@ interface TaskSeed {
   trades: Trade[]
   startDay: number
   endDay: number
-  /** 제안작업의 섭외 id — 채팅 OFFER 메시지(chats.ts)의 content 와 맞춘다 (#972) */
+  /** 제안작업의 섭외 id — 채팅 OFFER 메시지(chats.ts)의 content 와 맞춘다 */
   offerId?: number
   /** 제안작업 요청사항 — 채팅 OFFER 카드 표시용 */
   requirement?: string
@@ -140,7 +140,7 @@ function buildSeedTasks(): TaskList {
       modifiedAt: stamp,
     }
     if (seed.proposed) {
-      // 업체 제안작업(미수락). offer 가 붙으면 채팅 OFFER 카드가 상세를 읽는다(#972).
+      // 업체 제안작업(미수락). offer 가 붙으면 채팅 OFFER 카드가 상세를 읽는다.
       assigneeTasks.push({
         ...base,
         status: TaskStatus.OFFERED,
@@ -161,7 +161,7 @@ function buildSeedTasks(): TaskList {
 }
 
 /**
- * 섭외 단건 조회(#1176) 용 상태. BE 는 OfferQueryService.get 으로 상태와 무관하게 조회되지만
+ * 섭외 단건 조회 용 상태. BE 는 OfferQueryService.get 으로 상태와 무관하게 조회되지만
  * 작업 목록(listByWorker)은 ACTIVE·ACCEPTED 만 내려준다 — 거절·취소·만료된 섭외는 목록에서
  * 사라지고 단건 조회로만 남는다. 채팅 카드가 그 차이에 의존하므로 mock 도 똑같이 갈라둔다.
  */

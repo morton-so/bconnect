@@ -57,9 +57,9 @@ const CREDENTIALS: Credential[] = [
   cred(CredentialType.NATIONAL_TECHNICAL_QUALIFICATION, CredentialStatus.ACCEPTED, '2029-11-30'),
 ]
 
-// presign → PUT → confirm 업로드 체인 (#340 계약)의 CREDENTIAL 소비분. presign 이
+// presign → PUT → confirm 업로드 체인의 CREDENTIAL 소비분. presign 이
 // pending 첨부를 만들고, createCredential 이 attachmentId 로 집어 credential 에 바인딩.
-// ⚠️ presign/confirm 핸들러는 컨텍스트 공용 엔드포인트 — #806(drives)에도 같은 override 가
+// ⚠️ presign/confirm 핸들러는 컨텍스트 공용 엔드포인트 — drives에도 같은 override 가
 // 있어 둘 다 머지되면 하나로 통합 필요.
 let nextAttachmentId = 1
 const pendingAttachments = new Map<number, Attachment>()

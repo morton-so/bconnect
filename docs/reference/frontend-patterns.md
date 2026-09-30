@@ -30,7 +30,7 @@ career·plan 두 Next.js App Router 앱의 공통 프론트엔드 규칙입니�
 
 - `'replace'` : 화면 내부에서만 의미 있는 일시적 state. 탭·서브탭·필터·검색어가 해당
   - `'push'`로 두면 전환마다 히스토리가 쌓임
-  - TopBar 뒤로가기 `router.back()`이 화면을 이탈하지 못하고 탭만 되돌림. #843, #869
+  - TopBar 뒤로가기 `router.back()`이 화면을 이탈하지 못하고 탭만 되돌림
 - `'push'` : 뒤로가기로 되돌리는 것이 사용자 기대인 화면 전환급 state
   - 예. 갤러리 → 파일 뷰어 열기 `?file`, 폼 서브스텝 진입 `?step`
   - 이 경우 왜 push 인지 주석으로 남긴다
@@ -81,7 +81,7 @@ career·plan 두 Next.js App Router 앱의 공통 프론트엔드 규칙입니�
 
 RHF `<Form>` 안 제출 버튼은 `FormSubmitButton`을 씁니다. raw `<Button type="submit">`은 쓰지 않습니다.
 
-- #400 표준. ESLint 강제
+- ESLint 강제
 
 ## 날짜·공통 데이터 유틸 · `@bconnect/config` 선확인
 
@@ -90,7 +90,7 @@ RHF `<Form>` 안 제출 버튼은 `FormSubmitButton`을 씁니다. raw `<Button 
 - 제공 함수는 `daysBetween`·`addDays`·`todayIso` 등
 - 포맷·전화·주소·동의 항목도 `@bconnect/config/*`가 SSOT
 - 앱 로컬에 `Date.parse` 직접 계산 헬퍼를 재작성하기 전에 공용 패키지를 먼저 확인
-- 로컬 중복 헬퍼는 반올림·경계 처리 드리프트를 만듦. #985 리뷰에서 실측
+- 로컬 중복 헬퍼는 반올림·경계 처리 드리프트를 만듦. "feat(career): 피드 카드 건축주명·시공기간 실데이터 배선" 리뷰에서 실측
 
 ## 네이밍 · 상태 관리
 
@@ -127,7 +127,7 @@ Zod 검증된 `env` 객체를 사용합니다. `process.env.X` 직접 접근은 
 
 career·plan 공통 화면은 `packages/features`의 `<도메인>View` 하나로 공유합니다. 공통 비중은 90% 수준입니다.
 
-- 앱 로컬 재구현은 안티패턴. #541
+- 앱 로컬 재구현은 안티패턴
 - `*View`는 순수 표현. 앱이 데이터 fetch 해 `data` prop 으로 내림
 - 셸은 `renderShell`. plan 은 생략 시 기본 `PanelShell`
 - 액션·편집은 `actionSlot`·`editHrefs` 슬롯 주입. 부재 시 읽기전용
@@ -233,7 +233,7 @@ packages/ui/
 
 ---
 
-## 폼 시스템 (PR #403)
+## 폼 시스템
 
 상세는 [react-hook-form.md](../how-to/react-hook-form.md)를 참고합니다.
 
@@ -258,7 +258,7 @@ packages/ui/
   - `isValid` 게이팅 버튼은 유지하면서 첫 타이핑 중 naggy 회피
 - 폼 안 제출 버튼은 예외 없이 `FormSubmitButton`
   - 기본 게이트는 `formState.isValid`
-  - 스키마를 통과해야 활성이므로 호출부에서 `disabled={!isValid}` 를 따로 쓰지 않음. #993
+  - 스키마를 통과해야 활성이므로 호출부에서 `disabled={!isValid}` 를 따로 쓰지 않음
   - 한 폼을 여러 단계로 나눠 제출하는 화면만 `requireValid={false}` 와 `disabled` 직접 지정. OTP phone → code 등이 해당
 - 비활성 상태 회색은 `Button` 의 `disabled:bg-gray-100` 이 담당
   - `variant={isValid ? 'primary' : 'secondary'}` 같은 토글 금지
@@ -273,7 +273,7 @@ packages/ui/
 
 - raw `<input>`·`<textarea>` 폼 입력. a11y 누락 위험
 - raw `<button type="submit">`. FormSubmitButton 또는 Button isLoading 사용
-- `setError('root')` 또는 onChange 마다 `clearErrors`. [PR #369](https://github.com/morton-so/bconnect/pull/369) 버그 클래스
+- `setError('root')` 또는 onChange 마다 `clearErrors`. "fix(plan): login 페이지 FormInput error prop 누락 수정" 버그 클래스
 - `form.watch()` 호출. `useWatch` 훅 사용. React Compiler 호환
 - `packages/ui` 가 `@bconnect/api-client` 에 import 의존. duck typing 인 `isApiErrorShape` 사용
 - 호출부 기본 문구 분기. `customFetch` 가 모든 실패에 메시지를 담으므로 `error.message` 를 그대로 표시

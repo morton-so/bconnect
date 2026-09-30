@@ -13,7 +13,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
   return (
     // min-h-screen(=100vh) 은 모바일에서 주소창이 보여도 주소창 숨김 기준 높이(lvh)로 잡혀
-    // 채팅방(h-dvh) 아래에 빈 띠가 남는다. 실제 보이는 높이를 따라가도록 dvh 사용 (#1147).
+    // 채팅방(h-dvh) 아래에 빈 띠가 남는다. 실제 보이는 높이를 따라가도록 dvh 사용.
     <div className="mx-auto min-h-dvh max-w-screen-sm bg-white">
       <Suspense>
         <MainContent>

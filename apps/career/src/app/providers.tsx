@@ -24,7 +24,7 @@ function PostMSWBootstrap({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (initialized.current) return
     initialized.current = true
-    // 로그아웃 상태면 스킵(#802) — 선제 refresh 가 게스트 방문마다 401 을 만든다.
+    // 로그아웃 상태면 스킵 — 선제 refresh 가 게스트 방문마다 401 을 만든다.
     // 힌트가 있는데 세션이 무효면 refresh 실패가 힌트 쿠키를 스스로 지운다 (client.ts).
     if (readAuthHint()) refreshAccessToken()
   }, [])

@@ -27,7 +27,7 @@ export function StorageRoot({ projectId }: { projectId: string }) {
   const [pendingDelete, setPendingDelete] = useState<Folder | null>(null)
   const { data: project } = useGetProject(Number(projectId))
 
-  // 탭 title 에 프로젝트명 반영 (리뷰 반영, #785). 로딩 전엔 static fallback('저장소') 유지.
+  // 탭 title 에 프로젝트명 반영 (리뷰 반영). 로딩 전엔 static fallback('저장소') 유지.
   useDocumentTitle(project ? `${project.title} - 저장소` : undefined)
 
   return (

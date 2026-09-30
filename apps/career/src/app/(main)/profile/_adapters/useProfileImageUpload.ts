@@ -12,7 +12,7 @@ import {
 } from '@bconnect/api-client'
 import { toast } from '@bconnect/ui'
 
-// presign → S3 PUT → confirm 2-phase 업로드 (#340 계약). MEMBER 컨텍스트의 contextId는 본인 memberId.
+// presign → S3 PUT → confirm 2-phase 업로드. MEMBER 컨텍스트의 contextId는 본인 memberId.
 async function uploadProfileImage(file: File, memberId: number): Promise<number> {
   const [presigned] = await createAttachmentPresign({
     context: AttachmentContext.MEMBER,
@@ -32,7 +32,7 @@ async function uploadProfileImage(file: File, memberId: number): Promise<number>
 }
 
 /**
- * 프로필 이미지 수정 (#966) — OS 파일 picker로 단일 이미지 선택 후 즉시 업로드·반영.
+ * 프로필 이미지 수정 — OS 파일 picker로 단일 이미지 선택 후 즉시 업로드·반영.
  * updateMyMemberPicture 뒤 getMyProfile 을 수동 무효화 (picture 표시원이 /profiles/me 라
  * orval 자동 무효화 범위(/members/me) 밖).
  */

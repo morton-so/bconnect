@@ -20,7 +20,7 @@ import type { OfferQueueItem } from '@/app/(main)/projects/[projectId]/schedule/
 import { useAllProjectTasks } from '@/hooks/useAllProjectTasks'
 
 /**
- * 섭외 대기열 소비 facade (#575→#767) — 소비 컴포넌트 시그니처 불변, 내부만 offers API.
+ * 섭외 대기열 소비 facade — 소비 컴포넌트 시그니처 불변, 내부만 offers API.
  * FE profileId 는 실제 memberId 축 → Offer.member.id 로 역룩업해 offerId/workerId 를 얻는다.
  * BE: 첫 offer 는 자동 ACTIVE 승격(promoteNext), reorder 는 PENDING 전체 offerIds 필수.
  */
@@ -29,7 +29,7 @@ export function useOfferQueue(taskId: string | null | undefined) {
   const numId = toNumericTaskId(taskId)
   const enabled = numId != null
   const { data: offers, isLoading } = useGetTaskOffers(numId ?? 0, { query: { enabled } })
-  // 답변 기한(due)은 #956부터 서버가 계산·관리 — FE는 보내지 않는다.
+  // 답변 기한(due)은 서버가 계산·관리 — FE는 보내지 않는다.
   const { tasks } = useAllProjectTasks()
   const task = taskId ? tasks.find((t) => t.id === taskId) : undefined
 

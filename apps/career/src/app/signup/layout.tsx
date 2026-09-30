@@ -7,7 +7,6 @@ import { SignupGuard } from '@/components/SignupGuard'
  *
  * metadata 는 server component 에서만 내보낼 수 있고 가드는 훅을 쓰므로 client 여야 한다.
  * 한 파일에 섞으면 둘 중 하나가 성립하지 않아 server(layout) + client(guard) 로 나눴다.
- * 페이지 제목을 다루는 #1104 와 파일이 겹치지 않게 하려는 목적도 겸한다.
  */
 export const metadata: Metadata = {
   title: '회원가입',

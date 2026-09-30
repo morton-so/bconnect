@@ -203,7 +203,7 @@ function AddressRow({ initialAddress }: { initialAddress: string }) {
 
 export function ScheduleHeader({ projectId }: ScheduleHeaderProps) {
   const { data: project } = useGetProject(Number(projectId))
-  // 탭 title 에 프로젝트명 반영 (리뷰 반영, #785). 로딩 전엔 static fallback('공정표') 유지.
+  // 탭 title 에 프로젝트명 반영 (리뷰 반영). 로딩 전엔 static fallback('공정표') 유지.
   useDocumentTitle(project ? `${project.title} - 공정표` : undefined)
 
   return (
