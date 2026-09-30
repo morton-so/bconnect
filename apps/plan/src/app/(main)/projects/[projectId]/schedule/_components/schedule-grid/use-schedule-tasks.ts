@@ -77,9 +77,7 @@ export function useScheduleTasks(projectId: string) {
       )
     )
     const merged = draft && draft.projectId === projectId ? [...mapped, draft] : mapped
-    return merged.sort(
-      (a, b) => a.startDate.localeCompare(b.startDate) || a.endDate.localeCompare(b.endDate)
-    )
+    return merged.sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end))
   }, [beTasks, offersByTask, profileByWorker, draft, projectId])
 
   const updateTask = (id: string, patch: Partial<Omit<ScheduleTask, 'id'>>) => {

@@ -73,18 +73,15 @@ export function toScheduleTask(
     id: String(task.id),
     projectId: String(task.projectId),
     trades: task.trades,
-    ganttName: task.title,
-    startDate: task.start,
-    endDate: task.end,
+    title: task.title,
+    start: task.start,
+    end: task.end,
     status: task.status,
     progress: task.progress,
-    request: task.requirement ?? '',
+    requirement: task.requirement ?? '',
     memo: task.memo ?? '',
     // 작업 주소 = 소속 프로젝트 주소 (BE 가 주입) — 폼에선 읽기전용
-    address: task.address?.street ?? '',
-    addressDetail: task.address?.detail ?? '',
-    // 작업 단위 업체명은 BE 저장 필드 없음 (기획 미결) — 읽기전용 빈값
-    corpName: '',
+    address: task.address ?? undefined,
     offerQueue: queue,
     assignee,
   }
@@ -98,11 +95,11 @@ export function applyFePatch(
   return {
     ...task,
     ...(patch.trades !== undefined && { trades: patch.trades }),
-    ...(patch.ganttName !== undefined && { title: patch.ganttName }),
-    ...(patch.startDate !== undefined && { start: patch.startDate }),
-    ...(patch.endDate !== undefined && { end: patch.endDate }),
+    ...(patch.title !== undefined && { title: patch.title }),
+    ...(patch.start !== undefined && { start: patch.start }),
+    ...(patch.end !== undefined && { end: patch.end }),
     ...(patch.progress !== undefined && { progress: patch.progress }),
-    ...(patch.request !== undefined && { requirement: patch.request }),
+    ...(patch.requirement !== undefined && { requirement: patch.requirement }),
     ...(patch.memo !== undefined && { memo: patch.memo }),
   }
 }
@@ -121,11 +118,11 @@ export function toUpdateRequest(task: CompanyTask): UpdateProjectTaskRequest {
 }
 
 export interface TaskFormInput {
-  ganttName: string
-  startDate: string
-  endDate: string
+  title: string
+  start: string
+  end: string
   trades: ScheduleTask['trades']
-  request: string
+  requirement: string
   memo: string
 }
 
@@ -135,11 +132,11 @@ export function toCreateRequest(
 ): CreateProjectTaskRequest {
   return {
     trades: values.trades,
-    start: values.startDate,
-    end: values.endDate,
+    start: values.start,
+    end: values.end,
     projectId: Number(projectId),
-    title: values.ganttName,
-    requirement: values.request,
+    title: values.title,
+    requirement: values.requirement,
     memo: values.memo,
   }
 }

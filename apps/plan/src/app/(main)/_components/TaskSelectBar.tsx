@@ -25,7 +25,7 @@ export function TaskSelectBar() {
 
   const options = tasks.map((t) => ({
     value: t.id,
-    label: `${projectTitleById.get(t.projectId) ?? '프로젝트'} | ${t.ganttName}`,
+    label: `${projectTitleById.get(t.projectId) ?? '프로젝트'} | ${t.title}`,
   }))
 
   return (

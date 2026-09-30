@@ -12,18 +12,18 @@ function applyDrag(
   task: ScheduleTask,
   mode: DragMode,
   deltaDays: number
-): Pick<ScheduleTask, 'startDate' | 'endDate'> {
-  const span = daysBetween(task.startDate, task.endDate)
+): Pick<ScheduleTask, 'start' | 'end'> {
+  const span = daysBetween(task.start, task.end)
   if (mode === 'move') {
     return {
-      startDate: addDays(task.startDate, deltaDays),
-      endDate: addDays(task.endDate, deltaDays),
+      start: addDays(task.start, deltaDays),
+      end: addDays(task.end, deltaDays),
     }
   }
   if (mode === 'resize-start') {
-    return { startDate: addDays(task.startDate, Math.min(deltaDays, span)), endDate: task.endDate }
+    return { start: addDays(task.start, Math.min(deltaDays, span)), end: task.end }
   }
-  return { startDate: task.startDate, endDate: addDays(task.endDate, Math.max(deltaDays, -span)) }
+  return { start: task.start, end: addDays(task.end, Math.max(deltaDays, -span)) }
 }
 
 /** gantt 타임라인 셀 내용 — 일자 배경 + 작업 바. relative td 안에 absolute 로 배치된다. */
@@ -53,8 +53,8 @@ export function GanttBars({
   )
 
   const preview = drag ? applyDrag(task, drag.mode, drag.deltaDays) : task
-  const offsetDays = daysBetween(startDate, preview.startDate)
-  const spanDays = daysBetween(preview.startDate, preview.endDate) + 1
+  const offsetDays = daysBetween(startDate, preview.start)
+  const spanDays = daysBetween(preview.start, preview.end) + 1
   const left = offsetDays * DAY_WIDTH + 2
   const width = spanDays * DAY_WIDTH - 4
   const tone = barTone(task)
@@ -94,13 +94,13 @@ export function GanttBars({
               opacity: task.draft ? 0.5 : undefined,
             }}
             tabIndex={0}
-            aria-label={`${task.ganttName} · ${task.startDate} ~ ${task.endDate} · ${label}`}
+            aria-label={`${task.title} · ${task.start} ~ ${task.end} · ${label}`}
           >
             <p
               className="truncate text-[12px] leading-[18px] font-semibold"
               style={{ color: style.text }}
             >
-              {task.ganttName}
+              {task.title}
             </p>
             <div
               aria-hidden="true"

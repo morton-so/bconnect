@@ -75,10 +75,10 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
   // 범위 = (최초 start -5일)의 달 1일 ~ (최후 end +5일)의 달 말일.
   // tasks 파생이라 drop(상태 변경) 시에만 재계산 (#6)
   const { startDate, endDate } = useMemo(() => {
-    const start = tasks[0]?.startDate ?? today ?? ''
+    const start = tasks[0]?.start ?? today ?? ''
     let end = start
     for (const t of tasks) {
-      if (t.endDate > end) end = t.endDate
+      if (t.end > end) end = t.end
     }
     if (!start) return { startDate: start, endDate: end }
     return { startDate: monthStartOf(addDays(start, -5)), endDate: monthEndOf(addDays(end, 5)) }
@@ -142,9 +142,9 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
     const id = createTask({
       projectId,
       trades: [],
-      ganttName: '',
-      startDate: addDays(startDate, a),
-      endDate: addDays(startDate, b),
+      title: '',
+      start: addDays(startDate, a),
+      end: addDays(startDate, b),
       status: TaskStatus.NONE,
       progress: TaskProgress.TODO,
       draft: true,

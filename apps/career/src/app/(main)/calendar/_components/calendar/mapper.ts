@@ -19,7 +19,7 @@ export function toWorkerCalendarTask(task: WorkerTask): CalendarTask {
   }
 }
 
-/** 업체 제안 작업 → 캘린더 뷰모델. 읽기 전용이며 섭외 상태와 요청사항을 가진다. */
+/** 업체 제안 작업 → 캘린더 뷰모델. 섭외 상태와 요청사항을 가진다. */
 export function toAssigneeCalendarTask(task: AssigneeTask): CalendarTask {
   return {
     id: task.id,

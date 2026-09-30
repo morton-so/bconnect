@@ -54,9 +54,9 @@ export const BAR_STYLES: Record<TaskBarTone, { bg: string; text: string }> = {
 }
 
 export const BAR_TONE_LABELS: Record<TaskBarTone, string> = {
-  completed: '완료됨',
+  completed: '시공 완료',
   in_progress: '진행 중',
-  recruited: '섭외됨',
+  recruited: '섭외 됨',
   recruiting: '섭외 중',
   not_started: '시작 전',
 }

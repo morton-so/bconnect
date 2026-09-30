@@ -8,7 +8,6 @@ interface CalendarTaskBase {
   end: string
   /** 색 팔레트 인덱스 (id 기반 안정적). */
   colorIndex: number
-  /** 진행 상태 — 수정 저장 시 현재값 되돌리기용. 화면 표시·변경은 없다(#1160). */
   progress: TaskProgress
   company?: string
   address?: Address
@@ -21,7 +20,7 @@ interface CalendarTaskBase {
 /**
  * API 작업 → 캘린더 뷰모델. canManage 로 갈리는 판별 union (#1176).
  * - WorkerTask: 본인 작업이라 수정·삭제 가능하고 섭외 상태가 없다.
- * - AssigneeTask: 업체 제안 작업이라 읽기 전용이고 섭외 상태를 가진다(#1156).
+ * - AssigneeTask: 업체 제안 작업이라 배정 후 제목·진행 상태·메모만 수정 가능하고 섭외 상태를 가진다(#1156).
  */
 export type CalendarTask = CalendarTaskBase &
   ({ canManage: true; status?: never } | { canManage: false; status: TaskStatus })

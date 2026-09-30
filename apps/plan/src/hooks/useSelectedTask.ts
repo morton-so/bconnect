@@ -12,7 +12,7 @@ export function useSelectedTask() {
   const { tasks, projectTitleById } = useAllProjectTasks()
   const task = taskId ? tasks.find((t) => t.id === taskId) : undefined
   const projectTitle = task ? projectTitleById.get(task.projectId) : undefined
-  const label = task ? `${projectTitle ?? '프로젝트'} | ${task.ganttName}` : null
+  const label = task ? `${projectTitle ?? '프로젝트'} | ${task.title}` : null
 
   return {
     taskId,
