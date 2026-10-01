@@ -228,9 +228,6 @@ importers:
       '@bconnect/devtools':
         specifier: workspace:*
         version: link:../../packages/devtools
-      '@bconnect/mocks':
-        specifier: workspace:*
-        version: link:../../packages/mocks
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.3.3
@@ -377,9 +374,6 @@ importers:
       '@bconnect/devtools':
         specifier: workspace:*
         version: link:../../packages/devtools
-      '@bconnect/mocks':
-        specifier: workspace:*
-        version: link:../../packages/mocks
       '@tailwindcss/postcss':
         specifier: 'catalog:'
         version: 4.3.3
@@ -497,15 +491,15 @@ importers:
 
   packages/devtools:
     dependencies:
-      '@bconnect/config':
-        specifier: workspace:*
-        version: link:../config
       '@bconnect/mocks':
         specifier: workspace:*
         version: link:../mocks
       agentation:
         specifier: ^3.0.2
         version: 3.0.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      next:
+        specifier: 'catalog:'
+        version: 16.3.5(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0

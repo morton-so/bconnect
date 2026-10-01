@@ -39,7 +39,6 @@
   "devDependencies": {
     "@bconnect/config": "workspace:*",
     "@bconnect/devtools": "workspace:*",
-    "@bconnect/mocks": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",

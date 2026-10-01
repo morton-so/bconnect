@@ -12,11 +12,11 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { Toaster } from '@bconnect/ui'
 import type { ReactNode } from 'react'
 import '../env'
-import { MSWProvider, DevToolbar } from '@bconnect/devtools'
+import { MswProvider, DevToolbar } from '@bconnect/devtools'
 import { usePushNotificationListener, InAppNotification } from '@bconnect/push'
 import { REFERENCE_PATHS } from '@/lib/notification-routes'
 
-// MSWProvider → FCM 순서로 초기화
+// MswProvider → FCM 순서로 초기화
 function PostMSWBootstrap({ children }: { children: ReactNode }) {
   const initialized = useRef(false)
 
@@ -37,7 +37,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const queryClient = getQueryClient()
 
   return (
-    <MSWProvider>
+    <MswProvider>
       <NuqsAdapter>
         <QueryClientProvider client={queryClient}>
           <PostMSWBootstrap>
@@ -49,6 +49,6 @@ export function Providers({ children }: { children: ReactNode }) {
           </PostMSWBootstrap>
         </QueryClientProvider>
       </NuqsAdapter>
-    </MSWProvider>
+    </MswProvider>
   )
 }

@@ -8,7 +8,6 @@ export const commonSchemas = {
     message: 'Must be a valid URL',
   }),
   nodeEnv: z.enum(['development', 'production', 'test']),
-  apiMocking: z.enum(['enabled', 'disabled']).optional(),
   gaId: z
     .string()
     .regex(/^G-[A-Z0-9]+$/, { message: 'Must be a GA4 measurement ID (G-XXXXXXXXXX)' })
@@ -58,10 +57,4 @@ export function validateEnv<T extends z.ZodRawShape>(
   }
 
   return parsed.data
-}
-
-/** MSW 활성 여부 판정 */
-export function isApiMockingEnabled(): boolean {
-  const mocking = commonSchemas.apiMocking.parse(process.env.NEXT_PUBLIC_API_MOCKING)
-  return process.env.NODE_ENV === 'development' && mocking !== 'disabled'
 }
