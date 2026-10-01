@@ -10,9 +10,6 @@ export type PushReferenceType = Lowercase<NotificationReferenceType> | ''
 /**
  * FCM 푸시 `data` 계약 (SnsPushSender.message). 값은 FCM 규약상 전부 문자열.
  * Firebase SDK 의 `data` 는 인덱스 시그니처라 키 오타를 못 잡으므로 이 타입으로 좁힌다.
- *
- * interface 가 아니라 type alias — 발송 측(firebase-admin)의 `Record<string, string>` 에
- * 넣으려면 암묵적 인덱스 시그니처가 필요하고, 그건 type alias 에만 생긴다.
  */
 export type PushData = {
   notification_id: string

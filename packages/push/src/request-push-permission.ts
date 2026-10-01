@@ -27,11 +27,7 @@ async function fetchFcmToken(): Promise<string | null> {
   }
 
   try {
-    const token = await getToken(messaging, { vapidKey })
-    if (token && process.env.NODE_ENV === 'development') {
-      console.log('[FCM] 디바이스 토큰:', token)
-    }
-    return token
+    return await getToken(messaging, { vapidKey })
   } catch (error) {
     console.error('[FCM] 토큰 발급 실패:', error)
     return null

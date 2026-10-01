@@ -14,7 +14,6 @@ import type { ReactNode } from 'react'
 import '../env'
 import { MSWProvider, DevToolbar } from '@bconnect/devtools'
 import { usePushNotificationListener, InAppNotification } from '@bconnect/push'
-import { DevPushPanel } from '@/components/dev/DevPushPanel'
 import { REFERENCE_PATHS } from '@/lib/notification-routes'
 
 // MSWProvider → FCM 순서로 초기화
@@ -31,12 +30,7 @@ function PostMSWBootstrap({ children }: { children: ReactNode }) {
 
   usePushNotificationListener(REFERENCE_PATHS)
 
-  return (
-    <>
-      {children}
-      {process.env.NODE_ENV !== 'production' && <DevPushPanel />}
-    </>
-  )
+  return <>{children}</>
 }
 
 export function Providers({ children }: { children: ReactNode }) {
