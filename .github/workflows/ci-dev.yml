@@ -69,6 +69,8 @@ jobs:
           node-version-file: package.json
           cache: 'pnpm'
 
+      - uses: hashicorp/setup-terraform@v4
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
