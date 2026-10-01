@@ -28,7 +28,7 @@ export default function MemberCoworkersPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="동료" showAction={false} onBack={() => router.back()} />
+      <TopBar variant="default" title="동료" onBack={() => router.back()} />
 
       {/* 타인의 동료 목록이라 각 행의 status(= 나와 그 사람의 관계)가 NONE/SELF/SENT/RECEIVED/COWORKER
           로 섞인다(SELF = 목록 주인과 내가 동료라 내 행도 포함된 경우). 드로어가 status 별로

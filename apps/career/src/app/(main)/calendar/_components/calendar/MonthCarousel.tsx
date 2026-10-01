@@ -1,33 +1,37 @@
 'use client'
 
-import { monthShift } from './date-helpers'
+import { gridRangeOf, monthShift } from './date-helpers'
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@bconnect/ui'
 import { useEffect, useState } from 'react'
-import { useMonthTasks } from '@/app/(main)/calendar/_hooks/useMonthTasks'
 import { CalendarMonth } from './CalendarMonth'
+import type { CalendarBarTask } from './types'
 
 interface MonthCarouselProps {
   month: string
+  tasks: CalendarBarTask[]
   selectedDay: string
   onSelectDay: (iso: string) => void
   onMonthChange: (monthIso: string) => void
 }
 
-/** 한 슬라이드 = 한 달. 슬라이드마다 자체 조회(React Query 키로 dedup/프리페치). */
+/** 한 슬라이드 = 한 달 */
 function MonthSlide({
   month,
+  tasks,
   selectedDay,
   onSelectDay,
 }: {
   month: string
+  tasks: CalendarBarTask[]
   selectedDay: string
   onSelectDay: (iso: string) => void
 }) {
-  const { tasks } = useMonthTasks(month)
+  const { start, end } = gridRangeOf(month)
+  const monthTasks = tasks.filter((task) => task.start <= end && task.end >= start)
   return (
     <CalendarMonth
       monthIso={month}
-      tasks={tasks}
+      tasks={monthTasks}
       selectedDay={selectedDay}
       onSelectDay={onSelectDay}
     />
@@ -40,6 +44,7 @@ function MonthSlide({
  */
 export function MonthCarousel({
   month,
+  tasks,
   selectedDay,
   onSelectDay,
   onMonthChange,
@@ -88,7 +93,12 @@ export function MonthCarousel({
       <CarouselContent className="ml-0 items-start">
         {months.map((m) => (
           <CarouselItem key={m} className="pl-0">
-            <MonthSlide month={m} selectedDay={selectedDay} onSelectDay={onSelectDay} />
+            <MonthSlide
+              month={m}
+              tasks={tasks}
+              selectedDay={selectedDay}
+              onSelectDay={onSelectDay}
+            />
           </CarouselItem>
         ))}
       </CarouselContent>

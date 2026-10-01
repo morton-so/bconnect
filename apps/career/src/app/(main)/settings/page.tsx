@@ -38,7 +38,7 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="설정" showAction={false} backHref="/profile" />
+      <TopBar variant="default" title="설정" backHref="/profile" />
 
       <div className="flex flex-col gap-7 px-4 py-4">
         <section className="flex flex-col gap-1">

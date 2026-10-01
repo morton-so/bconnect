@@ -185,10 +185,9 @@ export function WorkForm({ postId }: { postId?: number }) {
       <TopBar
         variant="default"
         title={isEdit ? '작업물 수정' : '작업물 생성'}
-        actionLabel={saving ? '저장 중...' : '저장'}
+        actionText={saving ? '저장 중...' : '저장'}
         actionDisabled={saving}
         onAction={onSave}
-        showAction
         onBack={() => router.back()}
       />
 

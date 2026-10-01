@@ -42,10 +42,9 @@ export const careerShell = (onBack?: () => void, opts?: CareerShellOpts) =>
           title={title}
           titleCount={titleCount}
           rightSlot={rightSlot}
-          showAction={false}
           actionIcon={opts?.right?.icon}
           actionHref={opts?.right?.href}
-          actionLabel={opts?.right?.label}
+          actionIconLabel={opts?.right?.label}
           showBack={onBack != null}
           onBack={onBack}
           leftIcon={opts?.left?.icon}

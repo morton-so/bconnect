@@ -38,7 +38,7 @@ export default function CoworkersPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="동료" showAction={false} onBack={() => router.back()} />
+      <TopBar variant="default" title="동료" onBack={() => router.back()} />
 
       <CoworkerRequestList
         received={received}

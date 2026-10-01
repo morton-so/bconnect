@@ -126,12 +126,7 @@ export default function CertificationApplyPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar
-        variant="default"
-        title="자격 증명 신청"
-        showAction={false}
-        onBack={() => router.back()}
-      />
+      <TopBar variant="default" title="자격 증명 신청" onBack={() => router.back()} />
 
       <Tab items={TAB_ITEMS} activeKey={activeTab} onChange={handleTabChange} />
 

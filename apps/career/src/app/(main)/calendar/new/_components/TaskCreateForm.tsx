@@ -73,7 +73,7 @@ export function TaskCreateForm() {
       <TopBar
         variant="default"
         title="작업 생성"
-        actionLabel={isPending ? '저장 중...' : '완료'}
+        actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending}
         onAction={handleSubmit(onSubmit, scrollToError)}
         onBack={() => router.back()}

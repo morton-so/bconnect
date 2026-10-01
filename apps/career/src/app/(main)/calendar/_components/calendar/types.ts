@@ -17,9 +17,14 @@ interface CalendarTaskBase {
 export type CalendarTask = CalendarTaskBase &
   ({ canManage: true; status?: never } | { canManage: false; status: TaskStatus })
 
+export type CalendarBarTask = Pick<
+  CalendarTaskBase,
+  'id' | 'title' | 'start' | 'end' | 'colorIndex'
+>
+
 // 작업 바
 export interface BarSegment {
-  task: CalendarTask
+  task: CalendarBarTask
   colStart: number
   colSpan: number
   lane: number

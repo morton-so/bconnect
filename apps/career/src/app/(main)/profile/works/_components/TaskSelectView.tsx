@@ -39,10 +39,9 @@ export function TaskSelectView({
       <TopBar
         variant="default"
         title="작업 선택"
-        actionLabel="저장"
+        actionText="저장"
         actionDisabled={picked == null}
         onAction={() => picked != null && onConfirm(picked)}
-        showAction
         onBack={onBack}
       />
 

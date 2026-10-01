@@ -3,11 +3,11 @@ import { useState } from 'react'
 import { WeekRow } from './WeekRow'
 import { WeekdayHeader } from './WeekdayHeader'
 import { buildWeekRows } from './grid-builder'
-import type { CalendarTask } from './types'
+import type { CalendarBarTask } from './types'
 
 interface CalendarMonthProps {
   monthIso: string
-  tasks: CalendarTask[]
+  tasks: CalendarBarTask[]
   selectedDay: string
   onSelectDay: (iso: string) => void
 }

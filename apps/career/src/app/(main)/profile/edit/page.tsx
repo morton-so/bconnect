@@ -149,12 +149,7 @@ export default function ProfileEditPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col">
-        <TopBar
-          variant="default"
-          title="프로필 수정"
-          showAction={false}
-          onBack={() => router.back()}
-        />
+        <TopBar variant="default" title="프로필 수정" onBack={() => router.back()} />
         <div className="flex flex-1 items-center justify-center py-20">
           <p className="text-m-14 text-gray-500">로딩 중...</p>
         </div>
@@ -167,7 +162,7 @@ export default function ProfileEditPage() {
       <TopBar
         variant="default"
         title="프로필 수정"
-        actionLabel={isSaving ? '저장 중...' : '완료'}
+        actionText={isSaving ? '저장 중...' : '완료'}
         onAction={handleSubmit(onSubmit, scrollToError)}
         onBack={() => router.back()}
       />

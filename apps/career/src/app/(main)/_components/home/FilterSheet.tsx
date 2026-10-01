@@ -75,8 +75,7 @@ export function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
         <TopBar
           variant="default"
           title="필터"
-          showAction
-          actionLabel="초기화"
+          actionText="초기화"
           onAction={clearFilter}
           onBack={onClose}
         />

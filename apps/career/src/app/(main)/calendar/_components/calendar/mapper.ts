@@ -1,5 +1,5 @@
-import type { AssigneeTask, WorkerTask } from '@bconnect/api-client'
-import type { CalendarTask } from './types'
+import type { AssigneeTask, CoworkerTask, WorkerTask } from '@bconnect/api-client'
+import type { CalendarBarTask, CalendarTask } from './types'
 
 /** 기술자 생성 작업 */
 export function toWorkerCalendarTask(task: WorkerTask): CalendarTask {
@@ -34,5 +34,15 @@ export function toAssigneeCalendarTask(task: AssigneeTask): CalendarTask {
     trades: task.trades,
     requirement: task.requirement ?? '',
     memo: task.memo ?? '',
+  }
+}
+
+export function toCoworkerCalendarTask(task: CoworkerTask): CalendarBarTask {
+  return {
+    id: task.id,
+    title: '일정',
+    start: task.start,
+    end: task.end,
+    colorIndex: task.id,
   }
 }

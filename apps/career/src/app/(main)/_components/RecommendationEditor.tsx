@@ -38,7 +38,7 @@ export function RecommendationEditor({
       <TopBar
         variant="default"
         title={title}
-        actionLabel={isPending ? '저장 중...' : '완료'}
+        actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending || isEmpty}
         onAction={submit}
         onBack={onBack}
