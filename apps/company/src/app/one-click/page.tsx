@@ -50,7 +50,6 @@ async function CompanyHeaderLoader({ registrationNumber }: { registrationNumber:
 export default async function OneClickPage({ searchParams }: PageProps) {
   const { q } = await searchParams
   const parsed = q ? brnField.safeParse(q) : undefined
-  // 조회 API 는 하이픈 없는 10자리를 받는다
   const brn = parsed?.success ? parsed.data : undefined
   const errorMessage = parsed && !parsed.success ? parsed.error.issues[0]?.message : undefined
 
@@ -58,12 +57,9 @@ export default async function OneClickPage({ searchParams }: PageProps) {
     <div className="flex min-h-screen flex-col bg-white">
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-6">
         <h1 className="text-sb-24 text-gray-900">원클릭 조회</h1>
-
         <SearchBar defaultValue={q} />
         <TipBanner />
-
         {q && !brn && errorMessage && <p className="text-r-14 text-destructive">{errorMessage}</p>}
-
         {brn && (
           <>
             <Suspense fallback={<CompanyHeaderSkeleton />}>

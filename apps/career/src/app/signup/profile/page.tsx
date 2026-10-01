@@ -90,7 +90,6 @@ export default function SignupProfilePage() {
         },
       })
       await refreshAccessToken()
-
       window.location.assign('/signup/complete')
     } catch (err) {
       server.capture(err, data)
@@ -100,7 +99,6 @@ export default function SignupProfilePage() {
   return (
     <div className="flex h-dvh flex-col">
       <SignupHeader step={3} onBack={() => router.back()} />
-
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit, scrollToError)}
@@ -112,9 +110,7 @@ export default function SignupProfilePage() {
               <br />
               역할을 선택해주세요
             </h1>
-
             <TradeSelector control={control} name="fields" max={MAX_TRADES} />
-
             <SelectField
               control={control}
               name="primaryField"
@@ -128,7 +124,6 @@ export default function SignupProfilePage() {
                 label: TRADE_LABELS[trade as Trade],
               }))}
             />
-
             <NumberField
               control={control}
               name="experience"
@@ -137,7 +132,6 @@ export default function SignupProfilePage() {
               maxLength={2}
               placeholder="경력을 입력해주세요 (년)"
             />
-
             <FormField
               control={control}
               name="role"
@@ -161,7 +155,6 @@ export default function SignupProfilePage() {
                 </FormItem>
               )}
             />
-
             <AddressField
               control={control}
               name="address"
@@ -169,7 +162,6 @@ export default function SignupProfilePage() {
               required
               description="정확한 매칭을 위해 일하는 곳을 기준으로 입력해주세요"
             />
-
             <TextField
               control={control}
               name="headline"
@@ -178,7 +170,6 @@ export default function SignupProfilePage() {
               maxLength={20}
               placeholder="한줄소개를 입력해주세요 (최대 20글자)"
             />
-
             <FormError error={server.formError} />
           </div>
           <div className="bg-white px-4 pt-4 pb-[calc(env(safe-area-inset-bottom)+1rem)]">

@@ -1,13 +1,9 @@
 /* eslint-disable */
 // @ts-nocheck
 /* global importScripts, firebase, self */
-// Firebase Cloud Messaging Service Worker 템플릿.
-// `@bconnect/push/server` 의 buildFcmServiceWorker 가 이 파일을 읽어
-// `__FIREBASE_CONFIG__`·`__REFERENCE_PATH_MAP__` placeholder 를 치환해 반환.
-// 각 앱의 `app/firebase-messaging-sw.js/route.ts` 가 그 결과를 서빙.
-//
-// 이 파일 자체는 브라우저에서 직접 실행되지 않음 (치환된 결과만 노출됨).
-// 별도 .js 파일로 두어 IDE 하이라이트/네비게이션이 동작하도록 함.
+
+// Firebase Cloud Messaging Service Worker 템플릿
+// `@bconnect/push/server` 패키지에서 요청 시 `firebase-messaging-sw.js`로 치환
 
 importScripts('https://www.gstatic.com/firebasejs/12.12.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/12.12.0/firebase-messaging-compat.js')
@@ -16,10 +12,10 @@ firebase.initializeApp(__FIREBASE_CONFIG__)
 
 const messaging = firebase.messaging()
 
-// `reference_type`(대문자 enum 키) → 이동 목적지 href 패턴. 앱이 소유하고 주입한다.
+// ref에 따른 경로 매핑 (앱별 정의)
 const REFERENCE_PATHS = __REFERENCE_PATH_MAP__
 
-// BE 는 push data 에 reference_type 을 소문자로 넣는다 (SnsPushSender).
+// href 파싱
 function referenceHref(data) {
   const pattern = data?.reference_type
     ? REFERENCE_PATHS[String(data.reference_type).toUpperCase()]
@@ -42,10 +38,8 @@ messaging.onBackgroundMessage((payload) => {
   self.registration.showNotification(title, options)
 })
 
-// 알림 클릭 → 해당 화면으로 이동 (딥링크)
-//
-// 열린 탭이 있으면 그 탭의 URL 을 기준으로 해석한다 — plan 의 `?panel=` 패턴이
-// 사용자가 보던 메인 경로를 유지한 채 패널만 열리게 하기 위함.
+// 알림 딥링크 리다이렉트
+// 열린 탭이 있으면 해당 탭 URL 기준으로 이동
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
 

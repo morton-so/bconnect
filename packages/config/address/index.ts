@@ -35,7 +35,7 @@ export function emptyAddressDraft(): AddressDraft {
   }
 }
 
-/** BE 로 보낼 수 있는 완전한 주소인지 — state/city/street 가 모두 채워졌는지로 판정. */
+// 완전한 주소인지 판단
 export function isCompleteAddress(a: AddressDraft | null | undefined): a is Address {
   return a != null && a.state != null && a.city.length > 0 && a.street.length > 0
 }

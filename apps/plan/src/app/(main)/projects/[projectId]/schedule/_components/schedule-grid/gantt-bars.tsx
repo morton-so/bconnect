@@ -1,7 +1,7 @@
 'use client'
 
 import { ContextMenu } from '@bconnect/ui'
-import { BAR_HEIGHT, BAR_STYLES, BAR_TONE_LABELS, BAR_TOP, DAY_WIDTH, barTone } from './constants'
+import { BAR_HEIGHT, BAR_TONE_LABELS, BAR_TOP, DAY_WIDTH, barColor, barTone } from './constants'
 import { addDays, daysBetween, toIsoDate } from './date-utils'
 import type { ScheduleTask } from './types'
 import type { DragMode } from './use-bar-drag'
@@ -57,9 +57,8 @@ export function GanttBars({
   const spanDays = daysBetween(preview.start, preview.end) + 1
   const left = offsetDays * DAY_WIDTH + 2
   const width = spanDays * DAY_WIDTH - 4
-  const tone = barTone(task)
-  const style = BAR_STYLES[tone]
-  const label = BAR_TONE_LABELS[tone]
+  const style = barColor(task.id)
+  const label = BAR_TONE_LABELS[barTone(task)]
 
   return (
     <>
@@ -90,8 +89,7 @@ export function GanttBars({
               width,
               height: BAR_HEIGHT,
               backgroundColor: style.bg,
-              // 드래그-생성 직후 미확정(draft) 바는 살짝 연하게
-              opacity: task.draft ? 0.5 : undefined,
+              opacity: task.draft ? 0.5 : undefined, // 미확정 바는 반투명함
             }}
             tabIndex={0}
             aria-label={`${task.title} · ${task.start} ~ ${task.end} · ${label}`}

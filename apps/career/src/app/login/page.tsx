@@ -77,16 +77,14 @@ export default function LoginPage() {
       })
       lastFailedAttempt.current = null
       if (result.registered) {
-        // 이미 가입된 회원 — 로그인 처리 후 복귀 (member 정보는 useGetMyMember 로 별도 조회)
+        // 가입한 회원
         login(result.accessToken)
         const redirect = new URLSearchParams(window.location.search).get('redirect')
-        // router.push 금지 — 라우터 캐시가 로그아웃 시점의 미들웨어 redirect 를 재생해
-        // 인증 페이지로 즉시 돌아온다. 하드 내비게이션으로 캐시를 통째로 리셋.
         window.location.assign(
           redirect && redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/'
         )
       } else {
-        // 신규 유저 — signupToken 저장 후 회원가입 진행
+        // 신규 회원
         setSignupToken(result.signupToken)
         router.push('/signup/member')
       }

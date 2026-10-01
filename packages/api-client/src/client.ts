@@ -1,4 +1,4 @@
-// ky: fetch wrapper — 우리는 prefixUrl/timeout/credentials 같은 cross-cutting 옵션과
+// ky: fetch wrapper — 우리는 prefix/timeout/credentials 같은 cross-cutting 옵션과
 // hook (beforeRequest, afterResponse) 시스템 때문에 native fetch 대신 사용.
 // orval 의 mutator (customFetch) 는 ky 인스턴스 (apiClient) 를 호출해 access token 주입과
 // 401 → refresh → retry 자동 처리. 다른 후보 (axios, ofetch) 대비 ky 가 가장 가볍고
@@ -31,12 +31,6 @@ export const getAccessToken = () => accessToken
 const AUTH_ENDPOINT = /\/auth\/(otp\/|refresh$)/
 const isAuthEndpoint = (url: string) => AUTH_ENDPOINT.test(url)
 
-// API 응답 envelope. spec 의 ApiSuccessResponseBase + paths 의 allOf 패턴과 정렬됨.
-// orval 이 생성하는 endpoint 응답 타입은 `ApiSuccessResponseBase & { data: T }` 형태 —
-// 여기 generic 의 T 가 그 inner data 를 채움.
-//
-// Generic 으로 두는 이유: 사용처에서 `ApiSuccessResponse<{ accessToken: string }>` 처럼
-// 호출 별 data 타입을 inline 지정 가능. default 가 never 라 의도치 않은 unknown 노출 방지.
 type ApiSuccessResponse<T = never> = {
   success: true
   data: T
@@ -56,7 +50,6 @@ export class ApiError extends Error {
   constructor(
     public code: string,
     message: string,
-    /** 원본 HTTP 상태. 호출부가 BE 에러 code(문자열) 대신 상태로 분기할 때 사용. */
     public status?: number
   ) {
     super(message)
@@ -64,11 +57,9 @@ export class ApiError extends Error {
   }
 }
 
-// 토큰 갱신 함수 — single-flight. BE 가 refresh 토큰을 회전(rotate)하고
-// mismatch 시 세션을 revoke 하므로, 동시 401 들이 각자 refresh 를 쏘면 뒤의 요청이
-// 폐기된 토큰으로 세션을 죽인다. 진행 중이면 같은 promise 를 공유해 refresh 를 1회로 묶는다.
 let refreshPromise: Promise<boolean> | null = null
 
+// 토큰 중복 재발급 방지
 export function refreshAccessToken(): Promise<boolean> {
   refreshPromise ??= doRefresh().finally(() => {
     refreshPromise = null
@@ -92,8 +83,6 @@ async function doRefresh(): Promise<boolean> {
     clearAuthHint()
     return false
   } catch (error) {
-    // HTTPError = BE 가 refresh 를 거절 (세션 만료/무효) → 표시 쿠키 제거.
-    // 그 외 (네트워크 단절 등) 는 세션 판단 불가라 유지.
     if (error instanceof HTTPError) {
       clearAuthHint()
     }
@@ -102,19 +91,19 @@ async function doRefresh(): Promise<boolean> {
 }
 
 export const apiClient = ky.create({
-  prefixUrl: getBaseUrl(),
+  prefix: getBaseUrl(),
   timeout: 30000,
   credentials: 'include',
   hooks: {
     beforeRequest: [
-      (request) => {
+      ({ request }) => {
         if (accessToken) {
           request.headers.set('Authorization', `Bearer ${accessToken}`)
         }
       },
     ],
     afterResponse: [
-      async (request, options, response) => {
+      async ({ request, options, response }) => {
         // 401 만 refresh 트리거 — 403 은 인가 실패(또는 BE 에러 dispatch 마스킹)라
         // refresh 로 해소되지 않는다.
         // auth 엔드포인트(로그인 전 OTP·refresh 자신)의 401 은 재발급이 성립하지 않는
@@ -146,7 +135,7 @@ export const apiClient = ky.create({
  * 네트워크 단절·타임아웃·envelope 없는 HTTP 응답이 후자에 해당한다.
  */
 export async function customFetch<T>(url: string, options: RequestInit = {}): Promise<T> {
-  // ky prefixUrl 은 leading slash 거부 — orval URL 이 `/api/...` 로 시작하므로 strip
+  // ky prefix 는 join 경계의 slash 를 정규화하지만, orval URL 의 `/api/...` 를 미리 strip 해 둔다
   const normalizedUrl = url.startsWith('/') ? url.slice(1) : url
 
   try {

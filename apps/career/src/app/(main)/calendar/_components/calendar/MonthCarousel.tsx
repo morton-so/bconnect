@@ -38,10 +38,7 @@ function MonthSlide({
   )
 }
 
-/**
- * 모바일 좌우 스와이프 월 이동. [prev, current, next] 3슬라이드를 startIndex 1 로 띄우고,
- * 측면 슬라이드로 착지하면 ?month= 를 갱신 → 슬라이드 재구성 후 무애니로 중앙(1) 복귀.
- */
+/** 모바일 좌우 스와이프 이동 */
 export function MonthCarousel({
   month,
   tasks,
@@ -65,13 +62,11 @@ export function MonthCarousel({
     }
   }, [api, month, onMonthChange])
 
-  // month(자식 슬라이드) 변경 시 중앙으로 무애니 재정렬
   useEffect(() => {
     if (api) api.scrollTo(1, true)
   }, [api, month])
 
-  // auto-height — 트랙 높이를 활성(현재 월) 슬라이드에 맞춤.
-  // 안 하면 flex 트랙이 가장 큰 이웃 달(6주)에 stretch 돼 5주 달 아래 빈 공간이 생김.
+  // 슬라이드 높이 자동 조정
   useEffect(() => {
     if (!api) return
     const setHeight = () => {

@@ -22,12 +22,11 @@ export type CalendarBarTask = Pick<
   'id' | 'title' | 'start' | 'end' | 'colorIndex'
 >
 
-// 작업 바
 export interface BarSegment {
   task: CalendarBarTask
-  colStart: number
-  colSpan: number
-  lane: number
+  colStart: number // 시작 열 (0~6)
+  colSpan: number // 차지 열 수 (1~7)
+  lane: number // 행 번호 (0~N)
   continuesLeft: boolean
   continuesRight: boolean
 }
@@ -35,5 +34,5 @@ export interface BarSegment {
 export interface WeekRowModel {
   cells: string[]
   segments: BarSegment[]
-  overflowByDay: number[]
+  overflowByDay: number[] // 날짜별 숨겨진 작업 수 (+N 표시용)
 }

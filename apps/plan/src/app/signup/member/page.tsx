@@ -1,6 +1,6 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15140
- * @figma-state 에러 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15161
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15161
  */
 'use client'
 
@@ -62,15 +62,9 @@ export default function SignupMemberPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      {/* Card */}
       <div className="flex w-120 flex-col items-center gap-8 rounded-xl border border-gray-300 p-10">
-        {/* Logo */}
         <Logo width={160} height={56} />
-
-        {/* Subtitle */}
         <p className="text-r-16 text-gray-700">신뢰할 수 있는 인테리어 하도급 섭외 · 관리 서비스</p>
-
-        {/* Form */}
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="flex w-100 flex-col gap-3">
             <TextField
@@ -102,8 +96,6 @@ export default function SignupMemberPage() {
               transform={formatIsoDateInput}
             />
             <AgreementField control={control} name="agreements" items={CONSENT_ITEMS} />
-
-            {/* CTA */}
             <FormSubmitButton size="full">가입 완료</FormSubmitButton>
           </form>
         </Form>
