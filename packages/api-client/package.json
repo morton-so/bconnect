@@ -7,6 +7,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
+    "./msw": "./src/generated/api.msw.ts",
     "./auth-hint": "./src/auth-hint.ts"
   },
   "scripts": {

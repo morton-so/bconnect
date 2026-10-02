@@ -1,16 +1,12 @@
 // 채팅 mock 데이터 + 인메모리 저장
 
+import { AttachmentType, ChatType, MessageType, Role, Trade } from '@bconnect/api-client'
 import {
   getGetDirectChatMessagesMockHandler,
   getGetDirectChatsMockHandler,
   getGetGroupChatsMockHandler,
   getGetMyMemberMockHandler,
-  AttachmentType,
-  ChatType,
-  MessageType,
-  Role,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type { DirectChat, Member, MemberSummary, Message } from '@bconnect/api-client'
 
 const EPOCH = '2025-01-02T00:00:00.000Z'

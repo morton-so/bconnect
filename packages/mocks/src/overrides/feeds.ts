@@ -1,4 +1,5 @@
-import { AttachmentType, getGetFeedsMockHandler } from '@bconnect/api-client'
+import { AttachmentType } from '@bconnect/api-client'
+import { getGetFeedsMockHandler } from '@bconnect/api-client/msw'
 import type { Attachment, CursorPageFeed, Feed, TaskSummary, Trade } from '@bconnect/api-client'
 import { addressOf } from './_address'
 import { PROFILE_SEEDS, type ProfileSeed } from './profiles'

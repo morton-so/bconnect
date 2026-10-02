@@ -1,4 +1,4 @@
-import { getGetCoworkersMockHandler, getGetCoworkersResponseMock } from '@bconnect/api-client'
+import { getGetCoworkersMockHandler, getGetCoworkersResponseMock } from '@bconnect/api-client/msw'
 import type { Coworker } from '@bconnect/api-client'
 
 const NAMES = ['이송목', '김기술', '박성실']

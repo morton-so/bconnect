@@ -5,3 +5,4 @@ dist
 node_modules
 .terraform
 apps/api
+packages/api-client/src/generated

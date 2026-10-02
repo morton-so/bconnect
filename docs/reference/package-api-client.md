@@ -10,23 +10,22 @@
 
 ## 파이프라인
 
-1. dev API 서버가 OpenAPI 명세 서빙 :
+1. API 서버가 OpenAPI 명세 서빙:
    - URL : `https://api.dev.bconnect.to/v3/api-docs.yaml`
-   - `orval.config.ts`의 `input.target`이 직접 조회
 2. 프론트엔드에서 Orval 실행
-   - 명령어 : `orval + orval.transformer.ts`
+   - 설정 : `orval.transformer.ts`
+   - 명령어 : `orval`
    - 산출물 : `src/generated/*`
      - Schema
      - TanStack Query Hook
      - MSW Mock
-3. `customFetch` : 공통 응답 처리
 
 ## 명령어
 
-| 명령어                | 설명                         |
-| --------------------- | ---------------------------- |
-| `pnpm generate`       | OpenAPI 스펙에서 코드 생성   |
-| `pnpm generate:watch` | 스펙 변경 감지하여 자동 생성 |
+| 명령어                | 설명                       |
+| --------------------- | -------------------------- |
+| `pnpm generate`       | OpenAPI 스펙으로 코드 생성 |
+| `pnpm generate:watch` | OpenAPI 변경시에만 생성    |
 
 OpenAPI 명세 URL → Orval 생성 → 컴파일
 
@@ -63,7 +62,7 @@ packages/api-client/
 
 3. 스키마명 규칙
    - 배경 : 가독성 향상
-   - 규칙 : 엔티티 `*Response` 접미사 제거. 예로 `MemberResponse` 가 `Member`
+   - 규칙 : 엔티티 `*Response` 접미사 제거
    - 규칙 : 엔티티 아닌 DTO는 `SCHEMA_KEEP_RESPONSE` 목록으로 관리
 
 4. operationId 규칙
@@ -130,7 +129,7 @@ import type { Member, Profile } from '@bconnect/api-client'
 
 // MSW mock setup (test/dev)
 import { setupServer } from 'msw/node'
-import { getBconnectAPIMock } from '@bconnect/api-client'
+import { getBconnectAPIMock } from '@bconnect/api-client/msw'
 const server = setupServer(...getBconnectAPIMock())
 ```
 
@@ -281,5 +280,5 @@ function EditProfile() {
 - 스펙 입력은 dev API 서버의 `/v3/api-docs.yaml`. 리포에 spec 파일을 커밋하지 않음
   - BE 변경은 dev 배포 후 재생성에 반영
   - 로컬 BE 대상 생성은 `API_URL` 환경변수로 오버라이드. 예 `API_URL=http://localhost:8080 pnpm api:generate`
-- 로컬 재생성은 orval 단독인 `pnpm api:generate`. 생성물 `generated/`는 gitignored
+- 로컬 재생성은 orval 단독인 `pnpm api:generate`. 생성물 `generated/`는 커밋 대상
 - 타입 불일치는 대개 BE-FE 계약 drift. BE 갱신 또는 FE 호출부 정합으로 해소

@@ -1,3 +1,4 @@
+import { OfferStatus, ProfileRole, TaskProgress, TaskStatus, Trade } from '@bconnect/api-client'
 import {
   getCancelOfferMockHandler,
   getCreateOfferMockHandler,
@@ -7,12 +8,7 @@ import {
   getGetTaskOffersMockHandler,
   getReorderOffersMockHandler,
   getUpdateTaskCompanyMockHandler,
-  OfferStatus,
-  ProfileRole,
-  TaskProgress,
-  TaskStatus,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   CompanyTask,
   CreateOfferRequest,

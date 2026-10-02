@@ -1,11 +1,9 @@
+import { CoworkerStatus, ProfileRole, Trade } from '@bconnect/api-client'
 import {
-  CoworkerStatus,
   getGetMyProfileMockHandler,
   getGetProfileMockHandler,
   getGetProfilesMockHandler,
-  ProfileRole,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   CursorPageProfile,
   MemberSummary,

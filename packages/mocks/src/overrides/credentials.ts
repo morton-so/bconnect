@@ -1,13 +1,12 @@
+import { CredentialStatus, CredentialType } from '@bconnect/api-client'
 import {
-  CredentialStatus,
-  CredentialType,
   getGetCredentialsMockHandler,
   getGetMyCredentialsMockHandler,
   getCreateCredentialMockHandler,
   getDeleteCredentialMockHandler,
   getCreateAttachmentPresignMockHandler,
   getCreateAttachmentConfirmMockHandler,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   Attachment,
   ConfirmRequest,

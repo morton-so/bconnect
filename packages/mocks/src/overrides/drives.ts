@@ -1,5 +1,5 @@
+import { DriveType } from '@bconnect/api-client'
 import {
-  DriveType,
   getCreateAttachmentConfirmMockHandler,
   getCreateAttachmentPresignMockHandler,
   getCreateDriveAttachmentsMockHandler,
@@ -15,7 +15,7 @@ import {
   getGetMyDriveMockHandler,
   getUpdateDriveNameMockHandler,
   getUpdateNoteMockHandler,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   Attachment,
   ConfirmRequest,

@@ -3,7 +3,7 @@ import {
   getCheckUsernameMockHandler,
   getCreateMemberMockHandler,
   getUpdateMyMemberPictureMockHandler,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type { RegisterMemberRequest, UpdatePictureRequest } from '@bconnect/api-client'
 import { setMyMockPicture } from './profiles'
 

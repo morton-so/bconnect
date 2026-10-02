@@ -1,4 +1,5 @@
-import { getGetCrawledMembersMockHandler, CrawledPlatform, Region } from '@bconnect/api-client'
+import { CrawledPlatform, Region } from '@bconnect/api-client'
+import { getGetCrawledMembersMockHandler } from '@bconnect/api-client/msw'
 import type {
   CrawledMember,
   CrawledMemberSummary,

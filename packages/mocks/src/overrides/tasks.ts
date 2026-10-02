@@ -1,4 +1,5 @@
 import { http, HttpResponse } from 'msw'
+import { OfferStatus, ProfileRole, TaskProgress, TaskStatus, Trade } from '@bconnect/api-client'
 import {
   getAcceptOfferMockHandler,
   getCreateTaskWorkerMockHandler,
@@ -6,12 +7,7 @@ import {
   getDenyOfferMockHandler,
   getGetTasksMockHandler,
   getUpdateTaskWorkerMockHandler,
-  OfferStatus,
-  ProfileRole,
-  TaskProgress,
-  TaskStatus,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   Address,
   AssigneeTask,
