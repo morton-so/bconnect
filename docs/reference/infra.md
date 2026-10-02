@@ -61,3 +61,18 @@ aws login
 gcloud auth application-default login # 인증
 gcloud auth application-default set-quota-project bconnect-f0bee # 프로젝트 설정
 ```
+
+### AWS process 프로필
+
+`hashicorp/aws` 프로바이더는 `aws login` 세션을 읽지 못하므로 `credential_process` 프로필을 거쳐 자격증명을 받는다.
+
+```ini
+# ~/.aws/config
+[profile process]
+credential_process = aws configure export-credentials --profile default --format process
+region = ap-northeast-2
+```
+
+`infra/.envrc`는 `AWS_PROFILE=process`를 지정한다.
+
+참고 : [Sharing Login credentials as process credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sign-in.html#cli-configure-sign-in-cached-credentials)
