@@ -63,9 +63,9 @@ const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
     ref
   ) => {
     const [inputValue, setInputValue] = React.useState(value)
-    // 전송 후 재포커스용 — forwardRef 는 래퍼 div 를 가리켜 input 핸들이 따로 필요하다 (#1147)
+    // 전송 후 재포커스용 — forwardRef 는 래퍼 div 를 가리켜 input 핸들이 따로 필요하다
     const inputRef = React.useRef<HTMLInputElement>(null)
-    // 키보드가 열리면 제스처바가 키보드에 가리는데 safe-area 패딩은 그대로 남아 하단이 빈다 (#1147)
+    // 키보드가 열리면 제스처바가 키보드에 가리는데 safe-area 패딩은 그대로 남아 하단이 빈다
     const [isFocused, setIsFocused] = React.useState(false)
     const fileInputRef = React.useRef<HTMLInputElement>(null)
 
@@ -115,11 +115,11 @@ const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
         ref={ref}
         className={cn(
           // 하단 고정 입력바 — viewport-fit=cover 라 홈 인디케이터/제스처바 높이를 직접 확보한다.
-          // 채팅 상세는 하단 네비(safe-area 패딩 보유)가 숨겨져 이 컴포넌트가 화면 최하단이다 (#1017).
+          // 채팅 상세는 하단 네비(safe-area 패딩 보유)가 숨겨져 이 컴포넌트가 화면 최하단이다.
           // 고정 h-16 이면 그 패딩이 안쪽을 먹으므로 min-h-16.
-          // w-full/max-w-full — 부모가 flex row 등일 때도 화면 폭을 넘겨 전송 버튼이 잘리지 않게 (#1147)
+          // w-full/max-w-full — 부모가 flex row 등일 때도 화면 폭을 넘겨 전송 버튼이 잘리지 않게
           // 상·하 패딩은 입력바가 메시지를 가려 Figma(py-4 / h-20) 대비 절반으로 줄였다. min-h 도 같이
-          // 줄이지 않으면 floor 에 걸려 높이가 안 변하므로 80 → 64 (#1146)
+          // 줄이지 않으면 floor 에 걸려 높이가 안 변하므로 80 → 64
           'flex min-h-16 w-full max-w-full flex-col justify-center bg-white px-6 py-2',
           isFocused ? 'pb-2' : 'pb-[calc(env(safe-area-inset-bottom)+0.5rem)]',
           className
@@ -140,7 +140,6 @@ const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
         )}
 
         <div className="flex w-full items-center gap-2">
-          {/* 갤러리 아이콘 */}
           <input
             ref={fileInputRef}
             type="file"
@@ -166,13 +165,13 @@ const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
           </button>
 
           {/* 입력 영역 — min-w-0 없으면 input 의 intrinsic 최소폭(기본 size=20, 약 180px)이
-              flex min-width:auto 로 잠겨 좁은 기기에서 전송 버튼을 화면 밖으로 밀어낸다 (#1147) */}
+              flex min-width:auto 로 잠겨 좁은 기기에서 전송 버튼을 화면 밖으로 밀어낸다 */}
           <div className="flex min-w-0 flex-1 items-center rounded-xl bg-gray-100 px-4 py-[9px]">
             <input
               ref={inputRef}
               type="text"
               // name 이 없으면 브라우저가 placeholder 등 약한 신호로 필드 종류를 오분류해
-              // 주소·비밀번호 제안을 띄운다. 무의미한 name 으로 고정 + autoComplete off 로 차단 (#1147)
+              // 주소·비밀번호 제안을 띄운다. 무의미한 name 으로 고정 + autoComplete off 로 차단
               name="chat-message"
               autoComplete="off"
               autoCorrect="off"
@@ -192,10 +191,9 @@ const ChatInput = React.forwardRef<HTMLDivElement, ChatInputProps>(
             />
           </div>
 
-          {/* 전송 버튼 */}
           <button
             type="button"
-            // mousedown 단계에서 input 이 blur 되며 모바일 키보드가 닫힌다 (click 은 그 이후) — 기본동작 차단으로 포커스 유지 (#1147)
+            // mousedown 단계에서 input 이 blur 되며 모바일 키보드가 닫힌다 (click 은 그 이후) — 기본동작 차단으로 포커스 유지
             onMouseDown={(e) => e.preventDefault()}
             onClick={handleSendClick}
             disabled={!isActive}

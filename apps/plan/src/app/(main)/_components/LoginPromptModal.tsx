@@ -53,7 +53,6 @@ export function LoginPromptModal({ open, onClose }: LoginPromptModalProps) {
         className="relative flex w-full max-w-100 flex-col gap-6 rounded-[13px] bg-white p-7 focus:outline-none"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* 닫기 */}
         <button
           type="button"
           onClick={onClose}
@@ -63,7 +62,6 @@ export function LoginPromptModal({ open, onClose }: LoginPromptModalProps) {
           <XIcon size={16} />
         </button>
 
-        {/* 안내 카피 — 가입 유도 */}
         <div className="flex flex-col gap-2 pr-6">
           <p id="login-prompt-title" className="text-sb-20 text-gray-900">
             로그인하고 기술자와 바로 연결하세요
@@ -73,7 +71,6 @@ export function LoginPromptModal({ open, onClose }: LoginPromptModalProps) {
           </p>
         </div>
 
-        {/* CTA — GuestSidebar 와 동선 통일 */}
         <div className="flex flex-col gap-2">
           <Button asChild variant="primary" size="full" className="h-10">
             <Link href="/login">로그인</Link>

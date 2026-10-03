@@ -1,69 +1,70 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15140
- * @figma-state 에러 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15161
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15161
  */
 'use client'
 
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { checkUsername } from '@bconnect/api-client'
-import {
-  Form,
-  FormError,
-  FormSubmitButton,
-  Logo,
-  TextField,
-  passthroughError,
-  useServerError,
-} from '@bconnect/ui'
+import { checkUsername, requireRegisterAccessToken, useCreateMember } from '@bconnect/api-client'
+import { AgreementField, Form, FormSubmitButton, Logo, TextField, toast } from '@bconnect/ui'
+import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/config/consent'
+import { formatIsoDateInput } from '@bconnect/config/date'
 import { formatUsername } from '@bconnect/config/username'
+import { login } from '@bconnect/features'
 import { useSignupStore } from '@/stores/signup-store'
 import { memberSchema, type MemberFormData } from './schema'
 
 export default function SignupMemberPage() {
   const router = useRouter()
-  const { formData, setMember, registerError, setRegisterError } = useSignupStore()
+  const { formData, reset: resetSignup } = useSignupStore()
+  const registerMemberMutation = useCreateMember({
+    request: { headers: { 'X-Signup-Token': formData.signupToken } },
+  })
 
   const form = useForm<MemberFormData>({
     resolver: zodResolver(memberSchema),
     mode: 'onTouched',
     defaultValues: {
-      username: formData.username,
-      name: formData.name,
+      username: '',
+      name: '',
+      birth: '',
+      agreements: CONSENT_DEFAULT,
     },
   })
   const { control, handleSubmit } = form
 
-  const server = useServerError(control, passthroughError<MemberFormData>('username'))
-
   const onSubmit = async (data: MemberFormData) => {
-    // 가입 단계에서 되돌아오며 받은 안내는 재제출 시점에 무효해진다.
-    setRegisterError(null)
     try {
       const { available } = await checkUsername({ username: data.username })
       if (!available) {
-        form.setError('username', { message: '이미 존재하는 사용자 이름입니다.' })
+        form.setError('username', { message: '이미 사용 중인 사용자명입니다.' })
         return
       }
-      setMember({ username: data.username, name: data.name })
-      router.push('/signup/corp')
+      const registered = await registerMemberMutation.mutateAsync({
+        data: {
+          birth: data.birth,
+          username: data.username,
+          name: data.name,
+          marketingConsent: data.agreements.marketing,
+        },
+      })
+      login(requireRegisterAccessToken(registered))
+      resetSignup()
+      router.replace('/signup/corp')
     } catch (err) {
-      server.capture(err, data)
+      toast({ description: (err as Error).message, variant: 'error' })
+      resetSignup()
+      router.replace('/login')
     }
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      {/* Card */}
       <div className="flex w-120 flex-col items-center gap-8 rounded-xl border border-gray-300 p-10">
-        {/* Logo */}
         <Logo width={160} height={56} />
-
-        {/* Subtitle */}
         <p className="text-r-16 text-gray-700">신뢰할 수 있는 인테리어 하도급 섭외 · 관리 서비스</p>
-
-        {/* Form */}
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="flex w-100 flex-col gap-3">
             <TextField
@@ -75,9 +76,7 @@ export default function SignupMemberPage() {
               description="동일한 사용자를 구분하는데 활용되며, 한 번 설정하면 변경이 불가해요."
               placeholder="user_id"
               transform={formatUsername}
-              serverError={server.fieldError('username')}
             />
-
             <TextField
               control={control}
               name="name"
@@ -86,11 +85,18 @@ export default function SignupMemberPage() {
               label="이름"
               placeholder="홍길동"
             />
-
-            <FormError error={registerError ?? undefined} />
-
-            {/* CTA */}
-            <FormSubmitButton size="full">다음으로</FormSubmitButton>
+            <TextField
+              control={control}
+              name="birth"
+              type="text"
+              autoComplete="bday"
+              inputMode="numeric"
+              label="생년월일"
+              placeholder="0000-00-00"
+              transform={formatIsoDateInput}
+            />
+            <AgreementField control={control} name="agreements" items={CONSENT_ITEMS} />
+            <FormSubmitButton size="full">가입 완료</FormSubmitButton>
           </form>
         </Form>
       </div>

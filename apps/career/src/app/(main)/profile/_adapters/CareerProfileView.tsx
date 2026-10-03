@@ -23,7 +23,7 @@ import {
   useUnreadNotificationCount,
   useUnreadChatCount,
 } from '@bconnect/features'
-import { Button, PlusIcon, SettingsIcon, toast, isApiErrorShape } from '@bconnect/ui'
+import { Button, PlusIcon, SettingsIcon, toast } from '@bconnect/ui'
 import { careerShell } from '@/app/(main)/_adapters/careerShell'
 import { CoworkerActionButton } from '@/app/(main)/_components/CoworkerActionButton'
 import { useShareCurrentUrl } from '@/hooks/useShareCurrentUrl'
@@ -140,40 +140,28 @@ export function ViewerProfileView({ memberId }: { memberId: number }) {
 
   // ProfileResponse 에 관계 필드가 없어, 내 동료 목록에 타겟이 있는지로 성립된 동료 여부 파생.
   // myId 는 useGetMyMember(/members/me) 로 파생 — useGetMyProfile(/profiles/me) 은 Profile row 가
-  // 없는 계정에서 404 라 isCoworker 가 항상 false 로 오판됐다 (#870 검증 중 발견)
+  // 없는 계정에서 404 라 isCoworker 가 항상 false 로 오판됐다
   const { data: myMember } = useGetMyMember()
   const myId = myMember?.id ?? 0
   const myCoworkers = useGetCoworkers({ memberId: myId }, { query: { enabled: myId > 0 } })
   const isCoworker = myCoworkers.data?.some((coworker) => coworker.member?.id === memberId) ?? false
 
-  const coworker = useCreateCoworkerRequest({
+  const coworker = useCreateCoworkerRequest<Error>({
     mutation: {
       onSuccess: () => toast({ description: '동료 요청을 보냈어요', variant: 'success' }),
-      onError: (error) =>
-        toast({
-          description: isApiErrorShape(error)
-            ? error.message
-            : '동료 요청에 실패했어요. 다시 시도해주세요',
-          variant: 'error',
-        }),
+      onError: (error) => toast({ description: error.message, variant: 'error' }),
     },
   })
-  // 보낸 요청 목록으로 "요청됨" 상태를 새로고침 후에도 유지 (#843).
+  // 보낸 요청 목록으로 "요청됨" 상태를 새로고침 후에도 유지.
   // createCoworkerRequest 성공 시 orval 이 이 조회를 무효화 → 재조회로 자동 반영.
   const sentRequests = useGetSentCoworkerRequests()
   const alreadyRequested =
     sentRequests.data?.some((request) => request.member?.id === memberId) ?? false
   const requested = coworker.isSuccess || alreadyRequested
-  const chat = useCreateDirectChat({
+  const chat = useCreateDirectChat<Error>({
     mutation: {
       onSuccess: (createdChatId) => router.push(`/messages/${createdChatId}`),
-      onError: (error) =>
-        toast({
-          description: isApiErrorShape(error)
-            ? error.message
-            : '대화를 시작하지 못했어요. 다시 시도해주세요',
-          variant: 'error',
-        }),
+      onError: (error) => toast({ description: error.message, variant: 'error' }),
     },
   })
 

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
-import '@bconnect/ui/styles'
+import '@bconnect/ui/styles.css'
 import { Toaster } from '@bconnect/ui'
 import { SERVICE_NAME, SITE_URL, BRAND_COLOR } from '@bconnect/config/site'
 import { Analytics } from '@vercel/analytics/next'
@@ -27,7 +27,7 @@ const description =
   '건설 현장의 업체와 기술자를 잇는 품앗이. 업체 소개, 기술자 소개, 사업자 원클릭 조회를 한곳에서.'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL.landing),
+  metadataBase: new URL(SITE_URL.company),
   title: {
     default: SERVICE_NAME,
     template: `%s | ${SERVICE_NAME}`,

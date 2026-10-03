@@ -1,7 +1,7 @@
-import type { AssigneeTask, WorkerTask } from '@bconnect/api-client'
-import type { CalendarTask } from './types'
+import type { AssigneeTask, CoworkerTask, WorkerTask } from '@bconnect/api-client'
+import type { CalendarBarTask, CalendarTask } from './types'
 
-/** 본인 작업 → 캘린더 뷰모델. 섭외 상태가 없고 수정·삭제할 수 있다. */
+/** 기술자 생성 작업 */
 export function toWorkerCalendarTask(task: WorkerTask): CalendarTask {
   return {
     id: task.id,
@@ -19,7 +19,7 @@ export function toWorkerCalendarTask(task: WorkerTask): CalendarTask {
   }
 }
 
-/** 업체 제안 작업 → 캘린더 뷰모델. 읽기 전용이며 섭외 상태와 요청사항을 가진다. */
+/** 업체 제안 작업 */
 export function toAssigneeCalendarTask(task: AssigneeTask): CalendarTask {
   return {
     id: task.id,
@@ -34,5 +34,15 @@ export function toAssigneeCalendarTask(task: AssigneeTask): CalendarTask {
     trades: task.trades,
     requirement: task.requirement ?? '',
     memo: task.memo ?? '',
+  }
+}
+
+export function toCoworkerCalendarTask(task: CoworkerTask): CalendarBarTask {
+  return {
+    id: task.id,
+    title: '일정',
+    start: task.start,
+    end: task.end,
+    colorIndex: task.id,
   }
 }

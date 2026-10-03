@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useCreateDirectChat } from '@bconnect/api-client'
-import { isApiErrorShape, toast } from '@bconnect/ui'
+import { toast } from '@bconnect/ui'
 
 /**
  * 동료에게 메시지 — 1:1 채팅방을 생성(이미 있으면 조회)하고 그 방으로 이동한다.
@@ -11,17 +11,11 @@ import { isApiErrorShape, toast } from '@bconnect/ui'
  */
 export function useMessageMember() {
   const router = useRouter()
-  const chat = useCreateDirectChat({
+  const chat = useCreateDirectChat<Error>({
     mutation: {
       // mutation 콜백 내 imperative 내비게이션 — no-restricted-syntax 비대상
       onSuccess: (chatId) => router.push(`/messages/${chatId}`),
-      onError: (error) =>
-        toast({
-          description: isApiErrorShape(error)
-            ? error.message
-            : '대화를 시작하지 못했어요. 다시 시도해주세요',
-          variant: 'error',
-        }),
+      onError: (error) => toast({ description: error.message, variant: 'error' }),
     },
   })
 

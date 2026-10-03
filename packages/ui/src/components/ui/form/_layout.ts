@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority'
 export type FieldLayout = 'stacked' | 'row'
 
 /**
- * *Field 공통 레이아웃 변형 (#581).
+ * *Field 공통 레이아웃 변형.
  * stacked = 기존 수직 스택(라벨 위·입력 아래), row = 패널형 수평(라벨 좌측 고정폭 + 하단 구분선).
  * DOM 순서(label → control → message)는 동일 — 슬롯 클래스만 분기한다.
  */

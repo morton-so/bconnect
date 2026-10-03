@@ -36,7 +36,7 @@ export const STICKY_LEFT = [
   COL_CATEGORY + COL_STATUS + COL_PROGRESS,
 ]
 
-/** 섭외·진행 두 축을 간트바 한 색으로 접는다. 진행이 앞서고, 아직 안 움직인 작업만 섭외 축으로 구분. */
+/** 섭외·진행 두 축을 간트바 상태 라벨 하나로 접는다. 진행이 앞서고, 아직 안 움직인 작업만 섭외 축으로 구분. */
 export function barTone(task: Pick<ScheduleTask, 'status' | 'progress'>): TaskBarTone {
   if (task.progress === TaskProgress.COMPLETED) return 'completed'
   if (task.progress === TaskProgress.IN_PROGRESS) return 'in_progress'
@@ -45,18 +45,23 @@ export function barTone(task: Pick<ScheduleTask, 'status' | 'progress'>): TaskBa
   return 'not_started'
 }
 
-export const BAR_STYLES: Record<TaskBarTone, { bg: string; text: string }> = {
-  completed: { bg: '#b0b0b0', text: '#5a5a5a' },
-  in_progress: { bg: '#284dbc', text: '#ffffff' },
-  recruited: { bg: '#569365', text: '#ffffff' },
-  recruiting: { bg: '#ffbf70', text: '#2d2d2d' },
-  not_started: { bg: '#d0d0d0', text: '#2d2d2d' },
+export const BAR_COLORS = [
+  { bg: '#b0b0b0', text: '#5a5a5a' },
+  { bg: '#284dbc', text: '#ffffff' },
+  { bg: '#569365', text: '#ffffff' },
+  { bg: '#ffbf70', text: '#2d2d2d' },
+  { bg: '#d0d0d0', text: '#2d2d2d' },
+]
+
+export function barColor(taskId: string) {
+  const hash = [...taskId].reduce((sum, c) => sum + c.charCodeAt(0), 0)
+  return BAR_COLORS[hash % BAR_COLORS.length]
 }
 
 export const BAR_TONE_LABELS: Record<TaskBarTone, string> = {
-  completed: '완료됨',
+  completed: '시공 완료',
   in_progress: '진행 중',
-  recruited: '섭외됨',
+  recruited: '섭외 됨',
   recruiting: '섭외 중',
   not_started: '시작 전',
 }

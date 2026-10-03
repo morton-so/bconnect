@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import type { CheckItemId } from '../_lib/types'
-import { fetchCheckItemById } from '../_lib/one-click'
+import type { CheckItemId } from '@bconnect/features/one-click'
+import { fetchCheckItemById } from '@bconnect/features/one-click'
 import { CATEGORY_GROUPS } from './constants'
 import { SummaryRow } from './SummaryRow'
 

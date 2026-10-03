@@ -1,11 +1,15 @@
 'use client'
 
 import {
-  TASK_STATUS_LABELS,
+  TASK_PROGRESS_LABELS,
+  TASK_STATUS_WORKER_LABELS,
+  TaskProgress,
+  TaskStatus,
   Trade,
   TRADE_LABELS,
   TRADE_LIST,
   useDeleteTask,
+  useUpdateTaskAssignee,
   useUpdateTaskWorker,
 } from '@bconnect/api-client'
 import { addressField, isCompleteAddress } from '@bconnect/config/address'
@@ -15,15 +19,15 @@ import {
   Form,
   InfoPopover,
   MoreVerticalIcon,
+  SelectField,
   SkillTag,
   TagSelectField,
   TextField,
   TextareaField,
   cn,
-  isApiErrorShape,
   toast,
 } from '@bconnect/ui'
-import { formatPeriod } from '@bconnect/config/format'
+import { formatPeriod } from '@bconnect/config/date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -33,14 +37,19 @@ import { useShareCurrentUrl } from '@/hooks/useShareCurrentUrl'
 import type { CalendarTask } from '../calendar/types'
 import { TaskActionDrawer } from './TaskActionDrawer'
 
-const editSchema = z
-  .object({
+const assigneeEditSchema = z.object({
+  title: z.string().min(1, '제목을 입력해주세요.'),
+  progress: z.nativeEnum(TaskProgress),
+  memo: z.string(),
+})
+
+const workerEditSchema = assigneeEditSchema
+  .extend({
     company: z.string().min(1, '업체명을 입력해주세요.'),
     start: z.string().min(1, '시작일을 선택해주세요.'),
     end: z.string().min(1, '종료일을 선택해주세요.'),
     address: addressField('현장주소'),
     trades: z.array(z.nativeEnum(Trade)).min(1, '공종을 1개 이상 선택해주세요.'),
-    memo: z.string(),
   })
   .superRefine((v, ctx) => {
     if (v.start > v.end) {
@@ -52,16 +61,24 @@ const editSchema = z
     }
   })
 
-type EditValues = z.infer<typeof editSchema>
+type AssigneeEditValues = z.infer<typeof assigneeEditSchema>
+type WorkerEditValues = z.infer<typeof workerEditSchema>
 
-function toEditValues(task: CalendarTask): EditValues {
+const PROGRESS_OPTIONS = Object.entries(TASK_PROGRESS_LABELS).map(([value, label]) => ({
+  value,
+  label,
+}))
+
+function toWorkerEditValues(task: CalendarTask): WorkerEditValues {
   return {
+    title: task.title,
+    progress: task.progress,
+    memo: task.memo,
     company: task.company ?? '',
     start: task.start,
     end: task.end,
     address: task.address,
     trades: task.trades,
-    memo: task.memo,
   }
 }
 
@@ -92,27 +109,36 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
   const [menuOpen, setMenuOpen] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
 
-  const form = useForm<EditValues>({
-    resolver: zodResolver(editSchema),
+  const workerForm = useForm<WorkerEditValues>({
+    resolver: zodResolver(workerEditSchema),
     mode: 'onTouched',
-    defaultValues: toEditValues(task),
+    defaultValues: toWorkerEditValues(task),
+  })
+
+  const assigneeForm = useForm<AssigneeEditValues>({
+    resolver: zodResolver(assigneeEditSchema),
+    mode: 'onTouched',
+    defaultValues: { title: task.title, progress: task.progress, memo: task.memo },
   })
 
   const onError = (error: unknown) =>
-    toast({
-      description: isApiErrorShape(error) ? error.message : '다시 시도해주세요',
-      variant: 'error',
-    })
+    toast({ description: (error as Error).message, variant: 'error' })
 
-  const { mutate: update, isPending: saving } = useUpdateTaskWorker({
-    mutation: {
-      onSuccess: () => {
-        toast({ description: '수정되었어요', variant: 'success' })
-        setMode('view')
-      },
-      onError,
-    },
+  const onSaved = () => {
+    toast({ description: '수정되었어요', variant: 'success' })
+    setMode('view')
+  }
+
+  const { mutate: updateWorker, isPending: savingWorker } = useUpdateTaskWorker({
+    mutation: { onSuccess: onSaved, onError },
   })
+
+  const { mutate: updateAssignee, isPending: savingAssignee } = useUpdateTaskAssignee({
+    mutation: { onSuccess: onSaved, onError },
+  })
+
+  const saving = savingWorker || savingAssignee
+  const canEdit = task.canManage || task.status === TaskStatus.ASSIGNED
 
   const { mutate: remove } = useDeleteTask({
     mutation: {
@@ -123,25 +149,31 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
     },
   })
 
-  const onSubmit = form.handleSubmit((vals) => {
-    const address = vals.address
-    if (!isCompleteAddress(address)) return
+  const onSubmit = task.canManage
+    ? workerForm.handleSubmit((vals) => {
+        const address = vals.address
+        if (!isCompleteAddress(address)) return
 
-    update({
-      id: task.id,
-      data: {
-        title: task.title,
-        // 진행 상태는 아직 화면에서 바꿀 수 없다 — 현재값을 되돌려 보내 덮어쓰기를 막는다 (#1160).
-        progress: task.progress,
-        memo: vals.memo.trim() || task.memo || task.title,
-        company: vals.company,
-        address,
-        trades: vals.trades,
-        start: vals.start,
-        end: vals.end,
-      },
-    })
-  })
+        updateWorker({
+          id: task.id,
+          data: {
+            title: vals.title,
+            progress: vals.progress,
+            memo: vals.memo.trim(),
+            company: vals.company,
+            address,
+            trades: vals.trades,
+            start: vals.start,
+            end: vals.end,
+          },
+        })
+      })
+    : assigneeForm.handleSubmit((vals) =>
+        updateAssignee({
+          id: task.id,
+          data: { title: vals.title, progress: vals.progress, memo: vals.memo.trim() },
+        })
+      )
 
   return (
     <div className="px-4 pt-5 pb-6">
@@ -150,7 +182,7 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
         <div className="flex shrink-0 items-center gap-1">
           {!task.canManage && (
             <span className="flex items-center gap-0.5 rounded bg-gray-100 px-2 py-1 text-r-12 text-gray-500">
-              {TASK_STATUS_LABELS[task.status]}
+              {TASK_STATUS_WORKER_LABELS[task.status]}
               <InfoPopover label="섭외 상태 설명">
                 업체가 이 작업에 함께할 기술자를 구하는 상태예요. 섭외가 진행되면 자동으로 바뀌고,
                 직접 바꿀 수는 없어요.
@@ -186,47 +218,80 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
 
       {mode === 'view' ? (
         <div className="mt-3">
-          <Row label="업체명">{task.company || '업체명 없음'}</Row>
-          <Row label="작업기간">{formatPeriod(task.start, task.end)}</Row>
-          <Row label="현장주소">
-            {task.address ? (
-              <>
-                {task.address.street}
-                {task.address.detail ? ` ${task.address.detail}` : ''}
-              </>
-            ) : (
-              '주소 없음'
-            )}
-          </Row>
-          <Row label="공종">
-            <span className="flex flex-wrap gap-1.5">
-              {task.trades.map((t) => (
-                <SkillTag key={t} label={TRADE_LABELS[t]} />
-              ))}
-            </span>
-          </Row>
+          {task.company && <Row label="업체명">{task.company}</Row>}
+          {task.start && task.end && (
+            <Row label="작업기간">{formatPeriod(task.start, task.end)}</Row>
+          )}
+          {task.address && (
+            <Row label="현장주소">
+              {task.address.street}
+              {task.address.detail ? ` ${task.address.detail}` : ''}
+            </Row>
+          )}
+          {task.trades.length > 0 && (
+            <Row label="공종">
+              <span className="flex flex-wrap gap-1.5">
+                {task.trades.map((t) => (
+                  <SkillTag key={t} label={TRADE_LABELS[t]} />
+                ))}
+              </span>
+            </Row>
+          )}
+          {task.progress && <Row label="진행 상태">{TASK_PROGRESS_LABELS[task.progress]}</Row>}
           {task.requirement && <Row label="요청사항">{task.requirement}</Row>}
+          {task.memo && (
+            <Row label="메모">
+              <span className="whitespace-pre-line">{task.memo}</span>
+            </Row>
+          )}
         </div>
-      ) : (
-        <Form {...form}>
+      ) : task.canManage ? (
+        <Form {...workerForm}>
           <form onSubmit={onSubmit} className="mt-2 flex flex-col">
-            <TextField control={form.control} name="company" label="업체명" layout="row" />
+            <TextField control={workerForm.control} name="title" label="제목" layout="row" />
+            <TextField control={workerForm.control} name="company" label="업체명" layout="row" />
             <DateRangeField
-              control={form.control}
+              control={workerForm.control}
               startName="start"
               endName="end"
               label="작업기간"
               layout="row"
             />
-            <AddressField control={form.control} name="address" label="현장주소" layout="row" />
+            <AddressField
+              control={workerForm.control}
+              name="address"
+              label="현장주소"
+              layout="row"
+            />
             <TagSelectField
-              control={form.control}
+              control={workerForm.control}
               name="trades"
               options={TRADE_LIST}
               label="공종"
               layout="row"
             />
-            <TextareaField control={form.control} name="memo" label="메모" layout="row" />
+            <SelectField
+              control={workerForm.control}
+              name="progress"
+              label="진행 상태"
+              layout="row"
+              options={PROGRESS_OPTIONS}
+            />
+            <TextareaField control={workerForm.control} name="memo" label="메모" layout="row" />
+          </form>
+        </Form>
+      ) : (
+        <Form {...assigneeForm}>
+          <form onSubmit={onSubmit} className="mt-2 flex flex-col">
+            <TextField control={assigneeForm.control} name="title" label="제목" layout="row" />
+            <SelectField
+              control={assigneeForm.control}
+              name="progress"
+              label="진행 상태"
+              layout="row"
+              options={PROGRESS_OPTIONS}
+            />
+            <TextareaField control={assigneeForm.control} name="memo" label="메모" layout="row" />
           </form>
         </Form>
       )}
@@ -237,7 +302,7 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
         onShare={share}
         onEdit={() => setMode('edit')}
         onDelete={() => setConfirmOpen(true)}
-        canEdit={task.canManage}
+        canEdit={canEdit}
         canDelete={task.canManage}
       />
 

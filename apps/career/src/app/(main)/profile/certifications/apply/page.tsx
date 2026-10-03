@@ -1,11 +1,11 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1240-8132
- * @figma-state 경력증명서 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1240-8451
- * @figma-state 기능등급증명서 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-8927
- * @figma-state 기타증명서 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-9148
- * @figma-state 국가기술자격증 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-9351
- * @figma-state 숙련기술인 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-9424
- * @figma-state 기타자격증 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-9568
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1240-8451
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-8927
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-9148
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-9351
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-9424
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1387-9568
  */
 'use client'
 
@@ -35,7 +35,7 @@ const TAB_ITEMS = [
   { key: 'qualification', label: '자격증' },
 ]
 
-// presign → S3 PUT → confirm 2-phase 업로드 (#340 계약). CREDENTIAL 컨텍스트의 contextId는 본인 memberId.
+// presign → S3 PUT → confirm 2-phase 업로드. CREDENTIAL 컨텍스트의 contextId는 본인 memberId.
 async function uploadCredentialFile(file: File, memberId: number): Promise<number> {
   const [presigned] = await createAttachmentPresign({
     context: AttachmentContext.CREDENTIAL,
@@ -126,12 +126,7 @@ export default function CertificationApplyPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar
-        variant="default"
-        title="자격 증명 신청"
-        showAction={false}
-        onBack={() => router.back()}
-      />
+      <TopBar variant="default" title="자격 증명 신청" onBack={() => router.back()} />
 
       <Tab items={TAB_ITEMS} activeKey={activeTab} onChange={handleTabChange} />
 

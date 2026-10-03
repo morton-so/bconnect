@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+/**
+ * Figma 매핑 검사
+ */
+
+import { loadContext, type FigmaContext } from './context.ts'
+import { publishReport, printReportDryRun, type Result } from './report.ts'
+import { checkFigmaMapping } from './check-mapping.ts'
+
+/**
+ * 검사 목록
+ */
+const CHECKS: Array<(ctx: FigmaContext) => Promise<Result[]>> = [checkFigmaMapping]
+
+const isDryRun = process.argv.includes('--dry-run')
+
+async function main() {
+  console.log('Figma context 로드 중...')
+  const ctx = await loadContext()
+  console.log(
+    `Figma context 로딩 완료 : @figma ${ctx.tags.length}개, 노드 ${ctx.nodes.size}개 확인`
+  )
+  const mappedCount = new Set(ctx.tags.flatMap((tag) => tag.nodes.map((node) => node.nodeId))).size
+  console.log(`현재 매핑된 컴포넌트 : ${mappedCount}개`)
+
+  const results: Result[] = []
+  for (const check of CHECKS) {
+    console.log(`${check.name} 실행 중...`)
+    const result = await check(ctx)
+    results.push(...result)
+    console.log(`${check.name} 완료 : ${result.length}건 발견`)
+  }
+
+  if (isDryRun) {
+    printReportDryRun(results)
+  } else {
+    await publishReport(results)
+  }
+}
+
+main().catch((err) => {
+  console.error('에러가 발생했습니다 :', err)
+  process.exit(1)
+})

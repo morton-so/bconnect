@@ -139,7 +139,7 @@ async def _scrape_blog_result(
     """검색 결과 1건 → 중복 체크 → 블로그 수집. 분류는 하지 않는다.
 
     수집한 원본 {blog_url, blogger_name, profile}을 반환한다. 걸러내는 것 없이
-    수집만 하므로 이 결과를 저장해두면 분류만 따로 재실행할 수 있다(#920).
+    수집만 하므로 이 결과를 저장해두면 분류만 따로 재실행할 수 있다.
     """
     blog_url = item["link"]
     blogger_name = item.get("bloggername", "")
@@ -205,12 +205,12 @@ async def _classify_scraped(
 ) -> CrawledMember | None:
     """수집해둔 블로그 원본(profile) 1건을 분류하여 CrawledMember 생성.
 
-    원본만 있으면 재실행 가능 — 분류 방법을 바꿔도 다시 수집할 필요 없음(#920).
-    labels 를 주면 해당 blog_url 은 LLM 대신 그 라벨로 분류한다(#953, 강한 판단자 in-loop).
+    원본만 있으면 재실행 가능 — 분류 방법을 바꿔도 다시 수집할 필요 없음.
+    labels 를 주면 해당 blog_url 은 LLM 대신 그 라벨로 분류한다(강한 판단자 in-loop).
     """
     profile_intro = profile.get("profile_intro", "")
 
-    # 값싼 규칙 선필터: 확실한 비-기술자(자동차·인력사무소·협찬글 등)는 LLM 없이 즉시 제외 (#915)
+    # 값싼 규칙 선필터: 확실한 비-기술자(자동차·인력사무소·협찬글 등)는 LLM 없이 즉시 제외
     rejected = rule_reject({
         "company": profile.get("blog_title", ""),
         "headline": profile_intro,
@@ -223,7 +223,7 @@ async def _classify_scraped(
             report.add_skipped(blog_url, blogger_name, f"규칙:{reason}")
         return None
 
-    # 외부 라벨(강한 판단자)이 있으면 LLM 대신 사용 (#953)
+    # 외부 라벨(강한 판단자)이 있으면 LLM 대신 사용
     label = labels.get(blog_url) if labels else None
     if label is not None:
         classification = _validate_result(
@@ -687,7 +687,7 @@ async def run_collect_raw(
     keywords: list[str] | None = None, per_query: int = 5,
     force: bool = False, out: Path | None = None, dedup: bool = True,
 ) -> PipelineReport:
-    """#920 1단계 — 검색 → 수집 → 원본을 파일에 저장. 분류·저장은 하지 않는다.
+    """1단계 — 검색 → 수집 → 원본을 파일에 저장. 분류·저장은 하지 않는다.
 
     걸러내는 것 없이 수집한 것을 전부 남기므로, 이후 분류 방법이 바뀌어도
     다시 수집하지 않고 `--classify-from-raw`로 분류만 재실행할 수 있다.
@@ -766,11 +766,11 @@ async def run_classify_from_raw(
     raw_file: Path, metro_only: bool = False, skip_vision: bool = False,
     labels_file: Path | None = None,
 ) -> PipelineReport:
-    """#920 2단계 — 저장된 원본을 읽어 분류만 실행한다. 다시 수집하지 않는다.
+    """2단계 — 저장된 원본을 읽어 분류만 실행한다. 다시 수집하지 않는다.
 
     dry-run과 같은 형태의 보고서(members 포함)를 만들어, 기존 `--export-db`로
     그대로 DB에 적재할 수 있다. 분류 방법을 바꿔 재실행할 땐 이 명령만 돌리면 된다.
-    labels_file 을 주면 그 라벨에 있는 블로그는 LLM 대신 라벨로 분류한다(#953).
+    labels_file 을 주면 그 라벨에 있는 블로그는 LLM 대신 라벨로 분류한다.
     """
     import json
 
@@ -976,7 +976,7 @@ async def run_instagram_full(
 
 
 async def run_export_db(file_path: Path, truncate: bool = False) -> PipelineReport:
-    """dry-run 보고서 JSON(members[])을 crawled_* DB 테이블에 적재한다 (#876).
+    """dry-run 보고서 JSON(members[])을 crawled_* DB 테이블에 적재한다.
 
     ⚠️ BE 우회 — crawled_* 직접 INSERT. 대상 DB 는 CRAWLED_PG_DB_URL 환경변수.
     """
@@ -1451,7 +1451,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="노션 저장 없이 분류까지만 수행")
     parser.add_argument("--force", action="store_true", help="기존 업체도 재크롤링하여 덮어쓰기")
     parser.add_argument("--from-file", type=Path, metavar="JSON", help="검수한 JSON에서 노션 저장")
-    parser.add_argument("--export-db", type=Path, metavar="JSON", help="dry-run JSON을 crawled_* DB에 적재 (#876)")
+    parser.add_argument("--export-db", type=Path, metavar="JSON", help="dry-run JSON을 crawled_* DB에 적재")
     parser.add_argument("--truncate", action="store_true", help="--export-db 시 기존 crawled_* 비우고 재적재")
     parser.add_argument("--enrich", action="store_true", help="빈 필드가 있는 기존 레코드를 재크롤링+LLM으로 보강")
     parser.add_argument("--instagram", action="store_true", help="인스타그램 채널 크롤링")
@@ -1459,9 +1459,9 @@ def main():
     parser.add_argument("--approve", action="store_true", help="검수 DB 승인 건을 프로덕션 DB로 이동")
     parser.add_argument("--direct", action="store_true", help="검수 DB 거치지 않고 프로덕션 DB 직접 저장")
     parser.add_argument("--patch-review", action="store_true", help="검수 DB 기존 데이터에 피드백 수정사항 소급 적용")
-    parser.add_argument("--collect-raw", action="store_true", help="#920 1단계: 검색·수집만 하여 원본을 파일로 저장(분류·저장 안 함)")
-    parser.add_argument("--classify-from-raw", type=Path, metavar="RAW", help="#920 2단계: 저장된 원본(jsonl)을 읽어 분류만 실행(다시 수집하지 않음)")
-    parser.add_argument("--labels", type=Path, metavar="JSON", help="#953: 외부 라벨(강한 판단자) JSON 배열([{id,is_professional,...}]). 있으면 해당 blog_url은 LLM 대신 라벨로 분류")
+    parser.add_argument("--collect-raw", action="store_true", help="1단계: 검색·수집만 하여 원본을 파일로 저장(분류·저장 안 함)")
+    parser.add_argument("--classify-from-raw", type=Path, metavar="RAW", help="2단계: 저장된 원본(jsonl)을 읽어 분류만 실행(다시 수집하지 않음)")
+    parser.add_argument("--labels", type=Path, metavar="JSON", help="외부 라벨(강한 판단자) JSON 배열([{id,is_professional,...}]). 있으면 해당 blog_url은 LLM 대신 라벨로 분류")
     parser.add_argument("--raw-out", type=Path, metavar="JSONL", help="--collect-raw 저장 경로 (기본: reports/raw/naver-<시각>.jsonl)")
     parser.add_argument("--no-dedup", action="store_true", help="--collect-raw 중복 제외 끄기 (기본은 이미 수집/적재된 블로그 건너뜀)")
     vision_group = parser.add_mutually_exclusive_group()

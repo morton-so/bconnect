@@ -87,5 +87,5 @@ orval 8.9.1은 `mutationInvalidates` 기능을 제공한다.
 
 ## 참조
 
-- #728 : 구현 이슈
-- [ADR-0024](./0024-orval-consumes-be-springdoc-spec.md) : operationId 네이밍 전제
+- chore(api-client): orval mutationInvalidates 도입 — mutation 성공 시 쿼리 자동 무효화 : 구현 이슈
+- ADR-0024 : operationId 네이밍 전제

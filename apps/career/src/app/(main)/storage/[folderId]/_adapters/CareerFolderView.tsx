@@ -89,7 +89,7 @@ export function CareerFolderView({ folderId }: { folderId: string }) {
   return (
     <div className="flex flex-col">
       <div className="sticky top-0 z-30 bg-white">
-        <TopBar variant="default" title={title} showAction={false} showBack onBack={onBack} />
+        <TopBar variant="default" title={title} showBack onBack={onBack} />
         {!file && (
           <Tab
             items={[

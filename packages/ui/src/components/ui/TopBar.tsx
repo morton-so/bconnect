@@ -101,24 +101,17 @@ export interface TopBarProps
   step?: number
   totalSteps?: number
   title?: string
-  /** 제목 옆 카운트 뱃지 (0·undefined 면 렌더 안 함) — 예: 알림 안 읽음 수 (#1016) */
   titleCount?: number
-  /** 우측 영역 커스텀 노드 (예: 알림 '모두 읽음'). utility/actionIcon/showAction 보다 우선. */
   rightSlot?: React.ReactNode
-  /** 좌측 영역 커스텀 노드 (예: 캘린더 '내 일정' 버튼). back/leftIcon 보다 우선. */
   leftSlot?: React.ReactNode
-  actionLabel?: string
+  actionText?: string
   onAction?: () => void
-  showAction?: boolean
   actionDisabled?: boolean
-  /** 우측 텍스트 액션 대신 아이콘 버튼 (예: 캘린더 "+"). actionLabel 을 aria-label 로 사용. */
   actionIcon?: React.ReactNode
-  /** actionIcon 이 라우트 이동이면 지정 — Link(prefetch)로 렌더, 없으면 onAction 버튼. */
+  actionIconLabel?: string
   actionHref?: string
   showBack?: boolean
-  /** 좌측 back 자리를 대체하는 커스텀 아이콘 (예: 프로필 '+' 작업물 생성). leftLabel 을 aria-label 로 사용. */
   leftIcon?: React.ReactNode
-  /** leftIcon 이 라우트 이동이면 지정 — Link(prefetch)로 렌더, 없으면 onLeft 버튼. */
   leftHref?: string
   onLeft?: () => void
   leftLabel?: string
@@ -126,11 +119,8 @@ export interface TopBarProps
   notifyCount?: number
   onFilter?: () => void
   onBack?: () => void
-  /** backHref가 있으면 Link로 렌더링 (prefetch), 없으면 button + onBack */
   backHref?: string
-  /** 채팅 라우트 — 있으면 우측 채팅 아이콘(Link, prefetch) 렌더 */
   chatHref?: string
-  /** 알림 라우트 — 있으면 우측 알림 아이콘(Link, prefetch) 렌더 */
   notifyHref?: string
 }
 
@@ -145,11 +135,11 @@ const TopBar = React.forwardRef<HTMLElement, TopBarProps>(
       titleCount,
       rightSlot,
       leftSlot,
-      actionLabel = '완료',
+      actionText,
       onAction,
-      showAction = true,
       actionDisabled = false,
       actionIcon,
+      actionIconLabel,
       actionHref,
       showBack = true,
       leftIcon,
@@ -236,7 +226,7 @@ const TopBar = React.forwardRef<HTMLElement, TopBarProps>(
                 <Link
                   href={actionHref}
                   className={cn(iconButtonClass, '-mr-4 pr-4 pl-2 text-gray-900')}
-                  aria-label={actionLabel}
+                  aria-label={actionIconLabel}
                 >
                   {actionIcon}
                 </Link>
@@ -245,12 +235,12 @@ const TopBar = React.forwardRef<HTMLElement, TopBarProps>(
                   type="button"
                   onClick={onAction}
                   className={cn(iconButtonClass, '-mr-4 pr-4 pl-2 text-gray-900')}
-                  aria-label={actionLabel}
+                  aria-label={actionIconLabel}
                 >
                   {actionIcon}
                 </button>
               )
-            ) : showAction ? (
+            ) : actionText ? (
               <button
                 type="button"
                 onClick={onAction}
@@ -262,7 +252,7 @@ const TopBar = React.forwardRef<HTMLElement, TopBarProps>(
                     : 'text-primary hover:cursor-pointer'
                 )}
               >
-                {actionLabel}
+                {actionText}
               </button>
             ) : (
               <div className="size-5" />

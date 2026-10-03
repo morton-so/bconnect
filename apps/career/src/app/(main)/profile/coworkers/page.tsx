@@ -1,6 +1,6 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1759-11905
- * @figma-state 받은요청 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1759-12127
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1759-12127
  */
 'use client'
 
@@ -38,9 +38,8 @@ export default function CoworkersPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="동료" showAction={false} onBack={() => router.back()} />
+      <TopBar variant="default" title="동료" onBack={() => router.back()} />
 
-      {/* 상단: 보낸/받은 동료요청 (취소·수락·거절) */}
       <CoworkerRequestList
         received={received}
         sent={sent}
@@ -51,7 +50,6 @@ export default function CoworkersPage() {
         profileHref={(memberId) => `/profile/${memberId}`}
       />
 
-      {/* 하단: 동료 목록 — 행 ⋮ 메뉴로 동료 관리 */}
       <p className="px-4 pt-3 pb-1 text-r-14 text-gray-500">동료 목록</p>
       <CoworkerList
         coworkers={coworkers ?? []}

@@ -7,7 +7,7 @@ import {
   formatRegistrationNumber,
   extractDigits,
   isValidRegistrationNumber,
-} from '@bconnect/config/biz-number'
+} from '@bconnect/config/brn'
 
 interface SearchBarProps {
   defaultValue?: string
@@ -49,7 +49,7 @@ export function SearchBar({ defaultValue }: SearchBarProps) {
       />
       <Button
         variant="primary"
-        className="h-[50px] w-25 shrink-0"
+        className="h-12.5 w-25 shrink-0"
         onClick={handleSearch}
         disabled={!isValid}
         isLoading={isPending}

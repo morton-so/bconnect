@@ -1,4 +1,4 @@
-import type { CheckItem } from '../_lib/types'
+import type { CheckItem } from '@bconnect/features/one-click'
 import { StatusBadge } from './StatusBadge'
 
 interface SummaryRowProps {

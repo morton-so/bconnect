@@ -1,11 +1,10 @@
+import { NotificationReferenceType, NotificationSenderType } from '@bconnect/api-client'
 import {
   getGetNotificationsMockHandler,
   getGetNotificationsUnreadCountMockHandler,
   getUpdateNotificationReadMockHandler,
   getUpdateNotificationsReadMockHandler,
-  NotificationReferenceType,
-  NotificationSenderType,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type { Notification } from '@bconnect/api-client'
 
 // 알림 목록·읽음 상태 stateful override — faker 랜덤이면 커서 페이지네이션이

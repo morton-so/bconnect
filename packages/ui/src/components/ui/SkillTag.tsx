@@ -1,6 +1,6 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1504-12099
- * @figma-state 미선택 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1504-12102
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1504-12102
  */
 import { cn } from '../../lib/utils'
 

@@ -3,6 +3,7 @@
   "semi": false,
   "trailingComma": "es5",
   "printWidth": 100,
+  "endOfLine": "auto",
   "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindStylesheet": "./packages/ui/src/styles/globals.css",
   "tailwindFunctions": ["cva", "cn"]

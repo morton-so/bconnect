@@ -7,7 +7,7 @@ import {
   AttachmentContext,
   AttachmentType,
 } from '@bconnect/api-client'
-import { toast, isApiErrorShape } from '@bconnect/ui'
+import { toast } from '@bconnect/ui'
 
 // BE app.attachment 설정의 복제본 — 계약으로 노출되지 않아 프런트가 값을 들고 있을 수밖에 없다.
 // BE 쪽 값이 바뀌면 여기도 같이 바꿔야 한다 (application.yaml 의 max-batch-size · max-file-size).
@@ -22,7 +22,7 @@ export interface ChatImageUploadProgress {
   total: number
 }
 
-// presign → S3 PUT → confirm 2-phase 업로드 (#340 계약). CHAT 컨텍스트의 contextId 는 chatId.
+// presign → S3 PUT → confirm 2-phase 업로드. CHAT 컨텍스트의 contextId 는 chatId.
 async function uploadChatImages(
   files: File[],
   chatId: number,
@@ -54,7 +54,7 @@ async function uploadChatImages(
 }
 
 /**
- * 채팅 사진 첨부 업로드 (#1150). 앱 어댑터가 호출해 ChatView 의 imageActions 로 주입한다
+ * 채팅 사진 첨부 업로드. 앱 어댑터가 호출해 ChatView 의 imageActions 로 주입한다
  * (ADR-0020: features 의 View 는 mutation 을 갖지 않는다).
  *
  * 선택 즉시 업로드하고 첨부 id 만 돌려준다 — 실제 메시지 전송(STOMP publish)은 ChatView 담당.
@@ -91,12 +91,7 @@ export function useChatImageUpload(chatId: number) {
           setProgress((prev) => (prev ? { ...prev, done: prev.done + 1 } : prev))
         )
       } catch (error) {
-        toast({
-          description: isApiErrorShape(error)
-            ? error.message
-            : '사진을 보내지 못했어요. 다시 시도해주세요',
-          variant: 'error',
-        })
+        toast({ description: (error as Error).message, variant: 'error' })
         return []
       } finally {
         setProgress(null)

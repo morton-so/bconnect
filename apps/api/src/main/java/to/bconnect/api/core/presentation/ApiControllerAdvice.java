@@ -2,6 +2,7 @@ package to.bconnect.api.core.presentation;
 
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -62,6 +63,14 @@ public class ApiControllerAdvice {
         return ResponseEntity
                 .status(e.getExceptionCode().getStatus())
                 .body(ApiResponse.error(e.getExceptionCode()));
+    }
+
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    public ResponseEntity<ApiResponse<Void>> handleOptimisticLock(OptimisticLockingFailureException e) {
+        log.info("Optimistic lock conflict: {}", e.getMessage());
+        return ResponseEntity
+                .status(CommonExceptionCode.CONFLICT.getStatus())
+                .body(ApiResponse.error(CommonExceptionCode.CONFLICT));
     }
 
     @ExceptionHandler(NoResourceFoundException.class)

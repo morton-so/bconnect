@@ -1,7 +1,7 @@
 const DSN =
   'https://1a5384ac1551a597142a14b44351d09e@o4510971670822912.ingest.us.sentry.io/4510971672330240'
 
-/** 서버/엣지 런타임 공통 옵션 */
+/** 서버/엣지 설정 */
 export const serverSentryOptions = {
   dsn: DSN,
   enabled: process.env.NODE_ENV === 'production',
@@ -11,7 +11,7 @@ export const serverSentryOptions = {
   enableLogs: true,
 }
 
-/** 클라이언트 런타임 공통 옵션 (NEXT_PUBLIC_* 환경변수 사용) */
+/** 클라이언트 설정 */
 export const clientSentryOptions = {
   dsn: DSN,
   enabled: process.env.NODE_ENV === 'production',
@@ -21,7 +21,7 @@ export const clientSentryOptions = {
   enableLogs: true,
 }
 
-/** next.config.ts용 withSentryConfig 옵션 */
+/** next.config.ts */
 export function sentryBuildOptions(project: string) {
   return {
     org: 'morton-so',

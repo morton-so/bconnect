@@ -1,5 +1,5 @@
 /**
- * @figma-todo 폼 제출 버튼 표준 — type=submit + isLoading + 스키마 검증 통과 시에만 활성 (#400, #993)
+ * @figma-todo 폼 제출 버튼 코드 전용
  */
 'use client'
 

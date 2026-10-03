@@ -1,5 +1,5 @@
 /**
- * @figma-todo DS Icons 에 cloud-upload 없음 (#458)
+ * @figma-todo 클라우드 업로드 아이콘 DS 미포함
  */
 import type { SVGProps } from 'react'
 

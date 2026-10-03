@@ -104,7 +104,7 @@ public class CompanyService {
         if (companyRepository.existsByBrn(command.brn()))
             throw new CodeException(CompanyExceptionCode.DUPLICATE_BRN);
 
-        memberRepository.findById(user.id())
+        val member = memberRepository.findById(user.id())
                 .orElseThrow(() -> new CodeException(CommonExceptionCode.NOT_FOUND));
 
         attachmentFinder.validateOwnership(user.id(), command.attachmentId());
@@ -121,6 +121,8 @@ public class CompanyService {
             attachmentFinder.validateOwnership(user.id(), command.pictureId());
             attachmentLinker.link(AttachmentReferenceType.COMPANY, companyId, command.pictureId());
         }
+
+        member.grantRole(Role.PLAN);
 
         return companyId;
     }
@@ -150,10 +152,6 @@ public class CompanyService {
 
         found.accept();
 
-        memberRepository.findById(found.getMemberId())
-                .orElseThrow(() -> new CodeException(CommonExceptionCode.NOT_FOUND))
-                .grantRole(Role.PLAN);
-
         attachmentLinker.unlink(AttachmentReferenceType.COMPANY_CERTIFICATE, found.getId());
 
         eventPublisher.publishEvent(
@@ -169,6 +167,10 @@ public class CompanyService {
             throw new CodeException(CompanyExceptionCode.INVALID_STATUS);
 
         found.deny();
+
+        memberRepository.findById(found.getMemberId())
+                .orElseThrow(() -> new CodeException(CommonExceptionCode.NOT_FOUND))
+                .revokeRole(Role.PLAN);
 
         attachmentLinker.unlink(AttachmentReferenceType.COMPANY_CERTIFICATE, found.getId());
 

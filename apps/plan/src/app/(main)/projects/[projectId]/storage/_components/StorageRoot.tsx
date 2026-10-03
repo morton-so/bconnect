@@ -27,14 +27,14 @@ export function StorageRoot({ projectId }: { projectId: string }) {
   const [pendingDelete, setPendingDelete] = useState<Folder | null>(null)
   const { data: project } = useGetProject(Number(projectId))
 
-  // 탭 title 에 프로젝트명 반영 (리뷰 반영, #785). 로딩 전엔 static fallback('저장소') 유지.
+  // 탭 title 에 프로젝트명 반영 (리뷰 반영). 로딩 전엔 static fallback('저장소') 유지.
   useDocumentTitle(project ? `${project.title} - 저장소` : undefined)
 
   return (
     <div className="flex h-full flex-col">
       <StorageHeader projectId={projectId} />
-      <ResizablePanelGroup direction="horizontal" className="min-h-0 flex-1">
-        <ResizablePanel defaultSize={68} minSize={40}>
+      <ResizablePanelGroup orientation="horizontal" className="min-h-0 flex-1">
+        <ResizablePanel defaultSize="68" minSize="40">
           <div className="h-full overflow-y-auto p-6">
             <div className="mb-4 flex items-center justify-between gap-2">
               <h2 className="text-base font-semibold text-gray-900">폴더</h2>
@@ -86,7 +86,7 @@ export function StorageRoot({ projectId }: { projectId: string }) {
           </div>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={32} minSize={20}>
+        <ResizablePanel defaultSize="32" minSize="20">
           <aside className="flex h-full items-center justify-center p-6">
             <p className="text-center text-sm text-gray-400">폴더를 선택하세요</p>
           </aside>

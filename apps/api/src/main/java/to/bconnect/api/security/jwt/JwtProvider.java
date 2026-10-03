@@ -8,7 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import to.bconnect.api.ApiConfigProps;
-import org.springframework.security.core.Authentication;
+import to.bconnect.api.security.AuthUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -47,9 +47,9 @@ public class JwtProvider {
         this.refreshTokenExpiration = properties.refreshTokenExpiration();
     }
 
-    public String generateAccessToken(Authentication authentication) {
-        val username = authentication.getName();
-        val authorities = authentication.getAuthorities()
+    public String generateAccessToken(AuthUser user) {
+        val username = user.getUsername();
+        val authorities = user.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(Objects::nonNull)
@@ -73,10 +73,14 @@ public class JwtProvider {
         val now = new Date();
         val expiration = new Date(now.getTime() + refreshTokenExpiration.toMillis());
 
+        return generateRefreshToken(username, expiration);
+    }
+
+    public String generateRefreshToken(String username, Date expiration) {
         return Jwts.builder()
                 .subject(username)
                 .claim(TOKEN_TYPE_CLAIM_KEY, REFRESH_TOKEN_TYPE)
-                .issuedAt(now)
+                .issuedAt(new Date())
                 .expiration(expiration)
                 .signWith(secret, HS256)
                 .compact();
@@ -104,6 +108,10 @@ public class JwtProvider {
 
     public String getTokenType(String token) {
         return getClaims(token).get(TOKEN_TYPE_CLAIM_KEY, String.class);
+    }
+
+    public Date getExpiration(String token) {
+        return getClaims(token).getExpiration();
     }
 
     public Claims getClaims(String token) {

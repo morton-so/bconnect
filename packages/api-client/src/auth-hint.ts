@@ -1,6 +1,6 @@
 // 로그인 표시 쿠키 — 각 앱 proxy.ts 미들웨어 가드가 존재 여부로 로그인 상태를 낙관 판정.
 // refreshToken 쿠키(BE 발급, Path=/api/v1/auth)는 페이지 요청에 실리지 않아 가드가 볼 수 없어
-// 미들웨어가 볼 수 있는 위치(Path=/)에 non-sensitive 신호를 따로 둔다 (#701).
+// 미들웨어가 볼 수 있는 위치(Path=/)에 non-sensitive 신호를 따로 둔다.
 // Max-Age 는 BE refresh token TTL(7d) 과 동기화 — apps/api application.yaml 변경 시 함께 갱신.
 export const AUTH_HINT_COOKIE = 'bc_auth_hint'
 

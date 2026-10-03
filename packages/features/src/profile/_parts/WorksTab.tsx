@@ -4,7 +4,7 @@ import { useGetFeeds } from '@bconnect/api-client'
 import type { Feed } from '@bconnect/api-client'
 import { Skeleton } from '@bconnect/ui'
 import { WorkCard } from './WorkCard'
-import { formatRelativeTime } from '@bconnect/config/format'
+import { formatRelativeTime } from '@bconnect/config/date'
 import { toWork } from '../../_shared/work'
 
 interface WorksTabProps {

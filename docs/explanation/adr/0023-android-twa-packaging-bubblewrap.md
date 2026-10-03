@@ -117,7 +117,7 @@ career 는 이미 완성형 PWA 이고 출시 목표가 "이 웹을 Play 에 안
 
 ## 메모
 
-빌드 환경 셋업, assetlinks 지문 규칙(Play 서명키), 키스토어 시크릿 분리 등 운영 디테일은 ADR 범위 밖이다. 구현 시 트래킹 이슈 #630 및 별도 how-to 로 관리한다.
+빌드 환경 셋업, assetlinks 지문 규칙(Play 서명키), 키스토어 시크릿 분리 등 운영 디테일은 ADR 범위 밖이다. 구현 시 트래킹 이슈 "[출시] PWA 런칭 — career Play Store(TWA) + plan 웹 공개" 및 별도 how-to 로 관리한다.
 
 - [GoogleChromeLabs/bubblewrap](https://github.com/GoogleChromeLabs/bubblewrap)
 - [web.dev : Using a PWA in your Android app](https://web.dev/articles/using-a-pwa-in-your-android-app)

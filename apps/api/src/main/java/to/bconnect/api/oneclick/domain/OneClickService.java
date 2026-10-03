@@ -73,11 +73,14 @@ public class OneClickService {
         }
 
         Insurance insurance;
+        InsuranceResult insuranceResult;
         try {
             insurance = kcomwelInsuranceResolver.resolve(brn);
+            insuranceResult = InsuranceResult.of(insurance);
         } catch (RuntimeException e) {
             log.warn("insurance lookup failed. brn={}", brn, e);
             insurance = Insurance.empty();
+            insuranceResult = InsuranceResult.error();
         }
         List<License> licenses = List.of();
         List<Disposition> dispositions = List.of();
@@ -118,7 +121,7 @@ public class OneClickService {
             log.info("company name unresolved. name based lookup skipped. brn={}", brn);
             return new OneClickResult(
                     status, general, specialty,
-                    InsuranceResult.of(insurance),
+                    insuranceResult,
                     FireLicenseResult.unknown(),
                     ElectricalLicenseResult.unknown(),
                     WageDefaultResult.unknown(),
@@ -170,7 +173,7 @@ public class OneClickService {
 
         return new OneClickResult(
                 status, general, specialty,
-                InsuranceResult.of(insurance),
+                insuranceResult,
                 fireLicense, electricalLicense, wageDefault, habitualArrears,
                 subcontractRestriction, retirementFund
         );

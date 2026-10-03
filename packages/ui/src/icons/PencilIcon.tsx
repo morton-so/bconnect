@@ -1,5 +1,5 @@
 /**
- * @figma-todo 작업 액션시트 — 수정 (#650)
+ * @figma-todo 연필 아이콘 디자인 미정
  */
 import type { SVGProps } from 'react'
 

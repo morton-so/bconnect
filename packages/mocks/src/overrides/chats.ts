@@ -1,21 +1,13 @@
+// 채팅 mock 데이터 + 인메모리 저장
+
+import { AttachmentType, ChatType, MessageType, Role, Trade } from '@bconnect/api-client'
 import {
   getGetDirectChatMessagesMockHandler,
   getGetDirectChatsMockHandler,
   getGetGroupChatsMockHandler,
   getGetMyMemberMockHandler,
-  AttachmentType,
-  ChatType,
-  MessageType,
-  Role,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type { DirectChat, Member, MemberSummary, Message } from '@bconnect/api-client'
-
-// 채팅 도메인 BE 미구현 → orval faker 가 매 호출 무seed 랜덤이라 메시지·상대·본인이
-// 호출마다 바뀌어 isMine/sender/헤더가 incoherent. 고정 일관 데이터셋으로 override.
-// getMyMember 도 ME 로 고정(isMine 판정 기준) — @bconnect/mocks 공유라 career 식별자도
-// 함께 고정되나 dev/preview 전용(prod tree-shake). DM 만 시드(그룹은 빈 목록, #759).
-// 상대 프로필은 profiles.ts 가 담당. BE 확정 시 generated handler 로 교체.
 
 const EPOCH = '2025-01-02T00:00:00.000Z'
 const at = (hhmm: string) => `2025-12-04T${hhmm}:00.000Z`
@@ -77,10 +69,7 @@ const placeholderImage = (label: string): string =>
     `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="100%" height="100%" fill="#e5e5e5"/><text x="50%" y="50%" font-size="28" fill="#a5a5a5" text-anchor="middle" dominant-baseline="middle">${label}</text></svg>`
   )}`
 
-/**
- * 사진 메시지 (#1150) — BE 는 content 를 비우고 attachments 에 서명 URL 을 담아 보낸다.
- * mock 은 실 S3 대신 placeholder data URI 를 쓴다.
- */
+// 이미지 메시지
 const imageMsg = (
   id: number,
   chatId: number,
@@ -102,11 +91,11 @@ const imageMsg = (
   })),
 })
 
-/** 섭외 제안 메시지 — BE 계약대로 content 는 offerId 문자열 (#972). tasks.ts 시드의 offerId 와 맞춘다. */
+// 섭외 메시지
 const offerMsg = (id: number, chatId: number, memberId: number, offerId: number, hhmm: string) =>
   msg(id, chatId, memberId, String(offerId), hhmm, MessageType.OFFER)
 
-// 시간순(오래된→최신) 작성. 응답은 서버 계약대로 newest-first 로 reverse.
+// 채팅 메시지
 const MESSAGES_BY_CHAT: Record<number, Message[]> = {
   1: [
     msg(1001, 1, 101, '안녕하세요. 궁금한 점이 있어 연락드립니다.', '05:00'),
@@ -145,7 +134,7 @@ const chatOf = (w: Worker, index: number): DirectChat => {
 
 const CHATS: DirectChat[] = WORKERS.map(chatOf)
 
-/** mock 소켓이 보낸 메시지를 목록·페이지 응답에도 반영한다 (재조회해도 남아 있게). */
+// 메시지 인메모리 저장
 export function appendMockMessage(chatId: number, message: Message): void {
   const messages = MESSAGES_BY_CHAT[chatId]
   if (!messages) return
@@ -157,13 +146,11 @@ export function appendMockMessage(chatId: number, message: Message): void {
   }
 }
 
-/** mock 소켓이 부여할 다음 메시지 id — 시드와 안 겹치게 뒤에서 시작. */
 export const nextMockMessageId = (() => {
   let id = 9000
   return () => ++id
 })()
 
-/** isMine 판정 기준이 되는 mock 본인 id */
 export const MOCK_MY_ID = MY_ID
 
 const paramId = (value: string | readonly string[] | undefined): number =>

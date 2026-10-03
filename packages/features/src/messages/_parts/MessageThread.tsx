@@ -6,7 +6,7 @@ import type { Message, WithdrawableMember } from '@bconnect/api-client'
 import { useDirectChatMessages } from '../useDirectChatMessages'
 import { chatMemberName } from './types'
 import { ChatMessage } from '@bconnect/ui'
-import { formatChatTime } from '@bconnect/config/format'
+import { formatChatTime } from '@bconnect/config/date'
 import { OfferMessageCard } from './OfferMessageCard'
 import type { OfferMessageEntry } from './OfferMessageCard'
 import type { OfferActions } from './types'
@@ -22,7 +22,7 @@ interface MessageThreadProps {
   offerActions?: OfferActions
   /** 말풍선 아바타 → 프로필 링크 빌더. 앱이 주입 (ChatView 와 동일 슬롯) */
   profileHref?: (memberId: number) => string
-  /** 대화 맨 위에 붙는 상대 프로필 — 스크롤과 함께 밀려 올라간다 (#1148) */
+  /** 대화 맨 위에 붙는 상대 프로필 — 스크롤과 함께 밀려 올라간다 */
   header?: ReactNode
 }
 

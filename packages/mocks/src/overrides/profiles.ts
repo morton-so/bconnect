@@ -1,11 +1,9 @@
+import { CoworkerStatus, ProfileRole, Trade } from '@bconnect/api-client'
 import {
-  CoworkerStatus,
   getGetMyProfileMockHandler,
   getGetProfileMockHandler,
   getGetProfilesMockHandler,
-  ProfileRole,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   CursorPageProfile,
   MemberSummary,
@@ -148,7 +146,7 @@ const PROFILES_BY_ID: Record<number, ProfileDetail> = Object.fromEntries(
   PROFILE_SEEDS.map((seed) => [seed.id, detailOf(seed)])
 )
 
-// #966 프로필 이미지 업로드 QA — mock-s3 는 바이트를 버리므로 pictureId 시드 이미지로 교체 표시.
+// 프로필 이미지 업로드 QA — mock-s3 는 바이트를 버리므로 pictureId 시드 이미지로 교체 표시.
 // members.ts 의 updateMyMemberPicture override 가 호출 (프로필 도메인 state 단일 owner 유지).
 // getMyProfile 이 매 호출 seed 에서 새 객체를 만들므로 변이 대신 모듈 변수로 보관해 응답 시 주입.
 let myMockPicture: string | null = null

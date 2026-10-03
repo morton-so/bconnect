@@ -1,5 +1,5 @@
 /**
- * @figma-todo shadcn/ui Label primitive (#400)
+ * @figma-todo 라벨 shadcn 원본 이식
  */
 import * as React from 'react'
 import { Label as LabelPrimitive } from 'radix-ui'

@@ -1,3 +1,4 @@
+import { OfferStatus, ProfileRole, TaskProgress, TaskStatus, Trade } from '@bconnect/api-client'
 import {
   getCancelOfferMockHandler,
   getCreateOfferMockHandler,
@@ -7,12 +8,7 @@ import {
   getGetTaskOffersMockHandler,
   getReorderOffersMockHandler,
   getUpdateTaskCompanyMockHandler,
-  OfferStatus,
-  ProfileRole,
-  TaskProgress,
-  TaskStatus,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   CompanyTask,
   CreateOfferRequest,
@@ -27,7 +23,7 @@ import { addressOf } from './_address'
 import { http, HttpResponse } from 'msw'
 
 /**
- * plan 공정표(projects/project-tasks/offers) **stateful** mock (#767).
+ * plan 공정표(projects/project-tasks/offers) **stateful** mock.
  * 생성/수정/삭제/섭외가 모듈 메모리에 반영돼 재조회 시 즉시 보인다. 하드 리로드 시 시드 리셋.
  *
  * BE 실동작 모사:

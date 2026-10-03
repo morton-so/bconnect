@@ -32,7 +32,7 @@ interface TechnicianItemBase {
   postCount: number
   coworkerCount: number
   recommendCount: number
-  // 리뷰(별점)·계약·자격 증명 BE 도메인 미구현 — 표시하지 않으며 0/빈값 고정 (#832)
+  // 리뷰(별점)·계약·자격 증명 BE 도메인 미구현 — 표시하지 않으며 0/빈값 고정
   rating: number
   reviewCount: number
   contractCount: number

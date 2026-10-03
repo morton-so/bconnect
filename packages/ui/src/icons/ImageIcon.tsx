@@ -17,7 +17,7 @@ export function ImageIcon({ size = 24, ...props }: ImageIconProps) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      {/* Figma 기준 좌표 — 이전에 x/y 가 각각 +0.75 밀려 24 박스 안에서 우하단으로 치우쳐 있었다 (#1146) */}
+      {/* Figma 기준 좌표 — 이전에 x/y 가 각각 +0.75 밀려 24 박스 안에서 우하단으로 치우쳐 있었다 */}
       <rect
         x="3"
         y="3"

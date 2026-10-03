@@ -8,7 +8,7 @@ import to.bconnect.api.attachment.domain.UrlResolver;
 @Profile({"local", "test"})
 public class NoopUrlResolver implements UrlResolver {
 
-    private static final String BASE_URL = "http://localhost";
+    private static final String BASE_URL = "https://static.dev.bconnect.to";
 
     @Override
     public String resolve(String key) {

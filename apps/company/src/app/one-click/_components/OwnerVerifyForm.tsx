@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Button, Input } from '@bconnect/ui'
-import type { VerifyOwnerResult } from '../_lib/types'
+import type { VerifyOwnerResult } from '@bconnect/features/one-click'
 
 interface OwnerVerifyFormProps {
   registrationNumber: string

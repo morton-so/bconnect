@@ -1,5 +1,5 @@
 /**
- * @figma-todo Select 합성 폼 래퍼 — label/description/error + RHF(control+name) 배선 (#426)
+ * @figma-todo 선택 필드 코드 전용
  */
 'use client'
 
@@ -36,7 +36,7 @@ interface SelectFieldProps<T extends FieldValues> {
   required?: boolean
   /** useServerError 의 fieldError 결과 — zod 클라이언트 에러와 한 슬롯에 합성. */
   serverError?: string
-  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선, #581). 기본 stacked. */
+  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선). 기본 stacked. */
   layout?: FieldLayout
 }
 

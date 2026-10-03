@@ -1,5 +1,5 @@
 /**
- * @figma-todo DS Icons 에 standalone 체크 없음(dropdown 선택 표시 내부) — chevron/check 통합 시 정리 (#458)
+ * @figma-todo 체크 아이콘 DS 미포함
  */
 import type { SVGProps } from 'react'
 

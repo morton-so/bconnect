@@ -1,6 +1,6 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1416-1534
- * @figma-state 인증오류 https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15119
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15119
  */
 'use client'
 
@@ -86,7 +86,7 @@ export default function LoginPage() {
         login(result.accessToken)
         const redirect = new URLSearchParams(window.location.search).get('redirect')
         // router.push 금지 — 라우터 캐시가 로그아웃 시점의 미들웨어 redirect 를 재생해
-        // 로그인 페이지로 즉시 돌아온다. 하드 내비게이션으로 캐시를 통째로 리셋 (#855).
+        // 로그인 페이지로 즉시 돌아온다. 하드 내비게이션으로 캐시를 통째로 리셋.
         window.location.assign(
           redirect && redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/'
         )
@@ -107,7 +107,7 @@ export default function LoginPage() {
     if (step !== 'otp' || !isCodeValid || verifyCodeMutation.isPending) return
     if (lastAutoVerifiedCode.current === codeValue) return
     lastAutoVerifiedCode.current = codeValue
-    void verifyCode({ silent: true })
+    verifyCode({ silent: true })
   }, [step, isCodeValid, codeValue, verifyCodeMutation.isPending, verifyCode])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -131,15 +131,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      {/* Card */}
       <div className="flex w-120 flex-col items-center gap-8 rounded-xl border border-gray-300 p-10">
-        {/* Logo */}
         <Logo width={160} height={56} />
 
-        {/* Subtitle */}
         <p className="text-r-16 text-gray-700">신뢰할 수 있는 인테리어 하도급 섭외 · 관리 서비스</p>
 
-        {/* Form */}
         <Form {...form}>
           <form onSubmit={handleSubmit} className="flex w-100 flex-col gap-3">
             <TextField
@@ -179,7 +175,6 @@ export default function LoginPage() {
               />
             )}
 
-            {/* Submit Button */}
             <FormSubmitButton
               requireValid={false}
               size="full"

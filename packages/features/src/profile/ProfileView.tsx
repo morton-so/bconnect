@@ -54,7 +54,7 @@ interface ProfileViewBaseProps {
   onDeleteRecommendation?: (id: number) => void
   /** member 로딩 전/username 부재 시 셸 타이틀 fallback (owner: '내 프로필'). 기본 '프로필' */
   fallbackTitle?: string
-  /** owner 전용 프로필 이미지 수정 트리거. 없으면 edit 배지 없음 (viewer/plan) (#966) */
+  /** owner 전용 프로필 이미지 수정 트리거. 없으면 edit 배지 없음 (viewer/plan) */
   onEditImage?: () => void
   /** 이미지 업로드 진행 중 — edit 배지 비활성 */
   imageUploading?: boolean

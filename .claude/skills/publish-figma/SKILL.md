@@ -37,6 +37,8 @@ mcp__figma__get_screenshot(fileKey, nodeId)       # 시각 래퍼런스 (검증�
    - 단일 통합 컴포넌트 지양
    - 유의미한 컴포넌트 단위로 분리
    - 컴포넌트별 props 인터페이스 설계
+   - ASCII 트리로 시각화
+
 2. 기존 컴포넌트 재사용 확인
    - 확인 순서 : shadcn → `packages/ui`
    - 재사용 불가시 신규 컴포넌트 생성

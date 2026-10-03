@@ -30,7 +30,7 @@ uv run crawler --direct                 # 프로덕션 DB 적재
 uv run --dev pytest tests/ -v
 ```
 
-### 수집 · 분류 분리 · 강한 판단자 in-loop (#920, #953)
+### 수집 · 분류 분리 · 강한 판단자 in-loop
 
 수집과 분류를 나눠 분류 방법을 바꿔도 다시 수집하지 않습니다.
 

@@ -55,13 +55,13 @@ await worker.start()
 활성화 흐름입니다.
 
 1. `app/layout.tsx` 가 `<Providers>` 렌더
-2. `<Providers>` 가 `<MSWProvider>` 로 wrap. `worker.start()` 완료까지 children 렌더 차단
+2. `<Providers>` 가 `<MswProvider>` 로 wrap. `worker.start()` 완료까지 children 렌더 차단
 3. dev 환경에서 SW 등록 완료 후 children 렌더
 4. 이후 모든 `fetch()` 가 SW 거치며 handler 매칭 시 mock 응답 반환
    - 매칭 우선순위는 배열 앞쪽. overrides 가 generated 보다 우선
-5. handler 없는 요청은 `onUnhandledRequest: 'bypass'` 로 실 네트워크 통과
+5. handler 없는 요청은 msw 기본값 `onUnhandledRequest: 'warn'` 으로 경고 후 실 네트워크 통과
 
-fetch 부수효과는 `<MSWProvider>` 안쪽에서 실행되어야 race 가 안 납니다. `refreshAccessToken()`·`usePushNotifications()` 가 해당합니다.
+fetch 부수효과는 `<MswProvider>` 안쪽에서 실행되어야 race 가 안 납니다. `refreshAccessToken()`·`usePushNotifications()` 가 해당합니다.
 
 - `providers.tsx` 의 `<PostMSWBootstrap>` 가 그 역할
 

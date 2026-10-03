@@ -1,4 +1,4 @@
-import { getBconnectAPIMock } from '@bconnect/api-client'
+import { getBconnectAPIMock } from '@bconnect/api-client/msw'
 import { delay, http } from 'msw'
 import { authOverrides } from './overrides/auth'
 import { chatSocketOverrides } from './overrides/chatSocket'

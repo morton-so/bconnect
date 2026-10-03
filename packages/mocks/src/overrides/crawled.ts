@@ -1,4 +1,5 @@
-import { getGetCrawledMembersMockHandler, CrawledPlatform, Region } from '@bconnect/api-client'
+import { CrawledPlatform, Region } from '@bconnect/api-client'
+import { getGetCrawledMembersMockHandler } from '@bconnect/api-client/msw'
 import type {
   CrawledMember,
   CrawledMemberSummary,
@@ -8,7 +9,7 @@ import type {
 import { http, HttpResponse } from 'msw'
 
 // 크롤링 기술자 — plan 기술자 탐색 병합 노출용 시드.
-// #826 크롤러 dry-run 실측 데이터에서 발췌 (네이버 CDN 실사진 → no-referrer 렌더 경로까지 로컬 검증).
+// 크롤러 dry-run 실측 데이터에서 발췌 (네이버 CDN 실사진 → no-referrer 렌더 경로까지 로컬 검증).
 // 연락처·사업자번호·이메일은 개인정보라 가짜 값으로 치환, 본문 내 전화번호도 마스킹돼 있다.
 // trades 는 BE 원본과 동일하게 한국어 라벨 문자열 (FE 가 Trade enum 으로 역매핑).
 

@@ -6,11 +6,11 @@
 
 ## 개요
 
-[ADR-0017](./0017-plan-panel-parallel-routes-shared-features.md)은 plan 우측 패널을 path 기반 parallel route slot(`@panel`)으로 구현했다. 대상 패널은 프로필/메시지/알림이다. 패널 정체성이 URL path 에 들어간다. 예시는 `/profile/5`, `/messages/3` 이다.
+ADR-0017은 plan 우측 패널을 path 기반 parallel route slot(`@panel`)으로 구현했다. 대상 패널은 프로필/메시지/알림이다. 패널 정체성이 URL path 에 들어간다. 예시는 `/profile/5`, `/messages/3` 이다.
 
 그 설계엔 숨은 가정이 있었다. "패널은 기술자 탐색(explore) 위에만 뜬다"는 가정이다. 실제로 `/profile/5` 진입 시 children 슬롯은 항상 `(main)/default.tsx`, 즉 explore 로 떨어진다. 당시 plan 의 유일한 메인 콘텐츠가 explore 였기에 문제가 드러나지 않았다.
 
-[#375](https://github.com/morton-so/bconnect/issues/375) 공정표 페이지(`(main)/projects/[projectId]/schedule`)가 explore 가 아닌 첫 메인 라우트로 등장하며 한계가 드러났다.
+공정표 페이지(`(main)/projects/[projectId]/schedule`)가 explore 가 아닌 첫 메인 라우트로 등장하며 한계가 드러났다.
 
 - parallel slot 은 path 로 파일이 매칭된다. `@panel/profile/[profileId]/page.tsx`가 렌더되려면 URL path 가 그에 맞아야 한다.
 - 한 URL path 는 하나뿐이다. 따라서 "메인 path = `/projects/1/schedule`" 와 "패널 path = `/profile/5`"가 한 URL 에 공존할 수 없다.
@@ -59,7 +59,7 @@
 
 ### 옵션 C: intercepting routes
 
-[ADR-0017](./0017-plan-panel-parallel-routes-shared-features.md)이 이미 기각했다. hard load 시 하위 full route 를 강제 렌더해 원치 않는 full-page 변종을 만든다. 두 path 공존 문제도 동일하게 못 푼다.
+ADR-0017이 이미 기각했다. hard load 시 하위 full route 를 강제 렌더해 원치 않는 full-page 변종을 만든다. 두 path 공존 문제도 동일하게 못 푼다.
 
 ## 결정사항
 
@@ -69,7 +69,7 @@ search param 은 ADR-0017 이 중시한 force 를 그대로 보존한다. 그 fo
 
 PoC 로 검증했다. 검증일은 2026-06-09 다. `PanelHost`(프로필) + `(main)/layout.tsx` 마운트로 공정표 위 프로필 패널 공존, 새로고침 생존(hard load), 닫기(soft, param 제거 후 공정표 유지), 뒤로·앞으로(history 복원), `@panel` 슬롯 무충돌, 콘솔 클린을 전부 확인했다. 스파이크는 검증 후 폐기했다.
 
-이 결정은 [ADR-0017](./0017-plan-panel-parallel-routes-shared-features.md)을 supersede 한다. ADR-0017 의 다른 결정인 공유 feature 패키지 `@bconnect/features`는 [ADR-0020](./0020-dual-shell-view-sharing-rendershell-resolved-data.md)과 함께 유지된다. 본 ADR 은 패널의 URL/렌더 메커니즘만 바꾼다.
+이 결정은 ADR-0017을 supersede 한다. ADR-0017 의 다른 결정인 공유 feature 패키지 `@bconnect/features`는 ADR-0020과 함께 유지된다. 본 ADR 은 패널의 URL/렌더 메커니즘만 바꾼다.
 
 ## 기대 효과
 
@@ -79,14 +79,14 @@ PoC 로 검증했다. 검증일은 2026-06-09 다. `PanelHost`(프로필) + `(ma
 
 ## 메모
 
-- 구현 범위·순서는 [#568](https://github.com/morton-so/bconnect/issues/568) 및 implementation plan 참조.
+- 구현 범위·순서는 "refactor(plan): @panel parallel route → search-param 패널 (메인 콘텐츠 공존, ADR-0017 supersede)" 및 implementation plan 참조.
 - `?panel=` 값은 기존 `PanelSegment`의 leading slash 제거형으로 둔다. `PanelSegment` 예시는 `profile/5`, `profile/5/coworkers`, `messages`, `messages/3`, `notifications` 다. 기존 타입/트리거 의미를 보존하기 위함이다.
 - 필터 search param(`?trade=…`)과 공존한다. `?panel=`은 별도 key 라 nuqs 로 독립 set/clear 가 되고 기존 필터가 보존된다.
 
 ## 참조
 
-- [ADR-0017](./0017-plan-panel-parallel-routes-shared-features.md) : 이 결정이 supersede
-- [ADR-0020](./0020-dual-shell-view-sharing-rendershell-resolved-data.md) : 공유 뷰 계약, 유지
-- [#568](https://github.com/morton-so/bconnect/issues/568)
-- [#375](https://github.com/morton-so/bconnect/issues/375) : 공정표
-- [PR #566](https://github.com/morton-so/bconnect/pull/566)
+- ADR-0017 : 이 결정이 supersede
+- ADR-0020 : 공유 뷰 계약, 유지
+- refactor(plan): @panel parallel route → search-param 패널 (메인 콘텐츠 공존, ADR-0017 supersede)
+- feat(plan): 공정표 페이지 구현 (Figma 1573-14926) : 공정표
+- feat(plan): 공정표 페이지 — TaskTable+간트 단일 그리드 병합

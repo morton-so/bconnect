@@ -1,7 +1,7 @@
 """crawled_* DB 적재 — dry-run JSON(members[])을 서비스 DB 테이블에 넣는다.
 
 ⚠️ BE(apps/api)를 우회해 crawled_* 테이블에 직접 INSERT 한다. 크롤러가 BE DB 스키마를
-알아야 하는 이중 관리 — BE 스키마 변경 시 여기도 맞춰야 한다 (#876).
+알아야 하는 이중 관리 — BE 스키마 변경 시 여기도 맞춰야 한다.
 
 멱등: profile.url 기준으로 기존 레코드를 찾아 관련 행을 지우고 재삽입한다.
 member.sourceUrls 는 profile.url 과 겹치는 출처 메타라 적재하지 않는다.

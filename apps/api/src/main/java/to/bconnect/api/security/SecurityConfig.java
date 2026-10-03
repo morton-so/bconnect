@@ -131,6 +131,7 @@ public class SecurityConfig {
                         .requestMatchers(GET, "/api/v1/recommendations/received", "/api/v1/recommendations/sent").permitAll()
                         .requestMatchers(GET, "/api/v1/crawled-members/**").permitAll()
                         .requestMatchers(POST, "/api/v1/one-click").permitAll()
+                        .requestMatchers(PUT, "/local-storage/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/v3/api-docs*").permitAll()
                         .requestMatchers("/actuator/health").permitAll()

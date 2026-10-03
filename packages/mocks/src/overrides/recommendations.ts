@@ -1,3 +1,4 @@
+import { ProfileRole, Trade } from '@bconnect/api-client'
 import {
   getGetMyReceivedRecommendationsMockHandler,
   getGetMyReceivedRecommendationsResponseMock,
@@ -7,9 +8,7 @@ import {
   getGetReceivedRecommendationsResponseMock,
   getGetSentRecommendationsMockHandler,
   getGetSentRecommendationsResponseMock,
-  ProfileRole,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type { Recommendation } from '@bconnect/api-client'
 
 const NAMES = ['손장수', '김기술', '이성실']

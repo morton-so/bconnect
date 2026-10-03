@@ -35,16 +35,12 @@ export function TaskCreateForm() {
       end: '',
       address: undefined,
       trades: [],
-      request: '',
       memo: '',
     },
   })
   const { control, handleSubmit } = form
   const scrollToError = useScrollToError()
-  const server = useServerError(
-    control,
-    passthroughError<CreateTaskValues>(undefined, '작업 생성에 실패했어요. 다시 시도해주세요.')
-  )
+  const server = useServerError(control, passthroughError<CreateTaskValues>())
   const { mutate, isPending } = useCreateTaskWorker()
 
   const onSubmit = (data: CreateTaskValues) => {
@@ -53,8 +49,7 @@ export function TaskCreateForm() {
       {
         data: {
           title: data.title,
-          // memo/request는 UI optional이라 BE memo required 전송값을 title로 silent fallback한다.
-          memo: data.memo.trim() || data.request.trim() || data.title,
+          memo: data.memo.trim(),
           company: data.company,
           address: data.address,
           trades: data.trades,
@@ -78,7 +73,7 @@ export function TaskCreateForm() {
       <TopBar
         variant="default"
         title="작업 생성"
-        actionLabel={isPending ? '저장 중...' : '완료'}
+        actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending}
         onAction={handleSubmit(onSubmit, scrollToError)}
         onBack={() => router.back()}
@@ -108,7 +103,6 @@ export function TaskCreateForm() {
             label="공종"
             layout="row"
           />
-          <TextField control={control} name="request" label="요청사항" layout="row" />
           <TextareaField control={control} name="memo" label="메모" layout="row" />
           <p className="mt-3 text-r-12 text-gray-500">* 작성된 메모는 나만 볼 수 있어요.</p>
           <FormError error={server.formError} />

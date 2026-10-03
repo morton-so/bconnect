@@ -84,7 +84,7 @@ export function useFolderMemos(folderId: string): QueryResult<Memo[]> {
   })
 }
 
-// 용량바 — BE 용량 API 미구현(#752)이라 비활성. 복원=#820. BE 지원 시 주석 해제 후 실연동
+// 용량바 — BE 용량 API 미구현이라 비활성. BE 지원 시 주석 해제 후 실연동
 // (소비처 StorageHeader 의 주석 블록도 함께 해제):
 // export function useStorageUsage(projectId: string): QueryResult<StorageUsage> {
 //   ...

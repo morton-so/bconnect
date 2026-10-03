@@ -6,14 +6,15 @@ import { ChevronIcon } from '../../icons'
 import { cn } from '../../lib/utils'
 
 export interface NotificationItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  profileImage?: string
-  content: string
-  timestamp: string
+  picture?: string
+  message: string
+  createdAt: string
   read?: boolean
+  href?: string
 }
 
 const NotificationItem = React.forwardRef<HTMLDivElement, NotificationItemProps>(
-  ({ className, profileImage, content, timestamp, read = false, ...props }, ref) => {
+  ({ className, picture, message, createdAt, read = false, href, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -28,7 +29,7 @@ const NotificationItem = React.forwardRef<HTMLDivElement, NotificationItemProps>
           aria-hidden
         />
         <div className="size-9 shrink-0 overflow-hidden rounded-full bg-[#E5E5E5]">
-          {profileImage && <img src={profileImage} alt="" className="size-full object-cover" />}
+          {picture && <img src={picture} alt="" className="size-full object-cover" />}
         </div>
         <div className="flex min-w-0 flex-1 flex-col">
           <span
@@ -37,14 +38,16 @@ const NotificationItem = React.forwardRef<HTMLDivElement, NotificationItemProps>
               read ? 'text-r-14 text-[#7B7B7B]' : 'text-sb-14 text-[#1B1B1B]'
             )}
           >
-            {content}
+            {message}
           </span>
-          <span className="text-r-12 text-[#A5A5A5]">{timestamp}</span>
+          <span className="text-r-12 text-[#A5A5A5]">{createdAt}</span>
         </div>
-        <div className="flex shrink-0 items-center gap-1 self-center text-[#A5A5A5]">
-          <span className="text-r-12 whitespace-nowrap">자세히 보기</span>
-          <ChevronIcon direction="right" className="size-4" />
-        </div>
+        {href && (
+          <div className="flex shrink-0 items-center gap-1 self-center text-[#A5A5A5]">
+            <span className="text-r-12 whitespace-nowrap">자세히 보기</span>
+            <ChevronIcon direction="right" className="size-4" />
+          </div>
+        )}
       </div>
     )
   }

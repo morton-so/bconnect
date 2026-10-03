@@ -7,7 +7,7 @@ interface CalendarHeaderProps {
   onNext: () => void
 }
 
-/** "1월 2025" + 이전/다음 달 화살표 (데스크탑 월 이동). */
+/** 캘린더 헤더 (년/월 선택) */
 export function CalendarHeader({ monthIso, onPrev, onNext }: CalendarHeaderProps) {
   const { month, year } = formatMonthHeader(monthIso)
   const arrowClass =

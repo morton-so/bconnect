@@ -5,7 +5,7 @@ import { appendMockMessage, nextMockMessageId, MOCK_MY_ID } from './chats'
 import { uploadedFile } from './_uploads'
 
 /**
- * 채팅 STOMP 소켓 mock (#1150).
+ * 채팅 STOMP 소켓 mock.
  *
  * MSW 는 HTTP 만 가로채서 mock 모드에서도 소켓만 실 BE 로 나갔고, 그 BE 는 mock 토큰을 거부해
  * 메시지 전송 자체가 불가능했다 — 사진이든 텍스트든 보낸 결과를 로컬에서 볼 수 없었다.

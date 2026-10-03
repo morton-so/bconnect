@@ -47,7 +47,7 @@ export function useDirectChatSocket(chatId: number, onMessage: (message: Message
     client.activate()
     clientRef.current = client
     return () => {
-      void client.deactivate()
+      client.deactivate()
       clientRef.current = null
     }
   }, [chatId])

@@ -9,9 +9,9 @@ export type DragMode = 'move' | 'resize-start' | 'resize-end'
 const DRAG_THRESHOLD_PX = 4
 
 /**
- * 간트 바 1축 제약 드래그 (#576). 이동/좌우 리사이즈가 같은 snap 메커니즘 공유:
+ * 간트 바 1축 제약 드래그. 이동/좌우 리사이즈가 같은 snap 메커니즘 공유:
  * pointerdown → deltaX 추적 → round(deltaX/dayWidth) 일 단위 snap → pointerup 에 commit.
- * 임계 미만으로 끝난 좌클릭은 onTap (작업 편집 패널 진입, #582).
+ * 임계 미만으로 끝난 좌클릭은 onTap (작업 편집 패널 진입).
  */
 export function useBarDrag(
   dayWidth: number,

@@ -73,12 +73,12 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
   const [createRange, setCreateRange] = useState<{ start: number; end: number } | null>(null)
 
   // 범위 = (최초 start -5일)의 달 1일 ~ (최후 end +5일)의 달 말일.
-  // tasks 파생이라 drop(상태 변경) 시에만 재계산 (#6)
+  // tasks 파생이라 drop(상태 변경) 시에만 재계산
   const { startDate, endDate } = useMemo(() => {
-    const start = tasks[0]?.startDate ?? today ?? ''
+    const start = tasks[0]?.start ?? today ?? ''
     let end = start
     for (const t of tasks) {
-      if (t.endDate > end) end = t.endDate
+      if (t.end > end) end = t.end
     }
     if (!start) return { startDate: start, endDate: end }
     return { startDate: monthStartOf(addDays(start, -5)), endDate: monthEndOf(addDays(end, 5)) }
@@ -97,7 +97,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
     return () => observer.disconnect()
   }, [])
 
-  // 간트 영역이 컨테이너 잔여 폭을 항상 채우도록 우측 패드를 늘린다 (#3).
+  // 간트 영역이 컨테이너 잔여 폭을 항상 채우도록 우측 패드를 늘린다.
   // 콘텐츠(일자 셀)가 더 길면 기존대로 가로 스크롤.
   const daysWidth = dates.length * DAY_WIDTH
   const padWidth = Math.max(RIGHT_PAD_WIDTH, containerWidth - COL_LEFT_TOTAL - daysWidth)
@@ -142,9 +142,9 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
     const id = createTask({
       projectId,
       trades: [],
-      ganttName: '',
-      startDate: addDays(startDate, a),
-      endDate: addDays(startDate, b),
+      title: '',
+      start: addDays(startDate, a),
+      end: addDays(startDate, b),
       status: TaskStatus.NONE,
       progress: TaskProgress.TODO,
       draft: true,
@@ -196,7 +196,6 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
         </colgroup>
 
         <thead>
-          {/* 월 헤더 */}
           <tr style={{ height: HEADER_HEIGHT }}>
             <th
               colSpan={4}
@@ -221,7 +220,6 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
             </th>
           </tr>
 
-          {/* 공종 / 섭외 상태 / 진행 상태 / 기술자 + 일자 헤더 */}
           <tr style={{ height: HEADER_HEIGHT }}>
             {['공종', '섭외 상태', '진행 상태', '기술자'].map((label, i) => (
               <th
@@ -346,7 +344,6 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
             )
           })}
 
-          {/* 작업 생성 행 */}
           <tr style={{ height: ROW_HEIGHT }}>
             <td
               className={`${stickyCell} border-r border-solid border-[#e5e5e5] p-2`}

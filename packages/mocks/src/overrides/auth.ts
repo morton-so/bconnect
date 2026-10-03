@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import { getSendOtpMockHandler, getLogoutMockHandler } from '@bconnect/api-client'
+import { getSendOtpMockHandler, getLogoutMockHandler } from '@bconnect/api-client/msw'
 
 // dev 편의용 고정값.
 const MOCK_OTP_CODE = '123456'

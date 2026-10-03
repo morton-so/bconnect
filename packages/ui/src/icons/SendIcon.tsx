@@ -1,5 +1,5 @@
 /**
- * @figma-todo DS 에 standalone 전송 없음(채팅입력 컴포넌트 내부) (#458)
+ * @figma-todo 보내기 아이콘 DS 미포함
  */
 import type { SVGProps } from 'react'
 

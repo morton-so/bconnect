@@ -31,9 +31,7 @@ export function TaskSelectView({
   const filtered = useMemo(() => {
     const q = query.trim()
     if (!q) return tasks
-    return tasks.filter(
-      (t) => matchHangul(t.title, q) || matchHangul(t.company ?? '', q)
-    )
+    return tasks.filter((t) => matchHangul(t.title, q) || matchHangul(t.company ?? '', q))
   }, [tasks, query])
 
   return (
@@ -41,10 +39,9 @@ export function TaskSelectView({
       <TopBar
         variant="default"
         title="작업 선택"
-        actionLabel="저장"
+        actionText="저장"
         actionDisabled={picked == null}
         onAction={() => picked != null && onConfirm(picked)}
-        showAction
         onBack={onBack}
       />
 

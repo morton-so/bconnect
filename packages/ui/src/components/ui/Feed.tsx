@@ -96,7 +96,6 @@ export const Feed = React.forwardRef<HTMLDivElement, FeedProps>(
         className={cn(feedVariants({ variant: effectiveVariant }), 'w-full', className)}
         {...props}
       >
-        {/* 메타행: 회사 · 소요일 / 작성일 · 케밥 */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             {content.company && <p className="text-r-12 text-gray-700">{content.company}</p>}
@@ -118,10 +117,8 @@ export const Feed = React.forwardRef<HTMLDivElement, FeedProps>(
           </div>
         </div>
 
-        {/* 이미지 (다중 이미지 시 캐러셀 + 인덱스 점) */}
         <ImageCarousel images={content.images} alt={content.imageAlt || content.description} />
 
-        {/* 본문 캡션 + 더보기/접기 버튼 */}
         <div
           className={cn(
             'flex w-full',

@@ -7,13 +7,13 @@ import {
   useGetSentCoworkerRequests,
 } from '@bconnect/api-client'
 import type { Coworker } from '@bconnect/api-client'
-import { isApiErrorShape, toast } from '@bconnect/ui'
+import { toast } from '@bconnect/ui'
 import { useCoworkerActions } from './useCoworkerActions'
 import { useCoworkerRequestActions } from './useCoworkerRequestActions'
 import { useMessageMember } from './useMessageMember'
 
 /**
- * 동료 목록 행 ⋮ → CoworkerManageDrawer 배선 (#870).
+ * 동료 목록 행 ⋮ → CoworkerManageDrawer 배선.
  *
  * 드로어에 넘길 상태는 목록 응답의 coworker.status 를 그대로 쓴다 — BE 가 "로그인한 나와
  * 그 사람의 관계"로 계산해 내려주므로(CoworkerController.resolveStatusMap(user.id(), ...)),
@@ -37,16 +37,10 @@ export function useCoworkerManageDrawer() {
   const { onDeleteCoworker, isDeletingCoworker } = useCoworkerActions()
   const { onMessage, isMessaging } = useMessageMember()
 
-  const add = useCreateCoworkerRequest({
+  const add = useCreateCoworkerRequest<Error>({
     mutation: {
       onSuccess: () => toast({ description: '동료 요청을 보냈어요', variant: 'success' }),
-      onError: (error) =>
-        toast({
-          description: isApiErrorShape(error)
-            ? error.message
-            : '동료 요청에 실패했어요. 다시 시도해주세요',
-          variant: 'error',
-        }),
+      onError: (error) => toast({ description: error.message, variant: 'error' }),
     },
   })
 

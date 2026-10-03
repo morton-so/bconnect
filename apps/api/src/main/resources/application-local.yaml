@@ -29,7 +29,6 @@ app:
 
   jwt:
     secret: local-secret-key-for-jwt-authentication-minimum-256-bits
-    cookie-domain: localhost
 
 logging:
   level:

@@ -4,7 +4,6 @@ plugins {
     id 'org.springframework.boot' version '4.0.6'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'io.sentry.jvm.gradle' version '6.1.0'
-    id 'org.springdoc.openapi-gradle-plugin' version '1.9.0'
 }
 
 group = 'bconnect.to'
@@ -106,15 +105,12 @@ jar{
     enabled = false
 }
 
-sentry {
-    includeSourceContext = System.getenv("SENTRY_AUTH_TOKEN") != null
-    org = "morton-2l"
-    projectName = "api"
-    authToken = System.getenv("SENTRY_AUTH_TOKEN")
-}
+def sentryAuthToken = System.getenv("SENTRY_AUTH_TOKEN")
+if (!sentryAuthToken) throw new GradleException("SENTRY_AUTH_TOKEN 환경변수가 필요합니다")
 
-openApi {
-    apiDocsUrl.set("http://localhost:8080/v3/api-docs.yaml")
-    outputFileName.set("openapi.yaml")
-    waitTimeInSeconds.set(60)
+sentry {
+    includeSourceContext = true
+    org = "morton-so"
+    projectName = "api"
+    authToken = sentryAuthToken
 }

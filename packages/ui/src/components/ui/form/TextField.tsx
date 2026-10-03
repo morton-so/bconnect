@@ -1,5 +1,5 @@
 /**
- * @figma-todo shadcn Form 합성 래퍼 — FormField/Item/Label/Control/Message 보일러플레이트 흡수 (#400)
+ * @figma-todo 텍스트 필드 코드 전용
  */
 'use client'
 
@@ -38,7 +38,7 @@ interface TextFieldProps<T extends FieldValues> extends Omit<
   rightElement?: React.ReactNode
   /** 입력값 변환기 — RHF 에 저장하기 전 가공 (전화번호 포맷팅 등) */
   transform?: (raw: string) => string
-  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선, #581). 기본 stacked. */
+  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선). 기본 stacked. */
   layout?: FieldLayout
 }
 
@@ -118,6 +118,7 @@ export function TextField<T extends FieldValues>({
                 <Input
                   {...field}
                   {...inputProps}
+                  value={field.value ?? ''}
                   onChange={
                     transform ? (e) => field.onChange(transform(e.target.value)) : field.onChange
                   }

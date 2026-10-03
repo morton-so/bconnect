@@ -16,8 +16,8 @@ export interface PanelHeaderProps {
 
 /**
  * 패널 공통 헤더. 좌측은 `backHref` 가 있을 때만 뒤로(ChevronLeft), 우측은 `rightSlot`.
- * 제목은 좌·우 슬롯 폭과 무관하게 패널 정중앙 (TopBar 와 동일한 절대 중앙 정렬, #970).
- * 닫기는 헤더가 아니라 `PanelShell` 이 패널 가장자리에 띄우는 `CloseTab` 이 담당한다 (#969).
+ * 제목은 좌·우 슬롯 폭과 무관하게 패널 정중앙 (TopBar 와 동일한 절대 중앙 정렬).
+ * 닫기는 헤더가 아니라 `PanelShell` 이 패널 가장자리에 띄우는 `CloseTab` 이 담당한다.
  */
 export function PanelHeader({
   title,

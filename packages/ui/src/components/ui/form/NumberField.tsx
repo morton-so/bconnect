@@ -1,5 +1,5 @@
 /**
- * @figma-todo 디자인 시안 미정 — TextField 미러링, 정수 값 필드 (#684)
+ * @figma-todo 숫자 필드 디자인 미정
  */
 'use client'
 
@@ -34,7 +34,7 @@ interface NumberFieldProps<T extends FieldValues> extends Omit<
   required?: boolean
   /** useServerError 의 fieldError 결과 — zod 클라이언트 에러와 한 슬롯에 합성. */
   serverError?: string
-  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선, #581). 기본 stacked. */
+  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선). 기본 stacked. */
   layout?: FieldLayout
 }
 

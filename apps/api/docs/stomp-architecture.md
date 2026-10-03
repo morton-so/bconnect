@@ -40,6 +40,21 @@ sequenceDiagram
 
 ## 컴포넌트 구성
 
+```mermaid
+classDiagram
+    direction LR
+
+    MessageSocketController --> MessageSocketService : broadcast
+    MessageEventListener --> MessageSocketService : broadcast
+    MessageEventListener --> DirectChatService : getOrCreate
+    MessageSocketService --> MessageManager : create · markRead
+    MessageSocketService --> MessageSocketManager : resolveActiveIds · send
+    MessageSocketService --> GroupChatService : findParticipantIds
+    MessageSocketService --> NotificationPushService : push
+    MessageSocketManager --> SimpMessagingTemplate : convertAndSend
+    MessageSocketManager --> SimpUserRegistry : findSubscriptions
+```
+
 - WebSocketConfig : WebSocket 설정
 - WebSocketAuthInterceptor : STOMP 연결시 인증 처리
 - WebSocketSecurityConfig : WebSocket 보안 설정

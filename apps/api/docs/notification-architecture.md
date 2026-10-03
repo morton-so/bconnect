@@ -40,6 +40,26 @@ sequenceDiagram
 
 ## 컴포넌트 구성
 
+```mermaid
+classDiagram
+    direction LR
+
+    class PushSender {
+        <<interface>>
+    }
+    class PushEndpointRegistry {
+        <<interface>>
+    }
+
+    NotificationEventListener --> NotificationService : create
+    NotificationEventListener --> NotificationPushService : push
+    NotificationPushService --> DeviceService : list
+    NotificationPushService ..> DeviceTokenEntity : disable
+    NotificationPushService --> PushSender : send
+    DeviceService --> PushEndpointRegistry : ensure · delete
+    MessageSocketService ..> NotificationPushService : push
+```
+
 - NotificationEventListener : 도메인 이벤트 구독 · 오케스트레이션
 - NotificationService : 알림 영속화
 - NotificationPushService : 디바이스 조회 · 알림 발송

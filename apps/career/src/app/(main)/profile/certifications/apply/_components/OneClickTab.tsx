@@ -5,9 +5,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { Credential, CreateCredentialRequest, CredentialType } from '@bconnect/api-client'
 import { Form, FormError, FormSubmitButton, TextField, toast, useServerError } from '@bconnect/ui'
-import { formatRegistrationNumber, registrationNumberSchema } from '@bconnect/config/biz-number'
+import { brnField, formatRegistrationNumber } from '@bconnect/config/brn'
+import { formatIsoDateInput } from '@bconnect/config/date'
+import { nameField } from '@bconnect/config/name'
 import { CredentialList } from '@/app/(main)/profile/certifications/_components/CredentialList'
-import type { CheckItem } from '@bconnect/business/types'
+import type { CheckItem } from '@bconnect/features/one-click'
 import { lookupBusinessForApply } from '../_actions/lookupBusinessForApply'
 
 interface OneClickTabProps {
@@ -26,17 +28,9 @@ const ONE_CLICK_TYPES = [
   'SPECIALTY_CONSTRUCTION_LICENSE',
 ] as const
 
-/** 개업일자 마스킹 (YYYY-MM-DD). 8자리 초과 입력은 잘림. */
-const formatOpenDate = (value: string): string => {
-  const d = value.replace(/\D/g, '').slice(0, 8)
-  if (d.length <= 4) return d
-  if (d.length <= 6) return `${d.slice(0, 4)}-${d.slice(4)}`
-  return `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6)}`
-}
-
 const oneClickSchema = z.object({
-  businessNumber: registrationNumberSchema,
-  ownerName: z.string().trim().min(1, '대표자 성명을 입력해주세요'),
+  businessNumber: brnField,
+  ownerName: nameField('대표자 성명'),
   openDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, '개업일자를 YYYY-MM-DD 형식으로 입력해주세요')
@@ -149,7 +143,7 @@ export function OneClickTab({
               required
               placeholder="0000-00-00"
               inputMode="numeric"
-              transform={formatOpenDate}
+              transform={formatIsoDateInput}
             />
 
             <FormSubmitButton size="full">조회하기</FormSubmitButton>
@@ -157,7 +151,6 @@ export function OneClickTab({
         </Form>
       </div>
 
-      {/* 하단 자격 증명 목록 */}
       <CredentialList
         credentials={oneClickCredentials}
         isLoading={isLoading}

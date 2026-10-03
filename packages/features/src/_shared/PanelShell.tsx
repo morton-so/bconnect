@@ -19,7 +19,7 @@ interface PanelShellProps extends PanelHeaderProps {
  * 본문 구조/상태(loading·error·empty)는 강제하지 않고 children 으로 위임한다.
  * 리스트형 뷰는 children 을 `PanelScroll` 로 감싸고, ChatView 처럼 자체 레이아웃이면 자유 조합.
  *
- * 닫기는 `CloseTab` 이 패널 좌측 경계에 걸쳐 떠 있는 형태 (#969) — `PanelAside` 는 클리핑이 없어 밖으로 나온다.
+ * 닫기는 `CloseTab` 이 패널 좌측 경계에 걸쳐 떠 있는 형태 — `PanelAside` 는 클리핑이 없어 밖으로 나온다.
  */
 export function PanelShell({
   closeHref,

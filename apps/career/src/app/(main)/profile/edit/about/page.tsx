@@ -43,7 +43,7 @@ export default function EditAboutPage() {
       <TopBar
         variant="default"
         title="소개"
-        actionLabel={isPending ? '저장 중...' : '완료'}
+        actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending}
         onAction={onSubmit}
         onBack={() => router.back()}

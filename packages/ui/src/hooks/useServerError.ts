@@ -81,7 +81,6 @@ export function useServerError<T extends FieldValues>(
  * 특수 분기 필요시에만 enum narrowing. 호출부 보일러플레이트 제거용.
  *
  * @param field 에러를 묶을 필드명. 생략 시 폼 전역 에러.
- * @param fallback ApiError 가 아닐 때 (네트워크/타임아웃 등) 표시할 메시지.
  *
  * @example
  *   useServerError(form.control, passthroughError('code'))
@@ -94,12 +93,11 @@ export function useServerError<T extends FieldValues>(
  *   )
  */
 export function passthroughError<T extends FieldValues>(
-  field?: keyof T & string,
-  fallback = '알 수 없는 오류가 발생했습니다.'
+  field?: keyof T & string
 ): (error: unknown) => ServerErrorMapping<T> {
   return (error) => ({
     ...(field && { field }),
-    message: isApiErrorShape(error) ? error.message : fallback,
+    message: (error as Error).message,
   })
 }
 

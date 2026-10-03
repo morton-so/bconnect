@@ -1,5 +1,5 @@
 /**
- * @figma-todo 캘린더 하단 네비 아이콘 (#650)
+ * @figma-todo 달력 아이콘 디자인 미정
  */
 import type { SVGProps } from 'react'
 

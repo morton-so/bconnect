@@ -3,8 +3,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./browser": "./src/browser.ts",
-    "./handlers": "./src/handlers.ts"
+    "./browser": "./src/browser.ts"
   },
   "dependencies": {
     "@bconnect/api-client": "workspace:*",

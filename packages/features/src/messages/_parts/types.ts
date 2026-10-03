@@ -19,10 +19,10 @@ export interface ChatSummary {
 /**
  * DM 목록을 ChatSummary[] 로 정규화 (최근 대화순). 순수 함수 — 앱 어댑터가 호출.
  *
- * TODO(#759): 그룹 채팅은 아직 목록서 제외한다. direct_chat 과 group_chat 은 독립 id
+ * TODO: 그룹 채팅은 아직 목록서 제외한다. direct_chat 과 group_chat 은 독립 id
  *   시퀀스라 raw id 로 병합하면 key 충돌(예: direct 200 ↔ group 200)이 나고, 채팅방
  *   라우팅(getDirectChatMessages vs getGroupChatMessages 분기)도 kind 없이는 모호하다.
- *   #759 에서 kind 디스크리미네이터 + 라우트 분기를 넣어 그룹을 정식 병합한다.
+ *   kind 디스크리미네이터 + 라우트 분기를 넣어 그룹을 정식 병합한다.
  */
 export function toChatSummaries(
   directChats: DirectChat[] = [],

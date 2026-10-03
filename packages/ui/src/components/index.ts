@@ -39,7 +39,7 @@ export type { CarouselApi } from './ui/shadcn/carousel'
 export { Progress } from './ui/shadcn/progress'
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/shadcn/resizable'
 
-// shadcn Form suite (ADR 0013 / #400) — shadcn 디렉토리에 격리, 우리 wrapper 는 ui/ 루트
+// shadcn Form suite (ADR 0013) — shadcn 디렉토리에 격리, 우리 wrapper 는 ui/ 루트
 export {
   Form,
   FormItem,

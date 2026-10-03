@@ -3,7 +3,7 @@
 import { OfferStatus, TRADE_LABELS } from '@bconnect/api-client'
 import type { Address, Trade } from '@bconnect/api-client'
 import { Button, cn } from '@bconnect/ui'
-import { formatPeriod } from '@bconnect/config/format'
+import { formatPeriod } from '@bconnect/config/date'
 import type { OfferActionKind } from './types'
 
 /** 앱에서 offerId로 조회해 주입하는 섭외 카드 상세. */
@@ -120,7 +120,7 @@ export function OfferMessageCard({
   const isDenyPending = pendingAction === 'deny'
   const actionsDisabled = isActionDisabled || isAcceptPending || isDenyPending
 
-  // 발신 카드에만 기술자명을 주어로 쓴다. 수신 카드의 주어(업체명)는 표시하지 않기로 했다(#1159).
+  // 발신 카드에만 기술자명을 주어로 쓴다. 수신 카드의 주어(업체명)는 표시하지 않기로 했다.
   const title = isMine
     ? recipientName
       ? `${recipientName}님에게 섭외 요청이 전달되었습니다`
