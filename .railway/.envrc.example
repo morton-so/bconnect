@@ -29,6 +29,12 @@ export SOLAPI_API_SECRET_DEV=your_dev_solapi_api_secret
 # 발급처 : Solapi 콘솔의 API 키 관리
 # 설명 : 문자 발송 API 시크릿
 
+# Sentry
+
+export SENTRY_AUTH_TOKEN_DEV=your_sentry_auth_token
+# 발급처 : [Sentry : Auth Tokens](https://sentry.io/settings/auth-tokens/)
+# 설명 : Sentry 소스맵 · 소스 컨텍스트 업로드 토큰
+
 # CloudFront
 
 export CLOUDFRONT_PRIVATE_KEY_DEV=your_dev_cloudfront_private_key
@@ -68,6 +74,12 @@ export SOLAPI_API_KEY_PROD=your_prod_solapi_api_key
 export SOLAPI_API_SECRET_PROD=your_prod_solapi_api_secret
 # 발급처 : Solapi 콘솔의 API 키 관리
 # 설명 : 문자 발송 API 시크릿
+
+# Sentry
+
+export SENTRY_AUTH_TOKEN_PROD=your_sentry_auth_token
+# 발급처 : [Sentry : Auth Tokens](https://sentry.io/settings/auth-tokens/)
+# 설명 : Sentry 소스맵 · 소스 컨텍스트 업로드 토큰
 
 # CloudFront
 
