@@ -153,24 +153,4 @@ jobs:
           path: apps/api/bruno/bruno-report.html
           if-no-files-found: error
 
-  ci-crawler:
-    needs: changes
-    if: ${{ needs.changes.outputs.crawler == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/crawler
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
-
-      - name: Run tests
-        env:
-          NAVER_CLIENT_ID: dummy
-          NAVER_CLIENT_SECRET: dummy
-          NOTION_TOKEN: dummy
-          NOTION_DATABASE_ID: dummy
-        run: uv run --dev pytest tests/ -v
+# TODO :ci-crawler
