@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold DS 에 동의 체크박스 시안 없음 — 회원가입 약관·개인정보 동의(#733) 표준 필드.
+ * @figma-todo 약관 동의 필드 디자인 미정
  */
 'use client'
 
@@ -10,11 +10,8 @@ import { cn } from '../../../lib/utils'
 import { FormField, FormItem, FormMessage } from '../shadcn/form'
 
 export interface AgreementItem {
-  /** RHF 필드 값 객체의 키 */
   key: string
-  /** 체크박스 라벨 (예: "[필수] 이용약관 동의") */
   label: string
-  /** "보기" 링크 대상. 생략 시 링크 없음 (예: 만 14세 확인). */
   href?: string
 }
 
@@ -22,7 +19,6 @@ interface AgreementFieldProps<T extends FieldValues> {
   control: Control<T>
   name: FieldPath<T>
   items: AgreementItem[]
-  /** 전체 동의 라벨 */
   allLabel?: string
 }
 
@@ -41,15 +37,6 @@ function CheckMark({ checked }: { checked: boolean }) {
   )
 }
 
-/**
- * 회원가입 약관·개인정보 동의 필드 (#733).
- *
- * 값은 `Record<string, boolean>` (각 항목 key → 동의 여부). 전체 동의는 파생값이라
- * 스키마에 저장하지 않고 UI 에서 모든 항목을 일괄 토글한다. 필수 게이트는 각 앱 스키마의
- * `z.boolean().refine(v => v)` 가 담당하며, 미동의 시 항목별 에러 메시지가 노출된다.
- *
- * "보기" 는 새 탭으로 전문 페이지(/terms·/privacy)를 열어 가입 폼 상태를 잃지 않는다.
- */
 export function AgreementField<T extends FieldValues>({
   control,
   name,
@@ -75,7 +62,7 @@ export function AgreementField<T extends FieldValues>({
 
         return (
           <FormItem className="gap-4 rounded-xl border border-gray-200 p-4">
-            <label className="flex cursor-pointer select-none items-center gap-2">
+            <label className="relative flex cursor-pointer items-center gap-2 select-none">
               <input
                 type="checkbox"
                 checked={allChecked}
@@ -95,7 +82,7 @@ export function AgreementField<T extends FieldValues>({
                 return (
                   <div key={item.key} className="flex flex-col gap-1">
                     <div className="flex items-center justify-between">
-                      <label className="flex cursor-pointer select-none items-center gap-2">
+                      <label className="relative flex cursor-pointer items-center gap-2 select-none">
                         <input
                           type="checkbox"
                           checked={checked}
@@ -123,8 +110,6 @@ export function AgreementField<T extends FieldValues>({
                 )
               })}
             </div>
-
-            {/* 필드 전역 메시지 슬롯 (항목별 메시지를 쓰므로 통상 비어있음) */}
             <FormMessage className="sr-only" />
           </FormItem>
         )

@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 폼 전역 에러 표시 — useServerError 의 formError 를 받아 role="alert" 로 렌더 (#400)
+ * @figma-todo 폼 에러 메시지 코드 전용
  */
 import { cn } from '../../../lib/utils'
 

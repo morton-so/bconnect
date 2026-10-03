@@ -6,7 +6,7 @@ import { useOfferQueue } from '@/hooks/useOfferQueue'
 import type { OfferQueueItem } from '@/app/(main)/projects/[projectId]/schedule/_components/schedule-grid/types'
 
 /**
- * 프로필 패널 '섭외 제안하기' 토글 (#575) — 선택된 작업(taskId)의 대기열 멤버십에 따라 분기.
+ * 프로필 패널 '섭외 제안하기' 토글 — 선택된 작업(taskId)의 대기열 멤버십에 따라 분기.
  * 이미 큐에 있으면 '섭외 취소'(destructive, 확인 가드) — profileId 만으로 동작(프로필 fetch 무관).
  * 미등록이면 '섭외 제안하기' — candidate(프로필 데이터) 로드 전엔 비활성. ProfileView actionSlot 주입.
  */

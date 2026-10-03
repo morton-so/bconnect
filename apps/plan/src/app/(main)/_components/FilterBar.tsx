@@ -51,7 +51,6 @@ export function FilterBar() {
     <div className="flex flex-col gap-[13px]">
       <TaskSelectBar />
 
-      {/* Dropdowns */}
       <div className="flex items-center gap-[9px]">
         <Select
           multiple
@@ -88,7 +87,6 @@ export function FilterBar() {
         />
       </div>
 
-      {/* Active filter chips + refresh */}
       {hasFilter && (
         <div className="flex flex-wrap items-center gap-[7px]">
           {regions.map((r) => (

@@ -1,4 +1,4 @@
-import type { CompanyInfo } from '@bconnect/business/types'
+import type { CompanyInfo } from '@bconnect/features/one-click'
 import { ShareButton } from './ShareButton'
 
 interface CompanyHeaderProps {

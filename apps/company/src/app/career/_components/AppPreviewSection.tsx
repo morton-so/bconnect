@@ -8,11 +8,11 @@ export function AppPreviewSection() {
         {PREVIEWS.map((preview) => (
           <div
             key={preview.title}
-            className="flex flex-col items-center gap-10 lg:gap-16 lg:flex-row"
+            className="flex flex-col items-center gap-10 lg:flex-row lg:gap-16"
           >
             <div className="relative w-64 shrink-0">
               <div className="relative overflow-hidden rounded-3xl border-8 border-gray-900 bg-gray-900 shadow-2xl">
-                <span className="absolute left-1/2 top-2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-gray-700" />
+                <span className="absolute top-2 left-1/2 z-10 h-1.5 w-16 -translate-x-1/2 rounded-full bg-gray-700" />
                 <Image
                   src={preview.image}
                   alt={preview.imageAlt}
@@ -25,7 +25,7 @@ export function AppPreviewSection() {
 
             <div className="flex-1 text-center lg:text-left">
               <p className="text-sm font-bold tracking-wider text-primary-200">{preview.label}</p>
-              <h2 className="mt-3 whitespace-pre-line text-3xl font-bold leading-snug text-white sm:text-4xl">
+              <h2 className="mt-3 text-3xl leading-snug font-bold whitespace-pre-line text-white sm:text-4xl">
                 {preview.title}
               </h2>
               <p className="mt-4 text-base text-primary-100/85">{preview.desc}</p>

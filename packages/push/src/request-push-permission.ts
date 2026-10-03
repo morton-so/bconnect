@@ -27,11 +27,7 @@ async function fetchFcmToken(): Promise<string | null> {
   }
 
   try {
-    const token = await getToken(messaging, { vapidKey })
-    if (token && process.env.NODE_ENV === 'development') {
-      console.log('[FCM] 디바이스 토큰:', token)
-    }
-    return token
+    return await getToken(messaging, { vapidKey })
   } catch (error) {
     console.error('[FCM] 토큰 발급 실패:', error)
     return null
@@ -40,7 +36,7 @@ async function fetchFcmToken(): Promise<string | null> {
 
 /**
  * 토큰 발급 + 서버 등록 + store 반영.
- * 권한이 이미 granted 인 앱 진입 시점, soft-ask 수락 직후, 로그인 성공 직후(#800)에서 공유.
+ * 권한이 이미 granted 인 앱 진입 시점, soft-ask 수락 직후, 로그인 성공 직후에서 공유.
  * (서버 UPSERT 로 last_active_at 갱신 — Firebase 공식 권장 패턴)
  *
  * granted 가드 필수 — getToken 은 권한 미결정(default) 상태에서 호출되면 네이티브 권한

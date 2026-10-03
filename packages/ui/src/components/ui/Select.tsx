@@ -3,7 +3,7 @@
  */
 'use client'
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useImperativeHandle, useRef, useState } from 'react'
 import { cn } from '../../lib/utils'
 import { CheckIcon, ChevronIcon } from '../../icons'
 import { FIELD_BASE_CLASSES, FIELD_DEFAULT_VARIANT_CLASSES } from './_field-base'
@@ -16,7 +16,9 @@ export interface SelectOption {
 const FILTER_TRIGGER =
   'flex h-10 w-[95px] items-center justify-center gap-2.5 rounded-lg border bg-white px-2.5'
 const PANEL_CLASSES =
-  'absolute left-0 top-[calc(100%+6px)] z-20 max-h-60 w-max min-w-full overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-lg border border-gray-300 bg-white py-1 shadow-[0_6px_20px_rgba(0,0,0,0.1)] outline-none'
+  'absolute left-0 top-[calc(100%+6px)] z-20 w-max min-w-full overflow-hidden rounded-lg border border-gray-300 bg-white shadow-[0_6px_20px_rgba(0,0,0,0.1)]'
+const LIST_CLASSES =
+  'max-h-60 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden py-1 outline-none'
 const OPTION_CLASSES =
   'flex w-full cursor-pointer items-center justify-between gap-2 px-3 py-2 text-left hover:bg-secondary data-[active=true]:bg-secondary'
 
@@ -60,13 +62,14 @@ export interface SelectProps {
   disabled?: boolean
   /** 트리거 너비를 풀폭 대신 선택값 콘텐츠 크기에 맞춘다 (폼 모드). 기본 false = w-full */
   fitContent?: boolean
+  footer?: React.ReactNode
   className?: string
   // ↓ 폼 래퍼(SelectField)가 aria 합성용으로 주입. 필터/제어로 직접 쓸 때는 불필요.
   invalid?: boolean
   triggerId?: string
   describedBy?: string
   onBlur?: () => void
-  fieldRef?: React.Ref<HTMLButtonElement>
+  fieldRef?: React.Ref<{ focus(): void }>
 }
 
 /** listbox 항목 — clearable "전체"(value=null) 와 실제 옵션을 한 배열로 합쳐 키보드 인덱싱한다. */
@@ -96,6 +99,7 @@ export function Select({
   clearable,
   disabled,
   fitContent,
+  footer,
   className,
   invalid,
   triggerId,
@@ -127,11 +131,7 @@ export function Select({
   ]
   const isItemSelected = (item: NavItem) => (item.isClear ? !hasValue : isSelected(item.value!))
 
-  const setTriggerRef = (node: HTMLButtonElement | null) => {
-    triggerRef.current = node
-    if (typeof fieldRef === 'function') fieldRef(node)
-    else if (fieldRef) (fieldRef as React.MutableRefObject<HTMLButtonElement | null>).current = node
-  }
+  useImperativeHandle(fieldRef, () => ({ focus: () => triggerRef.current?.focus() }), [])
 
   const openPanel = () => {
     const selectedIdx = navItems.findIndex(isItemSelected)
@@ -248,7 +248,7 @@ export function Select({
   const triggerClass = filterMode
     ? cn(
         FILTER_TRIGGER,
-        'text-m-14 cursor-pointer',
+        'cursor-pointer text-m-14',
         'outline-none focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-primary',
         hasValue ? 'text-gray-900' : 'text-gray-500',
         open ? 'border-primary' : 'border-gray-300 hover:border-gray-400',
@@ -269,7 +269,7 @@ export function Select({
   return (
     <div ref={rootRef} onBlur={handleRootBlur} className={cn('relative', className)}>
       <button
-        ref={setTriggerRef}
+        ref={triggerRef}
         type="button"
         disabled={disabled}
         onClick={() => (open ? closePanel(false) : openPanel())}
@@ -290,39 +290,50 @@ export function Select({
       </button>
 
       {open && (
-        <ul
-          ref={listRef}
-          role="listbox"
-          tabIndex={-1}
-          aria-multiselectable={isMulti || undefined}
-          aria-activedescendant={activeIndex >= 0 ? optionId(activeIndex) : undefined}
-          onKeyDown={handleListKeyDown}
-          className={PANEL_CLASSES}
-        >
-          {navItems.length === 0 && emptyLabel && (
-            <li aria-disabled="true" className="px-3 py-2 text-m-14 text-gray-400">
-              {emptyLabel}
-            </li>
-          )}
-          {navItems.map((item, i) => {
-            const sel = isItemSelected(item)
-            return (
-              <li
-                key={item.isClear ? '__clear__' : item.value}
-                id={optionId(i)}
-                role="option"
-                aria-selected={sel}
-                data-index={i}
-                data-active={i === activeIndex}
-                onClick={() => handleSelectItem(item)}
-                className={cn(OPTION_CLASSES, 'text-m-14', sel ? 'text-primary' : 'text-gray-700')}
-              >
-                {item.label}
-                {sel && <CheckIcon size={14} />}
+        <div className={PANEL_CLASSES}>
+          <ul
+            ref={listRef}
+            role="listbox"
+            tabIndex={-1}
+            aria-multiselectable={isMulti || undefined}
+            aria-activedescendant={activeIndex >= 0 ? optionId(activeIndex) : undefined}
+            onKeyDown={handleListKeyDown}
+            className={LIST_CLASSES}
+          >
+            {navItems.length === 0 && emptyLabel && (
+              <li aria-disabled="true" className="px-3 py-2 text-m-14 text-gray-400">
+                {emptyLabel}
               </li>
-            )
-          })}
-        </ul>
+            )}
+            {navItems.map((item, i) => {
+              const sel = isItemSelected(item)
+              return (
+                <li
+                  key={item.isClear ? '__clear__' : item.value}
+                  id={optionId(i)}
+                  role="option"
+                  aria-selected={sel}
+                  data-index={i}
+                  data-active={i === activeIndex}
+                  onClick={() => handleSelectItem(item)}
+                  className={cn(
+                    OPTION_CLASSES,
+                    'text-m-14',
+                    sel ? 'text-primary' : 'text-gray-700'
+                  )}
+                >
+                  {item.label}
+                  {sel && <CheckIcon size={14} />}
+                </li>
+              )
+            })}
+          </ul>
+          {footer && (
+            <div onClick={() => closePanel(false)} className="border-t border-gray-300">
+              {footer}
+            </div>
+          )}
+        </div>
       )}
     </div>
   )

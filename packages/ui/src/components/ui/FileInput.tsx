@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 파일 업로드 primitive — ImageInput 의 문서 버전(썸네일 대신 파일명 칩). 인증 신청 파일 첨부 (#586)
+ * @figma-todo 파일 입력 디자인 미정
  */
 'use client'
 
@@ -50,7 +50,7 @@ const sizeOf = (it: FileValue): string | null => {
  * 제어 파일 입력 primitive (single/multi). 파일 선택 + 파일명 칩 + 삭제 + 빈상태(outline 트리거).
  *
  * ImageInput 과 같은 계약: 실제 업로드는 하지 않는다 — 고른 File 을 value 로 보유하고, 업로드는
- * 호출부(폼 제출)가 담당한다. presign 흐름(#340) 확정 시 제출 시점에 File → URL 변환만 끼운다.
+ * 호출부(폼 제출)가 담당한다. presign 흐름 확정 시 제출 시점에 File → URL 변환만 끼운다.
  * 폼은 `FileField` 로 감싸고, 제어 상태는 이 컴포넌트를 직접 쓴다.
  */
 export function FileInput({
@@ -138,7 +138,7 @@ export function FileInput({
                 onClick={() => removeAt(i)}
                 disabled={disabled}
                 aria-label={`${nameOf(it)} 삭제`}
-                className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 outline-none transition-colors hover:bg-gray-100 hover:text-gray-700 focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-gray-500 transition-colors outline-none hover:bg-gray-100 hover:text-gray-700 focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <XIcon size={16} />
               </button>
@@ -158,7 +158,7 @@ export function FileInput({
           onClick={openPicker}
           disabled={disabled}
           className={cn(
-            'inline-flex h-[50px] w-full cursor-pointer items-center justify-center rounded-lg border border-primary bg-transparent text-sm font-semibold text-primary outline-none transition-all hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-[0.98] disabled:cursor-not-allowed disabled:border-transparent disabled:bg-gray-100 disabled:text-gray-400',
+            'inline-flex h-[50px] w-full cursor-pointer items-center justify-center rounded-lg border border-primary bg-transparent text-sm font-semibold text-primary transition-all outline-none hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-white active:scale-[0.98] disabled:cursor-not-allowed disabled:border-transparent disabled:bg-gray-100 disabled:text-gray-400',
             invalid && 'border-destructive text-destructive'
           )}
         >

@@ -10,10 +10,13 @@ export function LandingNav() {
           <Logo className="h-6 w-auto" />
         </Link>
         <div className="flex items-center gap-2">
-          <Button asChild size="small" className="rounded-lg h-[38px]">
+          <Button asChild size="small" variant="outline" className="h-9.5 rounded-lg">
+            <Link href="/one-click">원클릭 조회</Link>
+          </Button>
+          <Button asChild size="small" className="h-9.5 rounded-lg">
             <a href={`${SITE_URL.plan}`}>베타 테스트</a>
           </Button>
-          <Button asChild size="small" variant="outline" className="rounded-lg h-[38px]">
+          <Button asChild size="small" variant="outline" className="h-9.5 rounded-lg">
             <Link
               href="/career"
               className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"

@@ -1,0 +1,24 @@
+# 본 파일은 로컬 환경변수의 비밀값 템플릿을 관리합니다.
+# .envrc.local 로 복사해 값을 채워주세요.
+
+# AWS
+
+export AWS_ACCESS_KEY_ID=your_aws_access_key_id
+# 발급처 : [AWS : IAM 콘솔](https://console.aws.amazon.com/iam)
+# 설명 : 앱 전용 IAM 액세스 키
+
+export AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+# 발급처 : [AWS : IAM 콘솔](https://console.aws.amazon.com/iam)
+# 설명 : 앱 전용 IAM 시크릿 키
+
+# Android TWA
+
+export TWA_KEYSTORE_PASSWORD=your_twa_keystore_password
+# 발급처 : [노션 : 환경변수](https://www.notion.so/morton-so/384965d2888b8092be18f7bab46d0f8d)
+# 의존성 : android-twa/build.sh
+# 설명 : PWA bubblewrap 서명 키스토어
+
+export TWA_KEY_PASSWORD=your_twa_key_password
+# 발급처 : [노션 : 환경변수](https://www.notion.so/morton-so/384965d2888b8092be18f7bab46d0f8d)
+# 의존성 : android-twa/build.sh
+# 설명 : PWA bubblewrap 서명 키 비밀번호

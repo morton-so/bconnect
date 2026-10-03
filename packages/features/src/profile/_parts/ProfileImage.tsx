@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { EditIcon } from '@bconnect/ui'
 
-// Figma profile_image 컴포넌트 (node 3393-3704) — edit 배지 표시/숨김 (#966).
+// Figma profile_image 컴포넌트 (node 3393-3704) — edit 배지 표시/숨김.
 // owner 어댑터가 onEdit 을 주입하면 배지 노출, viewer/plan 은 미주입으로 숨김.
 interface ProfileImageProps {
   src: string
@@ -27,7 +27,7 @@ export function ProfileImage({ src, alt, onEdit, uploading }: ProfileImageProps)
           onClick={onEdit}
           disabled={uploading}
           aria-label="프로필 이미지 수정"
-          className="absolute bottom-0 right-0 flex size-6 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white outline-none transition-all hover:opacity-80 focus-visible:ring-1 focus-visible:ring-primary active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-40"
+          className="absolute right-0 bottom-0 flex size-6 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white transition-all outline-none hover:opacity-80 focus-visible:ring-1 focus-visible:ring-primary active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-40"
         >
           <EditIcon size={13} />
         </button>

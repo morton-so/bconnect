@@ -1,6 +1,5 @@
 /**
- * @figma-scaffold 디자인 시스템 — embla 캐러셀 primitive (shadcn add). 모바일 스와이프 전용이라
- * 화살표(CarouselPrevious/Next)·Button 의존은 제거. 인덱스 점 등 디자인은 ui/ImageCarousel 래퍼에서.
+ * @figma-todo 캐러셀 shadcn 원본 이식
  */
 'use client'
 

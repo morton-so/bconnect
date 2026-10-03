@@ -28,8 +28,8 @@ export function InAppNotification() {
   return (
     <div role="alert" className="fixed top-0 right-0 left-0 z-50" onClick={handleClick}>
       <div className="mx-4 mt-[env(safe-area-inset-top,12px)] rounded-xl border border-gray-100 bg-white p-3 shadow-lg">
-        <p className="text-sb-14 text-gray-900 truncate">{current.title}</p>
-        <p className="mt-0.5 text-r-12 text-gray-500 truncate">{current.body}</p>
+        <p className="truncate text-sb-14 text-gray-900">{current.title}</p>
+        <p className="mt-0.5 truncate text-r-12 text-gray-500">{current.body}</p>
       </div>
     </div>
   )

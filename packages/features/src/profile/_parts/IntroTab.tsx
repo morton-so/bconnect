@@ -2,9 +2,9 @@
 
 import { Fragment } from 'react'
 import Link from 'next/link'
-import { getCredentialLabel } from '@bconnect/api-client'
+import { getCredentialLabel, TRADE_LABELS } from '@bconnect/api-client'
 import type { CredentialSummary, Profile, Recommendation } from '@bconnect/api-client'
-import { Skeleton } from '@bconnect/ui'
+import { Skeleton, SkillTag } from '@bconnect/ui'
 import { RecommendationList } from '../RecommendationList'
 
 /** owner 전용 편집 링크. 없으면 편집 어포던스 안 그림 (viewer/plan). */
@@ -37,6 +37,7 @@ export function IntroTab({
 }: IntroTabProps) {
   const credentialsLoading = credentials === undefined
   const accepted = (credentials ?? []).filter((c) => c.status === 'ACCEPTED')
+  const trades = profile?.trades ?? []
 
   return (
     <div className="flex flex-col gap-6 px-4 py-4">
@@ -61,14 +62,27 @@ export function IntroTab({
             ))}
           </div>
         ) : (
-          <p className="text-r-14 text-gray-500">등록된 인증이 없습니다</p>
+          <p className="text-r-14 text-gray-500">등록된 자격 증명이 없습니다</p>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <SectionHeader title="공종" />
+        {trades.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {trades.map((trade) => (
+              <SkillTag key={trade} label={TRADE_LABELS[trade]} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-r-14 text-gray-500">등록된 공종이 없습니다</p>
         )}
       </section>
 
       <section className="flex flex-col gap-3">
         <SectionHeader title="소개" editHref={editHrefs?.about} />
         {profile?.about ? (
-          <p className="whitespace-pre-wrap text-r-14 leading-[22.4px] text-gray-900">
+          <p className="text-r-14 leading-[22.4px] whitespace-pre-wrap text-gray-900">
             {renderWithHashtags(profile.about)}
           </p>
         ) : (

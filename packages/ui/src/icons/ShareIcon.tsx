@@ -1,5 +1,5 @@
 /**
- * @figma-pending 작업 액션시트 — 공유 (#650)
+ * @figma-todo 공유 아이콘 디자인 미정
  */
 import type { SVGProps } from 'react'
 

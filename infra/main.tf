@@ -1,69 +1,23 @@
 provider "aws" {
-  region = "ap-northeast-2"
+  region = var.aws_region
 }
 
-# CloudFront viewer 인증서(ACM)는 us-east-1 에서만 발급 가능 → module.aws 에 주입.
+# ACM 인증서용 프로바이더 별칭 설정 (us-east-1 리전 필수)
 provider "aws" {
   alias  = "us_east_1"
   region = "us-east-1"
 }
 
-resource "aws_iam_account_alias" "this" {
-  # "morton"은 다른 AWS 계정이 선점하여 사용 불가
-  # 로그인: https://morton-so.signin.aws.amazon.com/console
-  account_alias = "morton-so"
-}
-
 module "aws" {
-  source                   = "./aws"
-  s3_bucket_name           = var.s3_bucket_name
-  dev_s3_bucket_name       = var.dev_s3_bucket_name
-  fcm_service_account_json = var.firebase_service_account_json
-  domain                   = var.domain
+  source         = "./aws"
+  region         = var.aws_region
+  fcm_credential = var.fcm_credential
+  domain         = var.domain
 
   providers = {
     aws           = aws
     aws.us_east_1 = aws.us_east_1
   }
-}
-
-module "railway" {
-  source = "./railway"
-
-  railway_token = var.railway_token
-  project_name  = var.project_name
-  github_repo   = var.github_repo
-  github_branch = var.github_branch
-
-  db_user     = var.db_user
-  db_password = var.db_password
-  db_name     = var.db_name
-
-  dev_db_password = var.dev_db_password
-
-  spring_profile = var.spring_profile
-  jwt_secret     = var.jwt_secret
-  dev_jwt_secret = var.dev_jwt_secret
-
-  aws_access_key_id            = module.aws.access_key_id
-  aws_secret_access_key        = module.aws.secret_access_key
-  aws_region                   = var.aws_region
-  s3_bucket_name               = var.s3_bucket_name
-  dev_s3_bucket_name           = var.dev_s3_bucket_name
-  sns_platform_application_arn = module.aws.sns_platform_application_arn
-
-  cloudfront_private_key     = module.aws.cloudfront_private_key_base64["prod"]
-  cloudfront_key_pair_id     = module.aws.cloudfront_key_pair_id["prod"]
-  dev_cloudfront_private_key = module.aws.cloudfront_private_key_base64["dev"]
-  dev_cloudfront_key_pair_id = module.aws.cloudfront_key_pair_id["dev"]
-
-  domain = var.domain
-
-  sentry_dsn = var.sentry_dsn
-
-  solapi_api_key       = var.solapi_api_key
-  solapi_api_secret    = var.solapi_api_secret
-  solapi_sender_number = var.solapi_sender_number
 }
 
 module "firebase" {
@@ -77,9 +31,9 @@ module "firebase" {
 module "vercel" {
   source = "./vercel"
 
-  vercel_api_token = var.vercel_api_token
-  domain           = var.domain
-  dev_api_url      = var.dev_api_url
+  token       = var.vercel_token
+  domain      = var.domain
+  api_url_dev = var.api_url_dev
 
   github_repo   = var.github_repo
   github_branch = var.github_branch
@@ -88,14 +42,19 @@ module "vercel" {
   aws_secret_access_key = module.aws.secret_access_key
   aws_region            = var.aws_region
 
-  nts_api_service_key     = var.nts_api_service_key
-  kcomwel_api_service_key = var.kcomwel_api_service_key
-
-  slack_monitoring_webhook_url = var.slack_monitoring_webhook_url
-  sentry_auth_token            = var.sentry_auth_token
-  database_url                 = var.database_url
-
-  # Firebase config → Vercel 환경변수로 주입 (앱별 map)
+  sentry_auth_token    = var.sentry_auth_token
   firebase_web_configs = module.firebase.web_configs
-  firebase_vapid_key   = var.firebase_vapid_key
+  fcm_vapid_key        = var.fcm_vapid_key
+}
+
+module "github" {
+  source      = "./github"
+  github_repo = var.github_repo
+
+  database_url        = var.database_url
+  data_go_service_key = var.data_go_service_key
+  sentry_auth_token   = var.sentry_auth_token
+
+  figma_access_token = var.figma_access_token
+  slack_webhook_url  = var.slack_webhook_url
 }

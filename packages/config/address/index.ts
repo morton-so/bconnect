@@ -6,6 +6,8 @@ import { UnknownSidoError } from '../errors/index'
 /** 카카오 우편번호 oncomplete 결과 중 우리가 읽는 부분집합 (react-daum-postcode 결과와 구조 호환) */
 export interface KakaoAddressResult {
   zonecode: string
+  /** 법정동코드 10자리 — BE Address 필수값. */
+  bcode: string
   roadAddress: string
   jibunAddress: string
   userSelectedType: 'R' | 'J'
@@ -23,6 +25,7 @@ export type AddressDraft = Omit<Address, 'state'> & { state?: Region }
 export function emptyAddressDraft(): AddressDraft {
   return {
     zipcode: '',
+    bcode: '',
     street: '',
     state: undefined,
     city: '',
@@ -32,7 +35,7 @@ export function emptyAddressDraft(): AddressDraft {
   }
 }
 
-/** BE 로 보낼 수 있는 완전한 주소인지 — state/city/street 가 모두 채워졌는지로 판정. */
+// 완전한 주소인지 판단
 export function isCompleteAddress(a: AddressDraft | null | undefined): a is Address {
   return a != null && a.state != null && a.city.length > 0 && a.street.length > 0
 }
@@ -57,13 +60,14 @@ export const addressField = (label = '주소') =>
  * latitude/longitude 는 placeholder 0 — 위경도를 0 으로 두는 유일한 지점.
  */
 export function mapKakaoAddress(r: KakaoAddressResult): Address {
-  // TODO(#280): 위경도는 placeholder 0. 후속 BE-side geocoding(카카오 Local REST)으로 대체.
+  // TODO: 위경도는 placeholder 0. 후속 BE-side geocoding(카카오 Local REST)으로 대체.
   const state = regionOfState(r.sido)
   if (state === undefined) {
     throw new UnknownSidoError(r.sido)
   }
   return {
     zipcode: r.zonecode,
+    bcode: r.bcode,
     street: r.userSelectedType === 'R' ? r.roadAddress : r.jibunAddress,
     state,
     city: r.sigungu,

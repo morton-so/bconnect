@@ -1,3 +1,4 @@
+import { OfferStatus, ProfileRole, TaskProgress, TaskStatus, Trade } from '@bconnect/api-client'
 import {
   getCancelOfferMockHandler,
   getCreateOfferMockHandler,
@@ -7,28 +8,22 @@ import {
   getGetTaskOffersMockHandler,
   getReorderOffersMockHandler,
   getUpdateTaskCompanyMockHandler,
-  OfferStatus,
-  ProfileRole,
-  Role,
-  TaskStatus,
-  TaskType,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
+  CompanyTask,
   CreateOfferRequest,
   CreateProjectTaskRequest,
   Offer,
   Project,
   Region,
   ReorderOfferRequest,
-  Task,
   UpdateProjectTaskRequest,
 } from '@bconnect/api-client'
 import { addressOf } from './_address'
 import { http, HttpResponse } from 'msw'
 
 /**
- * plan 공정표(projects/project-tasks/offers) **stateful** mock (#767).
+ * plan 공정표(projects/project-tasks/offers) **stateful** mock.
  * 생성/수정/삭제/섭외가 모듈 메모리에 반영돼 재조회 시 즉시 보인다. 하드 리로드 시 시드 리셋.
  *
  * BE 실동작 모사:
@@ -119,8 +114,9 @@ interface TaskSeed {
   title: string
   startOffset: number
   endOffset: number
-  status: Task['status']
-  /** SCHEDULED 이상(섭외 확정)의 대표 기술자 */
+  status: CompanyTask['status']
+  progress: CompanyTask['progress']
+  /** ASSIGNED(섭외 확정) 작업의 대표 기술자 */
   workerId?: number
   requirement?: string
   memo?: string
@@ -137,7 +133,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '철거작업',
     startOffset: -6,
     endOffset: -4,
-    status: TaskStatus.COMPLETED,
+    status: TaskStatus.ASSIGNED,
+    progress: TaskProgress.COMPLETED,
     workerId: 1,
   },
   {
@@ -147,7 +144,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '전기 시공',
     startOffset: -3,
     endOffset: -1,
-    status: TaskStatus.IN_PROGRESS,
+    status: TaskStatus.ASSIGNED,
+    progress: TaskProgress.IN_PROGRESS,
     workerId: 2,
   },
   {
@@ -157,7 +155,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '목재/창호 설치',
     startOffset: -1,
     endOffset: 0,
-    status: TaskStatus.IN_PROGRESS,
+    status: TaskStatus.ASSIGNED,
+    progress: TaskProgress.IN_PROGRESS,
     workerId: 3,
   },
   {
@@ -167,7 +166,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '타일',
     startOffset: 0,
     endOffset: 1,
-    status: TaskStatus.SCHEDULED,
+    status: TaskStatus.ASSIGNED,
+    progress: TaskProgress.TODO,
     workerId: 4,
     requirement: '타일 시공 및 단일 벽면 일부 도배',
     memo: '세밀한 작업이 필요함',
@@ -180,7 +180,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '필름',
     startOffset: 2,
     endOffset: 3,
-    status: TaskStatus.SCHEDULED,
+    status: TaskStatus.ASSIGNED,
+    progress: TaskProgress.TODO,
     workerId: 5,
   },
   {
@@ -190,7 +191,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '도배',
     startOffset: 4,
     endOffset: 5,
-    status: TaskStatus.SCHEDULED,
+    status: TaskStatus.ASSIGNED,
+    progress: TaskProgress.TODO,
     workerId: 6,
   },
   {
@@ -201,6 +203,7 @@ const TASK_SEEDS: TaskSeed[] = [
     startOffset: 6,
     endOffset: 7,
     status: TaskStatus.OFFERED,
+    progress: TaskProgress.TODO,
     activeOffer: 7,
   },
   {
@@ -210,7 +213,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '가구 설치',
     startOffset: 8,
     endOffset: 9,
-    status: TaskStatus.DRAFT,
+    status: TaskStatus.NONE,
+    progress: TaskProgress.TODO,
   },
   {
     id: 8009,
@@ -219,7 +223,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '조명 설치',
     startOffset: 8,
     endOffset: 10,
-    status: TaskStatus.DRAFT,
+    status: TaskStatus.NONE,
+    progress: TaskProgress.TODO,
   },
   {
     id: 8010,
@@ -228,7 +233,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '철거',
     startOffset: -2,
     endOffset: 0,
-    status: TaskStatus.IN_PROGRESS,
+    status: TaskStatus.ASSIGNED,
+    progress: TaskProgress.IN_PROGRESS,
     workerId: 21,
   },
   {
@@ -239,6 +245,7 @@ const TASK_SEEDS: TaskSeed[] = [
     startOffset: 1,
     endOffset: 4,
     status: TaskStatus.OFFERED,
+    progress: TaskProgress.TODO,
     activeOffer: 22,
   },
   {
@@ -248,7 +255,8 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '전기 배선',
     startOffset: 2,
     endOffset: 5,
-    status: TaskStatus.DRAFT,
+    status: TaskStatus.NONE,
+    progress: TaskProgress.TODO,
   },
   {
     id: 8013,
@@ -257,34 +265,30 @@ const TASK_SEEDS: TaskSeed[] = [
     title: '도배',
     startOffset: 6,
     endOffset: 8,
-    status: TaskStatus.SCHEDULED,
+    status: TaskStatus.ASSIGNED,
+    progress: TaskProgress.TODO,
     workerId: 23,
   },
 ]
 
-function buildSeedTasks(): Task[] {
+// 프로젝트 작업 응답은 CompanyTask 형태로 구성한다.
+function buildSeedTasks(): CompanyTask[] {
   const stamp = nowStamp()
   return TASK_SEEDS.map((seed) => {
     const project = PROJECT_SEEDS.find((p) => p.id === seed.projectId)
     return {
       id: seed.id,
-      type: TaskType.PROJECT,
       status: seed.status,
+      progress: seed.progress,
       trades: seed.trades,
       start: isoDaysFromToday(seed.startOffset),
       end: isoDaysFromToday(seed.endOffset),
       workerId: seed.workerId ?? null,
-      workerTitle: null,
-      workerMemo: null,
-      workerCompany: null,
       projectId: seed.projectId,
-      projectTitle: seed.title,
-      projectRequirement: seed.requirement ?? '요청사항 (Mocked)',
-      projectMemo: seed.memo ?? '메모 (Mocked)',
-      projectCompanyId: project?.companyId ?? null,
-      projectCompanyName: project ? `${project.title} 시공사 (Mocked)` : null,
+      title: seed.title,
+      requirement: seed.requirement ?? '요청사항 (Mocked)',
+      memo: seed.memo ?? '메모 (Mocked)',
       address: project?.address ?? null,
-      offer: null,
       createdAt: stamp,
       modifiedAt: stamp,
     }
@@ -342,7 +346,7 @@ function buildSeedOffers(): Offer[] {
 
 // 모듈 메모리 상태 — 핸들러 공유. 하드 리로드 시 시드 리셋.
 const projects: Project[] = PROJECT_SEEDS
-let tasks: Task[] = buildSeedTasks()
+let tasks: CompanyTask[] = buildSeedTasks()
 let offers: Offer[] = buildSeedOffers()
 let nextTaskId = 8100
 let nextOfferId = 8600
@@ -377,7 +381,7 @@ export const scheduleOverrides = [
     return HttpResponse.json(project)
   }),
 
-  getGetProjectTasksMockHandler((info): Task[] =>
+  getGetProjectTasksMockHandler((info): CompanyTask[] =>
     tasks.filter((t) => t.projectId === Number(info.params.id))
   ),
 
@@ -387,24 +391,18 @@ export const scheduleOverrides = [
     const stamp = nowStamp()
     tasks.push({
       id,
-      type: TaskType.PROJECT,
-      // BE createByCompany 실동작: DRAFT 고정 생성 (상태 전이는 assign→SCHEDULED 뿐)
-      status: TaskStatus.DRAFT,
+      // BE createByCompany 실동작: 섭외 전(NONE)·시작 전(TODO) 고정 생성
+      status: TaskStatus.NONE,
+      progress: TaskProgress.TODO,
       trades: body.trades,
       start: body.start,
       end: body.end,
       workerId: null,
-      workerTitle: null,
-      workerMemo: null,
-      workerCompany: null,
       projectId: body.projectId,
-      projectTitle: body.title,
-      projectRequirement: body.requirement,
-      projectMemo: body.memo,
-      projectCompanyId: projects.find((p) => p.id === body.projectId)?.companyId ?? null,
-      projectCompanyName: null,
+      title: body.title,
+      requirement: body.requirement ?? null,
+      memo: body.memo ?? null,
       address: projects.find((p) => p.id === body.projectId)?.address ?? null,
-      offer: null,
       createdAt: stamp,
       modifiedAt: stamp,
     })
@@ -421,9 +419,10 @@ export const scheduleOverrides = [
             trades: body.trades,
             start: body.start,
             end: body.end,
-            projectTitle: body.title,
-            projectRequirement: body.requirement,
-            projectMemo: body.memo,
+            title: body.title,
+            progress: body.progress,
+            requirement: body.requirement ?? null,
+            memo: body.memo ?? null,
             modifiedAt: nowStamp(),
           }
         : t

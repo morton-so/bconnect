@@ -1,9 +1,16 @@
 'use client'
 
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useEffectEvent, useRef } from 'react'
 import { Client } from '@stomp/stompjs'
-import { getAccessToken, refreshAccessToken, MessageType } from '@bconnect/api-client'
-import type { Message } from '@bconnect/api-client'
+import { getAccessToken, refreshAccessToken } from '@bconnect/api-client'
+import type { Message, MessageType } from '@bconnect/api-client'
+
+/** BE SendMessageRequest 계약 — TEXT 는 content, IMAGE 는 attachmentIds 가 필수 */
+export interface SendMessagePayload {
+  type: MessageType
+  content?: string
+  attachmentIds?: number[]
+}
 
 const getWsUrl = () => {
   const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'
@@ -19,10 +26,9 @@ const getWsUrl = () => {
  */
 export function useDirectChatSocket(chatId: number, onMessage: (message: Message) => void) {
   const clientRef = useRef<Client | null>(null)
-  // 구독 콜백은 연결 시점에 한 번 등록됨 — ref 경유로 항상 최신 onMessage 를 부른다
+  // 구독 콜백은 연결 시점에 한 번 등록됨 — Effect Event 로 항상 최신 onMessage 를 부른다
   // (직접 참조하면 stale closure, deps 에 넣으면 리렌더마다 재연결)
-  const onMessageRef = useRef(onMessage)
-  onMessageRef.current = onMessage
+  const handleMessage = useEffectEvent(onMessage)
 
   useEffect(() => {
     const client = new Client({
@@ -34,25 +40,25 @@ export function useDirectChatSocket(chatId: number, onMessage: (message: Message
       },
       onConnect: () => {
         client.subscribe(`/topic/direct-chats/${chatId}`, (frame) => {
-          onMessageRef.current(JSON.parse(frame.body) as Message)
+          handleMessage(JSON.parse(frame.body) as Message)
         })
       },
     })
     client.activate()
     clientRef.current = client
     return () => {
-      void client.deactivate()
+      client.deactivate()
       clientRef.current = null
     }
   }, [chatId])
 
   return useCallback(
-    (content: string): boolean => {
+    (payload: SendMessagePayload): boolean => {
       const client = clientRef.current
       if (!client?.connected) return false
       client.publish({
         destination: `/app/direct-chats/${chatId}/messages`,
-        body: JSON.stringify({ type: MessageType.TEXT, content }),
+        body: JSON.stringify(payload),
       })
       return true
     },

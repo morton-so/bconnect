@@ -10,7 +10,7 @@ import { ScheduleHeader } from './schedule-header'
 /**
  * 프로젝트 조회 실패 시 에러 화면으로 전환한다. 분기는 BE 에러 code(문자열)가 아닌
  * HTTP 상태 기준 — 404는 "없는 프로젝트", 그 외(네트워크·500 등)는 일반 오류.
- * 작업 목록 404는 #840에서 따로 다루므로 여기서 게이트하지 않는다.
+ * 작업 목록 404는 따로 다루므로 여기서 게이트하지 않는다.
  */
 export function ScheduleContent({ projectId }: { projectId: string }) {
   const { error, isError } = useGetProject(Number(projectId))

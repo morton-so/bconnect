@@ -15,6 +15,8 @@ export { FilterChip } from './ui/FilterChip'
 export type { FilterChipProps } from './ui/FilterChip'
 export { SkillTag } from './ui/SkillTag'
 export type { SkillTagProps } from './ui/SkillTag'
+export { InfoPopover } from './ui/InfoPopover'
+export type { InfoPopoverProps } from './ui/InfoPopover'
 export { CertTag } from './ui/CertTag'
 export type { CertTagProps } from './ui/CertTag'
 export { Slider } from './ui/Slider'
@@ -26,6 +28,7 @@ export { Tab } from './ui/Tab'
 export type { TabProps, TabItem } from './ui/Tab'
 export { Skeleton } from './ui/shadcn/skeleton'
 export { ChatMessage, chatBubbleVariants } from './ui/ChatMessage'
+export type { ChatMessageImage } from './ui/ChatMessage'
 export { ChatInput } from './ui/ChatInput'
 export { ChatListItem, chatListItemVariants } from './ui/ChatListItem'
 export { NotificationItem } from './ui/NotificationItem'
@@ -36,7 +39,7 @@ export type { CarouselApi } from './ui/shadcn/carousel'
 export { Progress } from './ui/shadcn/progress'
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle } from './ui/shadcn/resizable'
 
-// shadcn Form suite (ADR 0013 / #400) — shadcn 디렉토리에 격리, 우리 wrapper 는 ui/ 루트
+// shadcn Form suite (ADR 0013) — shadcn 디렉토리에 격리, 우리 wrapper 는 ui/ 루트
 export {
   Form,
   FormItem,

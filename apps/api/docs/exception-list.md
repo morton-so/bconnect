@@ -1,4 +1,5 @@
 # ExceptionCode 목록
+
 - 위치 : 전체
 - 범위 : 예외 코드(ExceptionCode)
 
@@ -13,12 +14,13 @@
 | `CO` | 업체 | `core/domain/company` |
 | `T` | 작업 | `core/domain/task` |
 | `CW` | 동료 | `core/domain/coworker` |
-| `CD` | 인증뱃지 | `core/domain/credential` |
+| `CD` | 자격 증명 | `core/domain/credential` |
 | `RC` | 추천서 | `core/domain/recommendation` |
 | `CH` | 채팅 | `core/domain/chat` |
 | `OF` | 섭외 | `core/domain/offer` |
 | `DR` | 드라이브 | `core/domain/drive` |
 | `AT` | 첨부 | `attachment/domain` |
+| `OC` | 원클릭 | `oneclick/domain` |
 
 ---
 
@@ -60,6 +62,7 @@
 | M001 | DUPLICATE_USERNAME | 409 | INFO | 이미 사용 중인 사용자명입니다. |
 | M002 | DUPLICATE_PHONE | 409 | INFO | 이미 사용 중인 전화번호입니다. |
 | M003 | WITHDRAW_COMPANY_EXISTS | 409 | INFO | 소유한 업체가 있어 탈퇴할 수 없습니다. 업체를 먼저 삭제해주세요. |
+| M004 | UNDERAGE | 409 | INFO | 만 15세 미만은 가입할 수 없습니다. |
 
 ## ProfileExceptionCode
 
@@ -75,6 +78,8 @@
 | CO001 | ALREADY_EXISTS | 409 | INFO | 이미 업체가 존재합니다. |
 | CO002 | DUPLICATE_BRN | 409 | INFO | 이미 등록된 사업자등록번호입니다. |
 | CO003 | PROJECT_LIMIT_EXCEEDED | 409 | INFO | 생성 가능한 프로젝트 수를 초과했습니다. |
+| CO004 | DELETE_TASK_EXISTS | 409 | INFO | 진행 중인 작업이 있어 업체를 삭제할 수 없습니다. 작업을 먼저 완료해주세요. |
+| CO005 | INVALID_STATUS | 409 | INFO | 처리할 수 없는 업체 상태입니다. |
 
 ## TaskExceptionCode
 
@@ -82,6 +87,7 @@
 | --- | --- | --- | --- | --- |
 | T001 | NOT_ASSIGNED | 409 | INFO | 기술자에게 할당되지 않은 작업입니다. |
 | T002 | INVALID_TYPE | 409 | INFO | 처리할 수 없는 작업 유형입니다. |
+| T003 | OFFERED_EXISTS | 409 | INFO | 섭외 중이거나 배정된 작업이 있어 삭제할 수 없습니다. |
 
 ## OfferExceptionCode
 
@@ -90,12 +96,13 @@
 | OF001 | NOT_PROJECT_TASK | 400 | INFO | 프로젝트 작업에만 섭외할 수 있습니다. |
 | OF002 | INVALID_STATUS | 409 | INFO | 처리할 수 없는 섭외 상태입니다. |
 | OF003 | INVALID_REORDER | 400 | INFO | 재정렬 대상이 올바르지 않습니다. |
+| OF004 | INVALID_TASK_STATUS | 409 | INFO | 섭외할 수 없는 작업 상태입니다. |
 
 ## CredentialExceptionCode
 
 | 코드 | 이름 | HTTP | LogLevel | 메시지 |
 | --- | --- | --- | --- | --- |
-| CD001 | INVALID_STATUS | 409 | INFO | 처리할 수 없는 인증뱃지 상태입니다. |
+| CD001 | INVALID_STATUS | 409 | INFO | 처리할 수 없는 자격 증명 상태입니다. |
 
 ## CoworkerExceptionCode
 
@@ -135,3 +142,10 @@
 | AT004 | NOT_COMPLETED | 400 | INFO | 업로드가 완료되지 않은 첨부파일입니다. |
 | AT005 | INVALID_LINKED | 404 | INFO | 연결되지 않은 첨부파일입니다. |
 | AT006 | NOT_FOUND | 404 | INFO | 존재하지 않는 첨부파일입니다. |
+
+## OneClickExceptionCode
+
+| 코드 | 이름 | HTTP | LogLevel | 메시지 |
+| --- | --- | --- | --- | --- |
+| OC001 | VALIDATION_FAILED | 400 | INFO | 사업자 정보가 일치하지 않습니다. |
+| OC002 | SERVICE_UNAVAILABLE | 503 | WARN | 사업자 조회 서비스가 일시적으로 원활하지 않습니다. |

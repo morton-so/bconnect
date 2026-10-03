@@ -1,33 +1,48 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/no-main-writes.sh",
-            "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/vercel-monorepo-guard.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/post-edit.sh",
-            "timeout": 15
-          }
-        ]
-      }
+  "enabledPlugins": {
+    "ponytail@ponytail": true
+  },
+  "permissions": {
+    "deny": [
+      "mcp__railway__create-*",
+      "mcp__railway__delete-*",
+      "mcp__railway__set-*",
+      "mcp__railway__update-*",
+      "mcp__railway__redeploy",
+      "mcp__railway__accept-deploy",
+      "mcp__railway__restart-service",
+      "mcp__railway__connect-service-source",
+      "mcp__railway__railway-agent",
+      "mcp__vercel__deploy_to_vercel",
+      "mcp__vercel__buy_*",
+      "mcp__vercel__get_access_to_vercel_url",
+      "mcp__vercel__import-claude-design-from-url",
+      "mcp__vercel__change_toolbar_thread_resolve_status",
+      "mcp__vercel__reply_to_toolbar_thread",
+      "mcp__vercel__edit_toolbar_message",
+      "mcp__vercel__add_toolbar_reaction",
+      "mcp__vercel__create_git_project",
+      "mcp__vercel__pause_project",
+      "mcp__vercel__unpause_project",
+      "mcp__vercel__update_project_deployment_protection",
+      "mcp__firebase__firebase_login",
+      "mcp__firebase__firebase_logout",
+      "mcp__firebase__firebase_update_environment",
+      "mcp__firebase__firebase_init",
+      "mcp__firebase__firebase_create_*",
+      "mcp__firebase__auth_update_user",
+      "mcp__firebase__auth_set_sms_region_policy",
+      "mcp__firebase__firestore_add_document",
+      "mcp__firebase__firestore_create_*",
+      "mcp__firebase__firestore_update_*",
+      "mcp__firebase__firestore_delete_*",
+      "mcp__firebase__crashlytics_create_note",
+      "mcp__firebase__crashlytics_delete_note",
+      "mcp__firebase__crashlytics_update_issue",
+      "mcp__firebase__realtimedatabase_set_data",
+      "mcp__firebase__dataconnect_execute",
+      "mcp__firebase__messaging_send_message",
+      "mcp__firebase__remoteconfig_update_template"
     ]
   }
 }

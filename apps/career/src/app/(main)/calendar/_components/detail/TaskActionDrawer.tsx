@@ -8,7 +8,7 @@ interface TaskActionDrawerProps {
   onShare: () => void
   onEdit: () => void
   onDelete: () => void
-  /** 수정 가능 여부. 제안작업(업체 작업)은 기술자가 수정 불가 → 수정 항목 제외. */
+  /** 수정 가능 여부. 제안작업은 배정된 뒤에만 수정 가능. */
   canEdit: boolean
   /** 삭제 가능 여부. worker 본인이 만든 작업만 삭제 가능. */
   canDelete?: boolean

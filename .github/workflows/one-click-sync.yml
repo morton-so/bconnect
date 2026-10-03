@@ -1,0 +1,118 @@
+name: One-click Sync
+
+on:
+  schedule:
+    - cron: '0 21 * * 2'
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'KISCON Construction full sync'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: one-click-sync
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 개별 스크립트에서 실패시 슬랙 알림
+      - name: Sync CWMA retirement-fund
+        id: cwma
+        if: ${{ !cancelled() }}
+        env:
+          DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: pnpm --filter @bconnect/data-jobs cwma-sync
+
+      - name: Sync ECIC electrical-license
+        id: ecic
+        if: ${{ !cancelled() }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: pnpm --filter @bconnect/data-jobs ecic-sync
+
+      - name: Sync FEIA fire-license
+        id: feia
+        if: ${{ !cancelled() }}
+        env:
+          DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: pnpm --filter @bconnect/data-jobs feia-sync
+
+      - name: Sync KISCON arrears
+        id: kiscon_arrears
+        if: ${{ !cancelled() }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: pnpm --filter @bconnect/data-jobs kiscon-arrears-sync
+
+      - name: Sync KISCON subcon limits
+        id: kiscon_subcon
+        if: ${{ !cancelled() }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: pnpm --filter @bconnect/data-jobs kiscon-subcon-sync
+
+      - name: Sync KISCON registration
+        id: kiscon_registration
+        if: ${{ !cancelled() }}
+        env:
+          DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ "${{ inputs.full }}" = "true" ]; then
+            pnpm --filter @bconnect/data-jobs kiscon-registration-sync -- --full
+          else
+            pnpm --filter @bconnect/data-jobs kiscon-registration-sync
+          fi
+
+      - name: Sync KISCON admin penalty
+        id: kiscon_penalty
+        if: ${{ !cancelled() }}
+        env:
+          DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ "${{ inputs.full }}" = "true" ]; then
+            pnpm --filter @bconnect/data-jobs kiscon-penalty-sync -- --full
+          else
+            pnpm --filter @bconnect/data-jobs kiscon-penalty-sync
+          fi
+
+      - name: Sync MOEL wage-defaulter
+        id: moel
+        if: ${{ !cancelled() }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: pnpm --filter @bconnect/data-jobs moel-sync
+
+      - name: Notify Slack on failure
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          curl -s -X POST "$SLACK_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d "{\"text\":\"🚨 *One-click Sync 실패*\n<${RUN_URL}|워크플로우 로그 확인>\"}"

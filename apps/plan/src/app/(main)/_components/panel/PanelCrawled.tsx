@@ -12,7 +12,7 @@ import { CrawledImage, CrawledSourceBadge } from '../CrawledImage'
  * 회원 프로필 패널(ProfileView)과 같은 골격: 헤더(아바타+통계+메타) → 작업물.
  * 동료·추천서는 크롤링에 없는 개념이라 통계는 작업물 수만 둔다.
  *
- * @figma-scaffold 크롤링 상세 시안 없음 — PanelProfile(ProfileView) 골격 준용
+ * @figma-todo 크롤링 기술자 상세 패널 디자인 미정
  */
 export function PanelCrawled({ crawledId }: { crawledId: number }) {
   const { closeHref, close } = usePanelNav()
@@ -57,7 +57,6 @@ export function PanelCrawled({ crawledId }: { crawledId: number }) {
 
           {data && d && (
             <>
-              {/* 헤더 — 회원 ProfileSummary 레이아웃 (아바타100 + 통계 + 이름/메타/headline) */}
               <div className="flex flex-col">
                 <div className="flex items-center gap-4 px-4 pt-4">
                   <div className="relative h-[100px] w-[100px] shrink-0 overflow-hidden rounded-full bg-gray-100">
@@ -133,6 +132,14 @@ export function PanelCrawled({ crawledId }: { crawledId: number }) {
                   posts.map((post, i) => {
                     // 회원 WorkCard 레이아웃 준용 — 시공 사진 캐러셀(no-referrer) + 제목/본문
                     const images = (post.images ?? []).slice(0, 10)
+                    const body = (
+                      <>
+                        {post.title && <p className="text-m-16 text-gray-900">{post.title}</p>}
+                        {post.content && (
+                          <p className="line-clamp-2 text-r-14 text-gray-500">{post.content}</p>
+                        )}
+                      </>
+                    )
                     return (
                       <div key={post.id ?? i} className="flex flex-col">
                         {images.length > 0 && (
@@ -144,12 +151,18 @@ export function PanelCrawled({ crawledId }: { crawledId: number }) {
                             />
                           </div>
                         )}
-                        <div className="flex flex-col gap-1 px-4 pt-3 pb-4">
-                          {post.title && <p className="text-m-16 text-gray-900">{post.title}</p>}
-                          {post.content && (
-                            <p className="line-clamp-2 text-r-14 text-gray-500">{post.content}</p>
-                          )}
-                        </div>
+                        {post.sourceUrl ? (
+                          <a
+                            href={post.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex cursor-pointer flex-col gap-1 px-4 pt-3 pb-4 transition-colors hover:bg-gray-50 focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none active:bg-gray-100"
+                          >
+                            {body}
+                          </a>
+                        ) : (
+                          <div className="flex flex-col gap-1 px-4 pt-3 pb-4">{body}</div>
+                        )}
                       </div>
                     )
                   })

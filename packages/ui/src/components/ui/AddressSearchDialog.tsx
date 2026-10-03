@@ -1,5 +1,5 @@
 /**
- * @figma-pending 주소 검색 다이얼로그 — 시안 미정
+ * @figma-todo 주소 검색 다이얼로그 디자인 미정
  */
 'use client'
 
@@ -24,7 +24,7 @@ export function AddressSearchDialog({ open, onOpenChange, onComplete }: AddressS
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/40" />
         <Dialog.Content
           aria-describedby={undefined}
-          className="fixed left-1/2 top-1/2 z-50 w-[480px] max-w-[calc(100%-2.5rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl bg-white focus:outline-none"
+          className="fixed top-1/2 left-1/2 z-50 w-[480px] max-w-[calc(100%-2.5rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl bg-white focus:outline-none"
         >
           <Dialog.Title className="px-4 py-3 text-m-16 text-gray-900">주소 검색</Dialog.Title>
           {open && (

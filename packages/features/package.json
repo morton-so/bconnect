@@ -1,16 +1,19 @@
 {
   "name": "@bconnect/features",
   "private": true,
+  "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./legal": "./src/legal/index.ts"
+    "./one-click": "./src/one-click/index.ts"
   },
   "dependencies": {
     "@bconnect/api-client": "workspace:*",
     "@bconnect/config": "workspace:*",
+    "@bconnect/push": "workspace:*",
     "@bconnect/ui": "workspace:*",
+    "@sentry/nextjs": "catalog:",
     "@stomp/stompjs": "^7.3.0",
     "lucide-react": "catalog:"
   },

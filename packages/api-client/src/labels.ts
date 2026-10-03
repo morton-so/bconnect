@@ -1,5 +1,13 @@
-import { Region, Trade, type CredentialType } from './generated/schemas'
+import {
+  ProfileRole,
+  Region,
+  TaskProgress,
+  TaskStatus,
+  Trade,
+  type CredentialType,
+} from './generated/schemas'
 
+/** 보편언어 문서 참고 */
 export const TRADE_LABELS: Record<Trade, string> = {
   [Trade.DESIGN]: '설계',
   [Trade.DEMOLITION]: '철거/확장',
@@ -26,6 +34,9 @@ export const TRADE_LABELS: Record<Trade, string> = {
   [Trade.TRANSPORT]: '운송',
   [Trade.CLEANING]: '청소',
   [Trade.GENERAL_LABOR]: '보통인부',
+  [Trade.HOME_REPAIR]: '집수리',
+  [Trade.BATHROOM]: '욕실',
+  [Trade.DISINFECTION]: '방역',
 }
 
 export const TRADE_LIST = Object.entries(TRADE_LABELS).map(([value, label]) => ({
@@ -33,7 +44,6 @@ export const TRADE_LIST = Object.entries(TRADE_LABELS).map(([value, label]) => (
   label,
 }))
 
-/** 시공분야 카테고리별 그룹 (Figma 디자인 기준) */
 export const TRADE_GROUPS: { label: string; trades: Trade[] }[] = [
   {
     label: '기반공정',
@@ -70,10 +80,48 @@ export const TRADE_GROUPS: { label: string; trades: Trade[] }[] = [
     label: '현장지원',
     trades: [Trade.HOISTING, Trade.TRANSPORT, Trade.CLEANING, Trade.GENERAL_LABOR],
   },
+  {
+    label: '생활',
+    trades: [Trade.HOME_REPAIR, Trade.BATHROOM, Trade.DISINFECTION],
+  },
 ]
 
 export function getTradeLabel(trade: Trade): string {
   return TRADE_LABELS[trade] ?? trade
+}
+
+export const ROLE_LABELS: Record<ProfileRole, string> = {
+  [ProfileRole.CLIENT]: '소비자',
+  [ProfileRole.ARCHITECT]: '건축사',
+  [ProfileRole.CONTRACTOR]: '건설업자',
+  [ProfileRole.FOREMAN]: '반장',
+  [ProfileRole.SKILLED]: '기공',
+  [ProfileRole.SEMI_SKILLED]: '준기공',
+  [ProfileRole.HELPER]: '조공',
+}
+
+export function getRoleLabel(role: ProfileRole): string {
+  return ROLE_LABELS[role] ?? role
+}
+
+export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {
+  [TaskStatus.NONE]: '섭외 전',
+  [TaskStatus.OPEN]: '모집 중',
+  [TaskStatus.OFFERED]: '섭외 중',
+  [TaskStatus.ASSIGNED]: '섭외 됨',
+}
+
+export const TASK_STATUS_WORKER_LABELS: Record<TaskStatus, string> = {
+  [TaskStatus.NONE]: '해당 없음',
+  [TaskStatus.OPEN]: '지원 완료',
+  [TaskStatus.OFFERED]: '섭외 받음',
+  [TaskStatus.ASSIGNED]: '시공 예정',
+}
+
+export const TASK_PROGRESS_LABELS: Record<TaskProgress, string> = {
+  [TaskProgress.TODO]: '시작 전',
+  [TaskProgress.IN_PROGRESS]: '진행 중',
+  [TaskProgress.COMPLETED]: '시공 완료',
 }
 
 export const CREDENTIAL_TYPE_LABELS: Record<CredentialType, string> = {
@@ -93,9 +141,6 @@ export function getCredentialLabel(type: CredentialType): string {
   return CREDENTIAL_TYPE_LABELS[type] ?? type
 }
 
-// 지역(시/도) 한글 라벨 SSOT — 공용 Region enum(#998, BE canonical 한글값) 기반.
-// career(lib/region.ts)·plan(FilterBar·크롤링 카드)이 공유. 자체 하드코딩 금지.
-// Region 값 대부분은 표시 라벨과 동일하고, 통합·특별자치 명칭만 짧은 라벨로 축약.
 export const REGION_LABELS: Record<Region, string> = {
   [Region.서울]: '서울',
   [Region.부산]: '부산',
@@ -127,7 +172,7 @@ export function getRegionLabel(region: Region): string {
 const REGION_VALUES = new Set<string>(Object.values(Region))
 const reportedUnknownStates = new Set<string>()
 
-/** 카카오 우편번호 sido 문자열 → Region 정확 일치 검증. 미상이면 undefined + 1회 리포트 (읽기 경로는 크래시 금지). */
+/** 카카오 우편번호 sido ↔ Region enum 대응 검증 */
 export function regionOfState(state: string | null | undefined): Region | undefined {
   if (!state) return undefined
   const trimmed = state.trim()
@@ -135,7 +180,7 @@ export function regionOfState(state: string | null | undefined): Region | undefi
   if (REGION_VALUES.has(trimmed)) return trimmed as Region
   if (!reportedUnknownStates.has(trimmed)) {
     reportedUnknownStates.add(trimmed)
-    console.warn(`[regionOfState] 미등록 시/도 표기 "${trimmed}" — 지역 미상 처리 (#1000)`)
+    console.warn(`[regionOfState] 미등록 시/도 표기 "${trimmed}"`)
   }
   return undefined
 }

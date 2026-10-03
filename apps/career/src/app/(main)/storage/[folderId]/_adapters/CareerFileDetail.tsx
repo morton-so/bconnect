@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@bconnect/ui'
-import { formatDate } from '@bconnect/config/format'
+import { formatDate } from '@bconnect/config/date'
 import { useFolderImages } from '@/lib/storage/hooks'
 
 interface CareerFileDetailProps {

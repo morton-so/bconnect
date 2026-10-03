@@ -25,8 +25,6 @@ export function WeekRow({
   onHoverTask,
 }: WeekRowProps) {
   const rowRef = useRef<HTMLDivElement>(null)
-
-  // 바 클릭 시 클릭 x좌표가 떨어진 날짜 셀을 선택 (세그먼트 첫날 아님).
   const selectAtPoint = (e: MouseEvent) => {
     const rect = rowRef.current?.getBoundingClientRect()
     if (!rect) return
@@ -51,7 +49,6 @@ export function WeekRow({
           />
         ))}
       </div>
-      {/* 바 레이어 — 숫자 아래 overlay. 컨테이너는 클릭 통과(셀 선택), 각 바만 클릭 가능 */}
       <div className="pointer-events-none absolute inset-x-0 top-7 grid grid-cols-7 gap-y-0.5">
         {row.segments.map((seg) => (
           <TaskBar

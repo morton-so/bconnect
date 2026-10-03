@@ -48,21 +48,21 @@ const Tab = React.forwardRef<HTMLDivElement, TabProps>(
               type="button"
               onClick={() => onChange?.(item.key)}
               className={cn(
-                'flex-1 flex flex-col items-center pt-3 cursor-pointer transition-colors',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2'
+                'flex flex-1 cursor-pointer flex-col items-center pt-3 transition-colors',
+                'focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none'
               )}
             >
               <span
                 className={cn(
-                  'text-sm pb-2.5',
-                  isActive ? 'text-primary font-semibold' : 'text-gray-500 font-medium'
+                  'pb-2.5 text-sm',
+                  isActive ? 'font-semibold text-primary' : 'font-medium text-gray-500'
                 )}
               >
                 {item.label}
               </span>
               <div
                 className={cn(
-                  'w-full h-0.5 transition-colors',
+                  'h-0.5 w-full transition-colors',
                   isActive ? 'bg-primary' : 'bg-transparent'
                 )}
               />

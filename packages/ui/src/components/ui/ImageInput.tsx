@@ -1,9 +1,9 @@
 /**
- * @figma-scaffold 이미지 영역 시안이 placeholder("이미지" 텍스트)만 — 업로드/미리보기/빈상태 UX 신규 (#424)
+ * @figma-todo 이미지 입력 디자인 미정
  */
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '../../lib/utils'
 import { ImageIcon } from '../../icons'
 import { XIcon } from '../../icons/XIcon'
@@ -41,7 +41,7 @@ const TRIGGER_BASE =
  * 제어 이미지 입력 primitive (single/multi). 파일 선택 + 로컬 미리보기 + 삭제 + 빈상태.
  *
  * 실제 업로드는 하지 않는다 — 고른 File 을 value 로 보유하고, 업로드/저장은 호출부(폼 제출)가
- * 담당한다. presign 흐름(#340)이 확정되면 제출 시점에 File → URL 변환만 끼우면 된다.
+ * 담당한다. presign 흐름이 확정되면 제출 시점에 File → URL 변환만 끼우면 된다.
  * 폼은 `ImageField` 로 감싸고, 제어 상태는 이 컴포넌트를 직접 쓴다.
  */
 export function ImageInput({
@@ -61,19 +61,19 @@ export function ImageInput({
 }: ImageInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [localError, setLocalError] = useState<string | null>(null)
-  const [previews, setPreviews] = useState<Map<File, string>>(() => new Map())
   const [dragging, setDragging] = useState(false)
 
   const items = toItems(value)
 
-  useEffect(() => {
+  const previews = useMemo(() => {
     const map = new Map<File, string>()
     for (const it of toItems(value)) {
       if (it instanceof File) map.set(it, URL.createObjectURL(it))
     }
-    setPreviews(map)
-    return () => map.forEach((url) => URL.revokeObjectURL(url))
+    return map
   }, [value])
+
+  useEffect(() => () => previews.forEach((url) => URL.revokeObjectURL(url)), [previews])
 
   const srcOf = (it: ImageValue): string | undefined =>
     typeof it === 'string' ? it : previews.get(it)
@@ -158,7 +158,7 @@ export function ImageInput({
               disabled={disabled}
               aria-label="이미지 변경"
               className={cn(
-                'h-full w-full cursor-pointer overflow-hidden rounded-lg bg-gray-100 outline-none transition-opacity focus-visible:ring-1 focus-visible:ring-primary enabled:hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50',
+                'h-full w-full cursor-pointer overflow-hidden rounded-lg bg-gray-100 transition-opacity outline-none focus-visible:ring-1 focus-visible:ring-primary enabled:hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50',
                 invalid && 'ring-1 ring-destructive'
               )}
             >
@@ -253,7 +253,7 @@ function RemoveButton({
       }}
       disabled={disabled}
       aria-label={label}
-      className="absolute right-2 top-2 z-10 flex size-6 cursor-pointer items-center justify-center rounded-full bg-black/50 text-white outline-none transition-colors hover:bg-black/70 focus-visible:ring-1 focus-visible:ring-white disabled:cursor-not-allowed disabled:opacity-50"
+      className="absolute top-2 right-2 z-10 flex size-6 cursor-pointer items-center justify-center rounded-full bg-black/50 text-white transition-colors outline-none hover:bg-black/70 focus-visible:ring-1 focus-visible:ring-white disabled:cursor-not-allowed disabled:opacity-50"
     >
       <XIcon size={14} />
     </button>

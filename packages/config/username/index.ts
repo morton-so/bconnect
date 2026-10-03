@@ -1,22 +1,13 @@
-/**
- * 사용자 ID(username) 검증 유틸리티
- * career signup/username, plan signup/member 가 공유 — 규칙/포맷의 SSOT.
- */
 import { z } from 'zod'
 
-export const USERNAME_MIN_LENGTH = 3
-export const USERNAME_MAX_LENGTH = 30
-export const USERNAME_PATTERN = /^[a-zA-Z0-9_.]+$/
+const USERNAME_MIN_LENGTH = 3
+const USERNAME_MAX_LENGTH = 30
+const USERNAME_PATTERN = /^[a-zA-Z0-9_.]+$/
 
-/**
- * 입력 정제 — 허용 문자(영문/숫자/`_`/`.`)만 남기고 소문자화.
- * 입력 중 실시간 적용 (TextField transform).
- */
 export function formatUsername(value: string): string {
   return value.replace(/[^a-zA-Z0-9_.]/g, '').toLowerCase()
 }
 
-/** username zod 필드 — 규칙 + 에러 메시지 SSOT. `z.object({ username: usernameField })` 로 합성. */
 export const usernameField = z
   .string()
   .min(USERNAME_MIN_LENGTH, `최소 ${USERNAME_MIN_LENGTH}자 이상 입력해주세요.`)

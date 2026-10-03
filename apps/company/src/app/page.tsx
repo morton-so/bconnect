@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 업체용 랜딩 — Figma Sites(디자인 노드 아님)를 브랜드 UI로 재구축. 원본: https://www.figma.com/site/MNz7F2h1c5CaCHG4OeGB4g
+ * @figma-todo 사업자 랜딩 페이지 임시 구현
  */
 import type { Metadata } from 'next'
 import { AppScheduleSection } from './_components/AppScheduleSection'

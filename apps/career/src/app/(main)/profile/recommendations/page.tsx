@@ -21,7 +21,7 @@ export default function RecommendationsPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="추천서" showAction={false} onBack={() => router.back()} />
+      <TopBar variant="default" title="추천서" onBack={() => router.back()} />
       <RecommendationList
         received={received}
         sent={sent}

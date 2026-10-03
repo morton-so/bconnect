@@ -1,10 +1,11 @@
 # 프로젝트 구조
+
 - 위치 : 전체
 - 범위 : 도메인, 레이어, 의존성
 
 ## 디렉터리 구조
 
-```
+```text
 to.bconnect.api
 ├── attachment              # 첨부 모듈
 ├── common                  # 공통 모듈
@@ -12,20 +13,26 @@ to.bconnect.api
 │   ├── presentation        # Presentation 레이어
 │   └── domain              # Domain 레이어
 ├── notification            # 알림 모듈
+├── oneclick                # 원클릭 조회 (공공데이터)
 ├── storage                 # Storage 레이어
 ├── security                # 인증 · 인가
 ├── sms                     # SMS 모듈
 └── socket                  # 실시간 통신 (STOMP)
 ```
+
 - 레이어드 아키텍처(layer-first) 구조를 따릅니다.
 - 패키지 · 레이어 의존성 규칙은 ArchUnit로 강제합니다.
 
 ## 패키지 구조
-> notification → socket → core → attachment → security → storage → common
-> sms → security
+>
+> socket → notification → core → attachment → security → storage → common
+> sms → security, common
+> oneclick → security, common
+
 - `PackageDependencyTest.java` 참고
 
 ## 레이어 구조
+
 ```mermaid
 graph TD
   subgraph Presentation
@@ -55,7 +62,9 @@ graph TD
 - `LayerDependencyTest.java` 참고
 
 ### 레이어 컨벤션
+
 - 컨트롤러는 도메인 객체를 조회하고, 응답 DTO를 조립합니다.
+- 컨트롤러의 API · 엔드포인트의 국문명은 bruno 테스트 name에 작성합니다.
 - 응답 DTO의 `of` 메서드는 도메인 객체만 주입받고, DTO 변환은 내부에서 처리합니다.
 - 비즈니스 로직은 서비스에서 처리합니다.
 - 비즈니스 로직이 복잡한 경우 하위 컴포넌트를 생성해 로직을 분리할 수 있습니다.
@@ -64,10 +73,13 @@ graph TD
 - 도메인 교차는 하향식만 허용됩니다.
 - 도메인 교차 로직의 위치는 도메인 간 응집도를 고려해서 선정해야 합니다.
 
-### 도메인 정책
-- 탈퇴 회원 : 탈퇴 시 연관 데이터는 정리하되(`MemberCleaner`) DirectChat · GroupChat(participant) · 메시지는 유지한다. 채팅 조회 응답에서 탈퇴 회원은 제외하지 않고 `Member.WITHDRAWN` 상수로 표현하며, 전 필드가 `null`인 member 객체로 응답한다. 소유한 업체가 있으면 탈퇴할 수 없다(M003).
+### 회원 탈퇴
+
+- 탈퇴 시 연관 데이터는 정리하되, DM · 그룹채팅의 메시지는 유지한다.
+- 탈퇴 회원은 제외하지 않고 도메인 객체의 `WITHDRAWN` 상수로 표현한다.
 
 ### 서비스 도메인 교차
+
 ```mermaid
 graph TD
   subgraph board
@@ -80,13 +92,24 @@ graph TD
   subgraph project
     ProjectF[ProjectFinder]
   end
+  subgraph offer
+    OfferS[OfferService]
+    OfferQS[OfferQueryService]
+  end
+  subgraph company
+    CompanyF[CompanyFinder]
+  end
   NoteS --> DriveV
   NoteS --> ProjectF
   DriveS --> ProjectF
+  OfferS --> CompanyF
+  OfferQS --> CompanyF
 ```
+
 - `DomainDependencyTest.java` 참고
 
-### 이벤트 교차 (EDA)
+### 이벤트 구조
+
 ```mermaid
 graph TD
   subgraph chat
@@ -94,6 +117,9 @@ graph TD
   end
   subgraph offer
     OfferE[OfferEvent]
+  end
+  subgraph task
+    TaskE[TaskEvent]
   end
   subgraph sms
     SmsL[SmsEventListener]
@@ -105,28 +131,51 @@ graph TD
     LoginE[NewDeviceLoginEvent]
   end
   subgraph socket.message
-    ChatMsgE[SocketMessageSentEvent]
     MsgL[MessageEventListener]
   end
-  subgraph notification
-    NotiL[NotificationEventListener]
-  end
   MsgL --> OfferE
+  MsgL --> TaskE
   MsgL --> ChatCreatedE
   SmsL --> OtpE
   SmsL --> LoginE
-  NotiL --> ChatMsgE
 ```
-- 부수효과는 EDA 구조로 분리합니다.
+
+- 부수효과(메시지 · 알림 발송) 등은 EDA 구조로 분리합니다.
 - 이벤트는 발행 패키지에, 리스너는 구독 패키지에 위치합니다.
+- 알림 이벤트 처리는 다이어그램에서 생략합니다.
+
+### 인프라 포트 · 어댑터 구조
+
+```mermaid
+graph LR
+  Consumer[Service · Controller] --> Port[[Port]]
+  subgraph infrastructure
+    Adapter -.->|prod · dev| Port
+    Logging[Logging · Noop] -.->|local · test| Port
+  end
+```
+
+| 모듈           | 포트                     | 사용처                                          | prod · dev                    | local · test            |
+|--------------|------------------------|----------------------------------------------|-------------------------------|-------------------------|
+| attachment   | `FileStorage`          | AttachmentService · AttachmentCleanupService | S3FileStorage                 | LoggingFileStorage      |
+| attachment   | `UrlResolver`          | AttachmentUrlService                         | CloudFrontUrlResolver         | NoopUrlResolver         |
+| attachment   | `SignedCookieIssuer`   | DomainController                                   | CloudFrontSignedCookieIssuer  | NoopSignedCookieIssuer  |
+| notification | `PushSender`           | NotificationPushService                      | SnsPushSender                 | LoggingPushSender       |
+| notification | `PushEndpointRegistry` | DeviceService                                | SnsEndpointRegistry           | LoggingEndpointRegistry |
+| sms          | `SmsProvider`          | SmsEventListener                             | SolapiSmsProvider             | LoggingSmsProvider      |
+
+- 포트는 인터페이스로 사용 패키지에 위치
+- 어댑터는 `infrastructure` 패키지에 위치 · `@Profile`로 프로필 설정
 
 ### 유효성 검사
+
 - 유효성 검사 위치는 다음과 같습니다
   - 자바 빈 유효성 : Request DTO 필드 어노테이션
   - 비즈니스 유효성 : Request DTO의 toCommand 메서드
   - DB 제약 : `schema.sql`
 
-## 래퍼런스
+## 참조
+
 - [Spring Framework : Java Bean Validation](https://docs.spring.io/spring-framework/reference/core/validation/beanvalidation.html)
 - [Spring Framework : Standard and Custom Events](https://docs.spring.io/spring-framework/reference/core/beans/context-introduction.html#context-functionality-events)
 - [Spring Framework : Transaction-bound Events](https://docs.spring.io/spring-framework/reference/data-access/transaction/event.html)

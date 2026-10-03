@@ -108,26 +108,22 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
         )}
         {...props}
       >
-        {/* 왼쪽: 프로필 + 정보 */}
         <div
           className={cn(
             'flex min-w-0 flex-1',
             isBadge ? 'items-start gap-2.5' : 'items-center gap-4'
           )}
         >
-          {/* 프로필 이미지 */}
           <div className="size-[50px] shrink-0 overflow-hidden rounded-full bg-[#F4F4F4]">
             {profileImage && (
               <img src={profileImage} alt={name} className="size-full object-cover" />
             )}
           </div>
 
-          {/* 텍스트 정보 */}
           <div className={cn('flex min-w-0 flex-1 flex-col', !isBadge && 'gap-1')}>
-            {/* 이름 + 태그 (badge: 우측 시간) */}
             <div className="flex items-center justify-between gap-2.5">
               <div className="flex min-w-0 items-center gap-2.5">
-                <span className="text-sb-14 leading-[1.6]! shrink-0 text-[#1B1B1B]">{name}</span>
+                <span className="shrink-0 text-sb-14 leading-[1.6]! text-[#1B1B1B]">{name}</span>
                 {tags.length > 0 && (
                   <div className="flex items-center gap-2 text-m-12 text-[#A5A5A5]">
                     {tags.map((tag, index) => (
@@ -146,7 +142,6 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
               )}
             </div>
 
-            {/* 미리보기 (badge: 우측 안읽음 수) */}
             {lastMessage && (
               <div className="flex items-start justify-between gap-2">
                 <span
@@ -159,7 +154,7 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
                 </span>
                 {isBadge && unreadCount != null && unreadCount > 0 && (
                   <div className="flex size-5 shrink-0 items-center justify-center rounded-[8px] bg-[#FF4242]">
-                    <span className="text-[12px] font-bold leading-none text-white">
+                    <span className="text-[12px] leading-none font-bold text-white">
                       {unreadCount}
                     </span>
                   </div>
@@ -169,7 +164,6 @@ const ChatListItem = React.forwardRef<HTMLDivElement, ChatListItemProps>(
           </div>
         </div>
 
-        {/* default: chevron */}
         {!isBadge && showChevron && (
           <ChevronIcon direction="right" className="size-4 shrink-0 text-[#A5A5A5]" />
         )}

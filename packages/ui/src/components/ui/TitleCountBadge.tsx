@@ -15,7 +15,7 @@ export interface TitleCountBadgeProps {
 }
 
 /**
- * 헤더 제목 우측에 인라인으로 붙는 카운트 뱃지 (#1016).
+ * 헤더 제목 우측에 인라인으로 붙는 카운트 뱃지.
  * 아이콘 위에 겹쳐 띄우는 `TopBar` 내부 `CountBadge`(absolute) 와 달리 제목과 같은 줄에 흐른다.
  * 패널 헤더(`PanelHeader`, plan)와 풀페이지 헤더(`TopBar`, career)가 같은 시안을 공유하므로 ui 로 뺐다.
  */
@@ -24,7 +24,7 @@ export function TitleCountBadge({ count, className }: TitleCountBadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-destructive px-1 text-[11px] font-bold leading-none text-white',
+        'inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-destructive px-1 text-[11px] leading-none font-bold text-white',
         className
       )}
     >

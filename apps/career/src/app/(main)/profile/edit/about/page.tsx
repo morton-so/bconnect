@@ -43,14 +43,14 @@ export default function EditAboutPage() {
       <TopBar
         variant="default"
         title="소개"
-        actionLabel={isPending ? '저장 중...' : '완료'}
+        actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending}
         onAction={onSubmit}
         onBack={() => router.back()}
       />
 
       <Form {...form}>
-        <form onSubmit={onSubmit} className="flex flex-1 flex-col gap-4 px-4 pb-4 pt-4">
+        <form onSubmit={onSubmit} className="flex flex-1 flex-col gap-4 px-4 pt-4 pb-4">
           <TextareaField
             control={form.control}
             name="about"

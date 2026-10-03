@@ -10,13 +10,11 @@ import type {
 import { defineTransformer } from 'orval'
 import { authSupplementPaths, authSupplementSchemas } from './auth-supplement'
 
-// BE springdoc spec을 orval 입력용으로 정렬. 상세: packages/api-client/CLAUDE.md
 const SCHEMA_KEEP_RESPONSE = new Set([
   'CheckUsernameResponse',
   'SendOtpResponse',
   'RefreshTokenResponse',
   'RegisterMemberResponse',
-  'RegisterDeviceResponse',
   'VerifyOtpLoginResponse',
   'VerifyOtpSignupResponse',
 ])
@@ -28,8 +26,8 @@ const OPID_SPECIAL: Record<string, string> = {
   'POST /api/v1/auth/logout': 'logout',
   'GET /api/v1/credentials/me': 'getMyCredentials',
   'PUT /api/v1/offers/reorder': 'reorderOffers',
-  // 규칙 파생이 PATCH /notifications/{id}/read(단건) 와 동일한 updateNotificationRead 로 충돌 → 복수형으로 분리
-  'PATCH /api/v1/notifications/read': 'updateNotificationsRead',
+  'POST /api/v1/notifications/{id}/read': 'updateNotificationRead',
+  'POST /api/v1/notifications/read': 'updateNotificationsRead',
 }
 
 const HTTP_METHODS = ['get', 'put', 'post', 'delete', 'patch', 'options', 'head', 'trace'] as const
@@ -60,9 +58,10 @@ export default defineTransformer((spec) => {
   return api
 })
 
-// springdoc(3.1)은 nullable $ref 프로퍼티를 `type: "null"` + `$ref` 형제 키로 emit 하는데,
-// orval 은 이 형태에서 | null 유니온을 만들지 못해 런타임 null 필드가 non-null 타입이 된다
-// (Task.offer, Notification.sender 등). 표준 anyOf 형태로 재작성해 유니온을 살린다.
+/**
+ * nullable $ref 프로퍼티를 anyOf 형태로 재작성한다.
+ * springdoc(3.1)이 생성하는 nullable $ref 타입을 orval(8.33)이 해석하지 못한다.
+ */
 function normalizeNullableRefs(node: unknown): void {
   if (Array.isArray(node)) {
     node.forEach(normalizeNullableRefs)
@@ -214,14 +213,12 @@ function flattenObjectQueryParams(api: OpenAPIObject, schemas: Record<string, Sc
         if (p.in !== 'query' || !ref) return [param]
         const target = schemas[ref.replace('#/components/schemas/', '')]
         if (!target?.properties) return [param] // enum 등 비-객체 $ref 는 유지
-        return Object.entries(target.properties).map(
-          ([name, schema]): ParameterObject => ({
-            name,
-            in: 'query',
-            required: target.required?.includes(name) ?? false,
-            schema,
-          })
-        )
+        return Object.entries(target.properties).map(([name, schema]): ParameterObject => ({
+          name,
+          in: 'query',
+          required: target.required?.includes(name) ?? false,
+          schema,
+        }))
       })
     }
   }

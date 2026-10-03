@@ -15,7 +15,7 @@ export interface ProfileCardMeta {
   region: string
   /** 공종 — primaryTrade 라벨 */
   trade: string
-  /** 등급 — member role 라벨. BE 미제공(#473) 시 생략 */
+  /** 등급 — profile role 라벨. 프로필 미보강 시 생략 */
   role?: string
 }
 
@@ -72,7 +72,7 @@ export function ProfileCard({
         <Link
           href={href}
           aria-label={name}
-          className="absolute inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+          className="absolute inset-0 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none focus-visible:ring-inset"
         />
       )}
 
@@ -117,7 +117,7 @@ export function ProfileCard({
               <p
                 ref={ref}
                 className={cn(
-                  'whitespace-pre-wrap text-left text-r-12 text-gray-900',
+                  'text-left text-r-12 whitespace-pre-wrap text-gray-900',
                   !expanded && 'line-clamp-2'
                 )}
               >

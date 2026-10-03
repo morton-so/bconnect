@@ -38,14 +38,14 @@ export function RecommendationEditor({
       <TopBar
         variant="default"
         title={title}
-        actionLabel={isPending ? '저장 중...' : '완료'}
+        actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending || isEmpty}
         onAction={submit}
         onBack={onBack}
       />
 
       <Form {...form}>
-        <form onSubmit={submit} className="flex flex-1 flex-col gap-4 px-4 pb-4 pt-4">
+        <form onSubmit={submit} className="flex flex-1 flex-col gap-4 px-4 pt-4 pb-4">
           <TextareaField
             control={form.control}
             name="content"

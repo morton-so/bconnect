@@ -1,3 +1,6 @@
+/**
+ * @figma-todo 진행 표시줄 shadcn 원본 이식
+ */
 'use client'
 
 import * as React from 'react'

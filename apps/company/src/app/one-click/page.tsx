@@ -1,14 +1,10 @@
 /**
- * @figma-scaffold 원클릭 조회 PoC — 백엔드 검증용, 디자인 미정
+ * @figma-todo 원클릭 조회 페이지 PoC
  */
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
-import { getCompanyInfo } from '@bconnect/business/fetch-business'
-import {
-  formatRegistrationNumber,
-  isValidRegistrationNumber,
-  registrationNumberSchema,
-} from '@bconnect/config/biz-number'
+import { getCompanyInfo } from '@bconnect/features/one-click'
+import { brnField, formatRegistrationNumber, isValidRegistrationNumber } from '@bconnect/config/brn'
 import { SearchBar } from './_components/SearchBar'
 import { TipBanner } from './_components/TipBanner'
 import { CompanyHeader } from './_components/CompanyHeader'
@@ -53,29 +49,24 @@ async function CompanyHeaderLoader({ registrationNumber }: { registrationNumber:
 
 export default async function OneClickPage({ searchParams }: PageProps) {
   const { q } = await searchParams
-  const parsed = q ? registrationNumberSchema.safeParse(q) : undefined
-  const isValid = parsed?.success ?? false
+  const parsed = q ? brnField.safeParse(q) : undefined
+  const brn = parsed?.success ? parsed.data : undefined
   const errorMessage = parsed && !parsed.success ? parsed.error.issues[0]?.message : undefined
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-6">
         <h1 className="text-sb-24 text-gray-900">원클릭 조회</h1>
-
         <SearchBar defaultValue={q} />
         <TipBanner />
-
-        {q && !isValid && errorMessage && (
-          <p className="text-r-14 text-destructive">{errorMessage}</p>
-        )}
-
-        {isValid && (
+        {q && !brn && errorMessage && <p className="text-r-14 text-destructive">{errorMessage}</p>}
+        {brn && (
           <>
             <Suspense fallback={<CompanyHeaderSkeleton />}>
-              <CompanyHeaderLoader registrationNumber={q!} />
+              <CompanyHeaderLoader registrationNumber={brn} />
             </Suspense>
-            <SummarySection registrationNumber={q!} />
-            <DetailSection registrationNumber={q!} />
+            <SummarySection registrationNumber={brn} />
+            <DetailSection registrationNumber={brn} />
           </>
         )}
       </main>

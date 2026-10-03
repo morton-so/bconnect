@@ -35,7 +35,7 @@ export function CareerStorageExplorer() {
 
   return (
     <>
-      <TopBar variant="default" title="저장소" showAction={false} />
+      <TopBar variant="default" title="저장소" />
       <div className="p-4">
         <StorageExplorerView
           folders={filtered}

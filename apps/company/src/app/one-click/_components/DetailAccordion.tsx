@@ -1,12 +1,12 @@
 'use client'
 
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@bconnect/ui'
-import type { CheckItem } from '@bconnect/business/types'
+import type { CheckItem } from '@bconnect/features/one-click'
 import { StatusBadge } from './StatusBadge'
 import { DetailTable } from './DetailTable'
 import { OwnerVerifyForm } from './OwnerVerifyForm'
 
-/** Accordion 래퍼 — 서버 컴포넌트에서 children으로 Suspense 경계를 전달받음 */
+// 서버 사이드 로딩
 export function AccordionShell({
   children,
   className,
@@ -21,7 +21,6 @@ export function AccordionShell({
   )
 }
 
-/** 개별 AccordionItem 콘텐츠 — 서버에서 resolve된 CheckItem 데이터 렌더링 */
 export function DetailAccordionItem({
   item,
   registrationNumber,

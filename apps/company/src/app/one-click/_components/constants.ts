@@ -1,4 +1,4 @@
-import type { CategoryGroup } from '@bconnect/business/types'
+import type { CategoryGroup } from '@bconnect/features/one-click'
 
 /** 카테고리별 검사 항목 그룹 */
 export const CATEGORY_GROUPS: CategoryGroup[] = [

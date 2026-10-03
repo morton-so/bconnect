@@ -45,7 +45,6 @@ export function ImageGallery({
           <>
             <img src={img.imageUrl} alt="" className="aspect-square w-full object-cover" />
             <BoardOverlay rows={img.boardRows} position={img.boardPosition} />
-            {/* 호버/액티브 색 변경 효과 */}
             <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/15 group-active:bg-black/25" />
           </>
         )

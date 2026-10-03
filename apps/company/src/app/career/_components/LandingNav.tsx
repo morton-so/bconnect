@@ -10,10 +10,10 @@ export function LandingNav() {
           <Logo className="h-6 w-auto" />
         </Link>
         <div className="flex items-center gap-2">
-          <Button asChild size="small" className="rounded-lg h-[38px]">
+          <Button asChild size="small" className="h-[38px] rounded-lg">
             <a href={`${SITE_URL.career}`}>베타 테스트</a>
           </Button>
-          <Button asChild size="small" variant="outline" className="rounded-lg h-[38px]">
+          <Button asChild size="small" variant="outline" className="h-[38px] rounded-lg">
             <Link
               href="/"
               className="text-sm font-medium text-gray-600 transition-colors hover:text-gray-900"

@@ -18,7 +18,8 @@ public enum CommonExceptionCode implements ExceptionCode {
     INTERNAL_SERVER_ERROR ("C007", HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다.", LogLevel.ERROR),
     PATH_NOT_FOUND ("C008", HttpStatus.NOT_FOUND, "요청 경로를 찾을 수 없습니다.", LogLevel.INFO),
     UNAUTHORIZED ("C009", HttpStatus.UNAUTHORIZED, "인증이 필요합니다.", LogLevel.INFO),
-    INVALID_REQUEST ("C010", HttpStatus.BAD_REQUEST, "요청 형식이 올바르지 않습니다.", LogLevel.WARN);
+    INVALID_REQUEST ("C010", HttpStatus.BAD_REQUEST, "요청 형식이 올바르지 않습니다.", LogLevel.WARN),
+    CONFLICT ("C011", HttpStatus.CONFLICT, "다른 요청과 충돌했습니다. 다시 시도해 주세요.", LogLevel.INFO);
 
     private final String code;
     private final HttpStatus status;

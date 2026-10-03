@@ -2,30 +2,12 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button, CertTag, SkillTag, StarIcon, toast, isApiErrorShape } from '@bconnect/ui'
-import { TRADE_LABELS, useCreateDirectChat } from '@bconnect/api-client'
+import { Button, CertTag, SkillTag, toast } from '@bconnect/ui'
+import { TRADE_LABELS, useAuthHint, useCreateDirectChat } from '@bconnect/api-client'
 import { usePanelNav } from '@/hooks/usePanelNav'
-import { useAuthStore } from '@/stores/auth-store'
 import type { MemberTechnicianItem } from '@/hooks/useTechnicianItems'
 import type { Trade } from '@bconnect/api-client'
 import { useLoginGate } from './LoginGateProvider'
-
-function StarRating({ rating, reviewCount }: { rating: number; reviewCount: number }) {
-  const full = Math.floor(rating)
-  const half = rating - full >= 0.5
-  return (
-    <div className="flex items-center gap-1">
-      <div className="flex gap-0.5">
-        {Array.from({ length: 5 }).map((_, i) => {
-          const filled = i < full || (i === full && half)
-          return <StarIcon key={i} size={14} filled={filled} />
-        })}
-      </div>
-      <span className="text-m-14 text-gray-900">{rating.toFixed(1)}</span>
-      <span className="text-r-14 text-gray-500">({reviewCount})</span>
-    </div>
-  )
-}
 
 function Stat({
   value,
@@ -80,12 +62,12 @@ interface TechnicianCardProps {
 
 export function TechnicianCard({ item }: TechnicianCardProps) {
   const { requireLogin } = useLoginGate()
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
+  const isAuthenticated = useAuthHint()
   const { panelHref, openPanel } = usePanelNav()
   // 프로필 패널 세그먼트는 profile.id 가 아니라 memberId (GET /profiles/{id} 가 memberId 조회)
   const profileHref = panelHref(`profile/${item.memberId}`)
   const gated = isAuthenticated ? undefined : requireLogin
-  const { mutate: createDirectChat, isPending: isCreatingChat } = useCreateDirectChat()
+  const { mutate: createDirectChat, isPending: isCreatingChat } = useCreateDirectChat<Error>()
 
   const metaParts = [
     item.location,
@@ -93,7 +75,7 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
     item.experienceYears > 0 ? `${item.experienceYears}년` : '신입',
   ].filter(Boolean)
 
-  // 작업물(Post) 유래 썸네일 — 없으면 3개 회색 placeholder
+  // 작업물(Post + Task) 유래 썸네일 — 없으면 3개 회색 placeholder
   const portfolios =
     item.portfolios.length > 0
       ? item.portfolios.slice(0, 3)
@@ -101,37 +83,23 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
 
   return (
     <div className="flex gap-[27px] rounded-[13px] border border-gray-300 bg-white p-7">
-      {/* 좌측: 프로필 + 정보 + 태그 + 버튼 */}
       <div className="flex flex-1 gap-[18px]">
         <div className="relative h-[90px] w-[90px] shrink-0 overflow-hidden rounded-full bg-gray-100">
           <Image src={item.picture} alt={item.name} fill className="object-cover" unoptimized />
         </div>
 
         <div className="flex flex-1 flex-col gap-4">
-          {/* 이름 + 메타 + 별점/계약·게시글 */}
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-baseline gap-2.5">
-              <p className="text-sb-20 text-gray-900">{item.name}</p>
-              <p className="text-r-14 text-gray-500">{metaParts.join(' · ')}</p>
-            </div>
-            <div className="flex items-center gap-[11px]">
-              {/* ⚠️ 모킹값 — 리뷰(별점)·계약수 BE 도메인 미구현 (rating 2.5·count 777 sentinel) */}
-              <StarRating rating={item.rating} reviewCount={item.reviewCount} />
-              {/* Figma node 1470:6775 — 행 높이(20px) 세로 divider, gray-100 */}
-              <span className="h-5 w-px bg-gray-100" />
-              <span className="text-r-14 text-gray-500">
-                계약 {item.contractCount} · 게시글 {item.postCount}
-              </span>
-            </div>
+          {/* 이름 + 메타. 별점·리뷰·계약 행은 BE 도메인 미구현으로 미표시 */}
+          <div className="flex items-baseline gap-2.5">
+            <p className="text-sb-20 text-gray-900">{item.name}</p>
+            <p className="text-r-14 text-gray-500">{metaParts.join(' · ')}</p>
           </div>
 
-          {/* 한 줄 소개 */}
           {item.headline && <p className="line-clamp-2 text-r-16 text-gray-900">{item.headline}</p>}
 
-          {/* 공종 + 인증 태그 — Figma 1470:6779 그룹 (내부 gap 7.85 ≈ gap-2) */}
+          {/* 공종 + 자격 증명 태그 — Figma 1470:6779 그룹 (내부 gap 7.85 ≈ gap-2) */}
           {(item.trades.length > 0 || item.certifications.length > 0) && (
             <div className="flex flex-col gap-2">
-              {/* 공종 태그 (primaryTrade = selected, 파란색) */}
               {item.trades.length > 0 && (
                 <div className="flex flex-wrap gap-1">
                   {item.trades.map((trade: Trade) => (
@@ -144,7 +112,6 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
                 </div>
               )}
 
-              {/* 인증 태그 */}
               {/* TODO: 타인 프로필 credentials 조회 API 미구현 — 연동 전까진 빈 목록 */}
               {item.certifications.length > 0 && (
                 <div className="flex flex-wrap gap-1">
@@ -179,13 +146,7 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
                     { data: { memberId: item.memberId } },
                     {
                       onSuccess: (chatId) => openPanel(`messages/${chatId}`),
-                      onError: (error) =>
-                        toast({
-                          description: isApiErrorShape(error)
-                            ? error.message
-                            : '대화를 시작하지 못했어요. 다시 시도해주세요',
-                          variant: 'error',
-                        }),
+                      onError: (error) => toast({ description: error.message, variant: 'error' }),
                     }
                   )
                 }
@@ -201,12 +162,9 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
         </div>
       </div>
 
-      {/* 세로 divider */}
       <div className="w-px shrink-0 self-stretch bg-gray-100" />
 
-      {/* 우측: 통계 + 작업물 썸네일 */}
       <div className="flex w-[422px] shrink-0 flex-col gap-[22px]">
-        {/* 통계 3개 */}
         {/* 클릭 시 프로필 패널의 해당 탭/하위 패널 진입 (PanelProfile statHrefs 와 동일 규약) */}
         <div className="flex gap-8">
           <Stat
@@ -229,7 +187,7 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
           />
         </div>
 
-        {/* 작업물(Post) 썸네일 3개 — 소요일은 Feed 에 task 정보가 없어 미표시 */}
+        {/* 작업물(Post + Task) 썸네일 3개 — 소요일은 연결된 작업 기간, 미연결이면 공백 */}
         <div className="flex flex-1 gap-[9px]">
           {portfolios.map((p, i) => (
             <PortfolioThumb

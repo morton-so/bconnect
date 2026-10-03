@@ -149,12 +149,7 @@ export default function ProfileEditPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col">
-        <TopBar
-          variant="default"
-          title="프로필 수정"
-          showAction={false}
-          onBack={() => router.back()}
-        />
+        <TopBar variant="default" title="프로필 수정" onBack={() => router.back()} />
         <div className="flex flex-1 items-center justify-center py-20">
           <p className="text-m-14 text-gray-500">로딩 중...</p>
         </div>
@@ -167,21 +162,20 @@ export default function ProfileEditPage() {
       <TopBar
         variant="default"
         title="프로필 수정"
-        actionLabel={isSaving ? '저장 중...' : '완료'}
+        actionText={isSaving ? '저장 중...' : '완료'}
         onAction={handleSubmit(onSubmit, scrollToError)}
         onBack={() => router.back()}
       />
 
       <Form {...form}>
-        <form className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 pb-24 pt-3">
-          {/* 시공분야 */}
+        <form className="flex flex-1 flex-col gap-6 overflow-y-auto px-4 pt-3 pb-24">
           <FormField
             control={control}
             name="trades"
             render={({ field }) => (
               <FormItem className="gap-3">
                 <FormLabel required className="text-m-16 text-gray-900">
-                  시공분야
+                  공종
                 </FormLabel>
                 <FormDescription>
                   최대 {MAX_TRADES}개까지 선택 가능해요 ({(watchedTrades ?? []).length}/{MAX_TRADES}
@@ -215,7 +209,6 @@ export default function ProfileEditPage() {
             )}
           />
 
-          {/* 대표분야 */}
           <SelectField
             control={control}
             name="primaryTrade"
@@ -230,7 +223,6 @@ export default function ProfileEditPage() {
             }))}
           />
 
-          {/* 경력 */}
           <NumberField
             control={control}
             name="experience"
@@ -240,7 +232,6 @@ export default function ProfileEditPage() {
             placeholder="경력을 입력해주세요 (년)"
           />
 
-          {/* 한줄소개 */}
           <TextField
             control={control}
             name="headline"
@@ -248,7 +239,6 @@ export default function ProfileEditPage() {
             placeholder="한줄소개를 입력해주세요 (최대 20글자)"
           />
 
-          {/* 소개 */}
           <TextareaField
             control={control}
             name="about"
@@ -257,7 +247,6 @@ export default function ProfileEditPage() {
             placeholder="자기소개를 입력해주세요"
           />
 
-          {/* 주소 */}
           <AddressField
             control={control}
             name="address"

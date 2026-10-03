@@ -12,7 +12,7 @@ from crawler.channels.instagram import (
 )
 from crawler.classifier import classify, format_phone, infer_region_from_address, METRO_REGIONS, _validate_result
 from crawler.classifier_rules import rule_reject
-from crawler.config import settings
+from crawler.config import ANTHROPIC_MODEL, OPENAI_MODEL, settings
 from crawler.models import (
     CrawledMember, CrawledPost, CrawledProfile,
     PLATFORM_INSTAGRAM, PLATFORM_NAVER, phone_digits, trade_enum,
@@ -56,6 +56,58 @@ def setup_file_logging() -> None:
     logging.getLogger().addHandler(handler)
 
 
+def build_crawled_member(
+    *,
+    company: str,
+    classification: dict,
+    profile: dict,
+    phone: str,
+    email: str,
+    address: str,
+    state: str,
+    headline: str,
+    picture: str,
+    url: str,
+    platform: str,
+    instagram_fallback: str = "",
+) -> CrawledMember:
+    """수집 결과와 분류 결과를 CrawledMember 로 조립한다.
+
+    네이버·인스타그램·보강 세 경로가 공유한다. 채널마다 다른 값(대표 이미지 출처,
+    프로필 주소, 플랫폼 등)만 인자로 받고, 나머지는 profile dict 에서 같은 규칙으로 꺼낸다.
+    """
+    # 한국어 라벨 → BE Trade enum 코드 (미대응 "기타" 등은 드랍)
+    enum_trades = [c for t in classification["trades"] if (c := trade_enum(t))]
+    return CrawledMember(
+        company=company,
+        name=classification.get("representative", ""),
+        phone=phone_digits(phone),
+        picture=picture,
+        role=classification["rank"],
+        brn=classification.get("business_number", ""),
+        email=email,
+        instagram=profile.get("instagram_url", "") or profile.get("instagram", "") or instagram_fallback,
+        youtube=profile.get("youtube_url", "") or profile.get("youtube", ""),
+        profile=CrawledProfile(
+            primary_trade=enum_trades[0] if enum_trades else "",
+            trades=enum_trades,
+            experience=classification.get("experience"),
+            headline=headline[:500],
+            about=profile["about"][:2000],
+            address=address,
+            state=state,
+            url=url,
+            platform=platform,
+            blog_title=profile.get("blog_title", ""),
+            profile_image_url=profile.get("profile_image_url", "") or profile.get("profile_pic_url", ""),
+            cover_image_url=profile.get("cover_image_url", ""),
+            external_url=profile.get("external_url", ""),
+        ),
+        posts=[CrawledPost(**post) for post in profile.get("posts", [])],
+        source_urls=profile["source_urls"],
+    )
+
+
 async def process_blog_result(
     item: dict,
     seen_blog_ids: set[str] | None = None,
@@ -87,7 +139,7 @@ async def _scrape_blog_result(
     """검색 결과 1건 → 중복 체크 → 블로그 수집. 분류는 하지 않는다.
 
     수집한 원본 {blog_url, blogger_name, profile}을 반환한다. 걸러내는 것 없이
-    수집만 하므로 이 결과를 저장해두면 분류만 따로 재실행할 수 있다(#920).
+    수집만 하므로 이 결과를 저장해두면 분류만 따로 재실행할 수 있다.
     """
     blog_url = item["link"]
     blogger_name = item.get("bloggername", "")
@@ -153,12 +205,12 @@ async def _classify_scraped(
 ) -> CrawledMember | None:
     """수집해둔 블로그 원본(profile) 1건을 분류하여 CrawledMember 생성.
 
-    원본만 있으면 재실행 가능 — 분류 방법을 바꿔도 다시 수집할 필요 없음(#920).
-    labels 를 주면 해당 blog_url 은 LLM 대신 그 라벨로 분류한다(#953, 강한 판단자 in-loop).
+    원본만 있으면 재실행 가능 — 분류 방법을 바꿔도 다시 수집할 필요 없음.
+    labels 를 주면 해당 blog_url 은 LLM 대신 그 라벨로 분류한다(강한 판단자 in-loop).
     """
     profile_intro = profile.get("profile_intro", "")
 
-    # 값싼 규칙 선필터: 확실한 비-기술자(자동차·인력사무소·협찬글 등)는 LLM 없이 즉시 제외 (#915)
+    # 값싼 규칙 선필터: 확실한 비-기술자(자동차·인력사무소·협찬글 등)는 LLM 없이 즉시 제외
     rejected = rule_reject({
         "company": profile.get("blog_title", ""),
         "headline": profile_intro,
@@ -171,7 +223,7 @@ async def _classify_scraped(
             report.add_skipped(blog_url, blogger_name, f"규칙:{reason}")
         return None
 
-    # 외부 라벨(강한 판단자)이 있으면 LLM 대신 사용 (#953)
+    # 외부 라벨(강한 판단자)이 있으면 LLM 대신 사용
     label = labels.get(blog_url) if labels else None
     if label is not None:
         classification = _validate_result(
@@ -312,30 +364,18 @@ async def _classify_scraped(
             log.info("지역 보정: %s → %s (주소: %s)", region or "(없음)", addr_region, address[:30])
             region = addr_region
 
-    trades = classification["trades"]
-    # 한국어 라벨 → BE Trade enum 코드 (미대응 "기타" 등은 드랍)
-    enum_trades = [c for t in trades if (c := trade_enum(t))]
-    member = CrawledMember(
+    member = build_crawled_member(
         company=name,
-        name=classification.get("representative", ""),
-        phone=phone_digits(phone),
-        picture=cover_image_url,
-        role=classification["rank"],
-        brn=classification.get("business_number", ""),
+        classification=classification,
+        profile=profile,
+        phone=phone,
         email=email,
-        profile=CrawledProfile(
-            primary_trade=enum_trades[0] if enum_trades else "",
-            trades=enum_trades,
-            experience=classification.get("experience"),
-            headline=profile_intro[:500],
-            about=profile["about"][:2000],
-            address=address,
-            state=region,
-            url=detail_url,
-            platform=PLATFORM_NAVER,
-        ),
-        posts=[CrawledPost(**post) for post in profile.get("posts", [])],
-        source_urls=profile["source_urls"],
+        address=address,
+        state=region,
+        headline=profile_intro,
+        picture=cover_image_url,
+        url=detail_url,
+        platform=PLATFORM_NAVER,
     )
 
     return member
@@ -473,29 +513,19 @@ async def process_instagram_result(
                 address = place["road_address"] or place["address"]
                 log.info("지역검색 주소 보충: %s → %s", name, address)
 
-    trades = classification["trades"]
-    # 한국어 라벨 → BE Trade enum 코드 (미대응 "기타" 등은 드랍)
-    enum_trades = [c for t in trades if (c := trade_enum(t))]
-    member = CrawledMember(
+    member = build_crawled_member(
         company=name,
-        name=classification.get("representative", ""),
-        phone=phone_digits(phone),
-        picture=profile.get("profile_pic_url", ""),
-        role=classification["rank"],
-        brn=classification.get("business_number", ""),
+        classification=classification,
+        profile=profile,
+        phone=phone,
         email=email,
-        profile=CrawledProfile(
-            primary_trade=enum_trades[0] if enum_trades else "",
-            trades=enum_trades,
-            experience=classification.get("experience"),
-            headline=profile["headline"][:500],
-            about=profile["about"][:2000],
-            address=address,
-            state=classification.get("region", ""),
-            url=instagram_url,
-            platform=PLATFORM_INSTAGRAM,
-        ),
-        source_urls=profile["source_urls"],
+        address=address,
+        state=classification.get("region", ""),
+        headline=profile["headline"],
+        picture=profile.get("profile_pic_url", ""),
+        url=instagram_url,
+        platform=PLATFORM_INSTAGRAM,
+        instagram_fallback=username,
     )
 
     return member
@@ -596,7 +626,7 @@ async def run_full(keywords: list[str] | None = None, per_query: int = 5, dry_ru
     report = PipelineReport()
     report.mode = "전체 키워드"
     report.per_query = per_query
-    report.llm_model = settings.openai_model if settings.openai_api_key else settings.anthropic_model
+    report.llm_model = OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
 
     seen_blog_ids: set[str] = set()
     completed = 0
@@ -657,7 +687,7 @@ async def run_collect_raw(
     keywords: list[str] | None = None, per_query: int = 5,
     force: bool = False, out: Path | None = None, dedup: bool = True,
 ) -> PipelineReport:
-    """#920 1단계 — 검색 → 수집 → 원본을 파일에 저장. 분류·저장은 하지 않는다.
+    """1단계 — 검색 → 수집 → 원본을 파일에 저장. 분류·저장은 하지 않는다.
 
     걸러내는 것 없이 수집한 것을 전부 남기므로, 이후 분류 방법이 바뀌어도
     다시 수집하지 않고 `--classify-from-raw`로 분류만 재실행할 수 있다.
@@ -684,10 +714,10 @@ async def run_collect_raw(
             except Exception:
                 pass
         # 이미 DB에 적재된 것
-        if settings.crawled_db_url:
+        if settings.crawled_pg_db_url:
             try:
                 from crawler.db import load_existing_urls
-                seen_urls |= await load_existing_urls(settings.crawled_db_url)
+                seen_urls |= await load_existing_urls(settings.crawled_pg_db_url)
             except Exception as exc:
                 log.warning("DB 중복목록 조회 실패(무시하고 진행): %s", exc)
         seen_blog_ids = {b for u in seen_urls if (b := extract_blog_id(u))}
@@ -736,11 +766,11 @@ async def run_classify_from_raw(
     raw_file: Path, metro_only: bool = False, skip_vision: bool = False,
     labels_file: Path | None = None,
 ) -> PipelineReport:
-    """#920 2단계 — 저장된 원본을 읽어 분류만 실행한다. 다시 수집하지 않는다.
+    """2단계 — 저장된 원본을 읽어 분류만 실행한다. 다시 수집하지 않는다.
 
     dry-run과 같은 형태의 보고서(members 포함)를 만들어, 기존 `--export-db`로
     그대로 DB에 적재할 수 있다. 분류 방법을 바꿔 재실행할 땐 이 명령만 돌리면 된다.
-    labels_file 을 주면 그 라벨에 있는 블로그는 LLM 대신 라벨로 분류한다(#953).
+    labels_file 을 주면 그 라벨에 있는 블로그는 LLM 대신 라벨로 분류한다.
     """
     import json
 
@@ -756,7 +786,7 @@ async def run_classify_from_raw(
     report = PipelineReport()
     report.mode = "원본에서 분류(classify-from-raw)" + (" +외부라벨" if labels else "")
     report.llm_model = "외부 라벨(--labels)" if labels else (
-        settings.openai_model if settings.openai_api_key else settings.anthropic_model
+        OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
     )
     report.total_searched = len(raws)
     log.info("원본 %d건 분류 시작: %s", len(raws), raw_file)
@@ -892,7 +922,7 @@ async def run_instagram_full(
     report = PipelineReport()
     report.mode = "인스타그램 전체 키워드"
     report.per_query = per_query
-    report.llm_model = settings.openai_model if settings.openai_api_key else settings.anthropic_model
+    report.llm_model = OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
 
     seen_usernames: set[str] = set()
     completed = 0
@@ -946,16 +976,16 @@ async def run_instagram_full(
 
 
 async def run_export_db(file_path: Path, truncate: bool = False) -> PipelineReport:
-    """dry-run 보고서 JSON(members[])을 crawled_* DB 테이블에 적재한다 (#876).
+    """dry-run 보고서 JSON(members[])을 crawled_* DB 테이블에 적재한다.
 
-    ⚠️ BE 우회 — crawled_* 직접 INSERT. 대상 DB 는 CRAWLED_DB_URL 환경변수.
+    ⚠️ BE 우회 — crawled_* 직접 INSERT. 대상 DB 는 CRAWLED_PG_DB_URL 환경변수.
     """
     import json
 
     from crawler.db import export_members
 
-    if not settings.crawled_db_url:
-        raise ValueError("CRAWLED_DB_URL 환경변수가 설정되지 않았습니다")
+    if not settings.crawled_pg_db_url:
+        raise ValueError("CRAWLED_PG_DB_URL 환경변수가 설정되지 않았습니다")
 
     data = json.loads(file_path.read_text(encoding="utf-8"))
     members_data = data.get("members", [])
@@ -965,7 +995,7 @@ async def run_export_db(file_path: Path, truncate: bool = False) -> PipelineRepo
     members = [CrawledMember.model_validate(m) for m in members_data]
     log.info("DB 적재: %s (%d건)%s", file_path, len(members), " [truncate]" if truncate else "")
 
-    created, updated = await export_members(members, settings.crawled_db_url, truncate=truncate)
+    created, updated = await export_members(members, settings.crawled_pg_db_url, truncate=truncate)
 
     report = PipelineReport()
     report.mode = "DB 적재"
@@ -1035,7 +1065,7 @@ async def run_enrich(use_vision: bool = True, channel: str = "all") -> PipelineR
 
     report = PipelineReport()
     report.mode = "필드 보강"
-    report.llm_model = settings.openai_model if settings.openai_api_key else settings.anthropic_model
+    report.llm_model = OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
     report.total_searched = len(pages)
 
     sem = asyncio.Semaphore(CONCURRENCY * 4)  # enrich는 I/O 위주, 429 미발생 확인
@@ -1181,30 +1211,18 @@ async def run_enrich(use_vision: bool = True, channel: str = "all") -> PipelineR
 
             # 5) CrawledMember 구성 + enrichment 저장
             cover = profile.get("profile_pic_url", "") if is_instagram else profile.get("banner_image", "")
-            trades = classification["trades"]
-            # 한국어 라벨 → BE Trade enum 코드 (미대응 "기타" 등은 드랍)
-            enum_trades = [c for t in trades if (c := trade_enum(t))]
-            member = CrawledMember(
+            member = build_crawled_member(
                 company=tech_name,
-                name=classification.get("representative", ""),
-                phone=phone_digits(phone),
-                picture=cover,
-                role=classification["rank"],
-                brn=classification.get("business_number", ""),
+                classification=classification,
+                profile=profile,
+                phone=phone,
                 email=email,
-                profile=CrawledProfile(
-                    primary_trade=enum_trades[0] if enum_trades else "",
-                    trades=enum_trades,
-                    experience=classification.get("experience"),
-                    headline=profile_intro[:500],
-                    about=profile["about"][:2000],
-                    address=address,
-                    state=classification.get("region", ""),
-                    url=detail_url,
-                    platform=PLATFORM_INSTAGRAM if is_instagram else PLATFORM_NAVER,
-                ),
-                posts=[CrawledPost(**post) for post in profile.get("posts", [])],
-                source_urls=profile["source_urls"],
+                address=address,
+                state=classification.get("region", ""),
+                headline=profile_intro,
+                picture=cover,
+                url=detail_url,
+                platform=PLATFORM_INSTAGRAM if is_instagram else PLATFORM_NAVER,
             )
 
             try:
@@ -1433,7 +1451,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="노션 저장 없이 분류까지만 수행")
     parser.add_argument("--force", action="store_true", help="기존 업체도 재크롤링하여 덮어쓰기")
     parser.add_argument("--from-file", type=Path, metavar="JSON", help="검수한 JSON에서 노션 저장")
-    parser.add_argument("--export-db", type=Path, metavar="JSON", help="dry-run JSON을 crawled_* DB에 적재 (#876)")
+    parser.add_argument("--export-db", type=Path, metavar="JSON", help="dry-run JSON을 crawled_* DB에 적재")
     parser.add_argument("--truncate", action="store_true", help="--export-db 시 기존 crawled_* 비우고 재적재")
     parser.add_argument("--enrich", action="store_true", help="빈 필드가 있는 기존 레코드를 재크롤링+LLM으로 보강")
     parser.add_argument("--instagram", action="store_true", help="인스타그램 채널 크롤링")
@@ -1441,9 +1459,9 @@ def main():
     parser.add_argument("--approve", action="store_true", help="검수 DB 승인 건을 프로덕션 DB로 이동")
     parser.add_argument("--direct", action="store_true", help="검수 DB 거치지 않고 프로덕션 DB 직접 저장")
     parser.add_argument("--patch-review", action="store_true", help="검수 DB 기존 데이터에 피드백 수정사항 소급 적용")
-    parser.add_argument("--collect-raw", action="store_true", help="#920 1단계: 검색·수집만 하여 원본을 파일로 저장(분류·저장 안 함)")
-    parser.add_argument("--classify-from-raw", type=Path, metavar="RAW", help="#920 2단계: 저장된 원본(jsonl)을 읽어 분류만 실행(다시 수집하지 않음)")
-    parser.add_argument("--labels", type=Path, metavar="JSON", help="#953: 외부 라벨(강한 판단자) JSON 배열([{id,is_professional,...}]). 있으면 해당 blog_url은 LLM 대신 라벨로 분류")
+    parser.add_argument("--collect-raw", action="store_true", help="1단계: 검색·수집만 하여 원본을 파일로 저장(분류·저장 안 함)")
+    parser.add_argument("--classify-from-raw", type=Path, metavar="RAW", help="2단계: 저장된 원본(jsonl)을 읽어 분류만 실행(다시 수집하지 않음)")
+    parser.add_argument("--labels", type=Path, metavar="JSON", help="외부 라벨(강한 판단자) JSON 배열([{id,is_professional,...}]). 있으면 해당 blog_url은 LLM 대신 라벨로 분류")
     parser.add_argument("--raw-out", type=Path, metavar="JSONL", help="--collect-raw 저장 경로 (기본: reports/raw/naver-<시각>.jsonl)")
     parser.add_argument("--no-dedup", action="store_true", help="--collect-raw 중복 제외 끄기 (기본은 이미 수집/적재된 블로그 건너뜀)")
     vision_group = parser.add_mutually_exclusive_group()
@@ -1461,7 +1479,7 @@ def main():
 
     setup_file_logging()
 
-    llm_model = settings.openai_model if settings.openai_api_key else settings.anthropic_model
+    llm_model = OPENAI_MODEL if settings.openai_api_key else ANTHROPIC_MODEL
     report = PipelineReport()
     report.llm_model = llm_model
 

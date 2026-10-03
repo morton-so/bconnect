@@ -1,5 +1,5 @@
 /**
- * @figma-pending 타인 프로필 추천서 — 본인 /profile/recommendations 화면(RecommendationList) 재사용, 읽기 전용
+ * @figma-todo 타인 추천서 페이지 본인 화면 재사용
  */
 'use client'
 
@@ -19,7 +19,7 @@ export default function MemberRecommendationsPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="추천서" showAction={false} onBack={() => router.back()} />
+      <TopBar variant="default" title="추천서" onBack={() => router.back()} />
       {/* 타인 추천서 — 읽기 전용 (숨김/삭제 미주입) */}
       <RecommendationList received={received} sent={sent} variant="full" />
     </div>

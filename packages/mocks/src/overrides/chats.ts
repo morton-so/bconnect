@@ -1,20 +1,13 @@
+// 채팅 mock 데이터 + 인메모리 저장
+
+import { AttachmentType, ChatType, MessageType, Role, Trade } from '@bconnect/api-client'
 import {
   getGetDirectChatMessagesMockHandler,
   getGetDirectChatsMockHandler,
   getGetGroupChatsMockHandler,
   getGetMyMemberMockHandler,
-  ChatType,
-  MessageType,
-  Role,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type { DirectChat, Member, MemberSummary, Message } from '@bconnect/api-client'
-
-// 채팅 도메인 BE 미구현 → orval faker 가 매 호출 무seed 랜덤이라 메시지·상대·본인이
-// 호출마다 바뀌어 isMine/sender/헤더가 incoherent. 고정 일관 데이터셋으로 override.
-// getMyMember 도 ME 로 고정(isMine 판정 기준) — @bconnect/mocks 공유라 career 식별자도
-// 함께 고정되나 dev/preview 전용(prod tree-shake). DM 만 시드(그룹은 빈 목록, #759).
-// 상대 프로필은 profiles.ts 가 담당. BE 확정 시 generated handler 로 교체.
 
 const EPOCH = '2025-01-02T00:00:00.000Z'
 const at = (hhmm: string) => `2025-12-04T${hhmm}:00.000Z`
@@ -25,8 +18,10 @@ const ME: Member = {
   username: 'morton_boss',
   name: '김대표',
   phone: '+821012341234',
+  birth: '1988-03-17',
+  marketingConsent: true,
   picture: null,
-  roles: [Role.CAREER],
+  roles: [Role.CAREER, Role.PLAN],
   createdAt: EPOCH,
   modifiedAt: EPOCH,
 }
@@ -69,11 +64,38 @@ const msg = (
   attachments: [],
 })
 
-/** 섭외 제안 메시지 — BE 계약대로 content 는 offerId 문자열 (#972). tasks.ts 시드의 offerId 와 맞춘다. */
+const placeholderImage = (label: string): string =>
+  `data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="100%" height="100%" fill="#e5e5e5"/><text x="50%" y="50%" font-size="28" fill="#a5a5a5" text-anchor="middle" dominant-baseline="middle">${label}</text></svg>`
+  )}`
+
+// 이미지 메시지
+const imageMsg = (
+  id: number,
+  chatId: number,
+  memberId: number,
+  labels: string[],
+  hhmm: string
+): Message => ({
+  ...msg(id, chatId, memberId, '', hhmm, MessageType.IMAGE),
+  attachments: labels.map((label, i) => ({
+    id: id * 10 + i,
+    memberId,
+    type: AttachmentType.IMAGE,
+    filename: `${label}.jpg`,
+    contentType: 'image/jpeg',
+    size: 1_000_000,
+    createdAt: at(hhmm),
+    modifiedAt: at(hhmm),
+    url: placeholderImage(label),
+  })),
+})
+
+// 섭외 메시지
 const offerMsg = (id: number, chatId: number, memberId: number, offerId: number, hhmm: string) =>
   msg(id, chatId, memberId, String(offerId), hhmm, MessageType.OFFER)
 
-// 시간순(오래된→최신) 작성. 응답은 서버 계약대로 newest-first 로 reverse.
+// 채팅 메시지
 const MESSAGES_BY_CHAT: Record<number, Message[]> = {
   1: [
     msg(1001, 1, 101, '안녕하세요. 궁금한 점이 있어 연락드립니다.', '05:00'),
@@ -84,7 +106,9 @@ const MESSAGES_BY_CHAT: Record<number, Message[]> = {
   ],
   2: [
     msg(2001, 2, 102, '전기 배선 견적 문의드립니다.', '03:00'),
-    msg(2002, 2, MY_ID, '도면 보내주시면 확인하겠습니다.', '03:10'),
+    imageMsg(2002, 2, 102, ['현장 1'], '03:04'),
+    msg(2003, 2, MY_ID, '도면 보내주시면 확인하겠습니다.', '03:10'),
+    imageMsg(2004, 2, MY_ID, ['도면 1', '도면 2', '도면 3'], '03:12'),
   ],
   3: [
     msg(3001, 3, MY_ID, '타일 시공 가능하신가요?', '01:00'),
@@ -109,6 +133,25 @@ const chatOf = (w: Worker, index: number): DirectChat => {
 }
 
 const CHATS: DirectChat[] = WORKERS.map(chatOf)
+
+// 메시지 인메모리 저장
+export function appendMockMessage(chatId: number, message: Message): void {
+  const messages = MESSAGES_BY_CHAT[chatId]
+  if (!messages) return
+  messages.push(message)
+  const chat = CHATS.find((c) => c.id === chatId)
+  if (chat) {
+    chat.lastMessage = message
+    chat.modifiedAt = message.createdAt
+  }
+}
+
+export const nextMockMessageId = (() => {
+  let id = 9000
+  return () => ++id
+})()
+
+export const MOCK_MY_ID = MY_ID
 
 const paramId = (value: string | readonly string[] | undefined): number =>
   Number(typeof value === 'string' ? value : (value?.[0] ?? ''))

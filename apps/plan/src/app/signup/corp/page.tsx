@@ -1,104 +1,97 @@
 /**
  * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1506-15166
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3896-3563
  */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
-  AgreementField,
   FormSubmitButton,
   Form,
   FormError,
   Logo,
   TextField,
   passthroughError,
+  toast,
   useServerError,
 } from '@bconnect/ui'
-import { refreshAccessToken, useCreateMember, useCreateCompany } from '@bconnect/api-client'
-import type { RegisterMemberResponse } from '@bconnect/api-client'
-import { formatRegistrationNumber } from '@bconnect/config/biz-number'
-import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/config/consent'
-import { useSignupStore } from '@/stores/signup-store'
-import { useAuthStore } from '@/stores/auth-store'
+import {
+  AttachmentContext,
+  AttachmentType,
+  createAttachmentConfirm,
+  createAttachmentPresign,
+  getGetMyMemberQueryKey,
+  useCreateCompany,
+  useGetMyMember,
+  useQueryClient,
+} from '@bconnect/api-client'
+import { formatRegistrationNumber } from '@bconnect/config/brn'
+import { CertificateField } from './_components/CertificateField'
 import { corpSchema, type CorpFormData } from './schema'
 
-function requireRegisterAccessToken(result: RegisterMemberResponse) {
-  // TODO: BE required 처리 후 type narrowing 필요.
-  // RegisterMemberResponse.accessToken은 세션 필수값인데 optional emit이다.
-  if (!result.accessToken) {
-    throw new Error('회원가입 세션 토큰이 응답에 없습니다.')
-  }
+// presign → S3 PUT → confirm
+async function uploadCertificate(file: File, memberId: number): Promise<number> {
+  const [presigned] = await createAttachmentPresign({
+    context: AttachmentContext.COMPANY,
+    type: AttachmentType.FILE,
+    contextId: memberId,
+    files: [{ filename: file.name, contentType: file.type, size: file.size }],
+  })
 
-  return result.accessToken
+  if (!presigned) throw new Error('업로드 URL 누락')
+
+  const res = await fetch(presigned.uploadUrl, {
+    method: 'PUT',
+    body: file,
+    headers: { 'Content-Type': file.type },
+  })
+
+  if (!res.ok) throw new Error(`파일 업로드 실패 (${res.status})`)
+  await createAttachmentConfirm({ attachmentIds: [presigned.id] })
+  return presigned.id
 }
 
 export default function SignupCorpPage() {
   const router = useRouter()
-  const { formData, setCorp, reset: resetSignup } = useSignupStore()
-  const { login, isAuthenticated } = useAuthStore()
-  const registerMemberMutation = useCreateMember({
-    request: { headers: { 'X-Signup-Token': formData.signupToken } },
-  })
+  const queryClient = useQueryClient()
+  const { data: me } = useGetMyMember()
   const createCompanyMutation = useCreateCompany()
-  const [issuedAccessToken, setIssuedAccessToken] = useState<string | null>(null)
-
-  // signupToken 없으면 로그인으로 리다이렉트
-  useEffect(() => {
-    if (isAuthenticated) return
-    if (!formData.signupToken) {
-      router.replace('/login')
-    } else if (!formData.username || !formData.name) {
-      router.replace('/signup/member')
-    }
-  }, [isAuthenticated, formData.signupToken, formData.username, formData.name, router])
+  const [uploaded, setUploaded] = useState<{ file: File; id: number } | null>(null)
 
   const form = useForm<CorpFormData>({
     resolver: zodResolver(corpSchema),
     mode: 'onTouched',
     defaultValues: {
-      companyName: formData.companyName,
-      bizNumber: formData.bizNumber,
-      agreements: CONSENT_DEFAULT,
+      companyName: '',
+      bizNumber: '',
     },
   })
   const { control, handleSubmit } = form
 
-  const server = useServerError(
-    control,
-    passthroughError<CorpFormData>(undefined, '회원가입에 실패했습니다. 다시 시도해주세요.')
-  )
+  const server = useServerError(control, passthroughError<CorpFormData>())
 
   const onSubmit = async (data: CorpFormData) => {
-    setCorp({ companyName: data.companyName, bizNumber: data.bizNumber })
     try {
-      // register 는 signupToken(X-Signup-Token 헤더)을 소비 — 회사 생성 실패 후 재시도 시
-      // 재호출하지 않도록 발급된 accessToken을 보관한다.
-      const accessToken =
-        issuedAccessToken ??
-        requireRegisterAccessToken(
-          await registerMemberMutation.mutateAsync({
-            data: {
-              username: formData.username,
-              name: formData.name,
-            },
-          })
-        )
+      if (me == null) throw new Error('회원 정보 로드 전')
+      const attachmentId =
+        uploaded?.file === data.certificate
+          ? uploaded.id
+          : await uploadCertificate(data.certificate, me.id)
+      setUploaded({ file: data.certificate, id: attachmentId })
 
-      if (!issuedAccessToken) {
-        setIssuedAccessToken(accessToken)
-      }
-
-      login(accessToken)
       await createCompanyMutation.mutateAsync({
-        data: { name: data.companyName, brn: data.bizNumber },
+        data: { name: data.companyName, brn: data.bizNumber, attachmentId },
       })
-      await refreshAccessToken()
 
-      resetSignup()
-      router.push('/')
+      await queryClient.invalidateQueries({ queryKey: getGetMyMemberQueryKey() })
+      toast({
+        description: '업체 등록이 완료되었어요. 심사 결과는 알림으로 알려드릴게요',
+        variant: 'success',
+      })
+      router.replace('/')
     } catch (err) {
       // capture 는 라이브 폼 값(getValues)으로 스냅샷 — data 는 zod transform(bizNumber digit화)을
       // 거쳐 useWatch 가 보는 표시값과 달라, 넘기면 staleness 판정이 에러를 즉시 숨긴다.
@@ -106,19 +99,11 @@ export default function SignupCorpPage() {
     }
   }
 
-  if (!formData.signupToken || !formData.username || !formData.name) return null
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      {/* Card */}
       <div className="flex w-120 flex-col items-center gap-8 rounded-xl border border-gray-300 p-10">
-        {/* Logo */}
         <Logo width={160} height={56} />
-
-        {/* Subtitle */}
         <p className="text-r-16 text-gray-700">신뢰할 수 있는 인테리어 하도급 섭외 · 관리 서비스</p>
-
-        {/* Form */}
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="flex w-100 flex-col gap-3">
             <TextField
@@ -128,7 +113,6 @@ export default function SignupCorpPage() {
               label="업체명"
               placeholder="모튼디자인"
             />
-
             <TextField
               control={control}
               name="bizNumber"
@@ -138,15 +122,9 @@ export default function SignupCorpPage() {
               placeholder="00000-00-000"
               transform={formatRegistrationNumber}
             />
-
-            {/* 약관·개인정보 동의 (#733) */}
-            <AgreementField control={control} name="agreements" items={CONSENT_ITEMS} />
-
-            {/* Server Error (폼 전역) */}
+            <CertificateField control={control} />
             <FormError error={server.formError} />
-
-            {/* CTA */}
-            <FormSubmitButton size="full">가입 완료</FormSubmitButton>
+            <FormSubmitButton size="full">업체 등록</FormSubmitButton>
           </form>
         </Form>
       </div>

@@ -1,18 +1,37 @@
+/**
+ * @figma-todo 프로젝트 생성 버튼 디자인 없음
+ */
 'use client'
 
 import { usePanelNav } from '@/hooks/usePanelNav'
 import { useGetMyCompany, useGetMyMember } from '@bconnect/api-client'
 import { useUnreadChatCount, useUnreadNotificationCount } from '@bconnect/features'
 import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
-import { Select } from '@bconnect/ui'
+import { Select, toast } from '@bconnect/ui'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { useGetProjects } from '@bconnect/api-client'
+import {
+  getGetProjectsQueryKey,
+  useCreateProject,
+  useGetProjects,
+  useQueryClient,
+} from '@bconnect/api-client'
+import type { Address } from '@bconnect/api-client'
 import { SidebarFooter } from './SidebarFooter'
 
 const MAX_BADGE_COUNT = 99
+
+const DEFAULT_PROJECT_ADDRESS: Address = {
+  zipcode: '04524',
+  bcode: '1114010300',
+  state: '서울',
+  city: '중구',
+  street: '서울 중구 세종대로 110',
+  latitude: 0,
+  longitude: 0,
+}
 
 function CountBadge({ count }: { count: number }) {
   if (count <= 0) return null
@@ -61,12 +80,24 @@ const PROJECT_ITEM_CLASS =
 function ProjectSection({
   pathProjectId,
   activeSlug,
+  isNavPanelOpen,
 }: {
   pathProjectId: string | undefined
   activeSlug: string
+  isNavPanelOpen: boolean
 }) {
   const router = useRouter()
+  const queryClient = useQueryClient()
   const { data: projects } = useGetProjects()
+  const { mutate: createProject, isPending: isCreating } = useCreateProject<Error>({
+    mutation: {
+      onSuccess: (id) => {
+        queryClient.invalidateQueries({ queryKey: getGetProjectsQueryKey() })
+        router.push(`/projects/${id}/schedule`)
+      },
+      onError: (error) => toast({ description: error.message, variant: 'error' }),
+    },
+  })
   const projectOptions = (projects ?? []).map((p) => ({
     value: String(p.id ?? ''),
     label: p.title ?? '',
@@ -95,20 +126,17 @@ function ProjectSection({
       label: '공정표',
       href: selectedProject ? `/projects/${selectedProject}/schedule` : null,
     },
-    // TODO: 페이지 구현 시 href 연결 (#375 follow-up — 모집 관리)
+    // TODO: 페이지 구현 시 href 연결 (모집 관리)
+    //   탭 title 은 프로젝트 스코프 공통 포맷 `{프로젝트명} - 모집관리` (공정표·저장소와 동일)
     { slug: 'recruit', label: '모집 관리', href: null },
-    {
-      slug: 'storage',
-      label: '문서 저장소',
-      href: selectedProject ? `/projects/${selectedProject}/storage` : null,
-    },
+    { slug: 'storage', label: '문서 저장소', href: null },
   ]
-  // active 표시는 현재 path 의 프로젝트를 보고 있을 때만
-  const onSelectedProject = pathProjectId === selectedProject
+  // active 표시는 현재 path 의 프로젝트를 보고 있을 때만 (알림·메시지 패널이 열려 있으면 그쪽으로 양보)
+  const onSelectedProject = pathProjectId === selectedProject && !isNavPanelOpen
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="px-1 text-[11px] font-semibold uppercase tracking-[0.44px] text-gray-400">
+      <p className="px-1 text-[11px] font-semibold tracking-[0.44px] text-gray-400 uppercase">
         프로젝트
       </p>
       <div className="flex flex-col gap-1">
@@ -118,6 +146,23 @@ function ProjectSection({
           options={projectOptions}
           placeholder="프로젝트 선택"
           emptyLabel="아직 프로젝트가 없어요"
+          footer={
+            <button
+              type="button"
+              disabled={isCreating}
+              onClick={() =>
+                createProject({
+                  data: {
+                    title: `새로운 프로젝트 ${(projects?.length ?? 0) + 1}`,
+                    address: DEFAULT_PROJECT_ADDRESS,
+                  },
+                })
+              }
+              className="flex w-full items-center px-3 py-2 text-left text-m-14 text-gray-700 hover:bg-secondary disabled:cursor-not-allowed disabled:text-gray-400"
+            >
+              프로젝트 생성
+            </button>
+          }
         />
         {items.map((item) => {
           const active = onSelectedProject && item.slug === activeSlug
@@ -187,12 +232,18 @@ function ProfileSection() {
 export function MemberSidebar() {
   const notificationCount = useUnreadNotificationCount()
   const messageCount = useUnreadChatCount()
-  const { panelHref } = usePanelNav()
+  const { panelHref, panel } = usePanelNav()
   const pathname = usePathname()
 
   const projectMatch = pathname.match(/^\/projects\/([^/]+)(?:\/([^/]+))?/)
   const projectId = projectMatch?.[1]
   const projectSlug = projectMatch?.[2] ?? ''
+
+  // 사이드바 항목에 대응하는 패널만 active 를 가져간다. profile·crawled·task 패널은 메인 콘텐츠
+  // 위에 얹히는 컨텍스트 오버레이라 아래 메인 라우트(기술자 탐색·공정표)의 active 를 유지.
+  const isNotificationsPanel = panel === 'notifications'
+  const isMessagesPanel = panel === 'messages' || panel?.startsWith('messages/') === true
+  const isNavPanelOpen = isNotificationsPanel || isMessagesPanel
 
   return (
     <div className="flex h-full flex-col justify-between">
@@ -200,11 +251,30 @@ export function MemberSidebar() {
         <ProfileSection />
         <div className="h-px bg-gray-300" />
         <div className="flex flex-col gap-0.5">
-          <NavItem label="알림" count={notificationCount ?? 0} href={panelHref('notifications')} />
-          <NavItem label="메시지" count={messageCount} href={panelHref('messages')} />
-          <NavItem label="기술자 탐색" count={0} href="/" active={pathname === '/'} />
+          <NavItem
+            label="알림"
+            count={notificationCount ?? 0}
+            href={panelHref('notifications')}
+            active={isNotificationsPanel}
+          />
+          <NavItem
+            label="메시지"
+            count={messageCount}
+            href={panelHref('messages')}
+            active={isMessagesPanel}
+          />
+          <NavItem
+            label="기술자 탐색"
+            count={0}
+            href="/"
+            active={pathname === '/' && !isNavPanelOpen}
+          />
         </div>
-        <ProjectSection pathProjectId={projectId} activeSlug={projectSlug} />
+        <ProjectSection
+          pathProjectId={projectId}
+          activeSlug={projectSlug}
+          isNavPanelOpen={isNavPanelOpen}
+        />
       </div>
 
       <SidebarFooter />

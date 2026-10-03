@@ -1,7 +1,7 @@
 'use client'
 
 import { monthStartOf, todayIso } from '@bconnect/config/date'
-import { parseAsString, useQueryStates } from 'nuqs'
+import { parseAsInteger, parseAsString, useQueryStates } from 'nuqs'
 
 /**
  * 캘린더 URL state — 포커스 월(`?month=` 'YYYY-MM-01')과 선택일(`?day=` ISO).
@@ -12,23 +12,28 @@ import { parseAsString, useQueryStates } from 'nuqs'
  */
 export function useCalendarParams() {
   const today = todayIso()
-  const [{ month, day }, setParams] = useQueryStates(
+  const [{ month, day, member }, setParams] = useQueryStates(
     {
       month: parseAsString.withDefault(monthStartOf(today)),
       day: parseAsString.withDefault(today),
+      member: parseAsInteger,
     },
     { history: 'replace' }
   )
 
   const selectDay = (iso: string) => {
-    void setParams({ day: iso, month: monthStartOf(iso) })
+    setParams({ day: iso, month: monthStartOf(iso) })
   }
 
   const setMonth = (monthIso: string) => {
     const inThisMonth = monthIso.slice(0, 7) === today.slice(0, 7)
     const nextDay = inThisMonth ? today : `${monthIso.slice(0, 8)}01`
-    void setParams({ month: monthIso, day: nextDay })
+    setParams({ month: monthIso, day: nextDay })
   }
 
-  return { month, day, today, selectDay, setMonth }
+  const setMember = (memberId: number | null) => {
+    setParams({ member: memberId })
+  }
+
+  return { month, day, member, today, selectDay, setMonth, setMember }
 }

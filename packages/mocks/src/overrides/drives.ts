@@ -1,5 +1,5 @@
+import { DriveType } from '@bconnect/api-client'
 import {
-  DriveType,
   getCreateAttachmentConfirmMockHandler,
   getCreateAttachmentPresignMockHandler,
   getCreateDriveAttachmentsMockHandler,
@@ -15,7 +15,7 @@ import {
   getGetMyDriveMockHandler,
   getUpdateDriveNameMockHandler,
   getUpdateNoteMockHandler,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   Attachment,
   ConfirmRequest,
@@ -30,9 +30,10 @@ import type {
   UploadDriveRequest,
 } from '@bconnect/api-client'
 import { http, HttpResponse } from 'msw'
+import { rememberUpload } from './_uploads'
 
 /**
- * 저장소(drives/notes/attachments) **stateful** mock (#767).
+ * 저장소(drives/notes/attachments) **stateful** mock.
  * 폴더/메모 CRUD 와 presign → PUT → confirm → 드라이브 바인딩 업로드 체인이 모듈 메모리에
  * 반영돼 재조회 시 즉시 보인다. 하드 리로드 시 시드 리셋.
  *
@@ -262,8 +263,11 @@ export const drivesOverrides = [
     })
   }),
 
-  // presigned PUT 수신부 — 실 S3 대역. 바이트는 버린다.
-  http.put('*/mock-s3/:id', () => new HttpResponse(null, { status: 200 })),
+  // presigned PUT 수신부 — 실 S3 대역. 바이트는 소켓 mock 이 되돌려줄 수 있게 붙잡아 둔다.
+  http.put('*/mock-s3/:id', async ({ params, request }) => {
+    await rememberUpload(Number(params.id), request)
+    return new HttpResponse(null, { status: 200 })
+  }),
 
   getCreateAttachmentConfirmMockHandler(async (info): Promise<Attachment[]> => {
     const body = (await info.request.json()) as ConfirmRequest

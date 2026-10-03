@@ -1,6 +1,6 @@
 /**
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3417-12398 (빈 상태 110px 타일)
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3417-12441 (채움 상태 90px 타일)
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3417-12398
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=3417-12441
  */
 'use client'
 
@@ -45,7 +45,7 @@ export function PhotoStrip({ value, onChange, invalid }: PhotoStripProps) {
       aria-invalid={invalid || undefined}
       className={cn(
         sizeClass,
-        'flex shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-gray-200 bg-gray-100 outline-none transition-colors hover:bg-gray-200 focus-visible:ring-1 focus-visible:ring-primary',
+        'flex shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-gray-200 bg-gray-100 transition-colors outline-none hover:bg-gray-200 focus-visible:ring-1 focus-visible:ring-primary',
         invalid && 'ring-1 ring-destructive'
       )}
     >
@@ -82,7 +82,7 @@ export function PhotoStrip({ value, onChange, invalid }: PhotoStripProps) {
                   type="button"
                   onClick={() => onChange(value.filter((_, j) => j !== i))}
                   aria-label={`${i + 1}번째 사진 삭제`}
-                  className="absolute right-1.5 top-1.5 flex size-4.5 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white"
+                  className="absolute top-1.5 right-1.5 flex size-4.5 cursor-pointer items-center justify-center rounded-full bg-gray-900 text-white"
                 >
                   <XIcon size={12} />
                 </button>

@@ -1,5 +1,5 @@
 /**
- * @figma-pending 작업 액션시트 — 삭제 (#650)
+ * @figma-todo 휴지통 아이콘 디자인 미정
  */
 import type { SVGProps } from 'react'
 

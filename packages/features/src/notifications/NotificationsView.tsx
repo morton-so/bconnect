@@ -11,7 +11,7 @@ import {
 } from '@bconnect/api-client'
 import type { Notification } from '@bconnect/api-client'
 import { NotificationItem, Skeleton } from '@bconnect/ui'
-import { formatRelativeTime } from '@bconnect/config/format'
+import { formatRelativeTime } from '@bconnect/config/date'
 import { PanelShell } from '../_shared/PanelShell'
 import { PanelScroll } from '../_shared/PanelScroll'
 import { PanelMessage } from '../_shared/PanelMessage'
@@ -22,7 +22,7 @@ type NotificationsViewShellProps =
   | {
       /**
        * 풀페이지 등 비-패널 쉘 주입 (career 풀페이지 라우트).
-       * 헤더 슬롯(`titleCount`·`rightSlot`)은 패널 쉘(`PanelShell`)과 같은 이름으로 관통시킨다 (#1016).
+       * 헤더 슬롯(`titleCount`·`rightSlot`)은 패널 쉘(`PanelShell`)과 같은 이름으로 관통시킨다.
        */
       renderShell: (props: {
         title: string
@@ -59,7 +59,7 @@ export function NotificationsView(props: NotificationsViewProps) {
   // 개별 hook 을 N 번 부르면 성공마다 재조회가 몰리므로(thundering) raw 함수 + 단일 invalidate.
   const readOnClick = (unreadIds: number[]) => {
     if (unreadIds.length === 0) return
-    void Promise.all(unreadIds.map((id) => updateNotificationRead(id))).then(() => {
+    Promise.all(unreadIds.map((id) => updateNotificationRead(id))).then(() => {
       queryClient.invalidateQueries({ queryKey: getGetNotificationsQueryKey() })
       queryClient.invalidateQueries({ queryKey: getGetNotificationsUnreadCountQueryKey() })
     })
@@ -90,7 +90,7 @@ export function NotificationsView(props: NotificationsViewProps) {
       type="button"
       onClick={() => markAllRead()}
       disabled={isMarkingAllRead}
-      className="cursor-pointer whitespace-nowrap text-m-12 text-primary-500 disabled:opacity-50"
+      className="cursor-pointer text-m-12 whitespace-nowrap text-primary-500 disabled:opacity-50"
     >
       모두 읽음
     </button>
@@ -112,10 +112,11 @@ export function NotificationsView(props: NotificationsViewProps) {
               const content = count > 1 ? `${n.message ?? ''} · ${count}개` : (n.message ?? '')
               const item = (
                 <NotificationItem
-                  profileImage={n.sender?.picture ?? undefined}
-                  content={content}
-                  timestamp={formatRelativeTime(n.createdAt ?? '')}
+                  picture={n.senderMember?.picture ?? n.senderCompany?.picture ?? undefined}
+                  message={content}
+                  createdAt={formatRelativeTime(n.createdAt ?? '')}
                   read={unreadIds.length === 0}
+                  href={href}
                 />
               )
               return (

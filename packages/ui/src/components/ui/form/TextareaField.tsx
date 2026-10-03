@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 디자인 시안 미정 — TextField 미러링 임시 구현, 디자이너 확정 시 갈아끼움 (#400)
+ * @figma-todo 여러 줄 텍스트 필드 디자인 미정
  */
 'use client'
 
@@ -36,7 +36,7 @@ interface TextareaFieldProps<T extends FieldValues> extends Omit<
   serverError?: string
   /** 입력값 변환기 — RHF 에 저장하기 전 가공. */
   transform?: (raw: string) => string
-  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선, #581). 기본 stacked. */
+  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선). 기본 stacked. */
   layout?: FieldLayout
 }
 

@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 인스타그램 업로드 — 디자인 미정
+ * @figma-todo 인스타그램 업로드 페이지 디자인 미정
  */
 'use client'
 
@@ -127,7 +127,6 @@ export default function InstagramUploadPage() {
           </span>
         </p>
 
-        {/* 파일 업로드 영역 */}
         <label className="mb-8 flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-8 transition-colors hover:border-pink-400 hover:bg-pink-50">
           <input
             type="file"
@@ -191,18 +190,18 @@ export default function InstagramUploadPage() {
                   </div>
 
                   {post.type === 'video' && (
-                    <div className="absolute right-2 top-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
+                    <div className="absolute top-2 right-2 rounded bg-black/60 px-2 py-1 text-xs text-white">
                       동영상
                     </div>
                   )}
 
                   {selected.has(post.id) && (
-                    <div className="absolute left-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-pink-500 text-white">
+                    <div className="absolute top-2 left-2 flex h-6 w-6 items-center justify-center rounded-full bg-pink-500 text-white">
                       ✓
                     </div>
                   )}
 
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                  <div className="absolute right-0 bottom-0 left-0 bg-gradient-to-t from-black/60 to-transparent p-2">
                     <p className="text-xs text-white">{formatDate(post.timestamp)}</p>
                     {post.caption && (
                       <p className="line-clamp-1 text-xs text-white/80">{post.caption}</p>
@@ -212,7 +211,6 @@ export default function InstagramUploadPage() {
               ))}
             </div>
 
-            {/* 선택된 게시물 데이터 미리보기 */}
             {selected.size > 0 && (
               <div className="mt-8 rounded-lg bg-gray-100 p-4">
                 <h2 className="mb-2 font-semibold">선택된 데이터 미리보기</h2>

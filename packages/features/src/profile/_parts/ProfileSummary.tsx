@@ -23,7 +23,7 @@ interface ProfileSummaryProps {
   statHrefs?: ProfileStatHrefs
   /** stat 링크 네비 시 scroll 리셋 여부. 패널(plan)=false 로 배경 스크롤 보존, 풀페이지(career)=기본 */
   statScroll?: boolean
-  /** 있으면 프로필 이미지 우하단 edit 배지 렌더 (owner 전용, #966) */
+  /** 있으면 프로필 이미지 우하단 edit 배지 렌더 (owner 전용) */
   onEditImage?: () => void
   /** 이미지 업로드 진행 중 — edit 배지 비활성 */
   imageUploading?: boolean

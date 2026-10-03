@@ -15,7 +15,7 @@ interface PushStore {
  * 푸시 알림 상태의 SSOT.
  *
  * 부수효과(use-push-notification-listener)는 앱 전역 1회만 마운트되어 여기에 write 하고,
- * soft-ask UI·DevPushPanel 등 소비자는 훅을 재인스턴스화하지 않고 여기서 read 한다.
+ * soft-ask UI 등 소비자는 훅을 재인스턴스화하지 않고 여기서 read 한다.
  */
 export const usePushStore = create<PushStore>(() => ({
   permissionStatus: 'prompt',

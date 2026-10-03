@@ -9,7 +9,6 @@ interface GuestSidebarProps {
 export function GuestSidebar({ memberCount }: GuestSidebarProps) {
   return (
     <div className="flex h-full flex-col justify-between">
-      {/* 안내 + CTA */}
       <div className="flex flex-col gap-5 px-5 py-10">
         <p className="text-r-14 text-gray-700">
           검증된 프로필을 가진
@@ -17,7 +16,6 @@ export function GuestSidebar({ memberCount }: GuestSidebarProps) {
           {memberCount.toLocaleString()}명의 기술자를 만나보세요.
         </p>
 
-        {/* 이동 동작 */}
         <div className="flex flex-col gap-2">
           <Button asChild variant="primary" size="full" className="h-10">
             <Link href="/login">로그인</Link>

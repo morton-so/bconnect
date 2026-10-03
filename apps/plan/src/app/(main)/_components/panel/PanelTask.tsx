@@ -13,12 +13,19 @@ import {
   Form,
   FormSubmitButton,
   SearchIcon,
+  SelectField,
   TagSelectField,
   TextField,
   TextareaField,
 } from '@bconnect/ui'
 import { PanelAside, PanelScroll, PanelShell } from '@bconnect/features'
-import { Trade, TRADE_LABELS, TRADE_LIST } from '@bconnect/api-client'
+import {
+  TASK_PROGRESS_LABELS,
+  TaskProgress,
+  Trade,
+  TRADE_LABELS,
+  TRADE_LIST,
+} from '@bconnect/api-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
@@ -30,53 +37,50 @@ import { OfferQueue } from '../offer/OfferQueue'
 
 const taskSchema = z
   .object({
-    ganttName: z.string().min(1, '작업명을 입력해주세요.'),
-    // 업체명/주소는 BE 저장 필드 없음 — 읽기전용 표시 (주소는 프로젝트 주소가 BE 에서 주입됨)
-    corpName: z.string(),
-    startDate: z.string().min(1, '시작일을 선택해주세요.'),
-    endDate: z.string().min(1, '종료일을 선택해주세요.'),
-    address: z.string(),
-    addressDetail: z.string(),
+    title: z.string().min(1, '작업명을 입력해주세요.'),
+    start: z.string().min(1, '시작일을 선택해주세요.'),
+    end: z.string().min(1, '종료일을 선택해주세요.'),
     trades: z.array(z.nativeEnum(Trade)).min(1, '공종을 1개 이상 선택해주세요.'),
-    // BE CreateProjectTaskRequest 가 requirement/memo minLength 1 필수 — 폼도 필수
-    request: z.string().min(1, '요청사항을 입력해주세요.'),
-    memo: z.string().min(1, '메모를 입력해주세요.'),
+    progress: z.nativeEnum(TaskProgress),
+    requirement: z.string(),
+    memo: z.string(),
   })
-  .refine((v) => v.startDate <= v.endDate, {
+  .refine((v) => v.start <= v.end, {
     message: '종료일은 시작일 이후여야 해요.',
-    path: ['endDate'],
+    path: ['end'],
   })
 
 type TaskFormValues = z.infer<typeof taskSchema>
 
+const PROGRESS_OPTIONS = Object.entries(TASK_PROGRESS_LABELS).map(([value, label]) => ({
+  value,
+  label,
+}))
+
 const EMPTY_FORM: TaskFormValues = {
-  ganttName: '',
-  corpName: '',
-  startDate: '',
-  endDate: '',
-  address: '',
-  addressDetail: '',
+  title: '',
+  start: '',
+  end: '',
   trades: [],
-  request: '',
+  progress: TaskProgress.TODO,
+  requirement: '',
   memo: '',
 }
 
 function toFormValues(task: ScheduleTask): TaskFormValues {
   return {
-    ganttName: task.ganttName ?? '',
-    corpName: task.corpName ?? '',
-    startDate: task.startDate ?? '',
-    endDate: task.endDate ?? '',
-    address: task.address ?? '',
-    addressDetail: task.addressDetail ?? '',
+    title: task.title ?? '',
+    start: task.start ?? '',
+    end: task.end ?? '',
     trades: task.trades ?? [],
-    request: task.request ?? '',
+    progress: task.progress,
+    requirement: task.requirement ?? '',
     memo: task.memo ?? '',
   }
 }
 
 /**
- * 공정표 작업 생성/편집 패널 (#582→#767). `?panel=task/new` = 빈 폼(생성),
+ * 공정표 작업 생성/편집 패널. `?panel=task/new` = 빈 폼(생성),
  * `?panel=task/draft` = 드래그-생성 로컬 draft, `?panel=task/{id}` = 편집(즉시저장).
  *
  * 서버 작업은 React Query 캐시가 SSOT — 즉시저장은 useTaskMutations 파이프라인
@@ -143,7 +147,7 @@ export function PanelTask({ taskId }: { taskId?: string }) {
         setCancelOpen(true)
         return
       }
-      if (!isCreating) void confirmDraft(parsed.data)
+      if (!isCreating) confirmDraft(parsed.data)
       return
     }
     // 편집 즉시저장 debounce 대기분 유실 방지
@@ -203,34 +207,13 @@ export function PanelTask({ taskId }: { taskId?: string }) {
           <PanelScroll>
             <Form {...form}>
               <form onSubmit={onSubmit} className="flex flex-col px-4 pb-6">
-                <TextField control={form.control} name="ganttName" label="작업명" layout="row" />
-                <TextField
-                  control={form.control}
-                  name="corpName"
-                  label="업체명"
-                  layout="row"
-                  disabled
-                />
+                <TextField control={form.control} name="title" label="작업명" layout="row" />
                 <DateRangeField
                   control={form.control}
-                  startName="startDate"
-                  endName="endDate"
+                  startName="start"
+                  endName="end"
                   label="작업기간"
                   layout="row"
-                />
-                <TextField
-                  control={form.control}
-                  name="address"
-                  label="현장주소"
-                  layout="row"
-                  disabled
-                />
-                <TextField
-                  control={form.control}
-                  name="addressDetail"
-                  label="상세주소"
-                  layout="row"
-                  disabled
                 />
                 <TagSelectField
                   control={form.control}
@@ -239,7 +222,21 @@ export function PanelTask({ taskId }: { taskId?: string }) {
                   label="공종"
                   layout="row"
                 />
-                <TextField control={form.control} name="request" label="요청사항" layout="row" />
+                {isEdit && !isDraft && (
+                  <SelectField
+                    control={form.control}
+                    name="progress"
+                    label="진행 상태"
+                    layout="row"
+                    options={PROGRESS_OPTIONS}
+                  />
+                )}
+                <TextField
+                  control={form.control}
+                  name="requirement"
+                  label="요청사항"
+                  layout="row"
+                />
                 <TextareaField control={form.control} name="memo" label="메모" layout="row" />
                 <p className="mt-3 text-r-12 text-gray-500">
                   * 작성된 메모는 기술자에게 공개되지 않아요
@@ -259,11 +256,11 @@ export function PanelTask({ taskId }: { taskId?: string }) {
                   emptyActionHref={`/?task=${taskId}&trade=${(task?.trades ?? []).join(',')}`}
                 />
               ) : (
-                <div className="flex flex-col items-center pb-4 pt-8">
+                <div className="flex flex-col items-center pt-8 pb-4">
                   <div className="flex size-[140px] items-center justify-center rounded-full bg-secondary">
                     <SearchIcon size={72} className="text-primary" />
                   </div>
-                  <p className="text-r-14 mt-4 text-gray-600">작업을 먼저 생성해주세요</p>
+                  <p className="mt-4 text-r-14 text-gray-600">작업을 먼저 생성해주세요</p>
                 </div>
               )}
             </div>
@@ -276,7 +273,7 @@ export function PanelTask({ taskId }: { taskId?: string }) {
         onOpenChange={setCancelOpen}
         title="작업 생성을 취소할까요?"
         description="작성 중인 작업이 사라져요."
-        confirmLabel="취소하기"
+        confirmLabel="생성 취소"
         destructive
         onConfirm={() => {
           if (isDraft) clearDraft()

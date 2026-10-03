@@ -26,7 +26,7 @@ export function BottomNavigation() {
   if (isBottomNavHidden(pathname)) return null
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-300 bg-white pb-[env(safe-area-inset-bottom)]">
+    <nav className="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-300 bg-white pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto flex h-[70px] max-w-screen-sm items-center justify-around">
         {NAV_ITEMS.map(({ href, label, icon: Icon, disabled }) => {
           const isActive =

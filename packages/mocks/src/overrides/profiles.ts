@@ -1,11 +1,9 @@
+import { CoworkerStatus, ProfileRole, Trade } from '@bconnect/api-client'
 import {
-  CoworkerStatus,
   getGetMyProfileMockHandler,
   getGetProfileMockHandler,
   getGetProfilesMockHandler,
-  ProfileRole,
-  Trade,
-} from '@bconnect/api-client'
+} from '@bconnect/api-client/msw'
 import type {
   CursorPageProfile,
   MemberSummary,
@@ -41,13 +39,15 @@ const memberOf = (id: number, username: string, name: string): MemberSummary => 
   picture: null,
 })
 
-interface ProfileSeed {
+export interface ProfileSeed {
   id: number
   username: string
   name: string
   role: ProfileRole
   trade: Trade
   experience: number
+  /** feeds.ts FEED_SEEDS 에서 이 회원이 쓴 글 수 — 헤더 통계와 작업물 탭이 어긋나지 않게 맞춘다 */
+  postCount: number
   headline: string
   about: string
   // 카카오 우편번호 결과 그대로 — state = 공용 Region 값, city = sigungu
@@ -55,9 +55,11 @@ interface ProfileSeed {
   city: string
 }
 
-const SEEDS: ProfileSeed[] = [
+// feeds.ts 가 작업물 작성자로 재사용 — 회원 정보 중복 정의를 막는 단일 출처
+export const PROFILE_SEEDS: ProfileSeed[] = [
   {
     id: 1,
+    postCount: 2,
     username: 'leesongmok',
     name: '이송목',
     role: ProfileRole.SEMI_SKILLED,
@@ -70,6 +72,7 @@ const SEEDS: ProfileSeed[] = [
   },
   {
     id: 101,
+    postCount: 2,
     username: 'worker_101',
     name: '이송목',
     role: ProfileRole.SEMI_SKILLED,
@@ -82,6 +85,7 @@ const SEEDS: ProfileSeed[] = [
   },
   {
     id: 102,
+    postCount: 1,
     username: 'worker_102',
     name: '박전기',
     role: ProfileRole.SKILLED,
@@ -94,6 +98,7 @@ const SEEDS: ProfileSeed[] = [
   },
   {
     id: 103,
+    postCount: 1,
     username: 'worker_103',
     name: '최타일',
     role: ProfileRole.FOREMAN,
@@ -117,13 +122,14 @@ const profileOf = (seed: ProfileSeed): Profile => ({
   about: seed.about,
   address: {
     zipcode: '00000',
+    bcode: '0000000000',
     city: seed.city,
     state: seed.state,
     street: '○○로 12',
     latitude: 37.5,
     longitude: 127.0,
   },
-  postCount: 0,
+  postCount: seed.postCount,
   recommendationCount: 0,
   coworkerCount: 0,
   createdAt: EPOCH,
@@ -137,10 +143,10 @@ const detailOf = (seed: ProfileSeed): ProfileDetail => ({
 })
 
 const PROFILES_BY_ID: Record<number, ProfileDetail> = Object.fromEntries(
-  SEEDS.map((seed) => [seed.id, detailOf(seed)])
+  PROFILE_SEEDS.map((seed) => [seed.id, detailOf(seed)])
 )
 
-// #966 프로필 이미지 업로드 QA — mock-s3 는 바이트를 버리므로 pictureId 시드 이미지로 교체 표시.
+// 프로필 이미지 업로드 QA — mock-s3 는 바이트를 버리므로 pictureId 시드 이미지로 교체 표시.
 // members.ts 의 updateMyMemberPicture override 가 호출 (프로필 도메인 state 단일 owner 유지).
 // getMyProfile 이 매 호출 seed 에서 새 객체를 만들므로 변이 대신 모듈 변수로 보관해 응답 시 주입.
 let myMockPicture: string | null = null
@@ -160,14 +166,12 @@ const paramId = (value: string | readonly string[] | undefined): number =>
   Number(typeof value === 'string' ? value : (value?.[0] ?? ''))
 
 export const profilesOverrides = [
-  getGetProfilesMockHandler(
-    (): CursorPageProfile => ({
-      content: SEEDS.map((seed) => profileOf(seed)),
-      hasNext: false,
-      nextCursor: undefined,
-    })
-  ),
+  getGetProfilesMockHandler((): CursorPageProfile => ({
+    content: PROFILE_SEEDS.map((seed) => profileOf(seed)),
+    hasNext: false,
+    nextCursor: undefined,
+  })),
   // /profiles/me 는 status 없는 평문 Profile — 타인 조회(ProfileDetail)와 응답형이 다르다
-  getGetMyProfileMockHandler(() => withMyPicture(profileOf(SEEDS[0]))),
+  getGetMyProfileMockHandler(() => withMyPicture(profileOf(PROFILE_SEEDS[0]))),
   getGetProfileMockHandler(({ params }) => PROFILES_BY_ID[paramId(params.id)] ?? PROFILES_BY_ID[1]),
 ]

@@ -1,3 +1,6 @@
+/**
+ * @figma-todo 크기 조절 패널 shadcn 원본 이식
+ */
 'use client'
 
 import * as React from 'react'
@@ -8,11 +11,11 @@ import { cn } from '../../../lib/utils'
 function ResizablePanelGroup({
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) {
+}: React.ComponentProps<typeof ResizablePrimitive.Group>) {
   return (
-    <ResizablePrimitive.PanelGroup
+    <ResizablePrimitive.Group
       data-slot="resizable-panel-group"
-      className={cn('flex h-full w-full data-[panel-group-direction=vertical]:flex-col', className)}
+      className={cn('flex h-full w-full', className)}
       {...props}
     />
   )
@@ -24,13 +27,13 @@ function ResizableHandle({
   withHandle,
   className,
   ...props
-}: React.ComponentProps<typeof ResizablePrimitive.PanelResizeHandle> & { withHandle?: boolean }) {
+}: React.ComponentProps<typeof ResizablePrimitive.Separator> & { withHandle?: boolean }) {
   return (
-    <ResizablePrimitive.PanelResizeHandle
+    <ResizablePrimitive.Separator
       data-slot="resizable-handle"
       className={cn(
-        'relative flex w-px items-center justify-center bg-gray-200 transition-colors hover:bg-primary data-[resize-handle-state=drag]:bg-primary',
-        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary',
+        'relative flex w-px items-center justify-center bg-gray-200 transition-colors hover:bg-primary active:bg-primary',
+        'focus-visible:ring-1 focus-visible:ring-primary focus-visible:outline-none',
         className
       )}
       {...props}
@@ -40,7 +43,7 @@ function ResizableHandle({
           <GripVertical className="h-2.5 w-2.5 text-gray-400" />
         </div>
       )}
-    </ResizablePrimitive.PanelResizeHandle>
+    </ResizablePrimitive.Separator>
   )
 }
 

@@ -1,4 +1,5 @@
-import { getGetCrawledMembersMockHandler, CrawledPlatform, Region } from '@bconnect/api-client'
+import { CrawledPlatform, Region } from '@bconnect/api-client'
+import { getGetCrawledMembersMockHandler } from '@bconnect/api-client/msw'
 import type {
   CrawledMember,
   CrawledMemberSummary,
@@ -8,7 +9,7 @@ import type {
 import { http, HttpResponse } from 'msw'
 
 // 크롤링 기술자 — plan 기술자 탐색 병합 노출용 시드.
-// #826 크롤러 dry-run 실측 데이터에서 발췌 (네이버 CDN 실사진 → no-referrer 렌더 경로까지 로컬 검증).
+// 크롤러 dry-run 실측 데이터에서 발췌 (네이버 CDN 실사진 → no-referrer 렌더 경로까지 로컬 검증).
 // 연락처·사업자번호·이메일은 개인정보라 가짜 값으로 치환, 본문 내 전화번호도 마스킹돼 있다.
 // trades 는 BE 원본과 동일하게 한국어 라벨 문자열 (FE 가 Trade enum 으로 역매핑).
 
@@ -56,6 +57,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjAzMDRfMjk3/MDAxNzcyNTY2NDUyNTE0.c3uACe9HyaWGMLUEgUFIyMNIkwLkYWFSexe5VPCikSsg.P72nwBErMSFcoIG6wH_A9f_-UCgioWuJ11BF4eNVn84g.JPEG/20251101_103453(0).jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjAzMDRfMTU4/MDAxNzcyNTY2NDUyNDk1.b7HvMaZ7ksXtxn6_69HFrVCdRnxTibpgHqYrrELdboEg.YIVdmbFcPaJwtKallMCZbgiG_W_SC7U4yEkGi6Jvh8gg.JPEG/20251101_103448.jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/jamdoong/223000000001',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -72,6 +74,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjA3MDRfMjQ5/MDAxNzgzMTEyOTg5ODA4.VMpL6OvGfD8YnC4Tki9uWU73FwhJSuIJwHjT_sNrSvgg.Y-ORbBz_LFnpcwAEidAtBHX65tMHrKo5-CYkyEmq--Mg.JPEG/20251226_150245.jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjA3MDRfMjEw/MDAxNzgzMTEyOTg5Njcz.u1SsRJ-CsiacOtTlN6FBu6J6tA1fYMD849fTV5Og4nQg.SlDiwM3_eKs0tOmQ5YuIdYiDzAqHroTsuweyDz98q8Eg.JPEG/20251226_150300.jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/jamdoong/223000000002',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -88,6 +91,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjA2MjdfMjMz/MDAxNzgyNTMyNTA1MTg5.RnRBQzhEpSPZxxRW9hbMdUW2UefnS0A2jEo8O86sc8gg.1kBxoS4t7dwSJDff3HZp7-vImmTIWSaqtu4jGxRgB9Ig.JPEG/20260214_132827(4).jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjA2MjdfMTgy/MDAxNzgyNTMyNTA1MDU2.uJ58pA3XUzFF5fICZ6FyN8j1msh8AKy1G0_ubEdpj_wg.DMb0-N9c5_f1SB7pW-pnlgYB7HCqFl7UILl7I1BKkckg.JPEG/20260214_132803.jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/jamdoong/223000000003',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -131,6 +135,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjA2MDdfNjcg/MDAxNzgwODI4NzA5NjI3.ChOqPuZk8EtSNFwFrKUU4FpDNrmHLtkuf9AWfvDug1Qg.hLVCywAaDG-oSYUpYtmvfwK-JolBdgziu9lVzBuxlrwg.JPEG/20260508_084657.jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjA2MDdfMjQg/MDAxNzgwODI5MDI4MDcy.Qr4d-nhSaGZkYx5raW813w7__3inaGLPufxak7kA6pgg.9hURPpwi8UbLKalP86vP7hSZvMi3XpsuVk6cpbsLcf0g.JPEG/20260508_100702.jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/hobbyreview/223000000011',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -147,6 +152,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjA3MDlfMTQ0/MDAxNzgzNTk5NzgyMjQx.o7msQZHjTPW5OE0PHNCALOFsIPWF-Qa8mncN9UFNJ4Eg.4pnDgAf8I1m-5ZQ_zNMvqRl9p9-469xeAM3fpOhXCUEg.JPEG/20231218_095831.jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjA3MDlfMzAg/MDAxNzgzNTk5OTU1OTc4.8uLd7udsFP1DevpDoZ-z0_fPYzIGX1tJxfTBkoFoAicg.YdoXyHx4GbloKEU1QcajqA2Fo9tbLwjMioic1L3XsyEg.JPEG/20231218_113254(0).jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/hobbyreview/223000000012',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -163,6 +169,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjA3MDZfMSAg/MDAxNzgzMzQxMDI3MzQ1.LXnZmrmQIofNDm1EEMGNpBML4yn7EqJ77J-KmsyAJE8g._shVVpZe4eL0wYVib57Iv8_pF9nxheH87oNYtXfD5sYg.JPEG/20260118_161903.jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjA3MDZfODUg/MDAxNzgzMzQwOTI4ODg3.c_DFOAv5x-7XJ3_1Pq8b2z97gM-EZs0mAbfd7a-t9Wog.Tnvf8Og_oWx18lwrY_TfWymIe3LIwh337fdogDBACBsg.JPEG/20260118_161901.jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/hobbyreview/223000000013',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -206,6 +213,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjA1MjFfMjMw/MDAxNzc5MzU0OTk5NjA0.OCjDPLG9niV8ps2jqZpi3w2kt9nY5lFwCR5c5IrJeecg.I7f5jFo7ar_UFV2NPnMBKTL3ELfw3VZEmkexKUsM8JYg.JPEG/KakaoTalk_20260518_085134842_01.jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjA1MjFfMTI2/MDAxNzc5MzU1MDAyMzIz.Li_Xf-6qOt3N1Phyv8DCEvtPlRfOz6UuPSWC_XgIZRkg.Wzks6L77nUZggXpQdsFau1vk7-HCynz6E4rNoz5xHc8g.JPEG/KakaoTalk_20260518_085134842_02.jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/eui6212/223000000021',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -222,6 +230,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjA3MDFfMjE0/MDAxNzgyOTAxNDQyMDE0.SkcD8jME3t3RcsL522DOIXRKsChYYWuhqOsttTLGTrUg.FqmsekI_IZZEVj6bMIGwrfX5UgWB7Buub5hHbkVDUqEg.JPEG/KakaoTalk_20260701_100458208_01.jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjA3MDFfMTcx/MDAxNzgyOTAxNDQyMjcw.zm6c4DGUWf26Ce-whx9AiH2gSCa9wVTm5Hl20-E7HbIg.0YUcGqNVEKxn-xb9pTgnQjauMCTYiDMYwxhFBzkXNkMg.JPEG/KakaoTalk_20260701_100458208_02.jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/eui6212/223000000022',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -238,6 +247,7 @@ const RAW: RawMember[] = [
           'https://postfiles.pstatic.net/MjAyNjA3MDFfNTgg/MDAxNzgyOTAxMDczODcw.5jQsdJzilmKnlQAXu8yZMJZA8XLHWn7IYmbGoDHcrpIg.Swyia9J6NDFMBBknPd9UEqCm_b3lDn0L62WtyZcykjUg.JPEG/KakaoTalk_20260701_100438289_02.jpg?type=w966',
           'https://postfiles.pstatic.net/MjAyNjA3MDFfMzAw/MDAxNzgyOTAxMDczOTM0.vCkp4peLGVNrbQEvv7ONuv47ESSN1sjCv2Rw39c3B4Ig.VHw0ETab0WHA4hUxV0DhncaDyupzk2FMbTde2S6VgzMg.JPEG/KakaoTalk_20260701_100438289_03.jpg?type=w966',
         ],
+        sourceUrl: 'https://blog.naver.com/eui6212/223000000023',
         createdAt: EPOCH,
         modifiedAt: EPOCH,
       },
@@ -261,13 +271,11 @@ const toSummary = ({
 })
 
 export const crawledOverrides = [
-  getGetCrawledMembersMockHandler(
-    (): CursorPageCrawledMemberSummary => ({
-      content: SEEDS.map(toSummary),
-      hasNext: false,
-      nextCursor: undefined,
-    })
-  ),
+  getGetCrawledMembersMockHandler((): CursorPageCrawledMemberSummary => ({
+    content: SEEDS.map(toSummary),
+    hasNext: false,
+    nextCursor: undefined,
+  })),
   // 상세는 직접 작성 — 미존재 id 를 404 로 반환해 에러 UI(isError) 경로가 로컬에서도 재현되게
   // (generated mock 은 항상 200 이라 not-found 경로를 검증할 수 없음)
   http.get('*/api/v1/crawled-members/:id', ({ params }) => {

@@ -1,58 +1,51 @@
-output "app_bucket_name" {
-  description = "The name of the application S3 bucket"
-  value       = aws_s3_bucket.app_storage.id
+# 사용처 : railway
+output "s3_buckets" {
+  description = "앱 스토리지 버킷명 (prod · dev)"
+  value       = { for k, v in aws_s3_bucket.storage : k => v.id }
 }
 
-output "app_bucket_arn" {
-  description = "The ARN of the application S3 bucket"
-  value       = aws_s3_bucket.app_storage.arn
+# 사용처 : railway
+output "sns_platform_arn" {
+  description = "SNS ARN"
+  value       = aws_sns_platform_application.fcm.arn
 }
 
-output "dev_app_bucket_name" {
-  description = "The name of the dev(staging) application S3 bucket"
-  value       = aws_s3_bucket.app_storage_dev.id
-}
-
-output "dev_app_bucket_arn" {
-  description = "The ARN of the dev(staging) application S3 bucket"
-  value       = aws_s3_bucket.app_storage_dev.arn
-}
-
-output "sns_platform_application_arn" {
-  description = "SNS FCM 플랫폼 애플리케이션 ARN (credential 미설정 시 빈 문자열)"
-  value       = try(aws_sns_platform_application.fcm[0].arn, "")
-}
-
+# 사용처 : railway · vercel · github
 output "access_key_id" {
-  description = "The access key ID for the application IAM user"
-  value       = aws_iam_access_key.app_key.id
+  description = "애플리케이션 IAM 유저 액세스 키 ID"
+  value       = aws_iam_access_key.app.id
   sensitive   = true
 }
 
+# 사용처 : railway · vercel · github
 output "secret_access_key" {
-  description = "The secret access key for the application IAM user"
-  value       = aws_iam_access_key.app_key.secret
+  description = "애플리케이션 IAM 유저 액세스 비밀키"
+  value       = aws_iam_access_key.app.secret
   sensitive   = true
 }
 
-output "cloudfront_key_pair_id" {
-  description = "환경별 CloudFront 공개키 ID (AWS 자동 발급). 서명 쿠키가 '이 공개키로 검증'을 지목. Railway CLOUDFRONT_KEY_PAIR_ID ({prod, dev})"
-  value       = { for k, v in aws_cloudfront_public_key.cf_signing : k => v.id }
+# 사용처 : railway
+output "cf_key_pair_id" {
+  description = "CloudFront 공개키 ID"
+  value       = { for k, v in aws_cloudfront_public_key.signed_cookie : k => v.id }
 }
 
-output "cloudfront_private_key_base64" {
-  description = "환경별 CloudFront 서명 개인키 PKCS8 PEM 을 base64 로 인코딩 (Railway CLOUDFRONT_PRIVATE_KEY, {prod, dev})"
-  value       = { for k, v in tls_private_key.cf_signing : k => base64encode(v.private_key_pem_pkcs8) }
+# 사용처 : railway
+output "cf_private_key" {
+  description = "CloudFront 서명 비밀키를 base64 인코딩한 값"
+  value       = { for k, v in tls_private_key.signed_cookie : k => base64encode(v.private_key_pem_pkcs8) }
   sensitive   = true
 }
 
-output "cloudfront_distribution_domain" {
-  description = "환경별 static CDN distribution 도메인 (dxxx.cloudfront.net). 가비아에 static/static-dev CNAME 타겟으로 추가 ({prod, dev})"
+# 사용처 : 가비아
+output "cf_domain" {
+  description = "CDN 도메인"
   value       = { for k, v in aws_cloudfront_distribution.static : k => v.domain_name }
 }
 
+# 사용처 : 가비아
 output "acm_validation_records" {
-  description = "가비아에 추가할 ACM DNS validation CNAME (env → domain → {name, type, value})"
+  description = "ACM 인증서 DNS 검증용 CNAME 레코드"
   value = {
     for k, cert in aws_acm_certificate.static : k => {
       for dvo in cert.domain_validation_options :

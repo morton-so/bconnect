@@ -24,7 +24,7 @@ interface TagSelectFieldProps<T extends FieldValues> {
   /** useServerError 의 fieldError 결과 — zod 클라이언트 에러와 한 슬롯에 합성. */
   serverError?: string
   disabled?: boolean
-  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선, #581). 기본 stacked. */
+  /** 레이아웃 변형 — row 는 패널형 수평(라벨 좌측 고정폭 + 하단 구분선). 기본 stacked. */
   layout?: FieldLayout
 }
 
@@ -68,7 +68,7 @@ function TagSelectControl({
 }
 
 /**
- * 멀티 선택 + 선택값 x 칩 필드 (#581, 공종 등). 선택은 Select(multiple) 드롭다운,
+ * 멀티 선택 + 선택값 x 칩 필드 (공종 등). 선택은 Select(multiple) 드롭다운,
  * 선택값은 FilterChip 으로 나열하고 칩 클릭으로 제거한다.
  */
 export function TagSelectField<T extends FieldValues>({

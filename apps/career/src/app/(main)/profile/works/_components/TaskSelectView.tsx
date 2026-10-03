@@ -3,7 +3,7 @@
  */
 'use client'
 
-import type { Task } from '@bconnect/api-client'
+import type { WorkerTask } from '@bconnect/api-client'
 import { matchHangul } from '@bconnect/config/search'
 import { cn, SearchIcon, TopBar } from '@bconnect/ui'
 import { useMemo, useState } from 'react'
@@ -11,7 +11,7 @@ import { dotColor } from '@/lib/task-colors'
 import { formatWorkPeriod } from './work-utils'
 
 interface TaskSelectViewProps {
-  tasks: Task[]
+  tasks: WorkerTask[]
   isLoading?: boolean
   selectedId: number | null
   onConfirm: (taskId: number) => void
@@ -31,9 +31,7 @@ export function TaskSelectView({
   const filtered = useMemo(() => {
     const q = query.trim()
     if (!q) return tasks
-    return tasks.filter(
-      (t) => matchHangul(t.workerTitle ?? '', q) || matchHangul(t.workerCompany ?? '', q)
-    )
+    return tasks.filter((t) => matchHangul(t.title, q) || matchHangul(t.company ?? '', q))
   }, [tasks, query])
 
   return (
@@ -41,10 +39,9 @@ export function TaskSelectView({
       <TopBar
         variant="default"
         title="작업 선택"
-        actionLabel="저장"
+        actionText="저장"
         actionDisabled={picked == null}
         onAction={() => picked != null && onConfirm(picked)}
-        showAction
         onBack={onBack}
       />
 
@@ -87,12 +84,12 @@ export function TaskSelectView({
                       picked === task.id ? 'text-primary' : 'text-gray-900'
                     )}
                   >
-                    {task.workerTitle ?? '제목 없음'}
+                    {task.title}
                   </span>
                 </span>
                 <span className="text-r-14 text-gray-400">
                   {formatWorkPeriod(task.start, task.end)}
-                  {task.workerCompany ? ` | ${task.workerCompany}` : ''}
+                  {task.company ? ` | ${task.company}` : ''}
                 </span>
               </button>
             ))}

@@ -1,4 +1,5 @@
 import { Logo } from '@bconnect/ui'
+import { SITE_URL } from '@bconnect/config/site'
 import Link from 'next/link'
 
 export function SidebarFooter() {
@@ -7,10 +8,10 @@ export function SidebarFooter() {
       <Logo width={70} height={24} />
       <p className="text-r-12 text-gray-500">무료 요금제</p>
       <div className="flex gap-3 text-r-12 text-gray-400">
-        <Link href="/terms" className="hover:text-gray-600">
+        <Link href={`${SITE_URL.company}/terms`} className="hover:text-gray-600">
           이용약관
         </Link>
-        <Link href="/privacy" className="hover:text-gray-600">
+        <Link href={`${SITE_URL.company}/privacy`} className="hover:text-gray-600">
           개인정보 처리방침
         </Link>
       </div>

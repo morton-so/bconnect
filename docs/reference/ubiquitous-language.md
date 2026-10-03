@@ -1,7 +1,8 @@
-# 보편언어 (Ubiquitous Language)
+# 보편언어
 
-- 위치 : 전체
-- 범위 : 도메인 용어, Enum 값
+> 대상: 전체 개발자<br>
+> 학습 목표: 도메인 용어와 Enum 값을 확인한다<br>
+> 위치: 전체
 
 ## 도메인 다이어그램
 
@@ -62,49 +63,53 @@ graph TD
 
 ## 도메인 개념
 
-| 도메인         | 영문            | 국문          | 의미                                   |
-| -------------- | --------------- | ------------- | -------------------------------------- |
-| Member         | Member          | 회원          | 사용자                                 |
-| Auth           | Otp             | 인증코드      | 본인확인용 6자리 코드                  |
-| Auth           | SignupToken     | 가입 토큰     | 미가입자 회원가입용 임시 토큰          |
-| Auth           | Session         | 세션          | 로그인 정보(IP, Agent 등)              |
-| Auth           | Access Token    | 액세스 토큰   |                                        |
-| Auth           | Refresh Token   | 리프레시 토큰 | 액세스 토큰 재발급용 토큰              |
-| Profile        | Profile         | 프로필        | 사용자 프로필                          |
-| Task           | Task            | 작업          | 프로젝트 공종별 작업 단위              |
-| Post           | Post            | 게시글        |                                        |
-| Post           | Feed            | 피드          | 게시글 + 작성자 + 프로필 View          |
-| Coworker       | Coworker        | 동료          | 동료 기술자                            |
-| Coworker       | CoworkerRequest | 동료 요청     |                                        |
-| Recommendation | Recommendation  | 추천서        | 동료 기술자가 작성한 추천서            |
-| Chat           | GroupChat       | 그룹 채팅방   | 채팅방 제목 있음                       |
-| Chat           | DirectChat      | 1:1 채팅방    | 채팅방 제목 없음                       |
-| Chat           | Message         | 메시지        |                                        |
-| Chat           | Participant     | 참여자        | 그룹 채팅방 참여자 정보                |
-| Credential     | Credential      | 인증뱃지      | 면허 · 자격 · 보험 등                  |
-| Attachment     | Attachment      | 첨부          | 업로드 파일 메타데이터                 |
-| Attachment     | Signed cookie   |               | CloudFront 접근 권한                   |
-| Company        | Company         | 인테리어 업체 |                                        |
-| Project        | Project         | 프로젝트      |                                        |
-| Offer          | Offer           | 섭외          | 기술자 섭외                            |
-| Drive          | Drive           | 공유 저장소   | 원격 파일 · 이미지 저장소              |
-| Drive          | DriveMember     | 저장소 멤버   | 저장소 접근 권한                       |
-| Board          | Board           | 게시판        | 프로젝트 · 저장소별 게시판 (자동 생성) |
-| Board          | Note            | 노트          | 게시판에 작성된 글                     |
+| 도메인         | 영문            | 국문          | 의미                                  |
+| -------------- | --------------- | ------------- | ------------------------------------- |
+| Company        | Company         | 인테리어 업체 |                                       |
+| Project        | Project         | 프로젝트      |                                       |
+| Offer          | Offer           | 섭외          | 기술자 섭외                           |
+| Drive          | Drive           | 공유 저장소   | 원격 파일 · 이미지 저장소             |
+| Drive          | DriveMember     | 저장소 멤버   | 저장소 접근 권한                      |
+| Board          | Board           | 게시판        | 프로젝트 · 저장소별 게시판. 자동 생성 |
+| Board          | Note            | 노트          | 게시판에 작성된 글                    |
+| Member         | Member          | 회원          | 사용자                                |
+| Auth           | Otp             | 인증코드      | 본인확인용 6자리 코드                 |
+| Auth           | SignupToken     | 가입 토큰     | 미가입자 회원가입용 임시 토큰         |
+| Auth           | Session         | 세션          | 로그인 정보. IP · Agent 등            |
+| Auth           | Access Token    | 액세스 토큰   |                                       |
+| Auth           | Refresh Token   | 리프레시 토큰 | 액세스 토큰 재발급용 토큰             |
+| Profile        | Profile         | 프로필        | 사용자 프로필                         |
+| Task           | Task            | 작업          | 프로젝트 공종별 작업 단위             |
+| Post           | Post            | 게시글        | 사진 · 본문 단위                      |
+| Post           |                 | 작업물        | 게시글 + 작업 View                    |
+| Post           | Feed            | 피드          | 게시글 + 작업 + 프로필 + 회원 View    |
+| Coworker       | Coworker        | 동료          | 동료 기술자                           |
+| Coworker       | CoworkerRequest | 동료 요청     |                                       |
+| Recommendation | Recommendation  | 추천서        | 동료 기술자가 작성한 추천서           |
+| Chat           | GroupChat       | 그룹 채팅방   | 채팅방 제목 있음                      |
+| Chat           | DirectChat      | 1:1 채팅방    | 채팅방 제목 없음                      |
+| Chat           | Message         | 메시지        |                                       |
+| Chat           | Participant     | 참여자        | 그룹 채팅방 참여자 정보               |
+| Credential     | Credential      | 자격 증명     | 면허 · 자격 · 보험 등                 |
+| Attachment     | Attachment      | 첨부          | 업로드 파일 메타데이터                |
+| Attachment     | Signed cookie   |               | CloudFront 접근 권한                  |
 
 ## 열거형 (Enum)
 
 ### 회원 역할(Role)
 
-| 유형   | 설명                              |
-| ------ | --------------------------------- |
-| SIGNUP | 회원가입 (본인인증 완료 · 미가입) |
-| GUEST  | 게스트 (가입 완료 · 앱 미확정)    |
-| CAREER | 기술자                            |
-| PLAN   | 업체                              |
-| ADMIN  | 어드민                            |
+| 유형   | 설명                             |
+| ------ | -------------------------------- |
+| SIGNUP | 회원가입. 본인인증 완료 · 미가입 |
+| GUEST  | 게스트. 가입 완료 · 앱 미확정    |
+| CAREER | 기술자                           |
+| PLAN   | 업체                             |
+| ADMIN  | 어드민                           |
 
-회원은 역할을 복수로 보유한다. SIGNUP 는 저장되지 않으며 OTP · 가입 토큰 인증 시에만 부여된다.
+회원은 역할을 복수로 보유한다.
+
+- SIGNUP 는 저장되지 않는다
+- SIGNUP 는 OTP · 가입 토큰 인증 시에만 부여된다
 
 ### 프로필 역할(ProfileRole)
 
@@ -147,6 +152,9 @@ graph TD
 | 현장지원  | TRANSPORT        | 운송      |
 | 현장지원  | CLEANING         | 청소      |
 | 현장지원  | GENERAL_LABOR    | 보통인부  |
+| 생활      | HOME_REPAIR      | 집수리    |
+| 생활      | BATHROOM         | 욕실      |
+| 생활      | DISINFECTION     | 방역      |
 
 ### 작업 유형(TaskType)
 
@@ -155,14 +163,27 @@ graph TD
 | WORKER  | 기술자 작업   |
 | PROJECT | 프로젝트 작업 |
 
-### 작업 상태(TaskStatus)
+### 섭외 상태(TaskStatus)
+
+시스템 전용. 사용자가 직접 변경할 수 없다.
+
+| 유형     | 프로젝트(업체) | 기술자    | 전환 시점                           |
+| -------- | -------------- | --------- | ----------------------------------- |
+| NONE     | 섭외 전        | 해당 없음 | 생성 시 · 대기열 소진 · 할당 취소   |
+| OPEN     | 모집 중        | 지원 완료 | 미사용                              |
+| OFFERED  | 섭외 중        | 섭외 받음 | 섭외 생성 · 대기열의 다음 후보 승격 |
+| ASSIGNED | 섭외 됨        | 시공 예정 | 기술자가 섭외 수락                  |
+
+### 진행 상태(TaskProgress)
+
+작업 기간과 무관하다. 기간은 start · end 를 말한다.
+
+- 자동 전환되지 않는다
+- 사용자가 직접 변경한다
 
 | 유형        | 프로젝트(업체) | 기술자    |
 | ----------- | -------------- | --------- |
-| DRAFT       | 시작 전        | 시작 전   |
-| OPEN        | 모집 중        | 지원 완료 |
-| OFFERED     | 섭외 중        | 섭외 받음 |
-| SCHEDULED   | 섭외 됨        | 시공 전   |
+| TODO        | 시작 전        | 시작 전   |
 | IN_PROGRESS | 진행 중        | 진행 중   |
 | COMPLETED   | 시공 완료      | 시공 완료 |
 
@@ -171,6 +192,7 @@ graph TD
 | 유형     | 설명      |
 | -------- | --------- |
 | NONE     | 관계없음  |
+| SELF     | 나 자신   |
 | SENT     | 보낸 요청 |
 | RECEIVED | 받은 요청 |
 | COWORKER | 동료      |
@@ -192,7 +214,7 @@ graph TD
 | SYSTEM | 시스템 |
 | OFFER  | 섭외   |
 
-### 인증뱃지 유형(CredentialType)
+### 자격 증명 유형(CredentialType)
 
 | 유형                             | 설명           |
 | -------------------------------- | -------------- |

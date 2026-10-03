@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold FileInput 합성 폼 래퍼 — label/description/error + RHF(control+name) 배선 (#586)
+ * @figma-todo 파일 필드 코드 전용
  */
 'use client'
 

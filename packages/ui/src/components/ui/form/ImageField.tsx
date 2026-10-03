@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold ImageInput 합성 폼 래퍼 — label/description/error + RHF(control+name) 배선 (#424)
+ * @figma-todo 이미지 필드 코드 전용
  */
 'use client'
 

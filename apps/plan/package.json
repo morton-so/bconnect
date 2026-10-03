@@ -2,12 +2,16 @@
   "name": "@bconnect/plan",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
-    "dev": "next dev -p ${PLAN_PORT:-$(../../scripts/dev-port.sh plan)}",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "msw:init": "msw init public --save"
   },
   "dependencies": {
     "@bconnect/api-client": "workspace:*",
@@ -33,7 +37,6 @@
   "devDependencies": {
     "@bconnect/config": "workspace:*",
     "@bconnect/devtools": "workspace:*",
-    "@bconnect/mocks": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",

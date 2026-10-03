@@ -7,13 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import to.bconnect.api.common.CommonExceptionCode;
 import to.bconnect.api.support.fixture.CursorFactory;
 import to.bconnect.api.storage.attachment.AttachmentRepository;
-import to.bconnect.api.storage.attachment.ReferenceType;
+import to.bconnect.api.storage.attachment.AttachmentReferenceType;
 import to.bconnect.api.storage.member.MemberRepository;
 import to.bconnect.api.storage.member.Role;
 import to.bconnect.api.support.IntegrationTest;
 import to.bconnect.api.support.fixture.AttachmentFactory;
 import to.bconnect.api.support.fixture.MemberFactory;
 import to.bconnect.api.support.fixture.UserFactory;
+
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static to.bconnect.api.support.CodeExceptionAssert.assertCodeException;
@@ -125,7 +127,7 @@ class MemberServiceTest {
         val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
         val linked = attachmentRepository.save(AttachmentFactory.entity(member.getId(), member.getId()));
         linked.complete();
-        linked.link(ReferenceType.MEMBER, member.getId());
+        linked.link(AttachmentReferenceType.MEMBER, member.getId());
         val picture = attachmentRepository.save(AttachmentFactory.entity(member.getId(), member.getId()));
         picture.complete();
         val user = UserFactory.domain(member.getId(), Role.CAREER);
@@ -138,7 +140,7 @@ class MemberServiceTest {
         assertThat(replaced.getReferenceType()).isNull();
         assertThat(replaced.getReferenceId()).isNull();
         val found = attachmentRepository.findById(picture.getId()).orElseThrow();
-        assertThat(found.getReferenceType()).isEqualTo(ReferenceType.MEMBER);
+        assertThat(found.getReferenceType()).isEqualTo(AttachmentReferenceType.MEMBER);
         assertThat(found.getReferenceId()).isEqualTo(member.getId());
     }
 
@@ -149,7 +151,7 @@ class MemberServiceTest {
         val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
         val linked = attachmentRepository.save(AttachmentFactory.entity(member.getId(), member.getId()));
         linked.complete();
-        linked.link(ReferenceType.MEMBER, member.getId());
+        linked.link(AttachmentReferenceType.MEMBER, member.getId());
         val user = UserFactory.domain(member.getId(), Role.CAREER);
 
         // when
@@ -208,6 +210,18 @@ class MemberServiceTest {
         // when & then
         assertCodeException(() -> memberService.register("01000001001", command))
                 .hasExceptionCode(MemberExceptionCode.DUPLICATE_PHONE);
+    }
+
+    @Test
+    @DisplayName("register - 만 15세 미만일 때 등록하면 UNDERAGE로 실패한다")
+    void register_fail_M004() {
+        // given
+        val birth = LocalDate.now().minusYears(15).plusDays(1);
+        val command = MemberFactory.registerCommand(birth);
+
+        // when & then
+        assertCodeException(() -> memberService.register("01000001001", command))
+                .hasExceptionCode(MemberExceptionCode.UNDERAGE);
     }
 
     @Test

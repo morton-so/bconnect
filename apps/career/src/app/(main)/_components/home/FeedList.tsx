@@ -104,7 +104,6 @@ export function FeedList() {
         />
       ))}
 
-      {/* Infinite scroll sentinel */}
       <div ref={observerRef} className="h-1" />
 
       {isFetchingNextPage && (

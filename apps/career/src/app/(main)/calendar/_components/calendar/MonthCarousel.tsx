@@ -1,45 +1,47 @@
 'use client'
 
-import { monthShift } from './date-helpers'
+import { gridRangeOf, monthShift } from './date-helpers'
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@bconnect/ui'
 import { useEffect, useState } from 'react'
-import { useMonthTasks } from '@/app/(main)/calendar/_hooks/useMonthTasks'
 import { CalendarMonth } from './CalendarMonth'
+import type { CalendarBarTask } from './types'
 
 interface MonthCarouselProps {
   month: string
+  tasks: CalendarBarTask[]
   selectedDay: string
   onSelectDay: (iso: string) => void
   onMonthChange: (monthIso: string) => void
 }
 
-/** 한 슬라이드 = 한 달. 슬라이드마다 자체 조회(React Query 키로 dedup/프리페치). */
+/** 한 슬라이드 = 한 달 */
 function MonthSlide({
   month,
+  tasks,
   selectedDay,
   onSelectDay,
 }: {
   month: string
+  tasks: CalendarBarTask[]
   selectedDay: string
   onSelectDay: (iso: string) => void
 }) {
-  const { tasks } = useMonthTasks(month)
+  const { start, end } = gridRangeOf(month)
+  const monthTasks = tasks.filter((task) => task.start <= end && task.end >= start)
   return (
     <CalendarMonth
       monthIso={month}
-      tasks={tasks}
+      tasks={monthTasks}
       selectedDay={selectedDay}
       onSelectDay={onSelectDay}
     />
   )
 }
 
-/**
- * 모바일 좌우 스와이프 월 이동. [prev, current, next] 3슬라이드를 startIndex 1 로 띄우고,
- * 측면 슬라이드로 착지하면 ?month= 를 갱신 → 슬라이드 재구성 후 무애니로 중앙(1) 복귀.
- */
+/** 모바일 좌우 스와이프 이동 */
 export function MonthCarousel({
   month,
+  tasks,
   selectedDay,
   onSelectDay,
   onMonthChange,
@@ -60,13 +62,11 @@ export function MonthCarousel({
     }
   }, [api, month, onMonthChange])
 
-  // month(자식 슬라이드) 변경 시 중앙으로 무애니 재정렬
   useEffect(() => {
     if (api) api.scrollTo(1, true)
   }, [api, month])
 
-  // auto-height — 트랙 높이를 활성(현재 월) 슬라이드에 맞춤.
-  // 안 하면 flex 트랙이 가장 큰 이웃 달(6주)에 stretch 돼 5주 달 아래 빈 공간이 생김.
+  // 슬라이드 높이 자동 조정
   useEffect(() => {
     if (!api) return
     const setHeight = () => {
@@ -88,7 +88,12 @@ export function MonthCarousel({
       <CarouselContent className="ml-0 items-start">
         {months.map((m) => (
           <CarouselItem key={m} className="pl-0">
-            <MonthSlide month={m} selectedDay={selectedDay} onSelectDay={onSelectDay} />
+            <MonthSlide
+              month={m}
+              tasks={tasks}
+              selectedDay={selectedDay}
+              onSelectDay={onSelectDay}
+            />
           </CarouselItem>
         ))}
       </CarouselContent>

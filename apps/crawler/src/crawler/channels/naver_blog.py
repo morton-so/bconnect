@@ -160,6 +160,22 @@ def _extract_post_content_url(blog_url: str) -> str | None:
     return None
 
 
+def _post_log_no(url: str) -> str | None:
+    """블로그 글 URL에서 글 번호(logNo)를 뽑는다.
+
+    ``?fromRss=true`` 같은 꾸밈이나 URL 형식 차이를 무시하고 같은 글인지 판별하는 키.
+    ``blog.naver.com/<id>/<logNo>`` 와 ``PostView.naver?logNo=<logNo>`` 두 형태를 모두 처리한다.
+    """
+    parsed = urlparse(url)
+    log_no = parse_qs(parsed.query).get("logNo")
+    if log_no:
+        return log_no[0]
+    parts = parsed.path.strip("/").split("/")
+    if len(parts) >= 2 and parts[1].isdigit():
+        return parts[1]
+    return None
+
+
 # 글당 본문 이미지 수집 상한
 IMAGES_PER_POST = 5
 # 블로거당 시공 사례 글 수집 상한 (검색 글 1 + RSS 최근 글)
@@ -446,6 +462,40 @@ async def fetch_business_info(blog_id: str, html_fallback: dict | None = None) -
     return {}
 
 
+async def fetch_external_channels(blog_id: str) -> dict:
+    """블로그 프로필에 연결된 외부 채널을 조회한다.
+
+    프로필 화면의 링크 영역은 JS 렌더라 HTML 파싱으로 안 잡히고, 전용 API 로만 얻는다.
+    반환: {"youtube": url, "instagram": url, "external": url} — 없는 키는 생략.
+    external 은 유튜브·인스타 외 첫 채널(카카오 채널·홈페이지 등).
+    """
+    url = f"https://m.blog.naver.com/api/blogs/{blog_id}/external-channel"
+    headers = {
+        "Referer": f"https://m.blog.naver.com/{blog_id}",
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+    }
+    try:
+        resp = await _naver_get(url, headers=headers)
+        data = resp.json()
+    except Exception:
+        log.debug("외부 채널 조회 실패: %s", blog_id)
+        return {}
+
+    if not data.get("isSuccess"):
+        return {}
+
+    channels: dict = {}
+    for item in data.get("result", {}).get("externalChannelViewList", []):
+        if not item.get("enable") or not item.get("url"):
+            continue
+        kind = item.get("type")
+        if kind in ("youtube", "instagram"):
+            channels.setdefault(kind, item["url"])
+        else:
+            channels.setdefault("external", item["url"])
+    return channels
+
+
 def extract_blog_id(blog_url: str) -> str | None:
     """블로그 URL에서 블로거 ID를 추출한다."""
     parsed = urlparse(blog_url)
@@ -536,7 +586,7 @@ async def explore_blogger(blog_url: str) -> dict:
             "profile_image_url": "",
             "posts": [{
                 "title": post["title"],
-                "content": post["about"][:1000],
+                "content": post["about"],
                 "images": post["images"],
                 "source_url": blog_url,
             }] if (post["about"] or post["images"]) else [],
@@ -546,10 +596,11 @@ async def explore_blogger(blog_url: str) -> dict:
     blog_home_url = f"https://blog.naver.com/{blog_id}"
 
     # 1-3. 프로필·스킨 이미지·게시글을 병렬 수집 (독립적 요청)
-    profile, skin_images, main_post = await asyncio.gather(
+    profile, skin_images, main_post, external_channels = await asyncio.gather(
         fetch_blog_profile(blog_id),
         fetch_blog_skin_images(blog_id),
         fetch_blog_post(blog_url),
+        fetch_external_channels(blog_id),
     )
     banner_image_url = skin_images["banner"]
     footer_image_url = skin_images["footer"]
@@ -568,14 +619,22 @@ async def explore_blogger(blog_url: str) -> dict:
 
     # 4. 최근 글 수집 — 시공 사례(posts) + 연락처 폴백 겸용
     recent_urls = await fetch_blogger_posts(blog_id, count=20)
-    recent_urls = [u for u in recent_urls if u != blog_url]
+    seen_log_nos = {_post_log_no(blog_url)}
+    deduped_urls = []
+    for u in recent_urls:
+        log_no = _post_log_no(u)
+        if log_no is not None and log_no in seen_log_nos:
+            continue
+        seen_log_nos.add(log_no)
+        deduped_urls.append(u)
+    recent_urls = deduped_urls
     fetched = await asyncio.gather(*(_safe_fetch(u) for u in recent_urls[: POSTS_PER_MEMBER - 1]))
     collected = [(blog_url, main_post)] + [(u, p) for u, p in fetched if p is not None]
 
     posts = [
         {
             "title": post["title"],
-            "content": post["about"][:1000],
+            "content": post["about"],
             "images": post["images"],
             "source_url": url,
         }
@@ -628,6 +687,9 @@ async def explore_blogger(blog_url: str) -> dict:
         "footer_image_url": footer_image_url,
         "profile_image_url": profile["profile_image_url"],
         "cover_image_url": main_post["cover_image_url"],
+        "youtube_url": external_channels.get("youtube", ""),
+        "instagram_url": external_channels.get("instagram", ""),
+        "external_url": external_channels.get("external", ""),
         "posts": posts,  # 시공 사례 글 (제목·본문·사진·출처)
         "source_urls": source_urls,
         "phone_source": phone_source,  # "profile" | "post" | ""

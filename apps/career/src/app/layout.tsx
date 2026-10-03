@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
-import '@bconnect/ui/styles'
+import '@bconnect/ui/styles.css'
 import { SERVICE_NAME, SITE_URL, BRAND_COLOR } from '@bconnect/config/site'
 import { Providers } from './providers'
 import { Analytics } from '@vercel/analytics/next'
@@ -21,6 +21,9 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: 'cover',
+  // 기본값 resizes-visual 은 키보드가 떠도 layout viewport 를 줄이지 않아
+  // 채팅방의 h-dvh 컨테이너가 키보드 뒤로 밀리고 하단에 빈 공간이 남는다.
+  interactiveWidget: 'resizes-content',
   themeColor: BRAND_COLOR,
 }
 

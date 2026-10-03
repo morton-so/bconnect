@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 동산보드 폴더 — career, 와이어프레임만 (SPRINT4 pre-build, 기획 node-id=1095-426/1105-483)
+ * @figma-todo 동산보드 폴더 페이지 디자인 미정
  */
 import { Suspense } from 'react'
 import { CareerFolderView } from './_adapters/CareerFolderView'

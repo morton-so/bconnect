@@ -1,28 +1,19 @@
 @import 'tailwindcss';
 
-@source "../../apps/career/src/**/*.{ts,tsx}";
-@source "../../apps/plan/src/**/*.{ts,tsx}";
-@source "../components/**/*.{ts,tsx}";
-@source "../../../features/src/**/*.{ts,tsx}";
+@source '../../apps/career/src/**/*.{ts,tsx}';
+@source '../../apps/plan/src/**/*.{ts,tsx}';
+@source '../components/**/*.{ts,tsx}';
+@source '../../../features/src/**/*.{ts,tsx}';
+@source '../../../push/src/**/*.{ts,tsx}';
 
 /**
  * Morton Design System — Design Tokens (Color), Typography, Font
  *
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=603-4661
- *
- * SSOT는 Figma Variables다 (ADR-0012). 이 파일은 Figma Variables를 코드로
- * sync한 결과물 — 토큰은 Figma에서 먼저 바꾸고 그 뒤 이 파일에 반영한다.
- * 구조: Primitive(원시 팔레트) + Semantic(역할) 2-layer.
- * 네이밍 컨벤션 / 새 토큰 추가 절차는 packages/ui/CLAUDE.md 참조.
- */
-
 /* ==============================================================
    Design Tokens (ADR-0012) — Primitive / Semantic 2-layer
    ============================================================== */
 @theme {
-  /* --- Layer 1 · Primitive — brand 색 스케일 ---------------------
-     비-brand 색(gray·red·orange·green …)은 Tailwind v4 기본 팔레트를
-     그대로 쓴다. 여기서 재정의하지 않는다 (ADR-0012 §3). */
+  /* Layer 1 · Primitive — brand 색 스케일 */
 
   /* primary — brand 앵커 #386dff @ 500 (https://uicolors.app/generate/386dff) */
   --color-primary-50: #eef4ff;
@@ -50,10 +41,7 @@
   --color-secondary-900: #312e81;
   --color-secondary-950: #1e1b4b;
 
-  /* --- Layer 2 · Semantic — 역할 토큰 ---------------------------
-     "이 색을 어디에 쓰는가". shadcn 토큰 어휘를 semantic 계층으로
-     쓰고, 값은 Layer 1(brand 스케일 · Tailwind 팔레트)을 alias 한다
-     (ADR-0012 §4·§7). */
+  /* Layer 2 · Semantic — 역할 토큰  */
 
   /* surface — 배경 · 표면 */
   --color-background: #ffffff;
@@ -141,38 +129,6 @@
   --text-r-14--line-height: 1.6;
   --text-r-12: 0.75rem;
   --text-r-12--line-height: 1.6;
-}
-
-/* Dark mode 스캐폴드 — 1차 범위 외 (ADR-0012 §6).
-   theme provider / 토글이 아직 없어 현재 비활성. 다크 도입 시 이 블록의
-   semantic 값만 검수하면 된다 — Layer 2 토큰을 다크용 primitive step 으로
-   재매핑하는 구조. brand 색은 다크 배경에서 한 단계 밝은 step 을 쓴다. */
-.dark {
-  /* surface */
-  --color-background: var(--color-gray-950);
-  --color-foreground: var(--color-gray-50);
-  --color-card: var(--color-gray-900);
-  --color-card-foreground: var(--color-gray-50);
-  --color-popover: var(--color-gray-900);
-  --color-popover-foreground: var(--color-gray-50);
-  --color-muted: var(--color-gray-800);
-  --color-muted-foreground: var(--color-gray-400);
-  --color-accent: var(--color-gray-800);
-  --color-accent-foreground: var(--color-gray-50);
-
-  /* action */
-  --color-primary: var(--color-primary-400);
-  --color-primary-foreground: var(--color-gray-950);
-  --color-secondary: var(--color-secondary-800);
-  --color-secondary-foreground: var(--color-gray-50);
-  --color-ring: var(--color-primary-400);
-
-  /* feedback */
-  --color-destructive: var(--color-red-400);
-
-  /* border */
-  --color-border: var(--color-gray-800);
-  --color-input: var(--color-gray-800);
 }
 
 @keyframes accordion-down {

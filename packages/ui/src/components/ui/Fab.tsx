@@ -1,5 +1,5 @@
 /**
- * @figma-scaffold 동산보드 플로팅 액션 버튼 — 디자인 미정, 폴더 생성/이미지 업로드 진입 (SPRINT4 공유 저장소 pre-build)
+ * @figma-todo 플로팅 액션 버튼 디자인 미정
  */
 'use client'
 

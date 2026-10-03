@@ -7,7 +7,12 @@ export {
   ApiError,
 } from './client'
 
-export { AUTH_HINT_COOKIE, setAuthHint, clearAuthHint, hasAuthHint } from './auth-hint'
+export { AUTH_HINT_COOKIE, setAuthHint, clearAuthHint, readAuthHint } from './auth-hint'
+export { useAuthHint } from './use-auth-hint'
+
+export { isApiError } from './errors'
+
+export { requireRegisterAccessToken } from './register'
 
 export { getQueryClient, queryClientConfig } from './query-client'
 

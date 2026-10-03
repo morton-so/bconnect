@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import type { CheckItemId } from '@bconnect/business/types'
-import { fetchCheckItemById } from '@bconnect/business/fetch-business'
+import type { CheckItemId } from '@bconnect/features/one-click'
+import { fetchCheckItemById } from '@bconnect/features/one-click'
 import { CATEGORY_GROUPS } from './constants'
 import { AccordionShell, DetailAccordionItem } from './DetailAccordion'
 
