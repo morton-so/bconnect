@@ -1,23 +1,12 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@bconnect/config/site'
 
-const isProdDeploy = (process.env.NEXT_PUBLIC_VERCEL_ENV ?? process.env.VERCEL_ENV) === 'production'
-
 export default function robots(): MetadataRoute.Robots {
-  if (!isProdDeploy) {
-    return {
-      rules: {
-        userAgent: '*',
-        disallow: '/',
-      },
-    }
-  }
-
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/login', '/signup', '/api/'],
+      disallow: ['/login', '/signup', '/projects', '/*panel='],
     },
     sitemap: `${SITE_URL.plan}/sitemap.xml`,
   }
