@@ -20,7 +20,6 @@ SHARED_FILES="
 apps/api/.envrc.local
 apps/career/.envrc.local
 apps/company/.envrc.local
-apps/crawler/.envrc.local
 apps/plan/.envrc.local
 infra/terraform.tfvars
 "
