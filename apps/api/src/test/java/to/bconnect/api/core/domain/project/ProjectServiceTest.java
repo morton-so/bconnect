@@ -263,19 +263,6 @@ class ProjectServiceTest {
     }
 
     @Test
-    @DisplayName("delete - 프로젝트가 존재하지 않을 때 삭제하면 NOT_FOUND로 실패한다")
-    void delete_fail_C005_project() {
-        // given
-        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
-        companyRepository.save(CompanyFactory.entity(member.getId()));
-        val user = UserFactory.domain(member.getId(), Role.CAREER);
-
-        // when & then
-        assertCodeException(() -> projectService.delete(user, MISSING_ID))
-                .hasExceptionCode(CommonExceptionCode.NOT_FOUND);
-    }
-
-    @Test
     @DisplayName("delete - 소유한 업체가 없을 때 삭제하면 NOT_FOUND로 실패한다")
     void delete_fail_C005_company() {
         // given

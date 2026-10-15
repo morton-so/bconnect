@@ -222,17 +222,6 @@ class RecommendationServiceTest {
     }
 
     @Test
-    @DisplayName("delete - 추천서가 존재하지 않을 때 삭제하면 NOT_FOUND로 실패한다")
-    void delete_fail_C005() {
-        // given
-        val user = UserFactory.domain(MISSING_ID, Role.CAREER);
-
-        // when & then
-        assertCodeException(() -> recommendationService.delete(user, MISSING_ID))
-                .hasExceptionCode(CommonExceptionCode.NOT_FOUND);
-    }
-
-    @Test
     @DisplayName("hide - 받은 사람이 아닐 때 숨기면 FORBIDDEN으로 실패한다")
     void hide_fail_C004() {
         // given

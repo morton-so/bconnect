@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -27,13 +28,10 @@ public class AttachmentFinder {
     private final AttachmentRepository attachmentRepository;
 
     @Transactional(readOnly = true)
-    public Attachment get(AttachmentReferenceType referenceType, Long referenceId, Long attachmentId) {
-        val attachment = attachmentRepository.findById(attachmentId).
-                orElseThrow(() -> new CodeException(AttachmentExceptionCode.NOT_FOUND));
-        if (attachment.getReferenceType() != referenceType || !Objects.equals(referenceId, attachment.getReferenceId()))
-            throw new CodeException(AttachmentExceptionCode.INVALID_LINKED);
-
-        return Attachment.of(attachment);
+    public Optional<Attachment> get(AttachmentReferenceType referenceType, Long referenceId, Long attachmentId) {
+        return attachmentRepository.findById(attachmentId)
+                .filter(it -> it.getReferenceType() == referenceType && Objects.equals(referenceId, it.getReferenceId()))
+                .map(Attachment::of);
     }
 
     /**

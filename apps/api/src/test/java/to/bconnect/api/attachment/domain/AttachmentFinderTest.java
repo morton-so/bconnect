@@ -39,7 +39,7 @@ class AttachmentFinderTest {
         attachment.link(AttachmentReferenceType.POST, member.getId());
 
         // when
-        val found = attachmentFinder.get(AttachmentReferenceType.POST, member.getId(), attachment.getId());
+        val found = attachmentFinder.get(AttachmentReferenceType.POST, member.getId(), attachment.getId()).orElseThrow();
 
         // then
         assertThat(found.id()).isEqualTo(attachment.getId());
@@ -160,42 +160,6 @@ class AttachmentFinderTest {
         // when & then
         assertThatCode(() -> attachmentFinder.validateOwnership(member.getId(), List.of(first.getId(), second.getId())))
                 .doesNotThrowAnyException();
-    }
-
-    @Test
-    @DisplayName("get - 참조 타입이 다른 첨부일 때 조회하면 INVALID_LINKED로 실패한다")
-    void get_fail_AT005_type() {
-        // given
-        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
-        val attachment = attachmentRepository.save(AttachmentFactory.entity(member.getId(), member.getId()));
-        attachment.complete();
-        attachment.link(AttachmentReferenceType.POST, 1L);
-
-        // when & then
-        assertCodeException(() -> attachmentFinder.get(AttachmentReferenceType.MEMBER, 1L, attachment.getId()))
-                .hasExceptionCode(AttachmentExceptionCode.INVALID_LINKED);
-    }
-
-    @Test
-    @DisplayName("get - 참조 식별자가 다른 첨부일 때 조회하면 INVALID_LINKED로 실패한다")
-    void get_fail_AT005_id() {
-        // given
-        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
-        val attachment = attachmentRepository.save(AttachmentFactory.entity(member.getId(), member.getId()));
-        attachment.complete();
-        attachment.link(AttachmentReferenceType.POST, 1L);
-
-        // when & then
-        assertCodeException(() -> attachmentFinder.get(AttachmentReferenceType.POST, 2L, attachment.getId()))
-                .hasExceptionCode(AttachmentExceptionCode.INVALID_LINKED);
-    }
-
-    @Test
-    @DisplayName("get - 첨부가 존재하지 않을 때 조회하면 NOT_FOUND로 실패한다")
-    void get_fail_AT006() {
-        // when & then
-        assertCodeException(() -> attachmentFinder.get(AttachmentReferenceType.POST, 1L, MISSING_ID))
-                .hasExceptionCode(AttachmentExceptionCode.NOT_FOUND);
     }
 
     @Test

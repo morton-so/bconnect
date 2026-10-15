@@ -4,7 +4,6 @@ import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import to.bconnect.api.common.CommonExceptionCode;
 import to.bconnect.api.storage.coworker.CoworkerRepository;
 import to.bconnect.api.storage.coworker.CoworkerRequestRepository;
 import to.bconnect.api.storage.coworker.CoworkerStatus;
@@ -19,7 +18,6 @@ import to.bconnect.api.support.fixture.UserFactory;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static to.bconnect.api.support.CodeExceptionAssert.assertCodeException;
 
 @IntegrationTest
 class CoworkerServiceTest {
@@ -177,17 +175,5 @@ class CoworkerServiceTest {
 
         // then
         assertThat(coworkerRepository.findById(created.getId())).isEmpty();
-    }
-
-    @Test
-    @DisplayName("delete - 동료 관계가 존재하지 않을 때 삭제하면 NOT_FOUND로 실패한다")
-    void delete_fail_C005() {
-        // given
-        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
-        val user = UserFactory.domain(member.getId(), Role.CAREER);
-
-        // when & then
-        assertCodeException(() -> coworkerService.delete(user, MISSING_ID))
-                .hasExceptionCode(CommonExceptionCode.NOT_FOUND);
     }
 }

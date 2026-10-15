@@ -106,10 +106,11 @@ public class GroupChatService {
 
     @Transactional
     public void leave(Long memberId, Long chatId) {
-        val found = participantRepository.findByChatIdAndMemberId(chatId, memberId)
-                .orElseThrow(() -> new CodeException(CommonExceptionCode.FORBIDDEN));
+        val optional = participantRepository.findByChatIdAndMemberId(chatId, memberId);
+        if (optional.isEmpty())
+            return;
 
-        participantRepository.delete(found);
+        participantRepository.delete(optional.get());
 
         if (participantRepository.countByChatId(chatId) > 0) return;
 

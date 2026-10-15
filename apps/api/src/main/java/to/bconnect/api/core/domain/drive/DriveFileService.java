@@ -86,7 +86,11 @@ public class DriveFileService {
         val found = driveRepository.findById(driveId)
                 .orElseThrow(() -> new CodeException(CommonExceptionCode.NOT_FOUND));
 
-        val attachment = attachmentFinder.get(AttachmentReferenceType.DRIVE, driveId, attachmentId);
+        val optional = attachmentFinder.get(AttachmentReferenceType.DRIVE, driveId, attachmentId);
+        if (optional.isEmpty())
+            return;
+
+        val attachment = optional.get();
         attachmentLinker.unlink(AttachmentReferenceType.DRIVE, driveId, attachmentId);
 
         // decrease usage

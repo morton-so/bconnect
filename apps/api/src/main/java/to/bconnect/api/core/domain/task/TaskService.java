@@ -151,7 +151,7 @@ public class TaskService {
             throw new CodeException(TaskExceptionCode.INVALID_TYPE);
 
         if (found.getStatus() != TaskStatus.ASSIGNED)
-            throw new CodeException(TaskExceptionCode.NOT_ASSIGNED);
+            return;
 
         if (!user.id().equals(found.getWorkerId()) && !projectFinder.isOwner(user.id(), found.getProjectId()))
             throw new CodeException(CommonExceptionCode.FORBIDDEN);
