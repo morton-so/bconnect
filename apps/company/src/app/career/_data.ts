@@ -16,22 +16,22 @@ export const PROBLEM = {
 
 export const FEATURES: { icon: string; title: string; desc: string }[] = [
   {
-    icon: '/landing/feature-schedule.svg',
+    icon: '/icons/feature-schedule.svg',
     title: '팀 일정 공유',
     desc: '현장명, 위치, 시간을 한 번에 확인하고 팀원과 일감을 간편하게 공유해요',
   },
   {
-    icon: '/landing/feature-settlement-career.svg',
+    icon: '/icons/feature-settlement-career.svg',
     title: '투명한 정산 시스템',
     desc: '안심하고 일만 할 수 있도록, 대금 지급 현황을 한눈에 확인할 수 있어요',
   },
   {
-    icon: '/landing/feature-spec.svg',
+    icon: '/icons/feature-spec.svg',
     title: '나만의 스펙 쌓기',
     desc: "품앗이에서 만든 이력과 평가가 사장님들이 먼저 찾는 '스펙'이 되게 만들어요",
   },
   {
-    icon: '/landing/feature-jobs.svg',
+    icon: '/icons/feature-jobs.svg',
     title: '전국 일자리 공고',
     desc: '인테리어, 팀 구인 공고를 한 곳에 전부 모았어요',
   },
@@ -54,7 +54,7 @@ export const PREVIEWS: {
       '현장별 메모와 사진 기록',
       '팀원들과 실시간 일정 공유',
     ],
-    image: '/landing/preview-calendar.png',
+    image: '/images/preview-calendar.png',
     imageAlt: '품앗이 캘린더 일정 화면',
   },
   {
@@ -66,7 +66,7 @@ export const PREVIEWS: {
       '나만의 이력으로 만드는 퍼스널 브랜딩',
       '평가가 쌓여 신뢰 자산으로',
     ],
-    image: '/landing/preview-portfolio.png',
+    image: '/images/preview-portfolio.png',
     imageAlt: '품앗이 작업 포트폴리오 화면',
   },
 ]

@@ -15,22 +15,22 @@ export const PROBLEM = {
 
 export const FEATURES: { icon: string; title: string; desc: string }[] = [
   {
-    icon: '/landing/feature-comm.svg',
+    icon: '/icons/feature-comm.svg',
     title: '한 번에 끝내는 소통',
     desc: '일정이랑 견적, 일일이 통화하지 마세요. 품앗이에서 한 번에 해결해요.',
   },
   {
-    icon: '/landing/feature-settlement.svg',
+    icon: '/icons/feature-settlement.svg',
     title: '간편한 통합 정산',
     desc: '여러 기술자에게 나갈 대금, 품앗이가 프로젝트별로 알아서 정산해드려요.',
   },
   {
-    icon: '/landing/feature-labor.svg',
+    icon: '/icons/feature-labor.svg',
     title: '빈틈없이 바로 찾는 인력',
     desc: '공정표를 보고 필요한 공정에 맞는 기술자를 바로 섭외할 수 있어요.',
   },
   {
-    icon: '/landing/feature-monitor.svg',
+    icon: '/icons/feature-monitor.svg',
     title: '실시간 현장 모니터링',
     desc: '현장에 매일 가지 않아도 사진과 작업 보고로 상황을 한눈에 파악하세요.',
   },
@@ -44,7 +44,7 @@ export const PREVIEW = {
     '간트 차트 기반 공정표로 작업별 일정과 상태를 한눈에 파악',
     '클릭 한 번으로 섭외되는 기술자 자동 추천 서비스',
   ],
-  image: '/landing/schedule.png',
+  image: '/images/schedule.png',
   imageAlt: '품앗이 공정표 및 기술자 섭외 화면',
 }
 

@@ -6,7 +6,7 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-primary-600">
       <Image
-        src="/landing/hero-tools.png"
+        src="/images/hero-tools.png"
         alt=""
         fill
         priority
