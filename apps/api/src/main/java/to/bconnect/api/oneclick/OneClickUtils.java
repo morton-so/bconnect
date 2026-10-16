@@ -47,7 +47,7 @@ public final class OneClickUtils {
     }
 
     // 법인격 표기와 로마자 등 병기를 제거하고 공백을 없앤다 (등기예규 제6조 제1항)
-    // packages/data-jobs 의 normalizeCompanyName 과 동일 규칙
+    // packages/batch 의 normalizeCompanyName 과 동일 규칙
     public static String normalize(String name) {
         var result = LEGAL_FORM_ABBR.matcher(name).replaceAll("");
 

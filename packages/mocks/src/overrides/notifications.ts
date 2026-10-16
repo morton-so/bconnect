@@ -7,12 +7,8 @@ import {
 } from '@bconnect/api-client/msw'
 import type { Notification } from '@bconnect/api-client'
 
-// 알림 목록·읽음 상태 stateful override — faker 랜덤이면 커서 페이지네이션이
-// (임의 hasNext/nextCursor 로) 무한 반복되고, 읽음 처리 후에도 뱃지가 안 줄어 GUI 검증 불가.
-
 const MOCK_MEMBER_ID = 1
 
-// BE NotificationType 의 템플릿 미러 — 문구가 갈리면 mock 이 실제와 달라진다.
 const TEMPLATES: Record<string, string> = {
   CHAT_MESSAGE: '%s님이 메시지를 보냈습니다',
   SIGNUP_WELCOME: '회원가입을 축하드립니다',
@@ -33,7 +29,6 @@ const REFERENCE_TYPE: Record<string, NotificationReferenceType | null> = {
 
 interface NotificationSeed {
   type: string
-  /** 빈 문자열이면 시스템 발신(가입 축하·프로필 완성) — 발신자 카드 없음 */
   senderName: string
   senderType: NotificationSenderType
   daysAgo: number
@@ -129,10 +124,8 @@ const SEEDS: NotificationSeed[] = [
 
 const DAY_MS = 24 * 60 * 60 * 1000
 
-// 채팅 알림은 실제 mock 채팅방(chats.ts: id 1~3)으로 이동하도록 referenceId 를 연결.
 const CHAT_ROOM_IDS = [1, 2, 3]
 
-// id 내림차순(최신순) — BE 커서(keyset, id 기준)와 동일한 정렬 의미
 const notifications: Notification[] = SEEDS.map((seed, i) => {
   const referenceType = REFERENCE_TYPE[seed.type] ?? null
   const referenceId =

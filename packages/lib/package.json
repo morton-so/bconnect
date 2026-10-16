@@ -1,0 +1,18 @@
+{
+  "name": "@bconnect/lib",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@bconnect/api-client": "workspace:*",
+    "@bconnect/config": "workspace:*",
+    "es-hangul": "^2.4.0",
+    "libphonenumber-js": "^1.13.13",
+    "zod": "catalog:"
+  }
+}

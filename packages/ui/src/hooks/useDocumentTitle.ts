@@ -7,10 +7,8 @@ import { SERVICE_NAME } from '@bconnect/config/site'
 export function useDocumentTitle(title: string | undefined): void {
   useEffect(() => {
     if (!title) return
-
     const prev = document.title
     document.title = `${title} | ${SERVICE_NAME}`
-
     return () => {
       document.title = prev
     }

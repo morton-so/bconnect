@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import type { FileValue } from '@bconnect/ui'
-import { brnField } from '@bconnect/config/brn'
-import { nameField } from '@bconnect/config/name'
+import { brnField } from '@bconnect/lib/brn'
+import { nameField } from '@bconnect/lib/name'
 
 export const oneClickSchema = z.object({
   brn: brnField,

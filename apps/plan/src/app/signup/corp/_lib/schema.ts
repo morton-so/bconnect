@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { brnField } from '@bconnect/config/brn'
+import { brnField } from '@bconnect/lib/brn'
 
 export const CERTIFICATE_ACCEPT = ['application/pdf', 'image/jpeg', 'image/png']
 export const CERTIFICATE_MAX_BYTES = 20 * 1024 * 1024

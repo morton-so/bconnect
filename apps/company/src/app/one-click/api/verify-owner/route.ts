@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { fetchOwnerVerification } from '@bconnect/features/one-click'
+import { fetchOwnerVerification } from '@/app/one-click/_lib/one-click'
 
 export async function POST(request: Request) {
   try {

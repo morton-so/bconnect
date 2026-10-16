@@ -1,4 +1,4 @@
-import { daysBetween } from '@bconnect/config/date'
+import { daysBetween } from '@bconnect/lib/date'
 import { buildMonthMatrix, clampSegmentToWeek } from './date-helpers'
 import type { BarSegment, CalendarBarTask, WeekRowModel } from './types'
 

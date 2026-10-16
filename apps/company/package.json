@@ -15,7 +15,7 @@
   "dependencies": {
     "@bconnect/api-client": "workspace:*",
     "@bconnect/config": "workspace:*",
-    "@bconnect/features": "workspace:*",
+    "@bconnect/lib": "workspace:*",
     "@bconnect/ui": "workspace:*",
     "@next/third-parties": "catalog:",
     "@sentry/nextjs": "catalog:",

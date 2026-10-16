@@ -4,7 +4,7 @@
 'use client'
 
 import type { WorkerTask } from '@bconnect/api-client'
-import { matchHangul } from '@bconnect/config/search'
+import { matchHangul } from '@bconnect/lib/search'
 import { cn, SearchIcon, TopBar } from '@bconnect/ui'
 import { useMemo, useState } from 'react'
 import { dotColor } from '@/lib/task-colors'

@@ -12,8 +12,8 @@ import {
   toast,
   useServerError,
 } from '@bconnect/ui'
-import { formatRegistrationNumber } from '@bconnect/config/brn'
-import { formatIsoDateInput } from '@bconnect/config/date'
+import { formatRegistrationNumber } from '@bconnect/lib/brn'
+import { formatIsoDateInput } from '@bconnect/lib/date'
 import { CredentialList } from './CredentialList'
 import { oneClickSchema, type OneClickInput, type OneClickOutput } from '../_lib/schema'
 

@@ -1,5 +1,5 @@
 import { TaskProgress, Trade } from '@bconnect/api-client'
-import { addressField } from '@bconnect/config/address'
+import { addressField } from '@bconnect/lib/address'
 import { z } from 'zod'
 
 export const assigneeEditSchema = z.object({

@@ -17,7 +17,7 @@ import type {
   WorkerRole,
 } from '@bconnect/api-client'
 import { toWork } from '@bconnect/features'
-import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
+import { DEFAULT_PROFILE_IMAGE } from '@bconnect/lib/avatar'
 import { toCrawledDisplay } from '@/lib/crawled'
 import type { ExperienceLevel } from '@/lib/experience'
 import { EXPERIENCE_RANGES } from '@/lib/experience'

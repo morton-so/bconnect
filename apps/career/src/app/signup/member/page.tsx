@@ -6,9 +6,9 @@
 
 import { useSignupStore } from '@/stores/signup-store'
 import { checkUsername, requireRegisterAccessToken, useCreateMember } from '@bconnect/api-client'
-import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/config/consent'
-import { formatIsoDateInput } from '@bconnect/config/date'
-import { formatUsername } from '@bconnect/config/username'
+import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/lib/consent'
+import { formatIsoDateInput } from '@bconnect/lib/date'
+import { formatUsername } from '@bconnect/lib/username'
 import { login } from '@bconnect/features'
 import { AgreementField, Form, FormSubmitButton, TextField, toast } from '@bconnect/ui'
 import { zodResolver } from '@hookform/resolvers/zod'

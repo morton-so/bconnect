@@ -7,7 +7,6 @@ import {
 } from '@bconnect/api-client'
 import { toast } from '@bconnect/ui'
 
-// 무효화(hide/show→받은목록 / delete→보낸목록)는 orval mutationInvalidates 가 자동 처리 (ADR-0025)
 export function useRecommendationActions() {
   const hide = useHideRecommendation<Error>({
     mutation: {

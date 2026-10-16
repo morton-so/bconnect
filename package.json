@@ -29,21 +29,15 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.2",
     "@commitlint/config-conventional": "^21.2.2",
-    "@eslint/js": "catalog:",
     "@types/node": "catalog:",
     "eslint": "catalog:",
-    "globals": "catalog:",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
     "markdownlint-cli2": "^0.23.2",
-    "playwright": "^1.63.0",
-    "postgres": "catalog:",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "railway": "3.11.0",
-    "tailwindcss": "catalog:",
-    "typescript": "catalog:",
-    "typescript-eslint": "catalog:"
+    "typescript": "catalog:"
   },
   "lint-staged": {
     "!(*.js|*.jsx|*.ts|*.tsx|*.md|*.mdx|*.tf|*.tfvars|*.tftest.hcl)": [

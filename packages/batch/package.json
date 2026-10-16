@@ -1,0 +1,24 @@
+{
+  "name": "@bconnect/batch",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "kiscon-registration-sync": "tsx src/kiscon-registration-sync.ts",
+    "kiscon-penalty-sync": "tsx src/kiscon-penalty-sync.ts",
+    "kiscon-arrears-sync": "tsx src/kiscon-arrears-sync.ts",
+    "kiscon-subcon-sync": "tsx src/kiscon-subcon-sync.ts",
+    "moel-sync": "tsx src/moel-sync.ts",
+    "ecic-sync": "tsx src/ecic-sync.ts",
+    "cwma-sync": "tsx src/cwma-sync.ts",
+    "feia-sync": "tsx src/feia-sync.ts"
+  },
+  "dependencies": {
+    "cheerio": "catalog:",
+    "postgres": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

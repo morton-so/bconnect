@@ -3,14 +3,18 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./browser": "./src/browser.ts"
+    ".": "./src/MswProvider.tsx"
   },
   "dependencies": {
     "@bconnect/api-client": "workspace:*",
     "msw": "catalog:"
   },
+  "peerDependencies": {
+    "react": "catalog:"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
+    "@types/react": "catalog:",
     "typescript": "catalog:"
   }
 }

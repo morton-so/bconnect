@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { getCredentialLabel } from '@bconnect/api-client'
 import type { Credential } from '@bconnect/api-client'
 import { Button, CheckCircleFilledIcon } from '@bconnect/ui'
-import { formatDate } from '@bconnect/config/date'
+import { formatDate } from '@bconnect/lib/date'
 import { getApplyLocation } from '../_lib/apply-tabs'
 
 interface CredentialItemProps {

@@ -13,7 +13,7 @@ variable "project_name" {
 variable "region" {
   description = "GCP 리전"
   type        = string
-  default     = "asia-northeast3" # 서울
+  default     = "asia-northeast3"
 }
 
 variable "billing_account_id" {

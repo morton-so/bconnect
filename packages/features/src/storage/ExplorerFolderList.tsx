@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { Folder as FolderIcon } from 'lucide-react'
-import { formatDate } from '@bconnect/config/date'
+import { formatDate } from '@bconnect/lib/date'
 import { FolderRowEditor } from './FolderRowEditor'
 import type { Folder } from './types'
 

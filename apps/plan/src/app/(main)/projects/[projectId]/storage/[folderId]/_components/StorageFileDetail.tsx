@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { XIcon } from '@bconnect/ui'
-import { formatDate } from '@bconnect/config/date'
+import { formatDate } from '@bconnect/lib/date'
 import { useFolderImages } from '@/app/(main)/projects/[projectId]/storage/_hooks/useDrive'
 
 interface StorageFileDetailProps {

@@ -1,4 +1,4 @@
-import { addDays, monthEndOf, monthStartOf, toIsoDate } from '@bconnect/config/date'
+import { addDays, monthEndOf, monthStartOf, toIsoDate } from '@bconnect/lib/date'
 
 export const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'] as const
 

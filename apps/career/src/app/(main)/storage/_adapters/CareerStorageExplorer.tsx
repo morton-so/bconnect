@@ -14,7 +14,7 @@ import {
 } from '@bconnect/ui'
 import { StorageExplorerView } from '@bconnect/features'
 import type { Folder } from '@bconnect/features'
-import { matchHangul } from '@bconnect/config/search'
+import { matchHangul } from '@bconnect/lib/search'
 import { useAllFolders, useFolderMutations } from '../_hooks/useDrive'
 
 export function CareerStorageExplorer() {

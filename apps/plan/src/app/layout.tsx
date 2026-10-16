@@ -1,4 +1,4 @@
-import '@bconnect/ui/styles.css'
+import '@bconnect/ui/globals.css'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
@@ -10,7 +10,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import { env } from '@/env'
 
 const pretendard = localFont({
-  src: '../../../../packages/ui/src/fonts/PretendardVariable.woff2',
+  src: '../../../../packages/ui/src/PretendardVariable.woff2',
   display: 'swap',
   weight: '45 920',
   style: 'normal',

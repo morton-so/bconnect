@@ -10,7 +10,7 @@ import {
   useUpdateTaskAssignee,
   useUpdateTaskWorker,
 } from '@bconnect/api-client'
-import { isCompleteAddress } from '@bconnect/config/address'
+import { isCompleteAddress } from '@bconnect/lib/address'
 import {
   ConfirmDialog,
   DateRangeField,
@@ -25,7 +25,7 @@ import {
   cn,
   toast,
 } from '@bconnect/ui'
-import { formatPeriod } from '@bconnect/config/date'
+import { formatPeriod } from '@bconnect/lib/date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'

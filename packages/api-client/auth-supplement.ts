@@ -1,8 +1,5 @@
 import type { PathItemObject, SchemaObject } from 'openapi3-ts/oas31'
 
-/**
- * Spring Security 필터 기반 인증 엔드포인트 보완
- */
 export const authSupplementPaths: Record<string, PathItemObject> = {
   '/api/v1/auth/otp/verify': {
     post: {

@@ -5,17 +5,14 @@ import { addressOf } from './_address'
 import { PROFILE_SEEDS, type ProfileSeed } from './profiles'
 
 interface FeedSeed {
-  /** 작성자 — profiles.ts PROFILE_SEEDS 의 id. 목록·프로필 패널과 같은 회원이어야 작업물이 매칭된다 */
   memberId: number
   content: string
   daysAgo: number
   imageCount: number
-  /** 글에 연결된 시공사례 — 건축주명 + 시공일수. 없으면 카드 메타행에서 생략되는 경로 검증용 */
   task?: { company: string; days: number }
 }
 
 const FEED_SEEDS: FeedSeed[] = [
-  // 이송목(타일) — 사진 4장 + 12일 소요
   {
     memberId: 1,
     content:
@@ -24,14 +21,12 @@ const FEED_SEEDS: FeedSeed[] = [
     imageCount: 4,
     task: { company: '카페온 F&B', days: 12 },
   },
-  // 이송목(타일) — 사진 1장 + 작업 미연결(메타행 생략 경로)
   {
     memberId: 1,
     content: '상가 화장실 바닥 타일을 부분 보수했습니다.',
     daysAgo: 21,
     imageCount: 1,
   },
-  // 이송목(도배) — 사진 3장 + 4일 소요
   {
     memberId: 101,
     content:
@@ -40,7 +35,6 @@ const FEED_SEEDS: FeedSeed[] = [
     imageCount: 3,
     task: { company: '한울 종합건설', days: 4 },
   },
-  // 이송목(도배) — 사진 2장 + 1일 소요(당일 작업 경계값)
   {
     memberId: 101,
     content:
@@ -49,14 +43,12 @@ const FEED_SEEDS: FeedSeed[] = [
     imageCount: 2,
     task: { company: '두손 건축사사무소', days: 1 },
   },
-  // 박전기(전기) — 사진 2장 + 작업 미연결
   {
     memberId: 102,
     content: '상가 전기 배선 작업 마무리했습니다.',
     daysAgo: 10,
     imageCount: 2,
   },
-  // 최타일(타일) — 사진 1장 + 2일 소요
   {
     memberId: 103,
     content:

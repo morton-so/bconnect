@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 import { getRoleLabel, getTradeLabel } from '@bconnect/api-client'
 import type { Coworker } from '@bconnect/api-client'
 import { ProfileCard, ProfileCardSkeleton } from '@bconnect/ui'
-import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
+import { DEFAULT_PROFILE_IMAGE } from '@bconnect/lib/avatar'
 import { PanelMessage } from '../PanelMessage'
 
 export interface CoworkerListProps {

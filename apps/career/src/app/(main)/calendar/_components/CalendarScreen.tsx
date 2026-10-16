@@ -1,6 +1,6 @@
 'use client'
 
-import { formatPeriod } from '@bconnect/config/date'
+import { formatPeriod } from '@bconnect/lib/date'
 import { Button, PlusIcon, TopBar } from '@bconnect/ui'
 import { useCalendarParams } from '../_hooks/useCalendarParams'
 import { useCalendarTasks } from '../_hooks/useCalendarTasks'

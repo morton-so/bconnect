@@ -1,4 +1,4 @@
-import { phoneField } from '@bconnect/config/phone'
+import { phoneField } from '@bconnect/lib/phone'
 import { z } from 'zod'
 
 export const loginSchema = z.object({

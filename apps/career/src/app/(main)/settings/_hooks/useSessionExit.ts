@@ -1,7 +1,6 @@
 'use client'
 
-import { revokeDeviceToken } from '@bconnect/push'
-import { logout } from '@bconnect/features'
+import { logout, revokeDeviceToken } from '@bconnect/features'
 
 interface SessionExitOptions {
   clearAuthOnFailure?: boolean

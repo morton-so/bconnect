@@ -15,26 +15,17 @@ import {
   Tab,
   TrashIcon,
 } from '@bconnect/ui'
-import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
+import { DEFAULT_PROFILE_IMAGE } from '@bconnect/lib/avatar'
 
 type Mode = 'received' | 'sent'
 
 interface RecommendationListProps {
-  /** 앱이 resolve 해 내려줌. undefined = 아직 로딩 중 (스켈레톤) */
   received?: Recommendation[]
   sent?: Recommendation[]
-  /**
-   * full — 전용 페이지/패널: 언더라인 탭 + full-bleed 행. 헤더는 TopBar/PanelShell 이 보유.
-   * inline — 프로필 인라인 섹션: 버튼 토글 + inset 행(부모가 px 보유). 헤더는 호출부 SectionHeader.
-   */
   variant?: 'full' | 'inline'
-  /** owner 전용. 받은 추천서 카드 ⋮ → 숨김. 없으면 받은 탭 케밥 안 그림 (viewer/plan) */
   onHide?: (id: number) => void
-  /** owner 전용. 받은 추천서 카드 ⋮ → 숨김 해제 (visible=false 일 때). onHide 와 함께 토글 구성 */
   onShow?: (id: number) => void
-  /** owner 전용. 보낸 추천서 카드 ⋮ → 삭제. 없으면 보낸 탭 케밥 안 그림 (viewer/plan) */
   onDelete?: (id: number) => void
-  /** owner 전용. 보낸 추천서 카드 ⋮ → 수정 화면으로 이동 */
   onEdit?: (id: number) => void
 }
 
@@ -59,7 +50,6 @@ export function RecommendationList({
   const active = mode === 'received' ? received : sent
   const isLoading = active === undefined
   const items = active ?? []
-  // 케밥(숨김/삭제)은 편집 페이지(full)에서만 — 소개탭 인라인(inline)은 표시 전용
   const canAct = variant === 'full' && (mode === 'received' ? !!onHide : !!onDelete)
   const openRec = items.find((rec) => rec.id === openId)
   const rowPx = variant === 'full' ? 'px-4' : ''

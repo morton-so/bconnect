@@ -222,6 +222,9 @@ tmbootpicker.efi
 
 # 저장소 고유
 
+# pnpm 외 lock 파일
+/package-lock.json
+
 # direnv
 .envrc.local
 .envrc.temp

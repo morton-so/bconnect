@@ -28,7 +28,7 @@ import {
   useGetMyMember,
   useQueryClient,
 } from '@bconnect/api-client'
-import { formatRegistrationNumber } from '@bconnect/config/brn'
+import { formatRegistrationNumber } from '@bconnect/lib/brn'
 import { CertificateField } from './_components/CertificateField'
 import { corpSchema, type CorpFormData } from './_lib/schema'
 

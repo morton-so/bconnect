@@ -3,9 +3,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { emptyAddressDraft, mapKakaoAddress } from '@bconnect/config/address'
-import type { AddressDraft } from '@bconnect/config/address'
-import { UnknownSidoError, UNKNOWN_SIDO_MESSAGE } from '@bconnect/config/errors'
+import { emptyAddressDraft, mapKakaoAddress } from '@bconnect/lib/address'
+import type { AddressDraft } from '@bconnect/lib/address'
+import { UnknownSidoError, UNKNOWN_SIDO_MESSAGE } from '@bconnect/lib/errors'
 import {
   AddressSearchDialog,
   Button,

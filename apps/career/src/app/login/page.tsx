@@ -8,7 +8,7 @@
 import { login } from '@bconnect/features'
 import { useSignupStore } from '@/stores/signup-store'
 import { useSendOtp, useVerifyOtp } from '@bconnect/api-client'
-import { formatPhoneNumber, isValidPhoneNumber, toNationalNumber } from '@bconnect/config/phone'
+import { formatPhoneNumber, isValidPhoneNumber, toNationalNumber } from '@bconnect/lib/phone'
 import { Form, FormSubmitButton, TextField, passthroughError, useServerError } from '@bconnect/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'

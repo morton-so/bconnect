@@ -11,7 +11,7 @@ import {
 } from '@bconnect/api-client'
 import type { Notification } from '@bconnect/api-client'
 import { NotificationItem, Skeleton } from '@bconnect/ui'
-import { formatRelativeTime } from '@bconnect/config/date'
+import { formatRelativeTime } from '@bconnect/lib/date'
 import { PanelShell } from '../PanelShell'
 import { PanelScroll } from '../PanelScroll'
 import { PanelMessage } from '../PanelMessage'

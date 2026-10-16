@@ -6,7 +6,7 @@
 import { usePanelNav } from '@/hooks/usePanelNav'
 import { useGetMyCompany, useGetMyMember } from '@bconnect/api-client'
 import { useUnreadChatCount, useUnreadNotificationCount } from '@bconnect/features'
-import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
+import { DEFAULT_PROFILE_IMAGE } from '@bconnect/lib/avatar'
 import { Select, toast } from '@bconnect/ui'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -103,23 +103,19 @@ function ProjectSection({
     label: p.title ?? '',
   }))
   const [selectedProject, setSelectedProject] = useState(pathProjectId ?? '')
-  // 목록 로드 후에도 선택이 비어 있으면 첫 프로젝트로 (path 미진입 초기 상태)
   if (!selectedProject && projectOptions[0]) setSelectedProject(projectOptions[0].value)
-  // path 로 다른 프로젝트에 진입하면 셀렉트를 따라가게 동기화 (render-time adjustment)
   const [prevPathId, setPrevPathId] = useState(pathProjectId)
   if (pathProjectId !== prevPathId) {
     setPrevPathId(pathProjectId)
     if (pathProjectId) setSelectedProject(pathProjectId)
   }
 
-  // Select 는 Link 로 표현 불가 — 선택 즉시 해당 프로젝트 공정표로 imperative 이동
   function handleProjectChange(v: string | string[]) {
     const next = Array.isArray(v) ? (v[0] ?? '') : v
     setSelectedProject(next)
     if (next) router.push(`/projects/${next}/schedule`)
   }
 
-  // 프로젝트 목록 로드 전(selectedProject 빈값)엔 링크 비활성 — 빈 보간 시 /projects//schedule 오라우팅
   const items: ProjectMenuItem[] = [
     {
       slug: 'schedule',

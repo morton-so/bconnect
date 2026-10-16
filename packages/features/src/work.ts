@@ -1,6 +1,6 @@
 import { postImageUrls } from '@bconnect/api-client'
 import type { Feed } from '@bconnect/api-client'
-import { durationDays, formatDays } from '@bconnect/config/date'
+import { durationDays, formatDays } from '@bconnect/lib/date'
 
 export interface Work {
   images: string[]

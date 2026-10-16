@@ -1,7 +1,7 @@
 'use client'
 
 import { TRADE_LIST, useCreateTaskWorker } from '@bconnect/api-client'
-import { monthStartOf } from '@bconnect/config/date'
+import { monthStartOf } from '@bconnect/lib/date'
 import {
   DateRangeField,
   Form,
@@ -19,7 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { AddressField } from '@/components/AddressField'
-import { isCompleteAddress } from '@bconnect/config/address'
+import { isCompleteAddress } from '@bconnect/lib/address'
 import { createTaskSchema, type CreateTaskValues } from '../_lib/schema'
 
 export function TaskCreateForm() {

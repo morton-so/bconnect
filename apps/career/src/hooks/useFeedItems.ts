@@ -12,8 +12,8 @@ import {
 } from '@bconnect/api-client'
 import type { Trade, ProfileRole, Region } from '@bconnect/api-client'
 import { toWork } from '@bconnect/features'
-import { formatRelativeTime } from '@bconnect/config/date'
-import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
+import { formatRelativeTime } from '@bconnect/lib/date'
+import { DEFAULT_PROFILE_IMAGE } from '@bconnect/lib/avatar'
 
 export interface FeedItem {
   postId: number

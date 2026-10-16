@@ -1,5 +1,5 @@
 import { experienceSchema } from '@/lib/experience-range'
-import { addressField } from '@bconnect/config/address'
+import { addressField } from '@bconnect/lib/address'
 import { ProfileRole } from '@bconnect/api-client'
 import { z } from 'zod'
 

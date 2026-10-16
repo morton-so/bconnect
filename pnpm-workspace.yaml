@@ -26,7 +26,6 @@ catalog:
   '@vercel/speed-insights': ^2.0.0
   cheerio: ^1.2.0
   eslint: ^10.10.0
-  fast-xml-parser: ^5.11.1
   globals: ^17.12.0
   lucide-react: ^1.45.0
   msw: ^2.15.0
@@ -37,7 +36,6 @@ catalog:
   react: 19.3.0
   react-dom: 19.3.0
   react-hook-form: ^7.88.0
-  server-only: ^0.0.1
   tailwindcss: ^4.3.3
   tsx: ^4.23.13
   typescript: ^6.0.3

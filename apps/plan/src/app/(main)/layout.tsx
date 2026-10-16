@@ -7,13 +7,11 @@ import { LoginGateProvider } from './_components/LoginGateProvider'
 import { MemberSidebar } from './_components/MemberSidebar'
 import { PanelHost } from './_components/panel/PanelHost'
 import { useAuthHint } from '@bconnect/api-client'
-import { AccessGuard } from '@bconnect/features'
-import { NotificationPromptToast } from '@bconnect/push'
+import { AccessGuard, NotificationPromptToast } from '@bconnect/features'
 import { useTechnicianItems } from '@/hooks/useTechnicianItems'
 import { isPublicPath } from '@/lib/public-routes'
 
 function GuestSidebarWithCount() {
-  // '검증된 프로필' 카피라 가입 회원 수만 — 크롤링(미검증) 프로필은 제외
   const { memberCount } = useTechnicianItems()
   return <GuestSidebar memberCount={memberCount} />
 }

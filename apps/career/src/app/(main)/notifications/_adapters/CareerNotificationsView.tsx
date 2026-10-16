@@ -1,7 +1,6 @@
 'use client'
 
-import { NotificationsView } from '@bconnect/features'
-import { resolveReferenceHref } from '@bconnect/push'
+import { NotificationsView, resolveReferenceHref } from '@bconnect/features'
 import type { Notification } from '@bconnect/api-client'
 import { TopBar } from '@bconnect/ui'
 import { REFERENCE_PATHS } from '@/lib/notification-routes'

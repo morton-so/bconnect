@@ -1,4 +1,4 @@
-import type { CategoryGroup } from '@bconnect/features/one-click'
+import type { CategoryGroup } from './types'
 
 export const CATEGORY_GROUPS: CategoryGroup[] = [
   {

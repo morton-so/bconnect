@@ -1,4 +1,4 @@
-export * from './types'
+export type { Folder, BoardImage, Memo, QueryResult } from './types'
 
 export { StorageExplorerView } from './StorageExplorerView'
 export type { StorageExplorerViewProps } from './StorageExplorerView'

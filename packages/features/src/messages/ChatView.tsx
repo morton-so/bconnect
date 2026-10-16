@@ -10,7 +10,7 @@ import {
 } from '@bconnect/api-client'
 import type { CursorPageMessage, InfiniteData, Message, Profile } from '@bconnect/api-client'
 import { ChatInput, ProfileCard, Skeleton } from '@bconnect/ui'
-import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
+import { DEFAULT_PROFILE_IMAGE } from '@bconnect/lib/avatar'
 import { PanelShell } from '../PanelShell'
 import { MessageThread } from './MessageThread'
 import { chatMemberName } from './types'

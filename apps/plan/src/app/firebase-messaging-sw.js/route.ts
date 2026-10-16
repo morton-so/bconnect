@@ -5,7 +5,7 @@
  * - https://nextjs.org/docs/app/guides/progressive-web-apps
  */
 import { NextResponse } from 'next/server'
-import { buildFcmServiceWorker } from '@bconnect/push/server'
+import { buildFcmServiceWorker } from '@bconnect/features/push/server'
 import { REFERENCE_PATHS } from '@/lib/notification-routes'
 
 export const dynamic = 'force-dynamic'

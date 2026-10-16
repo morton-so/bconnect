@@ -12,7 +12,7 @@ import {
   refreshAccessToken,
   useCreateProfile,
 } from '@bconnect/api-client'
-import { isCompleteAddress } from '@bconnect/config/address'
+import { isCompleteAddress } from '@bconnect/lib/address'
 import {
   Form,
   FormControl,

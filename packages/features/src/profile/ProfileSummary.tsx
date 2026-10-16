@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { getTradeLabel } from '@bconnect/api-client'
 import type { MemberSummary, Profile } from '@bconnect/api-client'
 import { Skeleton } from '@bconnect/ui'
-import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
+import { DEFAULT_PROFILE_IMAGE } from '@bconnect/lib/avatar'
 import { ProfileImage } from './ProfileImage'
 
 export interface ProfileStatHrefs {

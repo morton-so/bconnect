@@ -1,4 +1,4 @@
-import { todayIso } from '@bconnect/config/date'
+import { todayIso } from '@bconnect/lib/date'
 import { useState } from 'react'
 import { WeekRow } from './WeekRow'
 import { WeekdayHeader } from './WeekdayHeader'

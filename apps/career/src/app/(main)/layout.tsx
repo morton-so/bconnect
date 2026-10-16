@@ -3,8 +3,7 @@
 import { Suspense } from 'react'
 import { usePathname } from 'next/navigation'
 import { BottomNavShell } from './_components/BottomNavShell'
-import { NotificationPrompt } from '@bconnect/push'
-import { AccessGuard } from '@bconnect/features'
+import { AccessGuard, NotificationPrompt } from '@bconnect/features'
 import { isPublicPath } from '@/lib/public-routes'
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {

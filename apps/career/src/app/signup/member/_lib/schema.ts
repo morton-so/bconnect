@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { consentField } from '@bconnect/config/consent'
-import { nameField } from '@bconnect/config/name'
-import { birthField } from '@bconnect/config/signup'
-import { usernameField } from '@bconnect/config/username'
+import { consentField } from '@bconnect/lib/consent'
+import { nameField } from '@bconnect/lib/name'
+import { birthField } from '@bconnect/lib/signup'
+import { usernameField } from '@bconnect/lib/username'
 
 export const memberSchema = z.object({
   name: nameField(),

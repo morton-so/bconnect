@@ -6,7 +6,7 @@ import type { Message, WithdrawableMember } from '@bconnect/api-client'
 import { useDirectChatMessages } from './useDirectChatMessages'
 import { chatMemberName } from './types'
 import { ChatMessage } from '@bconnect/ui'
-import { formatChatTime } from '@bconnect/config/date'
+import { formatChatTime, formatKoreanDate } from '@bconnect/lib/date'
 import { OfferMessageCard } from './OfferMessageCard'
 import type { OfferMessageEntry } from './OfferMessageCard'
 import type { OfferActions } from './types'
@@ -24,11 +24,6 @@ interface MessageThreadProps {
   profileHref?: (memberId: number) => string
   /** 대화 맨 위에 붙는 상대 프로필 — 스크롤과 함께 밀려 올라간다 */
   header?: ReactNode
-}
-
-function formatDateLabel(dateStr: string): string {
-  const d = new Date(dateStr)
-  return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${String(d.getDate()).padStart(2, '0')}일`
 }
 
 /** 분 단위 버킷. 타임존 표기(Z·+09:00) 무관하게 epoch 로 환산 */
@@ -250,8 +245,8 @@ export function MessageThread({
         {allMessages.map((message, index) => {
           const prev = index > 0 ? allMessages[index - 1] : undefined
           const next = allMessages[index + 1]
-          const currentDate = message.createdAt ? formatDateLabel(message.createdAt) : null
-          const prevDate = prev?.createdAt ? formatDateLabel(prev.createdAt) : null
+          const currentDate = message.createdAt ? formatKoreanDate(message.createdAt) : null
+          const prevDate = prev?.createdAt ? formatKoreanDate(prev.createdAt) : null
           const showSep = currentDate && currentDate !== prevDate
           // 날짜가 바뀌면 분 버킷도 달라져 그룹은 자동으로 끊긴다
           const continuesGroup = isSameGroup(prev, message)

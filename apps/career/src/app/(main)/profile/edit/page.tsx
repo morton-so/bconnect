@@ -29,7 +29,7 @@ import {
 } from '@bconnect/ui'
 import { TRADE_LABELS, TRADE_GROUPS } from '@bconnect/api-client'
 import { AddressField } from '@/components/AddressField'
-import { isCompleteAddress } from '@bconnect/config/address'
+import { isCompleteAddress } from '@bconnect/lib/address'
 import { MAX_TRADES, profileEditSchema, type ProfileEditFormData } from './_lib/schema'
 
 /**
@@ -115,7 +115,6 @@ export default function ProfileEditPage() {
       }
 
       await Promise.all(promises)
-
       router.replace('/profile')
     } catch (err) {
       console.error('프로필 수정 실패:', err)

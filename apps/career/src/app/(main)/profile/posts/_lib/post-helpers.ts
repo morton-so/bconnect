@@ -1,4 +1,4 @@
-import { daysBetween } from '@bconnect/config/date'
+import { daysBetween } from '@bconnect/lib/date'
 
 /** 12.25 - 12.26 (총 2일) */
 export function formatWorkPeriod(start: string, end: string, sep = '-'): string {

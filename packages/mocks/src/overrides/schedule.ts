@@ -22,21 +22,6 @@ import type {
 import { addressOf } from './_address'
 import { http, HttpResponse } from 'msw'
 
-/**
- * plan 공정표(projects/project-tasks/offers) **stateful** mock.
- * 생성/수정/삭제/섭외가 모듈 메모리에 반영돼 재조회 시 즉시 보인다. 하드 리로드 시 시드 리셋.
- *
- * BE 실동작 모사:
- * - createByCompany 는 status DRAFT 고정 생성 (BE 에 OPEN/OFFERED 전이 코드 없음)
- * - getTaskOffers 는 ACTIVE+PENDING 만 seq asc 반환
- * - offer create: seq=max+1 PENDING, ACTIVE 없으면 첫 PENDING 자동 승격 (promoteNext)
- * - cancel: PENDING/ACTIVE 모두 취소 가능 + promoteNext
- * - reorder: 해당 task 의 PENDING 전체 offerIds 필수, seq 는 ACTIVE 다음부터 재부여
- *
- * 날짜는 오늘 기준 상대 오프셋으로 동적 생성 (달 경계 교차 케이스 유지).
- * 탐색(profiles) mock 과 회원 상태는 분리 — mock 간 크로스 정합은 비목표.
- */
-
 const pad = (n: number) => String(n).padStart(2, '0')
 
 function isoDaysFromToday(offset: number): string {
@@ -78,7 +63,6 @@ const PROJECT_SEEDS: Project[] = [
   },
 ]
 
-/** 섭외 대기열/대표 기술자 표시용 인물 시드 — member.id 축 (FE 'profileId' = memberId). */
 interface PersonSeed {
   name: string
   region: Region
@@ -116,11 +100,9 @@ interface TaskSeed {
   endOffset: number
   status: CompanyTask['status']
   progress: CompanyTask['progress']
-  /** ASSIGNED(섭외 확정) 작업의 대표 기술자 */
   workerId?: number
   requirement?: string
   memo?: string
-  /** ACTIVE 1건 우선, 나머지 PENDING (memberId 목록) */
   activeOffer?: number
   pendingOffers?: number[]
 }
@@ -344,7 +326,6 @@ function buildSeedOffers(): Offer[] {
   return out
 }
 
-// 모듈 메모리 상태 — 핸들러 공유. 하드 리로드 시 시드 리셋.
 const projects: Project[] = PROJECT_SEEDS
 let tasks: CompanyTask[] = buildSeedTasks()
 let offers: Offer[] = buildSeedOffers()
@@ -353,7 +334,6 @@ let nextOfferId = 8600
 
 const taskOffers = (taskId: number) => offers.filter((o) => o.taskId === taskId)
 
-/** ACTIVE 가 없으면 첫 PENDING(최소 seq)을 ACTIVE 로 승격 — BE OfferService.promoteNext 모사. */
 function promoteNext(taskId: number) {
   const list = taskOffers(taskId)
   if (list.some((o) => o.status === OfferStatus.ACTIVE)) return
@@ -391,7 +371,6 @@ export const scheduleOverrides = [
     const stamp = nowStamp()
     tasks.push({
       id,
-      // BE createByCompany 실동작: 섭외 전(NONE)·시작 전(TODO) 고정 생성
       status: TaskStatus.NONE,
       progress: TaskProgress.TODO,
       trades: body.trades,
@@ -430,9 +409,6 @@ export const scheduleOverrides = [
     return { success: true }
   }),
 
-  // DELETE /tasks/{id} 는 career 캘린더 overrides/tasks.ts 와 엔드포인트 중복.
-  // generated 래퍼는 fall-through(undefined) 불가라 raw 핸들러 — 내 task 아니면 뒤(tasks.ts)로 넘김.
-  // (raw 라 openapi drift 컴파일 가드는 없음 — 경로 변경 시 수동 정합 필요)
   http.delete('*/api/v1/tasks/:id', ({ params }) => {
     const id = Number(params.id)
     if (!tasks.some((t) => t.id === id)) return undefined
@@ -441,7 +417,6 @@ export const scheduleOverrides = [
     return HttpResponse.json({ success: true })
   }),
 
-  // BE OfferService.listByTask 모사 — ACTIVE+PENDING 만 seq asc
   getGetTaskOffersMockHandler((info): Offer[] =>
     taskOffers(Number(info.params.id))
       .filter((o) => o.status === OfferStatus.ACTIVE || o.status === OfferStatus.PENDING)
@@ -468,7 +443,6 @@ export const scheduleOverrides = [
     return { success: true }
   }),
 
-  // BE OfferService.reorder 모사 — PENDING 전체 offerIds 필수, seq 는 ACTIVE 최대 seq 다음부터
   getReorderOffersMockHandler(async (info) => {
     const body = (await info.request.json()) as ReorderOfferRequest
     const first = offers.find((o) => o.id === body.offerIds[0])

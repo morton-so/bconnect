@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { Trade } from '@bconnect/api-client'
-import { addressField } from '@bconnect/config/address'
+import { addressField } from '@bconnect/lib/address'
 import { experienceSchema } from '@/lib/experience-range'
 
 const tradeValues = Object.values(Trade) as [string, ...string[]]

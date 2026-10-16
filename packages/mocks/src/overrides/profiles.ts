@@ -12,13 +12,6 @@ import type {
   Region,
 } from '@bconnect/api-client'
 
-// 프로필 도메인 단일 owner — getProfile(/profiles/:id) 을 id 로 keying,
-// getMyProfile(/profiles/me, 내 프로필 화면)은 id 1 seed 반환,
-// getProfiles(목록, plan 기술자 탐색)는 전체 seed 반환.
-// id 1 = 본인(getMyMember 와 동일 식별자, 자기 프로필 화면용 리치 데이터).
-// id 101~103 = chats.ts 채팅 상대 — 상대 프로필 열람 시 일관 표시.
-// BE 확정 시 generated handler 로 교체. dev/preview 전용(prod tree-shake).
-
 const EPOCH = '2025-01-02T00:00:00.000Z'
 
 const HEADLINE = '안녕하세요, 타일 준기공 이송목입니다. 믿고 맡겨주신다면 성실히 임하겠습니다.'
@@ -46,16 +39,13 @@ export interface ProfileSeed {
   role: ProfileRole
   trade: Trade
   experience: number
-  /** feeds.ts FEED_SEEDS 에서 이 회원이 쓴 글 수 — 헤더 통계와 작업물 탭이 어긋나지 않게 맞춘다 */
   postCount: number
   headline: string
   about: string
-  // 카카오 우편번호 결과 그대로 — state = 공용 Region 값, city = sigungu
   state: Region
   city: string
 }
 
-// feeds.ts 가 작업물 작성자로 재사용 — 회원 정보 중복 정의를 막는 단일 출처
 export const PROFILE_SEEDS: ProfileSeed[] = [
   {
     id: 1,
@@ -136,7 +126,6 @@ const profileOf = (seed: ProfileSeed): Profile => ({
   modifiedAt: EPOCH,
 })
 
-// 타인 프로필 단건 조회는 조회자 기준 품앗이꾼 상태가 실린 ProfileDetail 로 응답
 const detailOf = (seed: ProfileSeed): ProfileDetail => ({
   ...profileOf(seed),
   status: CoworkerStatus.NONE,
@@ -146,9 +135,6 @@ const PROFILES_BY_ID: Record<number, ProfileDetail> = Object.fromEntries(
   PROFILE_SEEDS.map((seed) => [seed.id, detailOf(seed)])
 )
 
-// 프로필 이미지 업로드 QA — mock-s3 는 바이트를 버리므로 pictureId 시드 이미지로 교체 표시.
-// members.ts 의 updateMyMemberPicture override 가 호출 (프로필 도메인 state 단일 owner 유지).
-// getMyProfile 이 매 호출 seed 에서 새 객체를 만들므로 변이 대신 모듈 변수로 보관해 응답 시 주입.
 let myMockPicture: string | null = null
 
 export function setMyMockPicture(pictureId: number) {
@@ -171,7 +157,6 @@ export const profilesOverrides = [
     hasNext: false,
     nextCursor: undefined,
   })),
-  // /profiles/me 는 status 없는 평문 Profile — 타인 조회(ProfileDetail)와 응답형이 다르다
   getGetMyProfileMockHandler(() => withMyPicture(profileOf(PROFILE_SEEDS[0]))),
   getGetProfileMockHandler(({ params }) => PROFILES_BY_ID[paramId(params.id)] ?? PROFILES_BY_ID[1]),
 ]
