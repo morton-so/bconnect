@@ -1,4 +1,4 @@
-import { ImageGallery } from './_parts/ImageGallery'
+import { ImageGallery } from './ImageGallery'
 import type { BoardImage } from './types'
 
 export interface FolderImagesViewProps {
@@ -12,7 +12,6 @@ export interface FolderImagesViewProps {
   emptyLabel?: string
 }
 
-/** 폴더 내 이미지 갤러리 뷰. career 이미지 탭·plan 좌측 컬럼 공용. */
 export function FolderImagesView({
   images,
   isLoading,

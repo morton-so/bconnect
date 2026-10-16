@@ -2,8 +2,8 @@ import type { MouseEvent } from 'react'
 import { useRef } from 'react'
 import { DayCell } from './DayCell'
 import { TaskBar } from './TaskBar'
-import { isSameMonth } from './date-helpers'
-import type { WeekRowModel } from './types'
+import { isSameMonth } from '@/app/(main)/calendar/_lib/date-helpers'
+import type { WeekRowModel } from '@/app/(main)/calendar/_lib/types'
 
 interface WeekRowProps {
   row: WeekRowModel

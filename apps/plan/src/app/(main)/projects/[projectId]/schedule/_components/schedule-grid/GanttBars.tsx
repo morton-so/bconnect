@@ -1,0 +1,131 @@
+'use client'
+
+import { ContextMenu } from '@bconnect/ui'
+import {
+  BAR_HEIGHT,
+  BAR_TONE_LABELS,
+  BAR_TOP,
+  DAY_WIDTH,
+  barColor,
+  barTone,
+} from '@/app/(main)/projects/[projectId]/schedule/_lib/constants'
+import {
+  addDays,
+  daysBetween,
+  toIsoDate,
+} from '@/app/(main)/projects/[projectId]/schedule/_lib/date-utils'
+import type { ScheduleTask } from '@/lib/schedule/types'
+import type { DragMode } from '@/app/(main)/projects/[projectId]/schedule/_hooks/useBarDrag'
+import { useBarDrag } from '@/app/(main)/projects/[projectId]/schedule/_hooks/useBarDrag'
+
+function applyDrag(
+  task: ScheduleTask,
+  mode: DragMode,
+  deltaDays: number
+): Pick<ScheduleTask, 'start' | 'end'> {
+  const span = daysBetween(task.start, task.end)
+  if (mode === 'move') {
+    return {
+      start: addDays(task.start, deltaDays),
+      end: addDays(task.end, deltaDays),
+    }
+  }
+  if (mode === 'resize-start') {
+    return { start: addDays(task.start, Math.min(deltaDays, span)), end: task.end }
+  }
+  return { start: task.start, end: addDays(task.end, Math.max(deltaDays, -span)) }
+}
+
+export function GanttBars({
+  task,
+  dates,
+  startDate,
+  todayIso,
+  onUpdate,
+  onEdit,
+  onDelete,
+}: {
+  task: ScheduleTask
+  dates: Date[]
+  startDate: string
+  todayIso: string | undefined
+  onUpdate: (id: number, patch: Partial<Omit<ScheduleTask, 'id'>>) => void
+  onEdit: (id: number) => void
+  onDelete: (id: number) => void
+}) {
+  const { drag, moveHandleProps, startHandleDown, endHandleDown } = useBarDrag(
+    DAY_WIDTH,
+    (mode, deltaDays) => {
+      onUpdate(task.id, applyDrag(task, mode, deltaDays))
+    },
+    () => onEdit(task.id)
+  )
+
+  const preview = drag ? applyDrag(task, drag.mode, drag.deltaDays) : task
+  const offsetDays = daysBetween(startDate, preview.start)
+  const spanDays = daysBetween(preview.start, preview.end) + 1
+  const left = offsetDays * DAY_WIDTH + 2
+  const width = spanDays * DAY_WIDTH - 4
+  const style = barColor(task.id)
+  const label = BAR_TONE_LABELS[barTone(task)]
+
+  return (
+    <>
+      {dates.map((d, i) => {
+        const iso = toIsoDate(d)
+        const isMonthEnd = d.getMonth() !== dates[i + 1]?.getMonth()
+        return (
+          <div
+            key={iso}
+            aria-hidden="true"
+            className={`absolute inset-y-0 border-r border-solid ${isMonthEnd ? 'border-[#d0d0d0]' : 'border-[#f5f5f5]'}`}
+            style={{
+              left: i * DAY_WIDTH,
+              width: DAY_WIDTH,
+              backgroundColor: iso === todayIso ? '#fff8f8' : undefined,
+            }}
+          />
+        )
+      })}
+      <ContextMenu
+        trigger={
+          <div
+            {...moveHandleProps}
+            className={`absolute flex touch-none items-center rounded pl-2.5 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.08)] transition-[filter] outline-none hover:brightness-110 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${drag ? 'z-10 cursor-grabbing opacity-90' : 'cursor-grab'}`}
+            style={{
+              left,
+              top: BAR_TOP,
+              width,
+              height: BAR_HEIGHT,
+              backgroundColor: style.bg,
+              opacity: task.draft ? 0.5 : undefined, // 미확정 바는 반투명함
+            }}
+            tabIndex={0}
+            aria-label={`${task.title} · ${task.start} ~ ${task.end} · ${label}`}
+          >
+            <p
+              className="truncate text-[12px] leading-[18px] font-semibold"
+              style={{ color: style.text }}
+            >
+              {task.title}
+            </p>
+            <div
+              aria-hidden="true"
+              onPointerDown={startHandleDown}
+              className="absolute inset-y-0 left-0 w-2 cursor-ew-resize rounded-l hover:bg-black/15"
+            />
+            <div
+              aria-hidden="true"
+              onPointerDown={endHandleDown}
+              className="absolute inset-y-0 right-0 w-2 cursor-ew-resize rounded-r hover:bg-black/15"
+            />
+          </div>
+        }
+        items={[
+          { label: '수정', onSelect: () => onEdit(task.id) },
+          { label: '삭제', onSelect: () => onDelete(task.id), destructive: true },
+        ]}
+      />
+    </>
+  )
+}

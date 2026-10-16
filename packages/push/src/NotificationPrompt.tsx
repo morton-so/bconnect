@@ -11,7 +11,7 @@ import {
   DrawerDescription,
   NotificationIcon,
 } from '@bconnect/ui'
-import { useNotificationSoftAsk } from './use-notification-soft-ask'
+import { useNotificationSoftAsk } from './useNotificationSoftAsk'
 
 export function NotificationPrompt() {
   const { open, accept, dismiss } = useNotificationSoftAsk()

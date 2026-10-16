@@ -2,8 +2,8 @@ import { todayIso } from '@bconnect/config/date'
 import { useState } from 'react'
 import { WeekRow } from './WeekRow'
 import { WeekdayHeader } from './WeekdayHeader'
-import { buildWeekRows } from './grid-builder'
-import type { CalendarBarTask } from './types'
+import { buildWeekRows } from '@/app/(main)/calendar/_lib/grid-builder'
+import type { CalendarBarTask } from '@/app/(main)/calendar/_lib/types'
 
 interface CalendarMonthProps {
   monthIso: string

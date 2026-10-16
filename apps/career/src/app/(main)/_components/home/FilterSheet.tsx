@@ -5,9 +5,13 @@
 
 import { useState, useEffect } from 'react'
 import { Slider, Tag, TopBar } from '@bconnect/ui'
-import { ROLE_LABELS, TRADE_GROUPS, TRADE_LABELS } from '@bconnect/api-client'
-import { FILTER_ROLES } from '@/lib/role-labels'
-import { REGIONS, REGION_LABELS } from '@/lib/region'
+import {
+  REGION_LIST,
+  ROLE_LABELS,
+  TRADE_GROUPS,
+  TRADE_LABELS,
+  WORKER_ROLE,
+} from '@bconnect/api-client'
 import {
   EXPERIENCE_FILTER_MAX,
   EXPERIENCE_MIN,
@@ -35,7 +39,6 @@ export function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
     clearFilter,
   } = useFilterParams()
 
-  // Two-phase rendering: mounted keeps DOM alive for exit animation
   const [mounted, setMounted] = useState(false)
   const [visible, setVisible] = useState(false)
   const [prevIsOpen, setPrevIsOpen] = useState(false)
@@ -104,7 +107,7 @@ export function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
           <div className="flex flex-col gap-3">
             <p className="text-sb-16 text-gray-900">역할</p>
             <div className="flex flex-wrap gap-2">
-              {FILTER_ROLES.map((role) => (
+              {WORKER_ROLE.map((role) => (
                 <Tag
                   key={role}
                   variant={roles.includes(role) ? 'selected' : 'default'}
@@ -131,13 +134,13 @@ export function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
           <div className="flex flex-col gap-3">
             <p className="text-sb-16 text-gray-900">지역</p>
             <div className="flex flex-wrap gap-2">
-              {REGIONS.map((region) => (
+              {REGION_LIST.map(({ value: region, label }) => (
                 <Tag
                   key={region}
                   variant={regions.includes(region) ? 'selected' : 'default'}
                   onClick={() => toggleRegion(region)}
                 >
-                  {REGION_LABELS[region]}
+                  {label}
                 </Tag>
               ))}
             </div>

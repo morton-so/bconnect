@@ -2,8 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn, HomeIcon, JobsIcon, MessageIcon, CalendarIcon, ProfileIcon } from '@bconnect/ui'
-import { isBottomNavHidden } from './nav-visibility'
+import { cn, HomeIcon, JobsIcon, DriveIcon, CalendarIcon, ProfileIcon } from '@bconnect/ui'
 
 interface NavItem {
   href: string
@@ -15,15 +14,13 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { href: '/', label: '홈', icon: HomeIcon },
   { href: '/jobs', label: '공고', icon: JobsIcon, disabled: true },
-  { href: '/messages', label: '메시지', icon: MessageIcon },
+  { href: '/storage', label: '저장소', icon: DriveIcon },
   { href: '/calendar', label: '캘린더', icon: CalendarIcon },
   { href: '/profile', label: '내 정보', icon: ProfileIcon },
 ]
 
 export function BottomNavigation() {
   const pathname = usePathname()
-
-  if (isBottomNavHidden(pathname)) return null
 
   return (
     <nav className="fixed right-0 bottom-0 left-0 z-50 border-t border-gray-300 bg-white pb-[env(safe-area-inset-bottom)]">

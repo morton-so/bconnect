@@ -1,6 +1,6 @@
 // 부수효과 / 권한
-export { usePushNotificationListener } from './use-push-notification-listener'
-export { useNotificationSoftAsk } from './use-notification-soft-ask'
+export { usePushNotificationListener } from './usePushNotificationListener'
+export { useNotificationSoftAsk } from './useNotificationSoftAsk'
 export {
   requestPushPermission,
   syncDeviceToken,

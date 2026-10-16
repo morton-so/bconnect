@@ -1,4 +1,4 @@
-import { PROBLEM } from '../_data'
+import { PROBLEM } from '../_lib/data'
 import { SectionHead } from './SectionHead'
 
 export function ProblemSection() {

@@ -1,4 +1,4 @@
-import { CTA } from '../_data'
+import { CTA } from '../_lib/data'
 import { HeroCta } from './HeroCta'
 
 export function CtaSection() {

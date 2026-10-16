@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { HERO } from '../_data'
+import { HERO } from '../_lib/data'
 import { HeroCta } from './HeroCta'
 
 export function HeroSection() {

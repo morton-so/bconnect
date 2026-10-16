@@ -1,20 +1,24 @@
 'use client'
 
-import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { Credential, CreateCredentialRequest, CredentialType } from '@bconnect/api-client'
-import { Form, FormError, FormSubmitButton, TextField, toast, useServerError } from '@bconnect/ui'
-import { brnField, formatRegistrationNumber } from '@bconnect/config/brn'
+import { useCreateOneClickValidation, type Credential } from '@bconnect/api-client'
+import {
+  Form,
+  FormError,
+  FormSubmitButton,
+  TextField,
+  passthroughError,
+  toast,
+  useServerError,
+} from '@bconnect/ui'
+import { formatRegistrationNumber } from '@bconnect/config/brn'
 import { formatIsoDateInput } from '@bconnect/config/date'
-import { nameField } from '@bconnect/config/name'
-import { CredentialList } from '@/app/(main)/profile/certifications/_components/CredentialList'
-import type { CheckItem } from '@bconnect/features/one-click'
-import { lookupBusinessForApply } from '../_actions/lookupBusinessForApply'
+import { CredentialList } from './CredentialList'
+import { oneClickSchema, type OneClickInput, type OneClickOutput } from '../_lib/schema'
 
 interface OneClickTabProps {
   credentials: Credential[]
-  onApply: (requests: CreateCredentialRequest[]) => Promise<void>
   onRequestDelete: (id: number) => void
   isLoading: boolean
   isError: boolean
@@ -28,44 +32,8 @@ const ONE_CLICK_TYPES = [
   'SPECIALTY_CONSTRUCTION_LICENSE',
 ] as const
 
-const oneClickSchema = z.object({
-  businessNumber: brnField,
-  ownerName: nameField('대표자 성명'),
-  openDate: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, '개업일자를 YYYY-MM-DD 형식으로 입력해주세요')
-    .refine((v) => !Number.isNaN(Date.parse(v)), '올바른 날짜가 아니에요'),
-})
-
-type OneClickInput = z.input<typeof oneClickSchema>
-type OneClickOutput = z.output<typeof oneClickSchema>
-
-const EXPIRY_KEYS = ['만료', '유효기간']
-
-const extractExpiry = (item: CheckItem): string | null => {
-  const detail = item.details.find((d) => EXPIRY_KEYS.some((key) => d.key.includes(key)))
-  const digits = detail?.value.replace(/\D/g, '')
-  if (!digits || digits.length !== 8) return null
-  return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6)}`
-}
-
-const mapCheckItemToType = (item: CheckItem): CredentialType | null => {
-  const hasLicense = item.statusType === 'positive' || item.statusType === 'negative'
-  switch (item.id) {
-    case 'BUSINESS_STATUS':
-      return item.statusType === 'positive' ? 'SOLE_PROPRIETOR' : null
-    case 'CONSTRUCTION_LICENSE':
-      return hasLicense ? 'CONSTRUCTION_LICENSE' : null
-    case 'SPECIALTY_LICENSE':
-      return hasLicense ? 'SPECIALTY_CONSTRUCTION_LICENSE' : null
-    default:
-      return null
-  }
-}
-
 export function OneClickTab({
   credentials,
-  onApply,
   onRequestDelete,
   isLoading,
   isError,
@@ -74,38 +42,20 @@ export function OneClickTab({
   const form = useForm<OneClickInput, unknown, OneClickOutput>({
     resolver: zodResolver(oneClickSchema),
     mode: 'onTouched',
-    defaultValues: { businessNumber: '', ownerName: '', openDate: '' },
+    defaultValues: { brn: '', ownerName: '', openedAt: '' },
   })
 
-  const server = useServerError(form.control, (error) =>
-    typeof error === 'string'
-      ? { message: error }
-      : { message: '조회에 실패했어요. 잠시 후 다시 시도해주세요.' }
-  )
+  const server = useServerError(form.control, passthroughError<OneClickInput>())
+  const { mutateAsync: validate } = useCreateOneClickValidation()
 
   const oneClickCredentials = credentials.filter(
     (c) => c.type && (ONE_CLICK_TYPES as readonly string[]).includes(c.type)
   )
 
-  const onSearch = form.handleSubmit(async ({ businessNumber, ownerName, openDate }) => {
+  const onSearch = form.handleSubmit(async (data) => {
     server.reset()
     try {
-      const result = await lookupBusinessForApply(businessNumber, ownerName, openDate)
-      if (!result.valid) {
-        server.capture(result.message, form.getValues())
-        return
-      }
-
-      const existingTypes = new Set(oneClickCredentials.map((c) => c.type))
-      const requests: CreateCredentialRequest[] = [
-        { type: 'IDENTITY_VERIFICATION' } satisfies CreateCredentialRequest,
-        ...(result.checkItems ?? []).flatMap((item): CreateCredentialRequest[] => {
-          const type = mapCheckItemToType(item)
-          return type ? [{ type, expiredAt: extractExpiry(item) ?? undefined }] : []
-        }),
-      ].filter((request) => !existingTypes.has(request.type))
-
-      await onApply(requests)
+      await validate({ data })
       toast({ description: '자격 증명이 갱신되었어요', variant: 'success' })
     } catch (error) {
       server.capture(error, form.getValues())
@@ -122,7 +72,7 @@ export function OneClickTab({
             <FormError error={server.formError} />
             <TextField
               control={form.control}
-              name="businessNumber"
+              name="brn"
               label="사업자등록번호"
               required
               placeholder="000-00-00000"
@@ -138,7 +88,7 @@ export function OneClickTab({
             />
             <TextField
               control={form.control}
-              name="openDate"
+              name="openedAt"
               label="개업일자"
               required
               placeholder="0000-00-00"

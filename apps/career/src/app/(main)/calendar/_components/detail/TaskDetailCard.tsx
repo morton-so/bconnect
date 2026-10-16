@@ -3,16 +3,14 @@
 import {
   TASK_PROGRESS_LABELS,
   TASK_STATUS_WORKER_LABELS,
-  TaskProgress,
   TaskStatus,
-  Trade,
   TRADE_LABELS,
   TRADE_LIST,
   useDeleteTask,
   useUpdateTaskAssignee,
   useUpdateTaskWorker,
 } from '@bconnect/api-client'
-import { addressField, isCompleteAddress } from '@bconnect/config/address'
+import { isCompleteAddress } from '@bconnect/config/address'
 import {
   ConfirmDialog,
   DateRangeField,
@@ -31,38 +29,16 @@ import { formatPeriod } from '@bconnect/config/date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { AddressField } from '@/components/AddressField'
 import { useShareCurrentUrl } from '@/hooks/useShareCurrentUrl'
-import type { CalendarTask } from '../calendar/types'
+import {
+  assigneeEditSchema,
+  workerEditSchema,
+  type AssigneeEditValues,
+  type WorkerEditValues,
+} from '@/app/(main)/calendar/_lib/schema'
+import type { CalendarTask } from '@/app/(main)/calendar/_lib/types'
 import { TaskActionDrawer } from './TaskActionDrawer'
-
-const assigneeEditSchema = z.object({
-  title: z.string().min(1, '제목을 입력해주세요.'),
-  progress: z.nativeEnum(TaskProgress),
-  memo: z.string(),
-})
-
-const workerEditSchema = assigneeEditSchema
-  .extend({
-    company: z.string().min(1, '업체명을 입력해주세요.'),
-    start: z.string().min(1, '시작일을 선택해주세요.'),
-    end: z.string().min(1, '종료일을 선택해주세요.'),
-    address: addressField('현장주소'),
-    trades: z.array(z.nativeEnum(Trade)).min(1, '공종을 1개 이상 선택해주세요.'),
-  })
-  .superRefine((v, ctx) => {
-    if (v.start > v.end) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: '종료일은 시작일 이후여야 해요.',
-        path: ['end'],
-      })
-    }
-  })
-
-type AssigneeEditValues = z.infer<typeof assigneeEditSchema>
-type WorkerEditValues = z.infer<typeof workerEditSchema>
 
 const PROGRESS_OPTIONS = Object.entries(TASK_PROGRESS_LABELS).map(([value, label]) => ({
   value,

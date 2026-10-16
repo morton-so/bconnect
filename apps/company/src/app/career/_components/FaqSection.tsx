@@ -1,4 +1,4 @@
-import { FAQS } from '../_data'
+import { FAQS } from '../_lib/data'
 import { SectionHead } from './SectionHead'
 
 export function FaqSection() {

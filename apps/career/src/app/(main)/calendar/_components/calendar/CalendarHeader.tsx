@@ -1,5 +1,5 @@
 import { ChevronIcon, cn } from '@bconnect/ui'
-import { formatMonthHeader } from './date-helpers'
+import { formatMonthHeader } from '@/app/(main)/calendar/_lib/date-helpers'
 
 interface CalendarHeaderProps {
   monthIso: string

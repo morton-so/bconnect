@@ -14,7 +14,7 @@ import { formatIsoDateInput } from '@bconnect/config/date'
 import { formatUsername } from '@bconnect/config/username'
 import { login } from '@bconnect/features'
 import { useSignupStore } from '@/stores/signup-store'
-import { memberSchema, type MemberFormData } from './schema'
+import { memberSchema, type MemberFormData } from './_lib/schema'
 
 export default function SignupMemberPage() {
   const router = useRouter()

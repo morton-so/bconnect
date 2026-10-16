@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { PREVIEWS } from '../_data'
+import { PREVIEWS } from '../_lib/data'
 
 export function AppPreviewSection() {
   return (

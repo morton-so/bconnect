@@ -23,15 +23,13 @@ import {
   useUnreadNotificationCount,
   useUnreadChatCount,
 } from '@bconnect/features'
-import { Button, PlusIcon, SettingsIcon, toast } from '@bconnect/ui'
-import { careerShell } from '@/app/(main)/_adapters/careerShell'
-import { CoworkerActionButton } from '@/app/(main)/_components/CoworkerActionButton'
+import { Button, PlusIcon, SettingsIcon, toast, TopBar } from '@bconnect/ui'
+import { CoworkerActionButton } from '@/app/(main)/profile/_components/CoworkerActionButton'
 import { useShareCurrentUrl } from '@/hooks/useShareCurrentUrl'
 import { useProfileImageUpload } from './useProfileImageUpload'
 import { useRecommendationActions } from './useRecommendationActions'
 import { useWorkActions } from './useWorkActions'
 
-/** 최상위 프로필 라우트(본인·타인) 상단 알림·채팅 아이콘 — 홈 피드와 동등 */
 function useTopBarUtility() {
   const chatCount = useUnreadChatCount()
   const notifyCount = useUnreadNotificationCount()
@@ -43,7 +41,6 @@ function useTopBarUtility() {
   }
 }
 
-/** 본인 프로필 (/profile) — My* 훅 + 수정/공유 어포던스 */
 export function OwnerProfileView() {
   const { onHideRecommendation, onDeleteRecommendation } = useRecommendationActions()
 
@@ -84,18 +81,21 @@ export function OwnerProfileView() {
     <ProfileView
       profileId={myId}
       data={data}
-      renderShell={careerShell(undefined, {
-        left: {
-          icon: <PlusIcon size={20} className="text-[#a5a5a5]" />,
-          href: '/profile/works/new',
-          label: '작업물 생성',
-        },
-        right: {
-          icon: <SettingsIcon className="text-[#a5a5a5]" />,
-          href: '/settings',
-          label: '설정',
-        },
-      })}
+      renderShell={({ title, children }) => (
+        <div className="flex flex-col">
+          <TopBar
+            variant="default"
+            title={title}
+            leftIcon={<PlusIcon size={20} className="text-[#a5a5a5]" />}
+            leftHref="/profile/posts/new"
+            leftLabel="작업물 생성"
+            actionIcon={<SettingsIcon className="text-[#a5a5a5]" />}
+            actionHref="/settings"
+            actionIconLabel="설정"
+          />
+          {children}
+        </div>
+      )}
       fallbackTitle="내 프로필"
       onEditImage={imageUpload.pickAndUpload}
       imageUploading={imageUpload.isUploading}
@@ -106,10 +106,10 @@ export function OwnerProfileView() {
       }}
       editHrefs={{
         certifications: '/profile/certifications',
-        about: '/profile/edit/about',
+        about: '/profile/about/edit',
         recommendations: '/profile/recommendations',
       }}
-      workEditHref={(postId) => `/profile/works/${postId}/edit`}
+      workEditHref={(postId) => `/profile/posts/${postId}/edit`}
       onDeleteWork={onDeleteWork}
       onHideRecommendation={onHideRecommendation}
       onDeleteRecommendation={onDeleteRecommendation}
@@ -127,7 +127,6 @@ export function OwnerProfileView() {
   )
 }
 
-/** 타인 프로필 (/profile/[memberId]) — by-id 훅 + 동료추가/메시지 mutation */
 export function ViewerProfileView({ memberId }: { memberId: number }) {
   const router = useRouter()
   const utility = useTopBarUtility()
@@ -183,7 +182,12 @@ export function ViewerProfileView({ memberId }: { memberId: number }) {
     <ProfileView
       profileId={memberId}
       data={data}
-      renderShell={careerShell(undefined, { utility })}
+      renderShell={({ title, children }) => (
+        <div className="flex flex-col">
+          <TopBar variant="default" title={title} onBack={() => router.back()} {...utility} />
+          {children}
+        </div>
+      )}
       statHrefs={{
         works: '?tab=works',
         coworkers: `/profile/${memberId}/coworkers`,

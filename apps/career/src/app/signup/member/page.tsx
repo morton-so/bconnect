@@ -15,7 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { SignupHeader } from '@/components/SignupHeader'
-import { memberSchema, type MemberFormData } from './schema'
+import { memberSchema, type MemberFormData } from './_lib/schema'
 
 export default function SignupMemberPage() {
   const router = useRouter()
@@ -63,7 +63,7 @@ export default function SignupMemberPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <SignupHeader step={2} onBack={() => router.back()} />
+      <SignupHeader step={2} backHref="/login" />
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-6 px-4 pt-3">
           <div className="flex flex-col gap-4">

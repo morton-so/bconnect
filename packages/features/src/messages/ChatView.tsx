@@ -11,19 +11,16 @@ import {
 import type { CursorPageMessage, InfiniteData, Message, Profile } from '@bconnect/api-client'
 import { ChatInput, ProfileCard, Skeleton } from '@bconnect/ui'
 import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
-import { PanelShell } from '../_shared/PanelShell'
-import { MessageThread } from './_parts/MessageThread'
-import { chatMemberName } from './_parts/types'
+import { PanelShell } from '../PanelShell'
+import { MessageThread } from './MessageThread'
+import { chatMemberName } from './types'
 import { useDirectChatSocket } from './useDirectChatSocket'
-import type { OfferMessageEntry } from './_parts/OfferMessageCard'
-import type { ChatSummary, OfferActions } from './_parts/types'
+import type { OfferMessageEntry } from './OfferMessageCard'
+import type { ChatSummary, OfferActions } from './types'
 
-/** 앱이 resolve 해 내려주는 데이터. career/plan 어댑터가 useGetDirectChats·useGetProfile·useGetMyMember 로 채운다. */
 export interface ChatViewData {
   chat?: ChatSummary
-  /** 본인 member id — "나" 호출(useGetMyMember)은 앱에서 (ADR-0020: features 엔 "나" 호출 없음) */
   currentUserId?: number
-  /** 상대 프로필 보강 — chat 응답에 없는 풍부 정보(address.city, primaryTrade). 발산 없는 by-id 보강 */
   otherProfile?: Profile
   /**
    * 섭외 제안(OFFER) 메시지의 조회 결과 — key = offerId. 로딩·실패도 offerId 별로 담는다.
@@ -34,28 +31,19 @@ export interface ChatViewData {
   isError: boolean
 }
 
-/**
- * 사진 첨부 슬롯 — 앱이 useChatImageUpload 를 배선해 주입한다 (ADR-0020: features 는 mutation 을
- * 갖지 않는다). 미주입이면 갤러리 버튼이 비활성.
- */
 export interface ChatImageActions {
-  /** 고른 파일 업로드 → 첨부 id. 실패 시 자체 피드백 후 빈 배열 */
   upload: (files: File[]) => Promise<number[]>
   isUploading?: boolean
-  /** 업로드 진행 상황 — 입력창이 "3/5" 로 노출 */
   progress?: { done: number; total: number } | null
-  /** 업로드는 됐지만 소켓 전송이 실패했을 때 */
   onSendError?: () => void
 }
 
 type ChatViewBaseProps = {
   chatId: number
   data: ChatViewData
-  /** 상대 프로필 패널/페이지 href 빌더 — 앱이 주입 (plan: panelHref, career: '/profile/'+id) */
   profileHref?: (memberId: number) => string
   /** 섭외 제안 수락/거절 — career(기술자)만 주입. 미주입이면 카드가 읽기전용 */
   offerActions?: OfferActions
-  /** 사진 첨부 — 미주입이면 갤러리 버튼 비활성 */
   imageActions?: ChatImageActions
   /**
    * 섭외 상태 변경(SYSTEM·OFFER 타입) 메시지 수신 시 호출 — 앱이 자신의 offer/task 쿼리를 무효화한다.
@@ -67,14 +55,12 @@ type ChatViewBaseProps = {
 
 type ChatViewShellProps =
   | {
-      /** 풀페이지 등 비-패널 쉘 주입 (career 풀페이지 라우트). title 은 비동기 도출분을 전달받음 */
       renderShell: (props: { title: string; children: ReactNode }) => ReactNode
       closeHref?: never
       onClose?: never
       backHref?: never
     }
   | {
-      /** 기본 패널 쉘 (plan) */
       renderShell?: never
       closeHref: string
       onClose: () => void
@@ -95,7 +81,6 @@ export function ChatView(props: ChatViewProps) {
   const [message, setMessage] = useState('')
   const queryClient = useQueryClient()
 
-  // 수신(본인 발신 브로드캐스트 포함)이 단일 소스 — useDirectChatSocket 주석 참조
   const appendMessage = useCallback(
     (incoming: Message) => {
       setLocalMessages((prev) =>
@@ -130,7 +115,6 @@ export function ChatView(props: ChatViewProps) {
     if (sendMessage({ type: MessageType.TEXT, content })) setMessage('')
   }, [message, sendMessage, setMessage])
 
-  // 선택 즉시 업로드 → 첨부 id 를 한 메시지로 전송. 업로드 실패는 imageActions 가 자체 안내한다.
   const handlePickImages = useCallback(
     async (files: File[]) => {
       if (!imageActions) return

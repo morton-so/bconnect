@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { REVIEWS } from '../_data'
+import { REVIEWS } from '../_lib/data'
 import { SectionHead } from './SectionHead'
 
 export function ReviewsSection() {

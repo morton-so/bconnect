@@ -13,7 +13,7 @@ import {
   FormMessage,
   cn,
 } from '@bconnect/ui'
-import { CERTIFICATE_ACCEPT, CERTIFICATE_MAX_BYTES, type CorpFormData } from '../schema'
+import { CERTIFICATE_ACCEPT, CERTIFICATE_MAX_BYTES, type CorpFormData } from '../_lib/schema'
 
 const formatSize = (bytes: number) =>
   bytes < 1024 * 1024 ? `${Math.round(bytes / 1024)}KB` : `${(bytes / 1024 / 1024).toFixed(1)}MB`

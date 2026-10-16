@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { ExplorerFolderList } from './_parts/ExplorerFolderList'
-import { FolderRowEditor } from './_parts/FolderRowEditor'
+import { ExplorerFolderList } from './ExplorerFolderList'
+import { FolderRowEditor } from './FolderRowEditor'
 import type { Folder } from './types'
 
 export interface StorageExplorerViewProps {
@@ -8,21 +8,17 @@ export interface StorageExplorerViewProps {
   isLoading: boolean
   isError: boolean
   folderHref: (folderId: string) => string
-  /** career: 검색 입력 주입. plan: 생략. */
   searchSlot?: ReactNode
   renderKebab?: (folder: Folder) => ReactNode
-  /** 폴더 생성 인라인 행(폴더 행 스타일) 표시 — 앱의 FAB 가 제어. */
   creating?: boolean
   onCreateSubmit?: (title: string) => void
   onCreateCancel?: () => void
-  /** 인라인 이름수정. */
   editingId?: string | null
   onRenameSubmit?: (id: string, title: string) => void
   onRenameCancel?: () => void
   emptyLabel?: string
 }
 
-/** 탐색기 루트 — 폴더 목록 뷰(컬럼/셸 무관). career 풀페이지·plan 좌측 컬럼 공용. */
 export function StorageExplorerView({
   folders,
   isLoading,

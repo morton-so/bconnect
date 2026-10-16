@@ -19,38 +19,15 @@ import {
   TextareaField,
 } from '@bconnect/ui'
 import { PanelAside, PanelScroll, PanelShell } from '@bconnect/features'
-import {
-  TASK_PROGRESS_LABELS,
-  TaskProgress,
-  Trade,
-  TRADE_LABELS,
-  TRADE_LIST,
-} from '@bconnect/api-client'
+import { TASK_PROGRESS_LABELS, TaskProgress, TRADE_LABELS, TRADE_LIST } from '@bconnect/api-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { usePathname } from 'next/navigation'
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { DRAFT_TASK_ID } from '@/app/(main)/projects/[projectId]/schedule/_components/schedule-grid/task-adapter'
-import type { ScheduleTask } from '@/app/(main)/projects/[projectId]/schedule/_components/schedule-grid/types'
+import { DRAFT_TASK_ID } from '@/lib/schedule/task-helpers'
+import type { ScheduleTask } from '@/lib/schedule/types'
+import { taskSchema, type TaskFormValues } from '@/app/(main)/_lib/schema'
 import { OfferQueue } from '../offer/OfferQueue'
-
-const taskSchema = z
-  .object({
-    title: z.string().min(1, '작업명을 입력해주세요.'),
-    start: z.string().min(1, '시작일을 선택해주세요.'),
-    end: z.string().min(1, '종료일을 선택해주세요.'),
-    trades: z.array(z.nativeEnum(Trade)).min(1, '공종을 1개 이상 선택해주세요.'),
-    progress: z.nativeEnum(TaskProgress),
-    requirement: z.string(),
-    memo: z.string(),
-  })
-  .refine((v) => v.start <= v.end, {
-    message: '종료일은 시작일 이후여야 해요.',
-    path: ['end'],
-  })
-
-type TaskFormValues = z.infer<typeof taskSchema>
 
 const PROGRESS_OPTIONS = Object.entries(TASK_PROGRESS_LABELS).map(([value, label]) => ({
   value,
@@ -79,15 +56,7 @@ function toFormValues(task: ScheduleTask): TaskFormValues {
   }
 }
 
-/**
- * 공정표 작업 생성/편집 패널. `?panel=task/new` = 빈 폼(생성),
- * `?panel=task/draft` = 드래그-생성 로컬 draft, `?panel=task/{id}` = 편집(즉시저장).
- *
- * 서버 작업은 React Query 캐시가 SSOT — 즉시저장은 useTaskMutations 파이프라인
- * (낙관적 캐시 patch + 500ms debounce PUT). draft 는 로컬 store 만 갱신하다가
- * 폼 유효 확정 시 createTaskCompany 로 서버 생성.
- */
-export function PanelTask({ taskId }: { taskId?: string }) {
+export function PanelTask({ taskId }: { taskId?: number }) {
   const { close, closeHref } = usePanelNav()
   const pathname = usePathname()
   const draft = useDraftTaskStore((s) => s.draft)
@@ -96,13 +65,12 @@ export function PanelTask({ taskId }: { taskId?: string }) {
   const { tasks: allTasks, projects, isLoading: isTasksLoading } = useAllProjectTasks()
 
   const isDraft = taskId === DRAFT_TASK_ID
-  const isEdit = !!taskId
+  const isEdit = taskId != null
   const task = isDraft ? (draft ?? undefined) : allTasks.find((t) => t.id === taskId)
 
-  // 소속 프로젝트 — 편집은 task 유래, 생성은 공정표 라우트(/projects/{id}/schedule) 유래.
-  // 라우트 밖 진입이면 첫 프로젝트 폴백.
-  const projectId =
-    task?.projectId ?? pathname.match(/^\/projects\/([^/]+)/)?.[1] ?? String(projects[0]?.id ?? '')
+  const projectId = task
+    ? String(task.projectId)
+    : (pathname.match(/^\/projects\/([^/]+)/)?.[1] ?? String(projects[0]?.id ?? ''))
   const { updateTask, deleteTask, createTask, isCreating, flushPendingSave } =
     useTaskMutations(projectId)
 
@@ -117,29 +85,24 @@ export function PanelTask({ taskId }: { taskId?: string }) {
     values,
   })
 
-  // 폼 → 즉시저장 (편집 모드). 사용자 입력(type==='change')만 반영 —
-  // 캐시→폼 역방향 sync(useForm values 발 reset)까지 되쓰면 드래그값↔폼값이 진동한다.
-  // draft 는 로컬 patch, 서버 작업은 낙관적 patch + debounce PUT.
   useEffect(() => {
-    if (!isEdit || !taskId) return
+    if (taskId == null) return
     const sub = form.watch((value, { type }) => {
       if (type !== 'change') return
       const parsed = taskSchema.safeParse(value)
       if (!parsed.success) return
       if (isDraft) patchDraft(parsed.data)
-      else updateTask(Number(taskId), parsed.data)
+      else updateTask(taskId, parsed.data)
     })
     return () => sub.unsubscribe()
-  }, [isEdit, isDraft, taskId, form, updateTask, patchDraft])
+  }, [isDraft, taskId, form, updateTask, patchDraft])
 
-  // draft 확정 = 서버 생성 → 로컬 draft 정리 → 닫기
   async function confirmDraft(vals: TaskFormValues) {
     await createTask(vals)
     clearDraft()
     close()
   }
 
-  // 닫기 요청 공통 경로(>> 버튼·ESC·backdrop). draft + 미완성이면 가드, 완성이면 확정 후 닫기.
   function requestClose() {
     if (isDraft) {
       const parsed = taskSchema.safeParse(form.getValues())
@@ -150,12 +113,10 @@ export function PanelTask({ taskId }: { taskId?: string }) {
       if (!isCreating) confirmDraft(parsed.data)
       return
     }
-    // 편집 즉시저장 debounce 대기분 유실 방지
     flushPendingSave()
     close()
   }
 
-  // 브라우저 닫기/새로고침 가드 — draft(미확정) 동안 (네이티브 다이얼로그).
   useEffect(() => {
     if (!isDraft) return
     const handler = (e: BeforeUnloadEvent) => e.preventDefault()
@@ -175,7 +136,6 @@ export function PanelTask({ taskId }: { taskId?: string }) {
     )
   }
 
-  // draft(드래그-생성) 확정·명시 생성 = 서버 생성 후 닫기. 일반 편집은 즉시저장이라 submit no-op.
   const onSubmit = form.handleSubmit(async (vals) => {
     if (isDraft) {
       await confirmDraft(vals)
@@ -193,7 +153,6 @@ export function PanelTask({ taskId }: { taskId?: string }) {
 
   return (
     <>
-      {/* draft 작성 중 인앱 이탈 차단(모달) — 바깥 클릭 시 닫기 가드 */}
       {isDraft && (
         <div className="fixed inset-0 z-30 bg-black/20" onClick={requestClose} aria-hidden="true" />
       )}
@@ -241,7 +200,6 @@ export function PanelTask({ taskId }: { taskId?: string }) {
                 <p className="mt-3 text-r-12 text-gray-500">
                   * 작성된 메모는 기술자에게 공개되지 않아요
                 </p>
-                {/* 일반 편집은 즉시저장(버튼 없음). 생성·draft 확정만 명시 제출. */}
                 {(!isEdit || isDraft) && (
                   <FormSubmitButton className="mt-5">작업 생성</FormSubmitButton>
                 )}
@@ -250,7 +208,7 @@ export function PanelTask({ taskId }: { taskId?: string }) {
 
             <div className="mt-2 border-t border-solid border-[#e5e5e5] px-5 py-4">
               <h3 className="text-sb-14 text-gray-900">섭외대기열</h3>
-              {isEdit && taskId && !isDraft ? (
+              {taskId != null && !isDraft ? (
                 <OfferQueue
                   taskId={taskId}
                   emptyActionHref={`/?task=${taskId}&trade=${(task?.trades ?? []).join(',')}`}
@@ -277,7 +235,7 @@ export function PanelTask({ taskId }: { taskId?: string }) {
         destructive
         onConfirm={() => {
           if (isDraft) clearDraft()
-          else if (taskId) deleteTask(Number(taskId))
+          else if (taskId != null) deleteTask(taskId)
           setCancelOpen(false)
           close()
         }}

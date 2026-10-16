@@ -4,9 +4,10 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import Image from 'next/image'
 import Link from 'next/link'
+import { OfferStatus, type Offer } from '@bconnect/api-client'
 import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
 import { Button, DragHandleIcon, cn } from '@bconnect/ui'
-import type { OfferQueueItem } from '@/app/(main)/projects/[projectId]/schedule/_components/schedule-grid/types'
+import { workerLabels } from '@/lib/schedule/task-helpers'
 import { OfferStatusBadge } from './OfferStatusBadge'
 
 export function OfferQueueRow({
@@ -14,13 +15,13 @@ export function OfferQueueRow({
   profileHref,
   onRequestRemove,
 }: {
-  item: OfferQueueItem
+  item: Offer
   profileHref: string
-  onRequestRemove: (item: OfferQueueItem) => void
+  onRequestRemove: (item: Offer) => void
 }) {
-  const isWaiting = item.status === 'waiting'
+  const isWaiting = item.status !== OfferStatus.ACTIVE
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: item.profileId,
+    id: item.member.id,
     disabled: !isWaiting,
   })
   const style = { transform: CSS.Transform.toString(transform), transition }
@@ -55,8 +56,8 @@ export function OfferQueueRow({
       >
         <div className="size-9 shrink-0 overflow-hidden rounded-full bg-[#d9d9d9]">
           <Image
-            src={item.picture || DEFAULT_PROFILE_IMAGE}
-            alt={item.name}
+            src={item.member.picture || DEFAULT_PROFILE_IMAGE}
+            alt={item.member.name}
             width={36}
             height={36}
             unoptimized
@@ -64,9 +65,9 @@ export function OfferQueueRow({
           />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sb-14 text-gray-900">{item.name}</p>
+          <p className="truncate text-sb-14 text-gray-900">{item.member.name}</p>
           <p className="truncate text-[11px] leading-[16.5px] text-[#a5a5a5]">
-            {[item.region, item.level, item.specialty].filter(Boolean).join(' · ')}
+            {workerLabels(item.profile).join(' · ')}
           </p>
         </div>
       </Link>

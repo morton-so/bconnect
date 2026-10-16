@@ -5,9 +5,12 @@ import { TopBar } from '@bconnect/ui'
 interface SignupHeaderProps {
   step: number
   total?: number
-  onBack: () => void
+  onBack?: () => void
+  backHref?: string
 }
 
-export function SignupHeader({ step, total = 3, onBack }: SignupHeaderProps) {
-  return <TopBar variant="progress" step={step} totalSteps={total} onBack={onBack} />
+export function SignupHeader({ step, total = 3, onBack, backHref }: SignupHeaderProps) {
+  return (
+    <TopBar variant="progress" step={step} totalSteps={total} onBack={onBack} backHref={backHref} />
+  )
 }

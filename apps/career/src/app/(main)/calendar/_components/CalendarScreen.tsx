@@ -7,7 +7,7 @@ import { useCalendarTasks } from '../_hooks/useCalendarTasks'
 import { CalendarMemberPicker } from './CalendarMemberPicker'
 import { CalendarHeader } from './calendar/CalendarHeader'
 import { MonthCarousel } from './calendar/MonthCarousel'
-import { dayInTask, monthShift } from './calendar/date-helpers'
+import { dayInTask, monthShift } from '../_lib/date-helpers'
 import { TaskDetailCard } from './detail/TaskDetailCard'
 
 /** 캘린더 오케스트레이터 */

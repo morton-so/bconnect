@@ -14,7 +14,7 @@ interface RecommendationEditorProps {
   isPending: boolean
   serverError?: string
   onSubmit: (content: string) => void
-  onBack: () => void
+  backHref: string
 }
 
 export function RecommendationEditor({
@@ -23,7 +23,7 @@ export function RecommendationEditor({
   isPending,
   serverError,
   onSubmit,
-  onBack,
+  backHref,
 }: RecommendationEditorProps) {
   const form = useForm<RecommendationFormValues>({
     mode: 'onTouched',
@@ -41,7 +41,7 @@ export function RecommendationEditor({
         actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending || isEmpty}
         onAction={submit}
-        onBack={onBack}
+        backHref={backHref}
       />
 
       <Form {...form}>

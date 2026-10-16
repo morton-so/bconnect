@@ -12,9 +12,8 @@ import {
 } from '@bconnect/ui'
 import { MemoListView } from '@bconnect/features'
 import type { Memo } from '@bconnect/features'
-import { useFolderMemos, useMemoMutations } from '@/lib/storage/hooks'
+import { useFolderMemos, useMemoMutations } from '@/app/(main)/storage/_hooks/useDrive'
 
-/** career 폴더 메모 탭 — 메모 CRUD (작성=FAB, 케밥=ActionDrawer, 삭제=ConfirmDialog 가드). */
 export function CareerMemoTab({ folderId }: { folderId: string }) {
   const { data: memos, isLoading, isError } = useFolderMemos(folderId)
   const { createMemo, updateMemo, deleteMemo } = useMemoMutations(folderId)

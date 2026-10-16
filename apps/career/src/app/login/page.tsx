@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { SignupHeader } from '@/components/SignupHeader'
 import { OtpTimer } from './_components/OtpTimer'
-import { loginSchema, type LoginFormData } from './schema'
+import { loginSchema, type LoginFormData } from './_lib/schema'
 
 type Step = 'phone' | 'otp'
 
@@ -120,7 +120,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <SignupHeader step={1} onBack={() => (step === 'otp' ? setStep('phone') : router.back())} />
+      <SignupHeader
+        step={1}
+        onBack={() => setStep('phone')}
+        backHref={step === 'phone' ? '/' : undefined}
+      />
 
       <Form {...form}>
         <form onSubmit={handleSubmit} className="flex flex-1 flex-col gap-6 px-4 pt-3">

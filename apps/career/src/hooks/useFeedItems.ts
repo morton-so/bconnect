@@ -3,17 +3,17 @@
 import { useMemo } from 'react'
 import {
   regionOfState,
+  REGION_LABELS,
   ROLE_LABELS,
   TRADE_LABELS,
   useAuthHint,
   useGetFeeds,
   useGetMyMember,
 } from '@bconnect/api-client'
-import type { Trade, ProfileRole } from '@bconnect/api-client'
+import type { Trade, ProfileRole, Region } from '@bconnect/api-client'
 import { toWork } from '@bconnect/features'
 import { formatRelativeTime } from '@bconnect/config/date'
 import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
-import { REGION_LABELS, type Region } from '@/lib/region'
 
 export interface FeedItem {
   postId: number

@@ -6,18 +6,15 @@ import { ROLE_LABELS, TRADE_LABELS } from '@bconnect/api-client'
 import type { Profile } from '@bconnect/api-client'
 import { ChatListItem, Skeleton } from '@bconnect/ui'
 import { formatRelativeTime } from '@bconnect/config/date'
-import { PanelShell } from '../_shared/PanelShell'
-import { PanelScroll } from '../_shared/PanelScroll'
-import { PanelMessage } from '../_shared/PanelMessage'
-import type { ChatSummary } from './_parts/types'
-import { chatMemberName, chatPreviewText } from './_parts/types'
+import { PanelShell } from '../PanelShell'
+import { PanelScroll } from '../PanelScroll'
+import { PanelMessage } from '../PanelMessage'
+import type { ChatSummary } from './types'
+import { chatMemberName, chatPreviewText } from './types'
 
-/** 앱이 resolve 해 내려주는 데이터. 어댑터가 useGetDirectChats·useGetGroupChats·useGetMyMember + 병렬 Profile 보강으로 채운다. */
 export interface MessagesViewData {
   chats?: ChatSummary[]
-  /** 본인 member id — "나" 호출(useGetMyMember)은 앱에서 (ADR-0020: features 엔 "나" 호출 없음) */
   currentUserId?: number
-  /** 상대 member id → Profile 보강 맵 — chat 응답에 없는 address.city/primaryTrade 등 */
   profileMap?: Map<number, Profile>
   isLoading: boolean
   isError: boolean
@@ -25,19 +22,16 @@ export interface MessagesViewData {
 
 interface MessagesViewBaseProps {
   data: MessagesViewData
-  /** 대화방 href 빌더 — 앱이 주입 (plan: panelHref('/messages/'+id), career: '/messages/'+id) */
   chatHref: (chatId: number) => string
 }
 
 type MessagesViewShellProps =
   | {
-      /** 풀페이지 등 비-패널 쉘 주입 (career 풀페이지 라우트) */
       renderShell: (props: { title: string; children: ReactNode }) => ReactNode
       closeHref?: never
       onClose?: never
     }
   | {
-      /** 기본 패널 쉘 (plan) */
       renderShell?: never
       closeHref: string
       onClose: () => void
@@ -67,7 +61,7 @@ export function MessagesView(props: MessagesViewProps) {
             const trade = otherProfile?.primaryTrade
               ? TRADE_LABELS[otherProfile.primaryTrade]
               : undefined
-            const grade = otherProfile?.role ? ROLE_LABELS[otherProfile.role] : undefined
+            const role = otherProfile?.role ? ROLE_LABELS[otherProfile.role] : undefined
             return (
               <Link key={chat.id} href={chatHref(chat.id)} scroll={false} className="block px-4">
                 <ChatListItem
@@ -75,7 +69,7 @@ export function MessagesView(props: MessagesViewProps) {
                   profileImage={otherMember?.picture ?? undefined}
                   name={chatMemberName(otherMember) ?? chat.title ?? '채팅'}
                   jobType={trade}
-                  specialty={grade}
+                  specialty={role}
                   lastMessage={chatPreviewText(chat.lastMessage)}
                   timestamp={chat.modifiedAt ? formatRelativeTime(chat.modifiedAt) : undefined}
                   unreadCount={chat.unreadCount}

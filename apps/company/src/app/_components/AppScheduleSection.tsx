@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { PREVIEW } from '../_data'
+import { PREVIEW } from '../_lib/data'
 
 export function AppScheduleSection() {
   return (

@@ -2,34 +2,25 @@
 
 import { useState, type ReactNode } from 'react'
 import { ConfirmDialog, useUnsavedGuard } from '@bconnect/ui'
-import { MemoCard } from './_parts/MemoCard'
-import { MemoEditor } from './_parts/MemoEditor'
+import { MemoCard } from './MemoCard'
+import { MemoEditor } from './MemoEditor'
 import type { Memo } from './types'
 
 export interface MemoListViewProps {
   memos: Memo[]
   isLoading: boolean
   isError: boolean
-  /** false/생략 시 읽기전용(케밥·작성 없음). */
   canManage?: boolean
   onCreate?: (content: string) => void
   onUpdate?: (id: string, content: string) => void
   onDelete?: (id: string) => void
-  /** 새 메모 작성 editor 표시 — 앱의 FAB 가 제어(controlled). */
   composing?: boolean
   onComposingChange?: (composing: boolean) => void
-  /** 삭제 가드 — 앱이 ConfirmDialog 로 감싼 콜백 주입(없으면 즉시 삭제). */
   confirmDelete?: (onConfirm: () => void) => void
-  /** 카드 케밥 — 앱이 메뉴 프리미티브로 렌더, actions 로 수정/삭제 연결. */
   renderKebab?: (memo: Memo, actions: { edit: () => void; remove: () => void }) => ReactNode
   emptyLabel?: string
 }
 
-/**
- * 폴더 메모 목록 + 인라인 편집/작성 호스트.
- * 편집은 카드 → MemoEditor 모프, 미저장 이탈은 useUnsavedGuard 로 확인. 삭제는 앱의 confirmDelete 가드.
- * 작성은 앱의 floating 버튼이 composing 으로 제어.
- */
 export function MemoListView({
   memos,
   isLoading,

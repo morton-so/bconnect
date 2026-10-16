@@ -2,9 +2,8 @@
 
 import Link from 'next/link'
 import { useGetProject } from '@bconnect/api-client'
-import { useFolder } from '@/lib/storage/hooks'
+import { useFolder } from '../_hooks/useDrive'
 
-/** 동산보드 헤더 — 프로젝트명 + breadcrumb(프로젝트 › 폴더) + TIP. */
 export function StorageHeader({ projectId, folderId }: { projectId: string; folderId?: string }) {
   const { data: project } = useGetProject(Number(projectId))
   const { data: folder } = useFolder(projectId, folderId)
@@ -22,8 +21,8 @@ export function StorageHeader({ projectId, folderId }: { projectId: string; fold
         </h1>
         <p className="mt-1 text-xs text-gray-500">TIP. 폴더를 현장/공종별로 관리해보세요</p>
       </div>
-      {/* 용량바 — BE 용량 API 미구현이라 가짜 수치 노출 방지 위해 비활성.
-          BE 지원 시 주석 해제 + useStorageUsage(lib/storage/hooks.ts) 실연동:
+      {/* TODO: BE 지원 시 주석 해제 + useStorageUsage(_hooks/useDrive.ts) 실연동 */}
+      {/* 용량바
       {usage && (
         <div className="flex shrink-0 items-center gap-2 pt-1">
           <Progress value={pct} className="w-28" />

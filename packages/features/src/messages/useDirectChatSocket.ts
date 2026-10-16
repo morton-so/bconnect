@@ -5,7 +5,6 @@ import { Client } from '@stomp/stompjs'
 import { getAccessToken, refreshAccessToken } from '@bconnect/api-client'
 import type { Message, MessageType } from '@bconnect/api-client'
 
-/** BE SendMessageRequest 계약 — TEXT 는 content, IMAGE 는 attachmentIds 가 필수 */
 export interface SendMessagePayload {
   type: MessageType
   content?: string
@@ -17,17 +16,8 @@ const getWsUrl = () => {
   return base.replace(/^http/, 'ws') + '/ws'
 }
 
-/**
- * DM STOMP 소켓 — 채팅방 단위 연결/구독/전송.
- *
- * 전송 확인은 별도 ack 가 아니라 BE 의 @SendTo 브로드캐스트(본인 포함)로 돌아온다 —
- * 구독 수신이 곧 단일 소스라 낙관 echo 가 필요 없다.
- * CONNECT 헤더의 access token 은 재연결(beforeConnect)마다 갱신된다.
- */
 export function useDirectChatSocket(chatId: number, onMessage: (message: Message) => void) {
   const clientRef = useRef<Client | null>(null)
-  // 구독 콜백은 연결 시점에 한 번 등록됨 — Effect Event 로 항상 최신 onMessage 를 부른다
-  // (직접 참조하면 stale closure, deps 에 넣으면 리렌더마다 재연결)
   const handleMessage = useEffectEvent(onMessage)
 
   useEffect(() => {

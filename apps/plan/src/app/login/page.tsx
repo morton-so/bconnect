@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { OtpTimer } from './_components/OtpTimer'
-import { loginSchema, type LoginFormData } from './schema'
+import { loginSchema, type LoginFormData } from './_lib/schema'
 
 type Step = 'phone' | 'otp'
 
@@ -82,16 +82,12 @@ export default function LoginPage() {
       })
       lastFailedAttempt.current = null
       if (result.registered) {
-        // 기존 회원 — 바로 로그인
         login(result.accessToken)
         const redirect = new URLSearchParams(window.location.search).get('redirect')
-        // router.push 금지 — 라우터 캐시가 로그아웃 시점의 미들웨어 redirect 를 재생해
-        // 로그인 페이지로 즉시 돌아온다. 하드 내비게이션으로 캐시를 통째로 리셋.
         window.location.assign(
           redirect && redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/'
         )
       } else {
-        // 미가입 유저 — signupToken 저장 후 회원가입 진행
         setSignupToken(result.signupToken)
         router.push('/signup/member')
       }

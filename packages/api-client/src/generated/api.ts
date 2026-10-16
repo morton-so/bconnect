@@ -3516,7 +3516,7 @@ return customFetch<ApiResponseVoid>(getCreateOneClickValidationUrl(),
 export const getCreateOneClickValidationMutationKey = () => ['createOneClickValidation'] as const;
 
 export const getCreateOneClickValidationMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(queryClient: QueryClient, options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext>, skipInvalidation?: boolean, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext> => {
 
 const mutationKey = getCreateOneClickValidationMutationKey();
@@ -3535,12 +3535,17 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
           return  createOneClickValidation(data,requestOptions)
         }
 
+  const onSuccess = (data: Awaited<ReturnType<typeof createOneClickValidation>>, variables: CreateOneClickValidationMutationVariables, onMutateResult: TContext, context: MutationFunctionContext) => {
+        if (!options?.skipInvalidation) {
+        queryClient.invalidateQueries({ predicate: (query) => [getGetCredentialsQueryKey(), getGetMyCredentialsQueryKey()].some((queryKey) => matchQuery({ queryKey }, query)) });
+        }
+        mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+      };
 
 
 
 
-
-  return  { mutationFn, ...mutationOptions }}
+  return  { ...mutationOptions, mutationFn, onSuccess }}
 
     export type CreateOneClickValidationMutationResult = NonNullable<Awaited<ReturnType<typeof createOneClickValidation>>>
     export type CreateOneClickValidationMutationBody = ValidateBusinessRequest
@@ -3548,14 +3553,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type CreateOneClickValidationMutationVariables = {data: ValidateBusinessRequest}
 
     export const useCreateOneClickValidation = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext>, skipInvalidation?: boolean, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createOneClickValidation>>,
         TError,
         CreateOneClickValidationMutationVariables,
         TContext
       > => {
-      return useMutation(getCreateOneClickValidationMutationOptions(options), queryClient);
+      const backupQueryClient = useQueryClient();
+      return useMutation(getCreateOneClickValidationMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
     }
 
 export const getCreateOfferUrl = () => {

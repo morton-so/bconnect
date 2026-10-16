@@ -1,8 +1,2 @@
-export { ScheduleGrid } from './schedule-grid'
-export type {
-  OfferQueueItem,
-  OfferStatus,
-  ScheduleGridProps,
-  ScheduleTask,
-  TaskAssignee,
-} from './types'
+export { ScheduleGrid } from './ScheduleGrid'
+export type { ScheduleGridProps, ScheduleTask } from '@/lib/schedule/types'

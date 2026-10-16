@@ -12,44 +12,24 @@ import {
   useReorderOffers,
 } from '@bconnect/api-client'
 import type { Offer } from '@bconnect/api-client'
-import {
-  toNumericTaskId,
-  toOfferQueueItem,
-} from '@/app/(main)/projects/[projectId]/schedule/_components/schedule-grid/task-adapter'
-import type { OfferQueueItem } from '@/app/(main)/projects/[projectId]/schedule/_components/schedule-grid/types'
+import { DRAFT_TASK_ID, toOfferQueue } from '@/lib/schedule/task-helpers'
 import { useAllProjectTasks } from '@/hooks/useAllProjectTasks'
 
-/**
- * 섭외 대기열 소비 facade — 소비 컴포넌트 시그니처 불변, 내부만 offers API.
- * FE profileId 는 실제 memberId 축 → Offer.member.id 로 역룩업해 offerId/workerId 를 얻는다.
- * BE: 첫 offer 는 자동 ACTIVE 승격(promoteNext), reorder 는 PENDING 전체 offerIds 필수.
- */
-export function useOfferQueue(taskId: string | null | undefined) {
+export function useOfferQueue(taskId: number | null | undefined) {
   const queryClient = useQueryClient()
-  const numId = toNumericTaskId(taskId)
+  const numId = taskId != null && taskId !== DRAFT_TASK_ID ? taskId : null
   const enabled = numId != null
   const { data: offers, isLoading } = useGetTaskOffers(numId ?? 0, { query: { enabled } })
-  // 답변 기한(due)은 서버가 계산·관리 — FE는 보내지 않는다.
   const { tasks } = useAllProjectTasks()
-  const task = taskId ? tasks.find((t) => t.id === taskId) : undefined
+  const task = numId != null ? tasks.find((t) => t.id === numId) : undefined
 
-  const activePending = useMemo(
-    () =>
-      (offers ?? [])
-        .filter((o) => o.status === OfferStatus.ACTIVE || o.status === OfferStatus.PENDING)
-        .sort((a, b) => (a.seq ?? 0) - (b.seq ?? 0)),
-    [offers]
-  )
-  const items = useMemo(() => activePending.map(toOfferQueueItem), [activePending])
+  const items = useMemo(() => toOfferQueue(offers ?? []), [offers])
 
   const invalidate = () => {
     if (numId == null) return
     queryClient.invalidateQueries({ queryKey: getGetTaskOffersQueryKey(numId) })
-    // 첫 offer 자동 ACTIVE 승격/취소가 '섭외중'·대표 기술자 파생에 반영되도록 tasks 도 갱신
-    if (task?.projectId)
-      queryClient.invalidateQueries({
-        queryKey: getGetProjectTasksQueryKey(Number(task.projectId)),
-      })
+    if (task)
+      queryClient.invalidateQueries({ queryKey: getGetProjectTasksQueryKey(task.projectId) })
   }
 
   const { mutate: createOffer, isPending: isCreating } = useCreateOffer({
@@ -65,17 +45,17 @@ export function useOfferQueue(taskId: string | null | undefined) {
     },
   })
 
-  const findOffer = (profileId: number) => activePending.find((o) => o.member?.id === profileId)
+  const findOffer = (profileId: number) => items.find((o) => o.member?.id === profileId)
 
   return {
     items,
     count: items.length,
     isPending: isLoading || isCreating || isCanceling || isReordering,
-    isQueued: (profileId: number) => items.some((q) => q.profileId === profileId),
-    addToQueue: (item: OfferQueueItem) => {
+    isQueued: (profileId: number) => items.some((o) => o.member?.id === profileId),
+    addToQueue: (profileId: number) => {
       if (numId == null || !task) return
       createOffer({
-        data: { taskId: numId, workerId: item.profileId },
+        data: { taskId: numId, workerId: profileId },
       })
     },
     removeFromQueue: (profileId: number) => {
@@ -84,7 +64,7 @@ export function useOfferQueue(taskId: string | null | undefined) {
     },
     reorderQueue: (activeProfileId: number, overProfileId: number) => {
       if (numId == null || activeProfileId === overProfileId) return
-      const pending = activePending.filter((o) => o.status === OfferStatus.PENDING)
+      const pending = items.filter((o) => o.status === OfferStatus.PENDING)
       const from = pending.findIndex((o) => o.member?.id === activeProfileId)
       const to = pending.findIndex((o) => o.member?.id === overProfileId)
       if (from < 0 || to < 0) return
@@ -93,9 +73,7 @@ export function useOfferQueue(taskId: string | null | undefined) {
       next.splice(to, 0, moved)
       const offerIds = next.flatMap((o) => o.id ?? [])
       if (offerIds.length !== pending.length) return
-      // dnd 스냅백 방지 — offers 캐시를 새 순서로 낙관적 재배열, 실패 시 invalidate 복구.
-      // items 가 seq 로 정렬되므로 seq 도 재부여해야 함 (BE reorder 와 동일 규칙: ACTIVE 다음부터)
-      const active = activePending.filter((o) => o.status === OfferStatus.ACTIVE)
+      const active = items.filter((o) => o.status === OfferStatus.ACTIVE)
       const activeMax = Math.max(0, ...active.map((o) => o.seq ?? 0))
       queryClient.setQueryData<Offer[]>(getGetTaskOffersQueryKey(numId), [
         ...active,

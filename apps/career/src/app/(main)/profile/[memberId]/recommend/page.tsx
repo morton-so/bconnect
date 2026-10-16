@@ -17,10 +17,9 @@ export default function CreateRecommendationPage() {
 
   const { mutate, isPending } = useCreateRecommendation<Error>({
     mutation: {
-      // 무효화(create→보낸/받은 추천서 목록)는 orval mutationInvalidates 가 자동 처리 (ADR-0025)
       onSuccess: () => {
         toast({ description: '추천서를 작성했어요', variant: 'success' })
-        router.back()
+        router.replace(`/profile/${params.memberId}`)
       },
       onError: (error) => setServerError(error.message),
     },
@@ -32,7 +31,7 @@ export default function CreateRecommendationPage() {
       isPending={isPending}
       serverError={serverError}
       onSubmit={(content) => mutate({ data: { toId, content } })}
-      onBack={() => router.back()}
+      backHref={`/profile/${params.memberId}`}
     />
   )
 }

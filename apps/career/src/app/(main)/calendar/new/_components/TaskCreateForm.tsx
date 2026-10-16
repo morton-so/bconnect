@@ -20,7 +20,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { AddressField } from '@/components/AddressField'
 import { isCompleteAddress } from '@bconnect/config/address'
-import { createTaskSchema, type CreateTaskValues } from './schema'
+import { createTaskSchema, type CreateTaskValues } from '../_lib/schema'
 
 export function TaskCreateForm() {
   const router = useRouter()
@@ -60,7 +60,6 @@ export function TaskCreateForm() {
       {
         onSuccess: () => {
           toast({ description: '작업이 생성되었어요', variant: 'success' })
-          // 생성한 작업의 시작일로 포커스 (월·선택일 동기화)
           router.replace(`/calendar?day=${data.start}&month=${monthStartOf(data.start)}`)
         },
         onError: (err) => server.capture(err, data),
@@ -76,7 +75,7 @@ export function TaskCreateForm() {
         actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending}
         onAction={handleSubmit(onSubmit, scrollToError)}
-        onBack={() => router.back()}
+        backHref="/calendar"
       />
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit, scrollToError)} className="flex flex-col px-4 pb-10">

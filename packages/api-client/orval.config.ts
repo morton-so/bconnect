@@ -52,6 +52,7 @@ export default defineConfig({
                 'acceptCredential',
                 'denyCredential',
                 'deleteCredential',
+                'createOneClickValidation',
               ],
               invalidates: ['getCredentials', 'getMyCredentials'],
             },

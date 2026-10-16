@@ -1,6 +1,3 @@
-/**
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1239-7873
- */
 'use client'
 
 import { useRouter } from 'next/navigation'
@@ -9,6 +6,9 @@ import { TopBar } from '@bconnect/ui'
 import { RecommendationList } from '@bconnect/features'
 import { useRecommendationActions } from '../_adapters/useRecommendationActions'
 
+/**
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1239-7873
+ */
 export default function RecommendationsPage() {
   const router = useRouter()
   const { data: received } = useGetMyReceivedRecommendations()
@@ -16,12 +16,11 @@ export default function RecommendationsPage() {
   const { onHideRecommendation, onShowRecommendation, onDeleteRecommendation } =
     useRecommendationActions()
 
-  // 케밥 '수정'은 imperative 내비게이션 — 명명 핸들러로 분리 (no-restricted-syntax)
   const handleEditRecommendation = (id: number) => router.push(`/recommendations/${id}/edit`)
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="추천서" onBack={() => router.back()} />
+      <TopBar variant="default" title="추천서" backHref="/profile" />
       <RecommendationList
         received={received}
         sent={sent}

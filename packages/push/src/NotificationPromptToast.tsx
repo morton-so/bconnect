@@ -4,7 +4,7 @@
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 import { Button, NotificationIcon } from '@bconnect/ui'
-import { useNotificationSoftAsk } from './use-notification-soft-ask'
+import { useNotificationSoftAsk } from './useNotificationSoftAsk'
 
 const TITLE_ID = 'notif-softask-toast-title'
 const DESC_ID = 'notif-softask-toast-desc'

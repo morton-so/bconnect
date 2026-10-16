@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button, CertTag, SkillTag, toast } from '@bconnect/ui'
-import { TRADE_LABELS, useAuthHint, useCreateDirectChat } from '@bconnect/api-client'
+import { ROLE_LABELS, TRADE_LABELS, useAuthHint, useCreateDirectChat } from '@bconnect/api-client'
 import { usePanelNav } from '@/hooks/usePanelNav'
 import type { MemberTechnicianItem } from '@/hooks/useTechnicianItems'
 import type { Trade } from '@bconnect/api-client'
@@ -27,7 +27,6 @@ function Stat({
     </>
   )
   const className = 'flex flex-col items-center gap-1'
-  // 비로그인은 패널 진입 대신 로그인 게이트 (프로필 보기/메시지 버튼과 동일 규약)
   if (onGated) {
     return (
       <button type="button" onClick={onGated} className={className}>
@@ -64,18 +63,16 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
   const { requireLogin } = useLoginGate()
   const isAuthenticated = useAuthHint()
   const { panelHref, openPanel } = usePanelNav()
-  // 프로필 패널 세그먼트는 profile.id 가 아니라 memberId (GET /profiles/{id} 가 memberId 조회)
   const profileHref = panelHref(`profile/${item.memberId}`)
   const gated = isAuthenticated ? undefined : requireLogin
   const { mutate: createDirectChat, isPending: isCreatingChat } = useCreateDirectChat<Error>()
 
   const metaParts = [
     item.location,
-    item.grade,
+    item.role && ROLE_LABELS[item.role],
     item.experienceYears > 0 ? `${item.experienceYears}년` : '신입',
   ].filter(Boolean)
 
-  // 작업물(Post + Task) 유래 썸네일 — 없으면 3개 회색 placeholder
   const portfolios =
     item.portfolios.length > 0
       ? item.portfolios.slice(0, 3)
@@ -89,7 +86,6 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
         </div>
 
         <div className="flex flex-1 flex-col gap-4">
-          {/* 이름 + 메타. 별점·리뷰·계약 행은 BE 도메인 미구현으로 미표시 */}
           <div className="flex items-baseline gap-2.5">
             <p className="text-sb-20 text-gray-900">{item.name}</p>
             <p className="text-r-14 text-gray-500">{metaParts.join(' · ')}</p>
@@ -165,7 +161,6 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
       <div className="w-px shrink-0 self-stretch bg-gray-100" />
 
       <div className="flex w-[422px] shrink-0 flex-col gap-[22px]">
-        {/* 클릭 시 프로필 패널의 해당 탭/하위 패널 진입 (PanelProfile statHrefs 와 동일 규약) */}
         <div className="flex gap-8">
           <Stat
             value={item.postCount}
@@ -187,7 +182,6 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
           />
         </div>
 
-        {/* 작업물(Post + Task) 썸네일 3개 — 소요일은 연결된 작업 기간, 미연결이면 공백 */}
         <div className="flex flex-1 gap-[9px]">
           {portfolios.map((p, i) => (
             <PortfolioThumb

@@ -19,10 +19,10 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import Link from 'next/link'
+import { OfferStatus, type Offer } from '@bconnect/api-client'
 import { Button, ConfirmDialog, SearchIcon, toast } from '@bconnect/ui'
 import { useOfferQueue } from '@/hooks/useOfferQueue'
 import { usePanelNav } from '@/hooks/usePanelNav'
-import type { OfferQueueItem } from '@/app/(main)/projects/[projectId]/schedule/_components/schedule-grid/types'
 import { OfferQueueRow } from './OfferQueueRow'
 
 function EmptyState({ actionHref }: { actionHref?: string }) {
@@ -41,21 +41,16 @@ function EmptyState({ actionHref }: { actionHref?: string }) {
   )
 }
 
-/**
- * 섭외 대기열 목록 — 작업 패널 하단. 헤더/패딩은 소비처가 제공.
- * 대기중 항목만 @dnd-kit 으로 정렬, 섭외중은 잠금. 삭제/취소는 ConfirmDialog 가드 경유.
- * 프로필 링크는 `?task=` 를 동봉해, 그 프로필 패널에서도 섭외 제안/취소 액션이 보이게 한다.
- */
 export function OfferQueue({
   taskId,
   emptyActionHref,
 }: {
-  taskId: string
+  taskId: number
   emptyActionHref?: string
 }) {
   const { items, removeFromQueue, reorderQueue } = useOfferQueue(taskId)
   const { panelHref } = usePanelNav()
-  const [pending, setPending] = useState<OfferQueueItem | null>(null)
+  const [pending, setPending] = useState<Offer | null>(null)
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -67,21 +62,21 @@ export function OfferQueue({
     if (over && active.id !== over.id) reorderQueue(Number(active.id), Number(over.id))
   }
 
-  const isOffered = pending?.status === 'offered'
+  const isOffered = pending?.status === OfferStatus.ACTIVE
 
   return (
     <div>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
         <SortableContext
-          items={items.map((i) => i.profileId)}
+          items={items.map((i) => i.member.id)}
           strategy={verticalListSortingStrategy}
         >
           <div className="flex flex-col">
             {items.map((item) => (
               <OfferQueueRow
-                key={item.profileId}
+                key={item.member.id}
                 item={item}
-                profileHref={panelHref(`profile/${item.profileId}`, { task: taskId })}
+                profileHref={panelHref(`profile/${item.member.id}`, { task: String(taskId) })}
                 onRequestRemove={setPending}
               />
             ))}
@@ -113,7 +108,7 @@ export function OfferQueue({
         destructive
         onConfirm={() => {
           if (pending) {
-            removeFromQueue(pending.profileId)
+            removeFromQueue(pending.member.id)
             toast({
               description: isOffered ? '섭외를 취소했어요' : '대기열에서 삭제했어요',
               variant: 'success',

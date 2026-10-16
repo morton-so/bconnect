@@ -104,6 +104,15 @@ export function getRoleLabel(role: ProfileRole): string {
   return ROLE_LABELS[role] ?? role
 }
 
+export const WORKER_ROLE = [
+  ProfileRole.FOREMAN,
+  ProfileRole.SKILLED,
+  ProfileRole.SEMI_SKILLED,
+  ProfileRole.HELPER,
+] as const
+
+export type WorkerRole = (typeof WORKER_ROLE)[number]
+
 export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {
   [TaskStatus.NONE]: '섭외 전',
   [TaskStatus.OPEN]: '모집 중',

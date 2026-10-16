@@ -1,6 +1,3 @@
-/**
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1759-5766
- */
 'use client'
 
 import { useState } from 'react'
@@ -8,9 +5,12 @@ import { useRouter } from 'next/navigation'
 import { useLogout, useDeleteMyMember } from '@bconnect/api-client'
 import { TopBar, ConfirmDialog, toast } from '@bconnect/ui'
 import { SITE_URL } from '@bconnect/config/site'
-import { useSessionExit } from '@/hooks/useSessionExit'
+import { useSessionExit } from './_hooks/useSessionExit'
 import { SettingsRow } from './_components/SettingsRow'
 
+/**
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1759-5766
+ */
 export default function SettingsPage() {
   const router = useRouter()
   const exitSession = useSessionExit()
@@ -21,7 +21,6 @@ export default function SettingsPage() {
   const withdraw = useDeleteMyMember()
 
   const handleLogout = async () => {
-    // 서버 호출이 실패해도 사용자는 이탈 의사를 밝혔으므로 로컬은 정리하고 이동한다.
     await exitSession(logout.mutateAsync, { clearAuthOnFailure: true }).catch(() => undefined)
     router.push('/login')
   }

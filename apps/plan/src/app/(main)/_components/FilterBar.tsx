@@ -7,11 +7,12 @@ import {
   TRADE_LABELS,
   REGION_LIST,
   REGION_LABELS,
+  ROLE_LABELS,
+  WORKER_ROLE,
   type Region,
+  type WorkerRole,
 } from '@bconnect/api-client'
 import { EXPERIENCE_OPTIONS, EXPERIENCE_LABELS } from '@/lib/experience'
-import { GRADE_OPTIONS } from '@/lib/grade'
-import type { Grade } from '@/lib/grade'
 import { useFilterParams } from '@/hooks/useFilterParams'
 import type { ExperienceLevel } from '@/lib/experience'
 import { TaskSelectBar } from './TaskSelectBar'
@@ -33,19 +34,19 @@ export function FilterBar() {
   const {
     trades,
     experience,
-    grades,
+    roles,
     regions,
     setTrade,
     setExperience,
-    setGrade,
+    setRole,
     setRegion,
     toggleTrade,
-    toggleGrade,
+    toggleRole,
     toggleRegion,
     clearFilter,
   } = useFilterParams()
 
-  const hasFilter = trades.length > 0 || !!experience || grades.length > 0 || regions.length > 0
+  const hasFilter = trades.length > 0 || !!experience || roles.length > 0 || regions.length > 0
 
   return (
     <div className="flex flex-col gap-[13px]">
@@ -72,9 +73,9 @@ export function FilterBar() {
           multiple
           clearable
           triggerLabel="직급"
-          value={grades}
-          onChange={(v) => setGrade(v as Grade[])}
-          options={GRADE_OPTIONS}
+          value={roles}
+          onChange={(v) => setRole(v as WorkerRole[])}
+          options={WORKER_ROLE.map((value) => ({ value, label: ROLE_LABELS[value] }))}
         />
         <Select
           clearable
@@ -95,8 +96,8 @@ export function FilterBar() {
           {trades.map((t) => (
             <FilterChip key={t} label={TRADE_LABELS[t]} onRemove={() => toggleTrade(t)} />
           ))}
-          {grades.map((g) => (
-            <FilterChip key={g} label={g} onRemove={() => toggleGrade(g)} />
+          {roles.map((r) => (
+            <FilterChip key={r} label={ROLE_LABELS[r]} onRemove={() => toggleRole(r)} />
           ))}
           {experience && (
             <FilterChip

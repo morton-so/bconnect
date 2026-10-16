@@ -5,13 +5,12 @@ import { getRoleLabel, getTradeLabel } from '@bconnect/api-client'
 import type { Coworker } from '@bconnect/api-client'
 import { ProfileCard, ProfileCardSkeleton } from '@bconnect/ui'
 import { DEFAULT_PROFILE_IMAGE } from '@bconnect/config/avatar'
-import { PanelMessage } from '../_shared/PanelMessage'
+import { PanelMessage } from '../PanelMessage'
 
 export interface CoworkerListProps {
   coworkers?: Coworker[]
   isLoading: boolean
   isError: boolean
-  /** 동료 클릭 시 그 동료 프로필 href — 소비처가 주입 (career: /profile/:id, plan: panelHref) */
   coworkerHref: (profileId: number) => string
   /**
    * 행 우측 ⋮ 메뉴(동료 관리) 렌더 슬롯. 주면 행이 profileHref(아바타+이름만 링크)+rightSlot 으로
@@ -20,11 +19,6 @@ export interface CoworkerListProps {
   renderRowMenu?: (coworker: Coworker) => ReactNode
 }
 
-/**
- * 동료 목록 본문 — loading(스켈레톤)·error·empty·리스트 상태를 한 곳에서 처리한다.
- * 감싸는 shell(career 페이지 / plan 패널)은 소비처 책임, 본 컴포넌트는 상태+행 렌더만.
- * career·plan 동료 행의 중복을 흡수한 SSOT.
- */
 export function CoworkerList({
   coworkers,
   isLoading,
@@ -56,10 +50,6 @@ export function CoworkerList({
   )
 }
 
-/**
- * 동료 한 명 — 분야/지역/소개는 목록 응답이 이미 실어 보내는 member·profile 요약에서 읽는다.
- * (예전엔 행마다 useGetProfile 로 by-id 재조회 → 인원수만큼 N+1 요청. 목록 응답 embed 로 제거)
- */
 function CoworkerRow({
   coworker,
   href,

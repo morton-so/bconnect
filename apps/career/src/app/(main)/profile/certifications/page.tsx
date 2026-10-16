@@ -1,22 +1,17 @@
-/**
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1239-7678
- */
 'use client'
 
 import Link from 'next/link'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useGetMyCredentials, useDeleteCredential } from '@bconnect/api-client'
 import { Button, ConfirmDialog, TopBar } from '@bconnect/ui'
 import { CredentialItem } from './_components/CredentialItem'
 
+/**
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1239-7678
+ */
 export default function CertificationsPage() {
-  const router = useRouter()
-
-  // 내 자격 증명은 useGetMyCredentials(무인자) — profileId 로 조회하던 useGetCredentials 대체.
   const { data: credentials, isLoading: isCredentialsLoading } = useGetMyCredentials()
 
-  // deleteCredential→getMyCredentials 무효화는 config(mutationInvalidates)가 자동 처리 (ADR-0025).
   const { mutate: deleteCredential } = useDeleteCredential()
 
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null)
@@ -27,7 +22,7 @@ export default function CertificationsPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col">
-        <TopBar variant="default" title="자격 증명" />
+        <TopBar variant="default" title="자격 증명" backHref="/profile" />
         <div className="flex flex-1 items-center justify-center py-20">
           <p className="text-m-14 text-gray-500">로딩 중...</p>
         </div>
@@ -37,7 +32,7 @@ export default function CertificationsPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="자격 증명" onBack={() => router.back()} />
+      <TopBar variant="default" title="자격 증명" backHref="/profile" />
 
       <p className="px-4 py-3 text-r-12 text-gray-500">
         자격 증명을 프로필에 표시하고 신뢰도를 높여보세요
