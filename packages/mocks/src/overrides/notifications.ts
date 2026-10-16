@@ -195,13 +195,13 @@ export const notificationsOverrides = [
   getUpdateNotificationReadMockHandler(({ params }) => {
     const target = notifications.find((n) => n.id === Number(params.id))
     if (target) target.read = true
-    return { success: true }
+    return null
   }),
 
   getUpdateNotificationsReadMockHandler(() => {
     notifications.forEach((n) => {
       n.read = true
     })
-    return { success: true }
+    return null
   }),
 ]

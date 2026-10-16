@@ -1,29 +1,27 @@
 import { QueryClient, type QueryClientConfig } from '@tanstack/react-query'
 import { cache } from 'react'
 
-export const queryClientConfig: QueryClientConfig = {
+// 재시도는 ky에서 수행
+export const config: QueryClientConfig = {
   defaultOptions: {
     queries: {
       staleTime: 60 * 1000,
       gcTime: 5 * 60 * 1000,
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-    mutations: {
       retry: 0,
+      refetchOnWindowFocus: false,
     },
   },
 }
 
-let browserQueryClient: QueryClient | undefined
+let client: QueryClient | undefined
 
 export const getQueryClient = cache(() => {
   if (typeof window === 'undefined') {
-    return new QueryClient(queryClientConfig)
+    return new QueryClient(config)
   }
 
-  if (!browserQueryClient) {
-    browserQueryClient = new QueryClient(queryClientConfig)
+  if (!client) {
+    client = new QueryClient(config)
   }
-  return browserQueryClient
+  return client
 })

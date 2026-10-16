@@ -7,7 +7,7 @@ import { usePanelNav } from '@/hooks/usePanelNav'
 import { useGetMyCompany, useGetMyMember } from '@bconnect/api-client'
 import { useUnreadChatCount, useUnreadNotificationCount } from '@bconnect/features'
 import { DEFAULT_PROFILE_IMAGE } from '@bconnect/lib/avatar'
-import { Select, toast } from '@bconnect/ui'
+import { Select, serverErrorMessage, toast } from '@bconnect/ui'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -95,7 +95,7 @@ function ProjectSection({
         queryClient.invalidateQueries({ queryKey: getGetProjectsQueryKey() })
         router.push(`/projects/${id}/schedule`)
       },
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
   const projectOptions = (projects ?? []).map((p) => ({

@@ -8,7 +8,15 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { checkUsername, requireRegisterAccessToken, useCreateMember } from '@bconnect/api-client'
-import { AgreementField, Form, FormSubmitButton, Logo, TextField, toast } from '@bconnect/ui'
+import {
+  AgreementField,
+  Form,
+  FormSubmitButton,
+  Logo,
+  serverErrorMessage,
+  TextField,
+  toast,
+} from '@bconnect/ui'
 import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/lib/consent'
 import { formatIsoDateInput } from '@bconnect/lib/date'
 import { formatUsername } from '@bconnect/lib/username'
@@ -54,7 +62,7 @@ export default function SignupMemberPage() {
       resetSignup()
       router.replace('/signup/corp')
     } catch (err) {
-      toast({ description: (err as Error).message, variant: 'error' })
+      toast({ description: serverErrorMessage(err), variant: 'error' })
       resetSignup()
       router.replace('/login')
     }

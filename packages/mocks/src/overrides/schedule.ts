@@ -6,7 +6,6 @@ import {
   getGetProjectsMockHandler,
   getGetProjectTasksMockHandler,
   getGetTaskOffersMockHandler,
-  getReorderOffersMockHandler,
   getUpdateTaskCompanyMockHandler,
 } from '@bconnect/api-client/msw'
 import type {
@@ -21,6 +20,11 @@ import type {
 } from '@bconnect/api-client'
 import { addressOf } from './_address'
 import { http, HttpResponse } from 'msw'
+
+const INVALID_REORDER = {
+  success: false,
+  error: { code: 'OF003', message: '재정렬 대상이 올바르지 않습니다.' },
+}
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
@@ -406,7 +410,7 @@ export const scheduleOverrides = [
           }
         : t
     )
-    return { success: true }
+    return null
   }),
 
   http.delete('*/api/v1/tasks/:id', ({ params }) => {
@@ -414,7 +418,7 @@ export const scheduleOverrides = [
     if (!tasks.some((t) => t.id === id)) return undefined
     tasks = tasks.filter((t) => t.id !== id)
     offers = offers.filter((o) => o.taskId !== id)
-    return HttpResponse.json({ success: true })
+    return new HttpResponse(null, { status: 200 })
   }),
 
   getGetTaskOffersMockHandler((info): Offer[] =>
@@ -440,20 +444,20 @@ export const scheduleOverrides = [
       offer.status = OfferStatus.CANCELED
       promoteNext(offer.taskId!)
     }
-    return { success: true }
+    return null
   }),
 
-  getReorderOffersMockHandler(async (info) => {
-    const body = (await info.request.json()) as ReorderOfferRequest
+  http.put('*/api/v1/offers/reorder', async ({ request }) => {
+    const body = (await request.json()) as ReorderOfferRequest
     const first = offers.find((o) => o.id === body.offerIds[0])
-    if (!first) return { success: false }
+    if (!first) return HttpResponse.json(INVALID_REORDER, { status: 400 })
     const list = taskOffers(first.taskId!)
     const pendingIds = new Set(
       list.filter((o) => o.status === OfferStatus.PENDING).flatMap((o) => o.id ?? [])
     )
     const requested = new Set(body.offerIds)
     if (pendingIds.size !== requested.size || [...pendingIds].some((v) => !requested.has(v)))
-      return { success: false }
+      return HttpResponse.json(INVALID_REORDER, { status: 400 })
     const activeMax = Math.max(
       0,
       ...list.filter((o) => o.status === OfferStatus.ACTIVE).map((o) => o.seq ?? 0)
@@ -462,6 +466,6 @@ export const scheduleOverrides = [
       const offer = offers.find((o) => o.id === offerId)
       if (offer) offer.seq = activeMax + 1 + i
     })
-    return { success: true }
+    return new HttpResponse(null, { status: 200 })
   }),
 ]

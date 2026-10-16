@@ -10,7 +10,7 @@ import {
   AttachmentContext,
   AttachmentType,
 } from '@bconnect/api-client'
-import { toast } from '@bconnect/ui'
+import { serverErrorMessage, toast } from '@bconnect/ui'
 
 async function uploadProfileImage(file: File, memberId: number): Promise<number> {
   const [presigned] = await createAttachmentPresign({
@@ -50,7 +50,7 @@ export function useProfileImageUpload(memberId: number) {
         await queryClient.invalidateQueries({ queryKey: getGetMyProfileQueryKey() })
         toast({ description: '프로필 이미지를 변경했어요', variant: 'success' })
       } catch (error) {
-        toast({ description: (error as Error).message, variant: 'error' })
+        toast({ description: serverErrorMessage(error), variant: 'error' })
       } finally {
         setIsUploading(false)
       }

@@ -6,7 +6,7 @@
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useCreateRecommendation } from '@bconnect/api-client'
-import { toast } from '@bconnect/ui'
+import { serverErrorMessage, toast } from '@bconnect/ui'
 import { RecommendationEditor } from '@/app/(main)/_components/RecommendationEditor'
 
 export default function CreateRecommendationPage() {
@@ -21,7 +21,7 @@ export default function CreateRecommendationPage() {
         toast({ description: '추천서를 작성했어요', variant: 'success' })
         router.replace(`/profile/${params.memberId}`)
       },
-      onError: (error) => setServerError(error.message),
+      onError: (error) => setServerError(serverErrorMessage(error)),
     },
   })
 

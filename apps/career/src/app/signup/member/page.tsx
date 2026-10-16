@@ -10,7 +10,14 @@ import { CONSENT_DEFAULT, CONSENT_ITEMS } from '@bconnect/lib/consent'
 import { formatIsoDateInput } from '@bconnect/lib/date'
 import { formatUsername } from '@bconnect/lib/username'
 import { login } from '@bconnect/features'
-import { AgreementField, Form, FormSubmitButton, TextField, toast } from '@bconnect/ui'
+import {
+  AgreementField,
+  Form,
+  FormSubmitButton,
+  serverErrorMessage,
+  TextField,
+  toast,
+} from '@bconnect/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -55,7 +62,7 @@ export default function SignupMemberPage() {
       resetSignup()
       router.replace('/signup/profile')
     } catch (err) {
-      toast({ description: (err as Error).message, variant: 'error' })
+      toast({ description: serverErrorMessage(err), variant: 'error' })
       resetSignup()
       router.replace('/login')
     }

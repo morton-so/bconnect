@@ -7,7 +7,7 @@ import {
   AttachmentContext,
   AttachmentType,
 } from '@bconnect/api-client'
-import { toast } from '@bconnect/ui'
+import { serverErrorMessage, toast } from '@bconnect/ui'
 
 export const CHAT_IMAGE_MAX_FILES = 50
 export const CHAT_IMAGE_MAX_SIZE_MB = 20
@@ -79,7 +79,7 @@ export function useChatImageUpload(chatId: number) {
           setProgress((prev) => (prev ? { ...prev, done: prev.done + 1 } : prev))
         )
       } catch (error) {
-        toast({ description: (error as Error).message, variant: 'error' })
+        toast({ description: serverErrorMessage(error), variant: 'error' })
         return []
       } finally {
         setProgress(null)

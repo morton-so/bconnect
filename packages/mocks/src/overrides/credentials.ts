@@ -99,6 +99,6 @@ export const credentialsOverrides = [
   getDeleteCredentialMockHandler(({ params }) => {
     const index = CREDENTIALS.findIndex((c) => c.id === Number(params.credentialId))
     if (index !== -1) CREDENTIALS.splice(index, 1)
-    return { success: true }
+    return null
   }),
 ]

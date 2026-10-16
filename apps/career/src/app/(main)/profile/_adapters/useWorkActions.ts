@@ -1,7 +1,7 @@
 'use client'
 
 import { useDeletePost } from '@bconnect/api-client'
-import { toast } from '@bconnect/ui'
+import { serverErrorMessage, toast } from '@bconnect/ui'
 
 export function useWorkActions() {
   const remove = useDeletePost<Error>({
@@ -9,7 +9,7 @@ export function useWorkActions() {
       onSuccess: () => {
         toast({ description: '작업물을 삭제했어요', variant: 'success' })
       },
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
 

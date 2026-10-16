@@ -177,7 +177,7 @@ export const drivesOverrides = [
     drives = drives.map((d) =>
       d.id === id ? { ...d, title: body.title, modifiedAt: nowStamp() } : d
     )
-    return { success: true }
+    return null
   }),
 
   getDeleteDriveMockHandler((info) => {
@@ -185,7 +185,7 @@ export const drivesOverrides = [
     drives = drives.filter((d) => d.id !== id)
     images.delete(id)
     notes.delete(id)
-    return { success: true }
+    return null
   }),
 
   getGetDriveImagesMockHandler((info): Attachment[] => images.get(Number(info.params.id)) ?? []),
@@ -215,7 +215,7 @@ export const drivesOverrides = [
         list.map((n) => (n.id === id ? { ...n, content: body.content, modifiedAt: nowStamp() } : n))
       )
     }
-    return { success: true }
+    return null
   }),
 
   getDeleteNoteMockHandler((info) => {
@@ -226,7 +226,7 @@ export const drivesOverrides = [
         list.filter((n) => n.id !== id)
       )
     }
-    return { success: true }
+    return null
   }),
 
   getCreateAttachmentPresignMockHandler(async (info): Promise<PresignedFile[]> => {
@@ -271,7 +271,7 @@ export const drivesOverrides = [
       }
     }
     images.set(driveId, list)
-    return { success: true }
+    return null
   }),
 
   getDeleteDriveAttachmentsMockHandler((info) => {
@@ -281,6 +281,6 @@ export const drivesOverrides = [
       driveId,
       (images.get(driveId) ?? []).filter((a) => a.id !== attachmentId)
     )
-    return { success: true }
+    return null
   }),
 ]

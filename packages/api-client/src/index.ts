@@ -1,9 +1,8 @@
 export {
-  apiClient,
   customFetch,
   setAccessToken,
   getAccessToken,
-  refreshAccessToken,
+  refresh as refreshAccessToken,
   ApiError,
 } from './client'
 
@@ -14,7 +13,7 @@ export { isApiError } from './errors'
 
 export { requireRegisterAccessToken } from './register'
 
-export { getQueryClient, queryClientConfig } from './query-client'
+export { getQueryClient, config as queryClientConfig } from './query-client'
 
 export {
   QueryClientProvider,

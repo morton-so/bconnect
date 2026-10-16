@@ -26,7 +26,6 @@ import {
   CredentialStatus,
   CredentialType,
   DriveType,
-  HttpStatus,
   MessageType,
   NotificationReferenceType,
   NotificationSenderType,
@@ -41,7 +40,6 @@ import {
   Verdict
 } from './schemas';
 import type {
-  ApiResponseVoid,
   Attachment,
   CheckUsernameResponse,
   Company,
@@ -83,65 +81,19 @@ import type {
 } from './schemas';
 
 
-export const getUpdateTaskWorkerResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateTaskCompanyResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateTaskAssigneeResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteTaskAssigneeResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateRecommendationResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteRecommendationResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
 export const getGetProjectResponseMock = (overrideResponse: Partial<Extract<Project, object>> = {}): Project => ({id: faker.number.int(), companyId: faker.number.int(), title: faker.string.alpha({length: {min: 10, max: 20}}), address: {zipcode: faker.helpers.fromRegExp("\\d{5}"), bcode: faker.helpers.fromRegExp("\\d{10}"), state: faker.helpers.arrayElement(Object.values(Region)), city: faker.string.alpha({length: {min: 1, max: 20}}), street: faker.string.alpha({length: {min: 1, max: 20}}), detail: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), latitude: faker.number.float({fractionDigits: 2}), longitude: faker.number.float({fractionDigits: 2})}, createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z', ...overrideResponse})
-
-export const getUpdateProjectResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteProjectResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
 
 export const getGetMyProfileResponseMock = (overrideResponse: Partial<Extract<Profile, object>> = {}): Profile => ({id: faker.number.int(), member: {id: faker.number.int(), username: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}}), picture: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null])}, role: faker.helpers.arrayElement(Object.values(ProfileRole)), primaryTrade: faker.helpers.arrayElement(Object.values(Trade)), trades: faker.helpers.arrayElements(Object.values(Trade)), experience: faker.number.int(), headline: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), about: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), address: {zipcode: faker.helpers.fromRegExp("\\d{5}"), bcode: faker.helpers.fromRegExp("\\d{10}"), state: faker.helpers.arrayElement(Object.values(Region)), city: faker.string.alpha({length: {min: 1, max: 20}}), street: faker.string.alpha({length: {min: 1, max: 20}}), detail: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), latitude: faker.number.float({fractionDigits: 2}), longitude: faker.number.float({fractionDigits: 2})}, createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z', postCount: faker.number.int(), recommendationCount: faker.number.int(), coworkerCount: faker.number.int(), ...overrideResponse})
 
-export const getUpdateMyProfileResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateMyProfileAboutResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdatePostResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeletePostResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getReorderOffersResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateNoteResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteNoteResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
 export const getGetMyMemberResponseMock = (overrideResponse: Partial<Extract<Member, object>> = {}): Member => ({id: faker.number.int(), username: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}}), phone: faker.string.alpha({length: {min: 10, max: 20}}), birth: faker.date.past().toISOString().slice(0, 10), marketingConsent: faker.datatype.boolean(), picture: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), roles: faker.helpers.arrayElements(Object.values(Role)), createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z', ...overrideResponse})
 
-export const getUpdateMyMemberResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteMyMemberResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateMyMemberPictureResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateDriveNameResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
 export const getGetMyCompanyResponseMock = (overrideResponse: Partial<Extract<Company, object>> = {}): Company => ({id: faker.number.int(), memberId: faker.number.int(), name: faker.string.alpha({length: {min: 10, max: 20}}), brn: faker.string.alpha({length: {min: 10, max: 20}}), status: faker.helpers.arrayElement(Object.values(CompanyStatus)), picture: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z', ...overrideResponse})
-
-export const getUpdateMyCompanyResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteMyCompanyResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
 
 export const getCreateTaskWorkerResponseMock = (): number => (faker.number.int())
 
 export const getCreateTaskCompanyResponseMock = (): number => (faker.number.int())
 
 export const getCreateRecommendationResponseMock = (): number => (faker.number.int())
-
-export const getShowRecommendationResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getHideRecommendationResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
 
 export const getGetProjectsResponseMock = (): Project[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), companyId: faker.number.int(), title: faker.string.alpha({length: {min: 10, max: 20}}), address: {zipcode: faker.helpers.fromRegExp("\\d{5}"), bcode: faker.helpers.fromRegExp("\\d{10}"), state: faker.helpers.arrayElement(Object.values(Region)), city: faker.string.alpha({length: {min: 1, max: 20}}), street: faker.string.alpha({length: {min: 1, max: 20}}), detail: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), latitude: faker.number.float({fractionDigits: 2}), longitude: faker.number.float({fractionDigits: 2})}, createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z'})))
 
@@ -155,19 +107,7 @@ export const getCreatePostResponseMock = (): number => (faker.number.int())
 
 export const getCreateOneClickResponseMock = (overrideResponse: Partial<Extract<OneClick, object>> = {}): OneClick => ({businessStatus: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), taxpayerStatus: faker.helpers.arrayElement(Object.values(TaxpayerStatus)), closedAt: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null])}, generalLicense: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), count: faker.number.int(), tradeNames: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), registeredAt: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null]), dispositionCount: faker.number.int()}, specialtyLicense: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), count: faker.number.int(), tradeNames: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => (faker.string.alpha({length: {min: 10, max: 20}}))), registeredAt: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null]), dispositionCount: faker.number.int()}, insurance: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), companyName: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), industry: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), workerCount: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), establishedAt: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null])}, fireLicense: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), count: faker.number.int(), companyName: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), ceoName: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), businessType: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), licenseDiv: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null])}, electricalLicense: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), count: faker.number.int(), registrationNo: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), companyName: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), representative: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null])}, wageDefault: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), count: faker.number.int(), name: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), companyName: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), arrearsAmount: faker.helpers.arrayElement([faker.number.int(), null])}, habitualArrears: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), count: faker.number.int(), companyName: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), representative: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), arrearsAmount: faker.helpers.arrayElement([faker.number.int(), null]), publicationPeriod: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null])}, subcontractRestriction: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), count: faker.number.int(), companyName: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), representative: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), violationType: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), restrictionStart: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null]), restrictionEnd: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null])}, retirementFund: {verdict: faker.helpers.arrayElement(Object.values(Verdict)), count: faker.number.int(), projectName: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), totalAmount: faker.helpers.arrayElement([faker.number.int(), null]), startDate: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null]), endDate: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null]), clientOrg: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null])}, ...overrideResponse})
 
-export const getCreateOneClickValidationResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
 export const getCreateOfferResponseMock = (): number => (faker.number.int())
-
-export const getDenyOfferResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getCancelOfferResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getAcceptOfferResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateNotificationReadResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getUpdateNotificationsReadResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
 
 export const getCreateNoteResponseMock = (): number => (faker.number.int())
 
@@ -183,41 +123,21 @@ export const getGetDrivesResponseMock = (): Drive[] => (Array.from({ length: fak
 
 export const getCreateDriveResponseMock = (): number => (faker.number.int())
 
-export const getCreateDriveAttachmentsResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
 export const getGetDirectChatsResponseMock = (): DirectChat[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), member: {id: faker.number.int(), username: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), name: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), picture: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null])}, lastMessage: faker.helpers.arrayElement([{id: faker.number.int(), chatId: faker.number.int(), chatType: faker.helpers.arrayElement(Object.values(ChatType)), memberId: faker.number.int(), type: faker.helpers.arrayElement(Object.values(MessageType)), content: faker.string.alpha({length: {min: 10, max: 20}}), createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z', attachments: Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), memberId: faker.number.int(), type: faker.helpers.arrayElement(Object.values(AttachmentType)), filename: faker.string.alpha({length: {min: 10, max: 20}}), contentType: faker.string.alpha({length: {min: 10, max: 20}}), size: faker.number.int(), createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z', url: faker.string.alpha({length: {min: 10, max: 20}})}))},null,]), unreadCount: faker.number.int(), createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z'})))
 
 export const getCreateDirectChatResponseMock = (): number => (faker.number.int())
-
-export const getCreateDeviceResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteDeviceResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
 
 export const getGetCredentialsResponseMock = (): CredentialSummary[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), memberId: faker.number.int(), type: faker.helpers.arrayElement(Object.values(CredentialType)), status: faker.helpers.arrayElement(Object.values(CredentialStatus)), expiredAt: faker.helpers.arrayElement([faker.date.past().toISOString().slice(0, 10), null]), createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z'})))
 
 export const getCreateCredentialResponseMock = (): number => (faker.number.int())
 
-export const getDenyCredentialResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getAcceptCredentialResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
 export const getCreateCoworkerRequestResponseMock = (): number => (faker.number.int())
-
-export const getDenyCoworkerRequestResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getAcceptCoworkerRequestResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
 
 export const getGetCompaniesResponseMock = (overrideResponse: Partial<Extract<CursorPageCompany, object>> = {}): CursorPageCompany => ({content: faker.helpers.arrayElement([Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), memberId: faker.number.int(), name: faker.string.alpha({length: {min: 10, max: 20}}), brn: faker.string.alpha({length: {min: 10, max: 20}}), status: faker.helpers.arrayElement(Object.values(CompanyStatus)), picture: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null]), createdAt: faker.date.past().toISOString().slice(0, 19) + 'Z', modifiedAt: faker.date.past().toISOString().slice(0, 19) + 'Z'})), undefined]), hasNext: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), nextCursor: faker.helpers.arrayElement([faker.number.int(), undefined]), ...overrideResponse})
 
 export const getCreateCompanyResponseMock = (): number => (faker.number.int())
 
-export const getDenyCompanyResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getAcceptCompanyResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
 export const getSendOtpResponseMock = (overrideResponse: Partial<Extract<SendOtpResponse, object>> = {}): SendOtpResponse => ({expiresAt: faker.date.past().toISOString().slice(0, 19) + 'Z', ...overrideResponse})
-
-export const getLogoutResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
 
 export const getCreateAttachmentPresignResponseMock = (): PresignedFile[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), uploadUrl: faker.string.alpha({length: {min: 10, max: 20}})})))
 
@@ -293,20 +213,6 @@ export const getGetCompanyResponseMock = (overrideResponse: Partial<Extract<Comp
 
 export const getGetCompanyMembersResponseMock = (): MemberSummary[] => (Array.from({ length: faker.number.int({min: 1, max: 10}) }, (_, i) => i + 1).map(() => ({id: faker.number.int(), username: faker.string.alpha({length: {min: 10, max: 20}}), name: faker.string.alpha({length: {min: 10, max: 20}}), picture: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), null])})))
 
-export const getDeleteTaskResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteGroupChatMeResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteDriveResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteDriveAttachmentsResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteCredentialResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteCoworkerResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
-export const getDeleteCoworkerRequestResponseMock = (overrideResponse: Partial<Extract<ApiResponseVoid, object>> = {}): ApiResponseVoid => ({success: faker.helpers.arrayElement([faker.datatype.boolean(), undefined]), error: faker.helpers.arrayElement([{message: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined]), status: faker.helpers.arrayElement([faker.helpers.arrayElement(Object.values(HttpStatus)), undefined]), code: faker.helpers.arrayElement([faker.string.alpha({length: {min: 10, max: 20}}), undefined])}, undefined]), data: faker.helpers.arrayElement([{}, undefined]), ...overrideResponse})
-
 export const getVerifyOtpResponseVerifyOtpLoginResponseMock = (overrideResponse: Partial<VerifyOtpLoginResponse> = {}): VerifyOtpLoginResponse => ({...{registered: true, accessToken: faker.string.alpha({length: {min: 10, max: 20}})}, ...overrideResponse});
 
 export const getVerifyOtpResponseVerifyOtpSignupResponseMock = (overrideResponse: Partial<VerifyOtpSignupResponse> = {}): VerifyOtpSignupResponse => ({...{registered: false, signupToken: faker.string.alpha({length: {min: 10, max: 20}})}, ...overrideResponse});
@@ -316,73 +222,61 @@ export const getVerifyOtpResponseMock = (): VerifyOtpLoginResponse | VerifyOtpSi
 export const getRefreshTokenResponseMock = (overrideResponse: Partial<Extract<RefreshTokenResponse, object>> = {}): RefreshTokenResponse => ({accessToken: faker.string.alpha({length: {min: 10, max: 20}}), ...overrideResponse})
 
 
-export const getUpdateTaskWorkerMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateTaskWorkerMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/tasks/:id/worker', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateTaskWorkerResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateTaskCompanyMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateTaskCompanyMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/tasks/:id/company', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateTaskCompanyResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateTaskAssigneeMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateTaskAssigneeMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/tasks/:id/assignee', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateTaskAssigneeResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteTaskAssigneeMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteTaskAssigneeMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/tasks/:id/assignee', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteTaskAssigneeResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateRecommendationMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateRecommendationMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/recommendations/:id', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateRecommendationResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteRecommendationMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteRecommendationMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/recommendations/:id', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteRecommendationResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -400,25 +294,21 @@ export const getGetProjectMockHandler = (overrideResponse?: Project | ((info: Pa
   }, options)
 }
 
-export const getUpdateProjectMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateProjectMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/projects/:id', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateProjectResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteProjectMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteProjectMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/projects/:id', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteProjectResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -436,85 +326,71 @@ export const getGetMyProfileMockHandler = (overrideResponse?: Profile | ((info: 
   }, options)
 }
 
-export const getUpdateMyProfileMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateMyProfileMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/profiles/me', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateMyProfileResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateMyProfileAboutMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateMyProfileAboutMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/profiles/me/about', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateMyProfileAboutResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdatePostMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdatePostMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/posts/:id', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdatePostResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeletePostMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeletePostMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/posts/:id', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeletePostResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getReorderOffersMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getReorderOffersMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/offers/reorder', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getReorderOffersResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateNoteMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateNoteMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/notes/:id', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateNoteResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteNoteMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteNoteMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/notes/:id', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteNoteResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -532,49 +408,41 @@ export const getGetMyMemberMockHandler = (overrideResponse?: Member | ((info: Pa
   }, options)
 }
 
-export const getUpdateMyMemberMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateMyMemberMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/members/me', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateMyMemberResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteMyMemberMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteMyMemberMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/members/me', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteMyMemberResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateMyMemberPictureMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateMyMemberPictureMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/members/me/picture', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateMyMemberPictureResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateDriveNameMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateDriveNameMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/drives/:id/name', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateDriveNameResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -592,25 +460,21 @@ export const getGetMyCompanyMockHandler = (overrideResponse?: Company | ((info: 
   }, options)
 }
 
-export const getUpdateMyCompanyMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateMyCompanyMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.put('*/api/v1/companies/me', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateMyCompanyResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteMyCompanyMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteMyCompanyMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/companies/me', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteMyCompanyResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -652,25 +516,21 @@ export const getCreateRecommendationMockHandler = (overrideResponse?: number | (
   }, options)
 }
 
-export const getShowRecommendationMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getShowRecommendationMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/recommendations/:id/show', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getShowRecommendationResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getHideRecommendationMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getHideRecommendationMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/recommendations/:id/hide', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getHideRecommendationResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -748,13 +608,11 @@ export const getCreateOneClickMockHandler = (overrideResponse?: OneClick | ((inf
   }, options)
 }
 
-export const getCreateOneClickValidationMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getCreateOneClickValidationMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/one-click/validation', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getCreateOneClickValidationResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -772,61 +630,51 @@ export const getCreateOfferMockHandler = (overrideResponse?: number | ((info: Pa
   }, options)
 }
 
-export const getDenyOfferMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDenyOfferMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/offers/:id/deny', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDenyOfferResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getCancelOfferMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getCancelOfferMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/offers/:id/cancel', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getCancelOfferResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getAcceptOfferMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getAcceptOfferMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/offers/:id/accept', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getAcceptOfferResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateNotificationReadMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateNotificationReadMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/notifications/:id/read', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateNotificationReadResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getUpdateNotificationsReadMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getUpdateNotificationsReadMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/notifications/read', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUpdateNotificationsReadResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -916,13 +764,11 @@ export const getCreateDriveMockHandler = (overrideResponse?: number | ((info: Pa
   }, options)
 }
 
-export const getCreateDriveAttachmentsMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getCreateDriveAttachmentsMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/drives/:id/attachments', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getCreateDriveAttachmentsResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -952,25 +798,21 @@ export const getCreateDirectChatMockHandler = (overrideResponse?: number | ((inf
   }, options)
 }
 
-export const getCreateDeviceMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getCreateDeviceMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/devices', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getCreateDeviceResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteDeviceMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteDeviceMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/devices', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteDeviceResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -1000,25 +842,21 @@ export const getCreateCredentialMockHandler = (overrideResponse?: number | ((inf
   }, options)
 }
 
-export const getDenyCredentialMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDenyCredentialMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/credentials/:id/deny', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDenyCredentialResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getAcceptCredentialMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getAcceptCredentialMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/credentials/:id/accept', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getAcceptCredentialResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -1036,25 +874,21 @@ export const getCreateCoworkerRequestMockHandler = (overrideResponse?: number | 
   }, options)
 }
 
-export const getDenyCoworkerRequestMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDenyCoworkerRequestMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/coworker-requests/:id/deny', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDenyCoworkerRequestResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getAcceptCoworkerRequestMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getAcceptCoworkerRequestMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/coworker-requests/:id/accept', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getAcceptCoworkerRequestResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -1084,25 +918,21 @@ export const getCreateCompanyMockHandler = (overrideResponse?: number | ((info: 
   }, options)
 }
 
-export const getDenyCompanyMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDenyCompanyMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/companies/:id/deny', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDenyCompanyResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getAcceptCompanyMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getAcceptCompanyMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/companies/:id/accept', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getAcceptCompanyResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -1120,13 +950,11 @@ export const getSendOtpMockHandler = (overrideResponse?: SendOtpResponse | ((inf
   }, options)
 }
 
-export const getLogoutMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getLogoutMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.post('*/api/v1/auth/logout', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getLogoutResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
@@ -1576,85 +1404,71 @@ export const getGetCompanyMembersMockHandler = (overrideResponse?: MemberSummary
   }, options)
 }
 
-export const getDeleteTaskMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteTaskMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/tasks/:id', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteTaskResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteGroupChatMeMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteGroupChatMeMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/group-chats/:id/me', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteGroupChatMeResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteDriveMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteDriveMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/drives/:id', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteDriveResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteDriveAttachmentsMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteDriveAttachmentsMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/drives/:id/attachments/:attachmentId', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteDriveAttachmentsResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteCredentialMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteCredentialMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/credentials/:id', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteCredentialResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteCoworkerMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteCoworkerMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/coworkers/:memberId', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteCoworkerResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)
 }
 
-export const getDeleteCoworkerRequestMockHandler = (overrideResponse?: ApiResponseVoid | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<ApiResponseVoid> | ApiResponseVoid), options?: RequestHandlerOptions) => {
+export const getDeleteCoworkerRequestMockHandler = (overrideResponse?: null | ((info: Parameters<Parameters<typeof http.delete>[1]>[0]) => Promise<null> | null), options?: RequestHandlerOptions) => {
   return http.delete('*/api/v1/coworker-requests/:id', async (info: Parameters<Parameters<typeof http.delete>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
 
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getDeleteCoworkerRequestResponseMock(),
+    return new HttpResponse(null,
       { status: 200
       })
   }, options)

@@ -29,7 +29,7 @@ import {
   type OfferMessageDetail,
   type OfferMessageEntry,
 } from '@bconnect/features'
-import { toast, TopBar } from '@bconnect/ui'
+import { serverErrorMessage, toast, TopBar } from '@bconnect/ui'
 
 export function CareerMessagesList() {
   const { data: me, isLoading: isMeLoading } = useGetMyMember()
@@ -191,7 +191,7 @@ export function CareerChatRoom({ chatId }: { chatId: number }) {
         applyOfferStatus(variables.id, OfferStatus.ACCEPTED)
         toast({ description: '섭외를 수락했어요', variant: 'success' })
       },
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
   const deny = useDenyOffer<Error>({
@@ -200,7 +200,7 @@ export function CareerChatRoom({ chatId }: { chatId: number }) {
         applyOfferStatus(variables.id, OfferStatus.DENIED)
         toast({ description: '섭외를 거절했어요', variant: 'success' })
       },
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
   const pendingOfferId =

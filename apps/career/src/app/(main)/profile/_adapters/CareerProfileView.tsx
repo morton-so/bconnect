@@ -23,7 +23,7 @@ import {
   useUnreadNotificationCount,
   useUnreadChatCount,
 } from '@bconnect/features'
-import { Button, PlusIcon, SettingsIcon, toast, TopBar } from '@bconnect/ui'
+import { Button, PlusIcon, serverErrorMessage, SettingsIcon, toast, TopBar } from '@bconnect/ui'
 import { CoworkerActionButton } from '@/app/(main)/profile/_components/CoworkerActionButton'
 import { useShareCurrentUrl } from '@/hooks/useShareCurrentUrl'
 import { useProfileImageUpload } from './useProfileImageUpload'
@@ -148,7 +148,7 @@ export function ViewerProfileView({ memberId }: { memberId: number }) {
   const coworker = useCreateCoworkerRequest<Error>({
     mutation: {
       onSuccess: () => toast({ description: '동료 요청을 보냈어요', variant: 'success' }),
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
   // 보낸 요청 목록으로 "요청됨" 상태를 새로고침 후에도 유지.
@@ -160,7 +160,7 @@ export function ViewerProfileView({ memberId }: { memberId: number }) {
   const chat = useCreateDirectChat<Error>({
     mutation: {
       onSuccess: (createdChatId) => router.push(`/messages/${createdChatId}`),
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
 

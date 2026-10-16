@@ -239,7 +239,7 @@ function extractData(schema: SchemaObject): SchemaObject | ReferenceObject | und
   if (props?.success && props?.data) {
     const data = props.data
     const isEmpty = typeof data === 'object' && !('$ref' in data) && Object.keys(data).length === 0
-    return isEmpty ? undefined : data
+    return isEmpty ? { type: 'null' } : data
   }
   return undefined
 }

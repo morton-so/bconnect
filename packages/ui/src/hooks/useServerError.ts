@@ -45,12 +45,36 @@ export function useServerError<T extends FieldValues>(
   }
 }
 
+type ServerErrorMessages = Partial<Record<string, string>>
+
+const SESSION_EXPIRED = '로그인이 만료되었습니다. 다시 로그인해주세요.'
+
+const SERVER_ERROR_MESSAGES: ServerErrorMessages = {
+  C005: '이미 삭제되었거나 존재하지 않는 항목입니다.',
+  C007: '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+  C009: '로그인이 필요합니다.',
+  A002: '잠시 후 인증번호를 다시 요청해주세요.',
+  A008: SESSION_EXPIRED,
+  A009: SESSION_EXPIRED,
+  A010: SESSION_EXPIRED,
+  A011: '유효하지 않은 인증 요청입니다.',
+  AT004: '파일 업로드가 완료되지 않았습니다. 잠시 후 다시 시도해주세요.',
+}
+
+export function serverErrorMessage(error: unknown, messages?: ServerErrorMessages): string {
+  if (isApiErrorShape(error)) {
+    return messages?.[error.code] ?? SERVER_ERROR_MESSAGES[error.code] ?? error.message
+  }
+  return (error as Error).message
+}
+
 export function passthroughError<T extends FieldValues>(
-  field?: keyof T & string
+  field?: keyof T & string,
+  messages?: ServerErrorMessages
 ): (error: unknown) => ServerErrorMapping<T> {
   return (error) => ({
     ...(field && { field }),
-    message: (error as Error).message,
+    message: serverErrorMessage(error, messages),
   })
 }
 

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useGetMySentRecommendations, useUpdateRecommendation } from '@bconnect/api-client'
-import { toast } from '@bconnect/ui'
+import { serverErrorMessage, toast } from '@bconnect/ui'
 import { RecommendationEditor } from '@/app/(main)/_components/RecommendationEditor'
 
 /**
@@ -25,7 +25,7 @@ export default function EditRecommendationPage() {
         toast({ description: '추천서를 수정했어요', variant: 'success' })
         router.replace('/profile/recommendations')
       },
-      onError: (error) => setServerError(error.message),
+      onError: (error) => setServerError(serverErrorMessage(error)),
     },
   })
 

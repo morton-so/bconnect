@@ -1,7 +1,7 @@
 'use client'
 
 import { useDeleteCoworker } from '@bconnect/api-client'
-import { toast } from '@bconnect/ui'
+import { serverErrorMessage, toast } from '@bconnect/ui'
 
 export function useCoworkerActions() {
   const remove = useDeleteCoworker<Error>({
@@ -9,7 +9,7 @@ export function useCoworkerActions() {
       onSuccess: () => {
         toast({ description: '동료를 취소했어요', variant: 'success' })
       },
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
 

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button, CertTag, SkillTag, toast } from '@bconnect/ui'
+import { Button, CertTag, serverErrorMessage, SkillTag, toast } from '@bconnect/ui'
 import { ROLE_LABELS, TRADE_LABELS, useAuthHint, useCreateDirectChat } from '@bconnect/api-client'
 import { usePanelNav } from '@/hooks/usePanelNav'
 import type { MemberTechnicianItem } from '@/hooks/useTechnicianItems'
@@ -142,7 +142,8 @@ export function TechnicianCard({ item }: TechnicianCardProps) {
                     { data: { memberId: item.memberId } },
                     {
                       onSuccess: (chatId) => openPanel(`messages/${chatId}`),
-                      onError: (error) => toast({ description: error.message, variant: 'error' }),
+                      onError: (error) =>
+                        toast({ description: serverErrorMessage(error), variant: 'error' }),
                     }
                   )
                 }

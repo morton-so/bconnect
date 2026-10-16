@@ -46,6 +46,6 @@ export const membersOverrides = [
   getUpdateMyMemberPictureMockHandler(async ({ request }) => {
     const body = (await request.json()) as UpdatePictureRequest
     if (body.pictureId != null) setMyMockPicture(body.pictureId)
-    return { success: true }
+    return null
   }),
 ]

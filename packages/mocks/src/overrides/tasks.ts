@@ -246,7 +246,7 @@ export const tasksOverrides = [
           : t
       ),
     }
-    return { success: true }
+    return null
   }),
 
   getDeleteTaskMockHandler((info) => {
@@ -255,7 +255,7 @@ export const tasksOverrides = [
       workerTasks: tasks.workerTasks.filter((t) => t.id !== id),
       assigneeTasks: tasks.assigneeTasks.filter((t) => t.id !== id),
     }
-    return { success: true }
+    return null
   }),
 
   // 수락은 작업 목록에 남고 거절은 빠지지만, 단건 조회에는 최종 상태를 유지한다.
@@ -275,7 +275,7 @@ export const tasksOverrides = [
           : t
       ),
     }
-    return { success: true }
+    return null
   }),
 
   getDenyOfferMockHandler((info) => {
@@ -286,6 +286,6 @@ export const tasksOverrides = [
       ...tasks,
       assigneeTasks: tasks.assigneeTasks.filter((t) => t.offer?.id !== offerId),
     }
-    return { success: true }
+    return null
   }),
 ]

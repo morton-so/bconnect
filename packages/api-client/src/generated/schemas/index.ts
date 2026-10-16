@@ -6,7 +6,6 @@
  */
 
 export * from './address.ts';
-export * from './apiResponseVoid.ts';
 export * from './assigneeTask.ts';
 export * from './attachment.ts';
 export * from './attachmentContext.ts';
@@ -63,7 +62,6 @@ export * from './drive.ts';
 export * from './driveType.ts';
 export * from './driveUsage.ts';
 export * from './electricalLicense.ts';
-export * from './exceptionCode.ts';
 export * from './feed.ts';
 export * from './fileItem.ts';
 export * from './fireLicense.ts';
@@ -82,7 +80,6 @@ export * from './getReceivedRecommendationsParams.ts';
 export * from './getSentRecommendationsParams.ts';
 export * from './groupChat.ts';
 export * from './habitualArrears.ts';
-export * from './httpStatus.ts';
 export * from './insurance.ts';
 export * from './license.ts';
 export * from './member.ts';
