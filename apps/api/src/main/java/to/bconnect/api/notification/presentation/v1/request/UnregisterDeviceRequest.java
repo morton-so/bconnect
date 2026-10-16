@@ -1,7 +1,9 @@
 package to.bconnect.api.notification.presentation.v1.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import to.bconnect.api.common.Regex;
 
 public record UnregisterDeviceRequest(
-        @NotBlank String token
+        @NotNull @Pattern(regexp = Regex.NOT_BLANK) String token
 ) {}
