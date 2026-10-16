@@ -17,7 +17,6 @@ import {
 } from '@bconnect/api-client'
 import {
   ChevronIcon,
-  cn,
   Form,
   FormError,
   passthroughError,
@@ -225,16 +224,11 @@ export function WorkForm({ postId }: { postId?: number }) {
               <button
                 type="button"
                 onClick={() => setStep('select')}
-                aria-invalid={form.formState.errors.taskId ? true : undefined}
-                className={cn(
-                  'flex h-10 w-full cursor-pointer items-center justify-between rounded-lg border border-gray-200 px-2.5',
-                  form.formState.errors.taskId && 'ring-1 ring-destructive'
-                )}
+                className="flex h-10 w-full cursor-pointer items-center justify-between rounded-lg border border-gray-200 px-2.5"
               >
                 <span className="text-m-14 text-gray-400">작업을 선택해주세요...</span>
                 <ChevronIcon size={16} className="text-gray-500" />
               </button>
-              <FormError error={form.formState.errors.taskId?.message} />
             </div>
           )}
 

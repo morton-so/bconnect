@@ -3,10 +3,10 @@
  */
 'use client'
 
+import { UpdateRecommendationRequest } from '@bconnect/api-client/zod'
 import { Form, TextareaField, TopBar } from '@bconnect/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-
-type RecommendationFormValues = { content: string }
 
 interface RecommendationEditorProps {
   title: string
@@ -25,7 +25,8 @@ export function RecommendationEditor({
   onSubmit,
   backHref,
 }: RecommendationEditorProps) {
-  const form = useForm<RecommendationFormValues>({
+  const form = useForm<UpdateRecommendationRequest>({
+    resolver: zodResolver(UpdateRecommendationRequest),
     mode: 'onTouched',
     values: { content: initialContent },
   })

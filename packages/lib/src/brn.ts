@@ -2,6 +2,8 @@
  * 사업자등록번호 (xxx-xx-xxxxx)
  */
 import { z } from 'zod'
+import { OneClickRequest } from '@bconnect/api-client/zod'
+import { Regex } from './regex'
 
 export function formatRegistrationNumber(value: string): string {
   const digits = extractDigits(value).slice(0, 10)
@@ -11,13 +13,11 @@ export function formatRegistrationNumber(value: string): string {
 }
 
 export function extractDigits(value: string): string {
-  return value.replace(/\D/g, '')
+  return value.replace(Regex.NON_DIGIT, '')
 }
+
+export const brnField = z.string().transform(extractDigits).pipe(OneClickRequest.shape.brn)
 
 export function isValidRegistrationNumber(value: string): boolean {
-  return /^\d{10}$/.test(extractDigits(value))
+  return brnField.safeParse(value).success
 }
-
-export const brnField = z.string().transform(extractDigits).refine(isValidRegistrationNumber, {
-  message: '올바른 사업자등록번호 형식이 아닙니다',
-})

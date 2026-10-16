@@ -1,12 +1,13 @@
 import { z } from 'zod'
+import { RegisterMemberRequest } from '@bconnect/api-client/zod'
 import { consentField } from '@bconnect/lib/consent'
-import { nameField } from '@bconnect/lib/name'
 import { birthField } from '@bconnect/lib/signup'
 import { usernameField } from '@bconnect/lib/username'
 
-export const memberSchema = z.object({
+// TODO: 업데이트 필요
+export const memberSchema = RegisterMemberRequest.omit({ marketingConsent: true }).extend({
   username: usernameField,
-  name: nameField(),
+  name: z.string().trim().pipe(RegisterMemberRequest.shape.name),
   birth: birthField,
   agreements: consentField,
 })

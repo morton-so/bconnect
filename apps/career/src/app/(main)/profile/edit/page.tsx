@@ -44,8 +44,7 @@ export default function ProfileEditPage() {
   const updateAboutMutation = useUpdateMyProfileAbout()
 
   const form = useForm<ProfileEditFormData>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- zod v4 + @hookform/resolvers 타입 호환 workaround
-    resolver: zodResolver(profileEditSchema as any),
+    resolver: zodResolver(profileEditSchema),
     mode: 'onTouched',
     defaultValues: {
       primaryTrade: undefined,
@@ -96,8 +95,8 @@ export default function ProfileEditPage() {
           data: {
             // TODO: BE required 처리 후 type narrowing 필요. Profile.role 필수값이 optional emit이라 임시 cast로 유지.
             role: profile?.role as ProfileRole,
-            primaryTrade: data.primaryTrade as Trade,
-            trades: data.trades as Trade[],
+            primaryTrade: data.primaryTrade,
+            trades: data.trades,
             experience: data.experience,
             headline: data.headline || undefined,
             address: data.address,
@@ -121,13 +120,13 @@ export default function ProfileEditPage() {
     }
   }
 
-  const toggleTrade = (tradeValue: string) => {
+  const toggleTrade = (tradeValue: Trade) => {
     const currentTrades = watchedTrades ?? []
     if (currentTrades.includes(tradeValue)) {
-      const updated = currentTrades.filter((t: string) => t !== tradeValue)
+      const updated = currentTrades.filter((t) => t !== tradeValue)
       setValue('trades', updated, { shouldValidate: true })
       if (watchedPrimaryTrade === tradeValue) {
-        setValue('primaryTrade', updated[0] ?? undefined, { shouldValidate: true })
+        setValue('primaryTrade', updated[0] as Trade, { shouldValidate: true })
       }
     } else if (currentTrades.length < MAX_TRADES) {
       const updated = [...currentTrades, tradeValue]
@@ -211,7 +210,7 @@ export default function ProfileEditPage() {
             placeholder="선택해주세요"
             options={(watchedTrades ?? []).map((trade) => ({
               value: trade,
-              label: TRADE_LABELS[trade as Trade],
+              label: TRADE_LABELS[trade],
             }))}
           />
 
@@ -228,7 +227,7 @@ export default function ProfileEditPage() {
             control={control}
             name="headline"
             label="한줄소개"
-            placeholder="한줄소개를 입력해주세요 (최대 20글자)"
+            placeholder="한줄소개를 입력해주세요 (최대 50글자)"
           />
 
           <TextareaField

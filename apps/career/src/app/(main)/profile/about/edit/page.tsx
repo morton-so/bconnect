@@ -3,28 +3,25 @@
  */
 'use client'
 
-import {
-  useGetMyProfile,
-  useUpdateMyProfileAbout,
-  type UpdateProfileAboutRequest,
-} from '@bconnect/api-client'
+import { useGetMyProfile, useUpdateMyProfileAbout } from '@bconnect/api-client'
+import { UpdateProfileAboutRequest } from '@bconnect/api-client/zod'
 import { Form, TextareaField, TopBar, passthroughError, useServerError } from '@bconnect/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-
-type AboutFormValues = { about: NonNullable<UpdateProfileAboutRequest['about']> }
 
 export default function EditAboutPage() {
   const router = useRouter()
 
   const { data: profile } = useGetMyProfile()
 
-  const form = useForm<AboutFormValues>({
+  const form = useForm<UpdateProfileAboutRequest>({
+    resolver: zodResolver(UpdateProfileAboutRequest),
     mode: 'onTouched',
     values: { about: profile?.about ?? '' },
   })
 
-  const server = useServerError(form.control, passthroughError<AboutFormValues>('about'))
+  const server = useServerError(form.control, passthroughError<UpdateProfileAboutRequest>('about'))
 
   const { mutate: updateAbout, isPending } = useUpdateMyProfileAbout({
     mutation: {

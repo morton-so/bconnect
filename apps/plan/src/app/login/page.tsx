@@ -7,7 +7,8 @@
 import { login } from '@bconnect/features'
 import { useSignupStore } from '@/stores/signup-store'
 import { useSendOtp, useVerifyOtp } from '@bconnect/api-client'
-import { formatPhoneNumber, isValidPhoneNumber, toNationalNumber } from '@bconnect/lib/phone'
+import { formatPhoneNumber } from '@bconnect/lib/phone'
+import { Regex } from '@bconnect/lib/regex'
 import {
   Form,
   FormSubmitButton,
@@ -50,14 +51,14 @@ export default function LoginPage() {
 
   const phoneValue = useWatch({ control: form.control, name: 'phone' })
   const codeValue = useWatch({ control: form.control, name: 'code' })
-  const isPhoneValid = isValidPhoneNumber(phoneValue ?? '')
+  const isPhoneValid = loginSchema.shape.phone.safeParse(phoneValue).success
   const isCodeValid = (codeValue ?? '').length === 6
 
   const sendCode = async () => {
     const phone = form.getValues('phone')
     try {
       const result = await sendCodeMutation.mutateAsync({
-        data: { phone: toNationalNumber(phone) },
+        data: { phone },
       })
       if (result.expiresAt) {
         setExpiresAt(result.expiresAt)
@@ -78,7 +79,7 @@ export default function LoginPage() {
     }
     try {
       const result = await verifyCodeMutation.mutateAsync({
-        data: { phone: toNationalNumber(phone), code },
+        data: { phone, code },
       })
       lastFailedAttempt.current = null
       if (result.registered) {
@@ -145,7 +146,8 @@ export default function LoginPage() {
               description="품앗이 서비스는 인증된 사용자만 이용하실 수 있어요."
               placeholder="010-0000-0000"
               disabled={step === 'otp'}
-              transform={formatPhoneNumber}
+              transform={(raw) => raw.replace(Regex.NON_DIGIT, '').slice(0, 11)}
+              format={formatPhoneNumber}
               serverError={phoneServer.fieldError('phone')}
             />
 
@@ -159,7 +161,7 @@ export default function LoginPage() {
                 enterKeyHint="done"
                 placeholder="숫자 6자리"
                 hint="타인에게 인증번호를 공유하지 마세요."
-                transform={(raw) => raw.replace(/\D/g, '').slice(0, 6)}
+                transform={(raw) => raw.replace(Regex.NON_DIGIT, '').slice(0, 6)}
                 serverError={codeServer.fieldError('code')}
                 rightElement={
                   <OtpTimer

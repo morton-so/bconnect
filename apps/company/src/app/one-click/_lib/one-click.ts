@@ -8,6 +8,7 @@ import {
   type License,
   type OneClick,
   type TaxpayerStatus,
+  type ValidateBusinessRequest,
   type Verdict,
 } from '@bconnect/api-client'
 import { formatRegistrationNumber } from '@bconnect/lib/brn'
@@ -396,12 +397,10 @@ export const getCompanyInfo = cache(async (registrationNumber: string): Promise<
 })
 
 export async function fetchOwnerVerification(
-  registrationNumber: string,
-  ownerName: string,
-  openDate: string
+  request: ValidateBusinessRequest
 ): Promise<VerifyOwnerResult> {
   try {
-    await createOneClickValidation({ brn: registrationNumber, ownerName, openedAt: openDate })
+    await createOneClickValidation(request)
     return { valid: true, message: '사업자등록번호와 대표자명, 개업일자가 일치합니다.' }
   } catch (error) {
     if (error instanceof ApiError) {

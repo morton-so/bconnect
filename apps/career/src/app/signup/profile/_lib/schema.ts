@@ -1,20 +1,13 @@
-import { experienceSchema } from '@/lib/experience-range'
+import { CreateProfileRequest } from '@bconnect/api-client/zod'
 import { addressField } from '@bconnect/lib/address'
-import { ProfileRole } from '@bconnect/api-client'
-import { z } from 'zod'
+import type { z } from 'zod'
 
 export const MAX_TRADES = 3
 
-export const profileSchema = z.object({
-  trades: z
-    .array(z.string())
-    .min(1, '공종을 1개 이상 선택해주세요.')
-    .max(MAX_TRADES, `공종은 최대 ${MAX_TRADES}개까지 선택 가능합니다.`),
-  primaryTrade: z.string({ error: '대표분야를 선택해주세요.' }),
-  experience: experienceSchema,
-  role: z.enum(ProfileRole, { error: '유형을 선택해주세요.' }),
+// TODO: 업데이트 필요
+export const profileSchema = CreateProfileRequest.omit({ about: true }).extend({
+  experience: CreateProfileRequest.shape.experience.unwrap(),
   address: addressField(),
-  headline: z.string().max(20, '한줄소개는 최대 20글자까지 입력 가능합니다.').optional(),
 })
 
 export type ProfileFormData = z.infer<typeof profileSchema>

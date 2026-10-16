@@ -7,7 +7,6 @@ import { AddressField } from '@/components/AddressField'
 import { SIGNUP_ROLES } from './_lib/role-labels'
 import {
   ROLE_LABELS,
-  Trade,
   TRADE_LABELS,
   refreshAccessToken,
   useCreateProfile,
@@ -62,11 +61,7 @@ export default function SignupProfilePage() {
   const selectedTrades = watchedTrades || []
 
   useEffect(() => {
-    if (
-      watchedTrades &&
-      watchedTrades.length > 0 &&
-      !watchedTrades.includes(watchedPrimaryTrade as string)
-    ) {
+    if (watchedTrades && watchedTrades.length > 0 && !watchedTrades.includes(watchedPrimaryTrade)) {
       setValue('primaryTrade', watchedTrades[0])
     }
   }, [watchedTrades, watchedPrimaryTrade, setValue])
@@ -79,8 +74,8 @@ export default function SignupProfilePage() {
       await createProfileMutation.mutateAsync({
         data: {
           role: data.role,
-          primaryTrade: data.primaryTrade as Trade,
-          trades: data.trades as Trade[],
+          primaryTrade: data.primaryTrade,
+          trades: data.trades,
           experience: data.experience,
           headline: data.headline || undefined,
           address: data.address,
@@ -118,7 +113,7 @@ export default function SignupProfilePage() {
               placeholder="선택해주세요"
               options={selectedTrades.map((trade) => ({
                 value: trade,
-                label: TRADE_LABELS[trade as Trade],
+                label: TRADE_LABELS[trade],
               }))}
             />
             <NumberField
@@ -164,8 +159,8 @@ export default function SignupProfilePage() {
               name="headline"
               type="text"
               label="한줄소개"
-              maxLength={20}
-              placeholder="한줄소개를 입력해주세요 (최대 20글자)"
+              maxLength={50}
+              placeholder="한줄소개를 입력해주세요 (최대 50글자)"
             />
             <FormError error={server.formError} />
           </div>

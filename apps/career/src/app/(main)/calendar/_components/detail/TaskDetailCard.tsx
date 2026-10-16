@@ -23,6 +23,7 @@ import {
   TextField,
   TextareaField,
   cn,
+  serverErrorMessage,
   toast,
 } from '@bconnect/ui'
 import { formatPeriod } from '@bconnect/lib/date'
@@ -98,7 +99,7 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
   })
 
   const onError = (error: unknown) =>
-    toast({ description: (error as Error).message, variant: 'error' })
+    toast({ description: serverErrorMessage(error), variant: 'error' })
 
   const onSaved = () => {
     toast({ description: '수정되었어요', variant: 'success' })
@@ -127,17 +128,14 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
 
   const onSubmit = task.canManage
     ? workerForm.handleSubmit((vals) => {
-        const address = vals.address
-        if (!isCompleteAddress(address)) return
-
         updateWorker({
           id: task.id,
           data: {
             title: vals.title,
             progress: vals.progress,
-            memo: vals.memo.trim(),
+            memo: vals.memo?.trim(),
             company: vals.company,
-            address,
+            address: isCompleteAddress(vals.address) ? vals.address : undefined,
             trades: vals.trades,
             start: vals.start,
             end: vals.end,
@@ -147,7 +145,7 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
     : assigneeForm.handleSubmit((vals) =>
         updateAssignee({
           id: task.id,
-          data: { title: vals.title, progress: vals.progress, memo: vals.memo.trim() },
+          data: { title: vals.title, progress: vals.progress, memo: vals.memo?.trim() },
         })
       )
 

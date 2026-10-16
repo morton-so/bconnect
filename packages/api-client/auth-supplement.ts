@@ -52,8 +52,8 @@ export const authSupplementSchemas: Record<string, SchemaObject> = {
     type: 'object',
     required: ['phone', 'code'],
     properties: {
-      phone: { type: 'string', pattern: '\\d{10,11}' },
-      code: { type: 'string', pattern: '\\d{6}' },
+      phone: { type: 'string', pattern: '^01\\d{8,9}$' },
+      code: { type: 'string', pattern: '^\\d{6}$' },
     },
   },
   VerifyOtpLoginResponse: {

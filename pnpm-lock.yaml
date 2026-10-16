@@ -231,6 +231,9 @@ importers:
       '@bconnect/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@hookform/resolvers':
+        specifier: 'catalog:'
+        version: 5.9.1(@standard-schema/spec@1.1.0)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.88.0(react@19.3.0))(zod@4.6.4)
       '@next/third-parties':
         specifier: 'catalog:'
         version: 16.3.5(next@16.3.5(@babel/core@7.29.7(supports-color@8.1.1))(@opentelemetry/api@1.9.1)(@types/node@26.5.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
@@ -252,6 +255,9 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.3.0(react@19.3.0)
+      react-hook-form:
+        specifier: 'catalog:'
+        version: 7.88.0(react@19.3.0)
       zod:
         specifier: 'catalog:'
         version: 4.6.4
@@ -386,6 +392,9 @@ importers:
       react:
         specifier: 'catalog:'
         version: 19.3.0
+      zod:
+        specifier: 'catalog:'
+        version: 4.6.4
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -513,9 +522,6 @@ importers:
       es-hangul:
         specifier: ^2.4.0
         version: 2.4.0
-      libphonenumber-js:
-        specifier: ^1.13.13
-        version: 1.13.13
       zod:
         specifier: 'catalog:'
         version: 4.6.4
@@ -4148,9 +4154,6 @@ packages:
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
-
-  libphonenumber-js@1.13.13:
-    resolution: {integrity: sha512-hV6SmWnyQ8U1QXhhqbqYBHIStNnscG7A5XbGodgdHhf/8N5PwhYpJA5U/yHDjYwPYTd8uNGXqq416XctuvK2PA==}
 
   lightningcss-android-arm64@1.32.0:
     resolution: {integrity: sha512-YK7/ClTt4kAK0vo6w3X+Pnm0D2cf2vPHbhOXdoNti1Ga0al1P4TBZhwjATvjNwLEBCnKvjJc2jQgHXH0NEwlAg==}
@@ -8910,8 +8913,6 @@ snapshots:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
-
-  libphonenumber-js@1.13.13: {}
 
   lightningcss-android-arm64@1.32.0:
     optional: true

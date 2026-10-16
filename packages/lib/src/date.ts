@@ -1,6 +1,8 @@
 /**
  * 날짜 관련 유틸리티 (todayIso 외 UTC 기준 연산)
  */
+import { Regex } from './regex'
+
 const ISO_DAY_MS = 86_400_000
 
 export function toIsoDate(d: Date): string {
@@ -39,16 +41,10 @@ export function monthEndOf(iso: string): string {
 }
 
 export function formatIsoDateInput(value: string): string {
-  const d = value.replace(/\D/g, '').slice(0, 8)
+  const d = value.replace(Regex.NON_DIGIT, '').slice(0, 8)
   if (d.length <= 4) return d
   if (d.length <= 6) return `${d.slice(0, 4)}-${d.slice(4)}`
   return `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6)}`
-}
-
-export function isCalendarDate(iso: string): boolean {
-  const [y, m, d] = iso.split('-').map(Number)
-  const dt = new Date(Date.UTC(y, m - 1, d))
-  return dt.getUTCFullYear() === y && dt.getUTCMonth() === m - 1 && dt.getUTCDate() === d
 }
 
 export function ageInYears(birth: string, on: string = todayIso()): number {

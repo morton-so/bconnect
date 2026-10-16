@@ -1,5 +1,6 @@
 import { regionOfState } from '@bconnect/api-client'
 import type { Address, Region } from '@bconnect/api-client'
+import { Address as AddressSchema } from '@bconnect/api-client/zod'
 import { z } from 'zod'
 import { UnknownSidoError } from './errors'
 
@@ -41,7 +42,10 @@ export const addressField = (label = '주소') =>
   z
     .custom<AddressDraft>()
     .nullish()
-    .refine((a): boolean => isCompleteAddress(a), `${label}를 입력해주세요.`)
+    .refine(
+      (a) => AddressSchema.safeParse(a && { ...a, detail: a.detail ?? undefined }).success,
+      `${label}를 입력해주세요.`
+    )
 
 /** 카카오 주소 검색 결과를 Address 타입으로 변환 */
 export function mapKakaoAddress(r: KakaoAddressResult): Address {

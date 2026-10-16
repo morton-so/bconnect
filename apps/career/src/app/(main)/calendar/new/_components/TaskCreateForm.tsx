@@ -44,14 +44,13 @@ export function TaskCreateForm() {
   const { mutate, isPending } = useCreateTaskWorker()
 
   const onSubmit = (data: CreateTaskValues) => {
-    if (!isCompleteAddress(data.address)) return
     mutate(
       {
         data: {
           title: data.title,
-          memo: data.memo.trim(),
+          memo: data.memo?.trim(),
           company: data.company,
-          address: data.address,
+          address: isCompleteAddress(data.address) ? data.address : undefined,
           trades: data.trades,
           start: data.start,
           end: data.end,

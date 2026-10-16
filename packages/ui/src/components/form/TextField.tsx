@@ -31,6 +31,7 @@ interface TextFieldProps<T extends FieldValues> extends Omit<
   serverError?: string
   rightElement?: React.ReactNode
   transform?: (raw: string) => string
+  format?: (value: string) => string
   layout?: FieldLayout
 }
 
@@ -62,6 +63,7 @@ export function TextField<T extends FieldValues>({
   serverError,
   rightElement,
   transform,
+  format,
   className,
   layout = 'stacked',
   ...inputProps
@@ -94,7 +96,7 @@ export function TextField<T extends FieldValues>({
                 <Input
                   {...field}
                   {...inputProps}
-                  value={field.value ?? ''}
+                  value={format ? format(field.value ?? '') : (field.value ?? '')}
                   onChange={
                     transform ? (e) => field.onChange(transform(e.target.value)) : field.onChange
                   }

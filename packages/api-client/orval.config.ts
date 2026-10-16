@@ -92,4 +92,25 @@ export default defineConfig({
       },
     },
   },
+  zod: {
+    input: {
+      target: `${process.env.API_URL}/v3/api-docs.yaml`,
+      override: {
+        transformer: './orval.transformer.ts',
+      },
+    },
+    output: {
+      mode: 'single',
+      client: 'zod',
+      target: './src/generated/zod.ts',
+      override: {
+        zod: {
+          version: 4,
+          generateReusableSchemas: true,
+          generate: { param: false, query: false, header: false, body: true, response: false },
+          params: { path: './src/zod-messages.ts', name: 'zodParams' },
+        },
+      },
+    },
+  },
 })

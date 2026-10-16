@@ -6,6 +6,7 @@
     ".": "./src/index.ts",
     "./client": "./src/client.ts",
     "./msw": "./src/generated/api.msw.ts",
+    "./zod": "./src/generated/zod.ts",
     "./auth-hint": "./src/auth-hint.ts"
   },
   "scripts": {
@@ -17,7 +18,8 @@
     "@tanstack/react-query": "^5.102.8",
     "@tanstack/react-query-devtools": "^5.102.8",
     "ky": "^2.1.0",
-    "msw": "catalog:"
+    "msw": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
