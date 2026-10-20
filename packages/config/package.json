@@ -3,23 +3,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./eslint/base": "./eslint/base.js",
-    "./eslint/figma": "./eslint/figma.js",
-    "./avatar": "./avatar/index.ts",
-    "./brn": "./brn/index.ts",
-    "./consent": "./consent/index.ts",
-    "./date": "./date/index.ts",
-    "./env": "./env/validate.ts",
-    "./errors": "./errors/index.ts",
-    "./name": "./name/index.ts",
-    "./address": "./address/index.ts",
-    "./phone": "./phone/index.ts",
-    "./search": "./search/index.ts",
-    "./seo": "./seo/index.ts",
-    "./sentry": "./sentry/index.ts",
-    "./signup": "./signup/index.ts",
-    "./site": "./site/index.ts",
-    "./username": "./username/index.ts"
+    "./*": "./src/*.ts",
+    "./eslint/*": "./eslint/*.js"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",
@@ -32,9 +17,6 @@
     "typescript-eslint": "catalog:"
   },
   "dependencies": {
-    "@bconnect/api-client": "workspace:*",
-    "es-hangul": "^2.4.0",
-    "libphonenumber-js": "^1.13.13",
     "zod": "catalog:"
   }
 }

@@ -3,10 +3,10 @@
  */
 'use client'
 
+import { UpdateRecommendationRequest } from '@bconnect/api-client/zod'
 import { Form, TextareaField, TopBar } from '@bconnect/ui'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-
-type RecommendationFormValues = { content: string }
 
 interface RecommendationEditorProps {
   title: string
@@ -14,7 +14,7 @@ interface RecommendationEditorProps {
   isPending: boolean
   serverError?: string
   onSubmit: (content: string) => void
-  onBack: () => void
+  backHref: string
 }
 
 export function RecommendationEditor({
@@ -23,9 +23,10 @@ export function RecommendationEditor({
   isPending,
   serverError,
   onSubmit,
-  onBack,
+  backHref,
 }: RecommendationEditorProps) {
-  const form = useForm<RecommendationFormValues>({
+  const form = useForm<UpdateRecommendationRequest>({
+    resolver: zodResolver(UpdateRecommendationRequest),
     mode: 'onTouched',
     values: { content: initialContent },
   })
@@ -41,7 +42,7 @@ export function RecommendationEditor({
         actionText={isPending ? '저장 중...' : '완료'}
         actionDisabled={isPending || isEmpty}
         onAction={submit}
-        onBack={onBack}
+        backHref={backHref}
       />
 
       <Form {...form}>

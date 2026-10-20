@@ -32,13 +32,11 @@ export default function InstagramUploadPage() {
     const file = event.target.files?.[0]
     if (!file) return
 
-    // ZIP 파일 검증
     if (!file.name.endsWith('.zip')) {
       setError('ZIP 파일만 업로드 가능합니다.')
       return
     }
 
-    // 파일 크기 제한 (50MB)
     const MAX_SIZE = 50 * 1024 * 1024
     if (file.size > MAX_SIZE) {
       setError('파일 크기는 50MB 이하여야 합니다.')
@@ -51,11 +49,9 @@ export default function InstagramUploadPage() {
     setSelected(new Set())
 
     try {
-      // FormData로 파일 전송
       const formData = new FormData()
       formData.append('file', file)
 
-      // Next.js API Route 호출
       const response = await fetch('/api/instagram/parse', {
         method: 'POST',
         body: formData,

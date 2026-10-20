@@ -43,14 +43,14 @@ jobs:
         env:
           DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: pnpm --filter @bconnect/data-jobs cwma-sync
+        run: pnpm --filter @bconnect/batch cwma-sync
 
       - name: Sync ECIC electrical-license
         id: ecic
         if: ${{ !cancelled() }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: pnpm --filter @bconnect/data-jobs ecic-sync
+        run: pnpm --filter @bconnect/batch ecic-sync
 
       - name: Sync FEIA fire-license
         id: feia
@@ -58,21 +58,21 @@ jobs:
         env:
           DATA_GO_SERVICE_KEY: ${{ secrets.DATA_GO_SERVICE_KEY }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: pnpm --filter @bconnect/data-jobs feia-sync
+        run: pnpm --filter @bconnect/batch feia-sync
 
       - name: Sync KISCON arrears
         id: kiscon_arrears
         if: ${{ !cancelled() }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: pnpm --filter @bconnect/data-jobs kiscon-arrears-sync
+        run: pnpm --filter @bconnect/batch kiscon-arrears-sync
 
       - name: Sync KISCON subcon limits
         id: kiscon_subcon
         if: ${{ !cancelled() }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: pnpm --filter @bconnect/data-jobs kiscon-subcon-sync
+        run: pnpm --filter @bconnect/batch kiscon-subcon-sync
 
       - name: Sync KISCON registration
         id: kiscon_registration
@@ -82,9 +82,9 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           if [ "${{ inputs.full }}" = "true" ]; then
-            pnpm --filter @bconnect/data-jobs kiscon-registration-sync -- --full
+            pnpm --filter @bconnect/batch kiscon-registration-sync -- --full
           else
-            pnpm --filter @bconnect/data-jobs kiscon-registration-sync
+            pnpm --filter @bconnect/batch kiscon-registration-sync
           fi
 
       - name: Sync KISCON admin penalty
@@ -95,9 +95,9 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           if [ "${{ inputs.full }}" = "true" ]; then
-            pnpm --filter @bconnect/data-jobs kiscon-penalty-sync -- --full
+            pnpm --filter @bconnect/batch kiscon-penalty-sync -- --full
           else
-            pnpm --filter @bconnect/data-jobs kiscon-penalty-sync
+            pnpm --filter @bconnect/batch kiscon-penalty-sync
           fi
 
       - name: Sync MOEL wage-defaulter
@@ -105,7 +105,7 @@ jobs:
         if: ${{ !cancelled() }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: pnpm --filter @bconnect/data-jobs moel-sync
+        run: pnpm --filter @bconnect/batch moel-sync
 
       - name: Notify Slack on failure
         if: failure()

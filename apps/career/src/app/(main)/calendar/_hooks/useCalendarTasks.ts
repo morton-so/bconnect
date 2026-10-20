@@ -5,7 +5,7 @@ import {
   toAssigneeCalendarTask,
   toCoworkerCalendarTask,
   toWorkerCalendarTask,
-} from '../_components/calendar/mapper'
+} from '../_lib/mapper'
 
 export function useCalendarTasks(member: number | null) {
   const mine = useGetTasks({ query: { enabled: member == null } })

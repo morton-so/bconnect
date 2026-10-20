@@ -7,7 +7,7 @@ import {
   formatRegistrationNumber,
   extractDigits,
   isValidRegistrationNumber,
-} from '@bconnect/config/brn'
+} from '@bconnect/lib/brn'
 
 interface SearchBarProps {
   defaultValue?: string

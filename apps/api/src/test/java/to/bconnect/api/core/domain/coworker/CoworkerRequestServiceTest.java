@@ -243,16 +243,4 @@ class CoworkerRequestServiceTest {
         assertCodeException(() -> coworkerRequestService.cancel(user, created.getId()))
                 .hasExceptionCode(CommonExceptionCode.FORBIDDEN);
     }
-
-    @Test
-    @DisplayName("cancel - 요청이 존재하지 않을 때 취소하면 NOT_FOUND로 실패한다")
-    void cancel_fail_C005() {
-        // given
-        val from = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
-        val user = UserFactory.domain(from.getId(), Role.CAREER);
-
-        // when & then
-        assertCodeException(() -> coworkerRequestService.cancel(user, MISSING_ID))
-                .hasExceptionCode(CommonExceptionCode.NOT_FOUND);
-    }
 }

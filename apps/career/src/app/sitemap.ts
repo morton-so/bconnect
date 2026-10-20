@@ -3,11 +3,5 @@ import { SITE_URL } from '@bconnect/config/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE_URL.career
-  return [
-    {
-      url: base,
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-  ]
+  return [{ url: base }]
 }

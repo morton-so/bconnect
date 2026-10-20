@@ -3,7 +3,7 @@
  */
 'use client'
 
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { CoworkerStatus, useGetCoworkers } from '@bconnect/api-client'
 import { CoworkerList, CoworkerManageDrawer } from '@bconnect/features'
 import { MoreVerticalIcon, TopBar } from '@bconnect/ui'
@@ -12,9 +12,7 @@ import { useCoworkerManageDrawer } from '@/app/(main)/profile/_adapters/useCowor
 export default function MemberCoworkersPage() {
   const params = useParams<{ memberId: string }>()
   const memberId = Number(params.memberId)
-  const router = useRouter()
 
-  // 동료 조회는 memberId 로 직접 (useGetCoworkers 인자 = memberId).
   const {
     data: coworkers,
     isLoading,
@@ -28,7 +26,7 @@ export default function MemberCoworkersPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="동료" onBack={() => router.back()} />
+      <TopBar variant="default" title="동료" backHref={`/profile/${params.memberId}`} />
 
       {/* 타인의 동료 목록이라 각 행의 status(= 나와 그 사람의 관계)가 NONE/SELF/SENT/RECEIVED/COWORKER
           로 섞인다(SELF = 목록 주인과 내가 동료라 내 행도 포함된 경우). 드로어가 status 별로

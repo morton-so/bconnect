@@ -11,7 +11,6 @@ interface SettingsRowProps {
 const rowClassName =
   'flex h-10 w-full items-center justify-between border-b border-gray-300 transition-opacity active:opacity-60'
 
-/** 설정 메뉴 행 — 좌 라벨 + 우 chevron, 하단 divider. href 면 Link, 아니면 onClick */
 export function SettingsRow({ label, href, onClick, disabled }: SettingsRowProps) {
   const content = (
     <>

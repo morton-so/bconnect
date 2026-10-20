@@ -4,7 +4,6 @@
  */
 'use client'
 
-import { useRouter } from 'next/navigation'
 import {
   useGetCoworkers,
   useGetMyMember,
@@ -17,8 +16,6 @@ import { useCoworkerManageDrawer } from '../_adapters/useCoworkerManageDrawer'
 import { useCoworkerRequestActions } from '../_adapters/useCoworkerRequestActions'
 
 export default function CoworkersPage() {
-  const router = useRouter()
-
   const { data: member, isLoading: isMemberLoading } = useGetMyMember()
   const myId = member?.id
 
@@ -38,7 +35,7 @@ export default function CoworkersPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="동료" onBack={() => router.back()} />
+      <TopBar variant="default" title="동료" backHref="/profile" />
 
       <CoworkerRequestList
         received={received}

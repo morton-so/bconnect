@@ -10,15 +10,13 @@
 - `apps/plan` - 업체 서비스
 - `apps/company` - 회사 홈페이지
 - `apps/api` - API 서버
-- `apps/crawler` - 기술자 크롤러
 - `packages/ui` - 공유 UI 컴포넌트
 - `packages/api-client` - 자동 생성 API 클라이언트 (Orval)
 - `packages/config` - 공유 설정
+- `packages/lib` - 공유 유틸
 - `packages/features` - 공유 UI
-- `packages/mocks` - MSW 핸들러
-- `packages/devtools` - 개발 도구 (MSW, Agentation)
-- `packages/push` - 푸시 알림 UI · 클라이언트
-- `packages/data-jobs` - 원클릭 조회 데이터 동기화
+- `packages/mocks` - MSW 핸들러 · Provider
+- `packages/batch` - 원클릭 조회 데이터 동기화
 
 ## 시작하기
 

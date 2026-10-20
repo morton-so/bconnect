@@ -22,7 +22,6 @@ jobs:
     outputs:
       client: ${{ steps.client.outputs.changes }}
       server: ${{ steps.filter.outputs.server }}
-      crawler: ${{ steps.filter.outputs.crawler }}
     steps:
       - uses: actions/checkout@v6
 
@@ -32,9 +31,7 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             server:
-              - 'apps/server/**'
-            crawler:
-              - 'apps/crawler/**'
+              - 'apps/api/**'
 
       - uses: dorny/paths-filter@v3
         id: client
@@ -152,5 +149,3 @@ jobs:
           name: bruno-report
           path: apps/api/bruno/bruno-report.html
           if-no-files-found: error
-
-# TODO :ci-crawler

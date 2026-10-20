@@ -1,0 +1,68 @@
+/**
+ * @figma-todo 드롭다운 메뉴 버튼 디자인 미정
+ */
+'use client'
+
+import type { ReactNode } from 'react'
+import { DropdownMenu } from 'radix-ui'
+import { MoreVertical } from 'lucide-react'
+import { cn } from '../lib/utils'
+
+export interface MenuButtonItem {
+  label: string
+  icon?: ReactNode
+  onSelect: () => void
+  destructive?: boolean
+  disabled?: boolean
+}
+
+export interface MenuButtonProps {
+  items: MenuButtonItem[]
+  ariaLabel?: string
+  className?: string
+}
+
+export function MenuButton({ items, ariaLabel = '메뉴', className }: MenuButtonProps) {
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <button
+          type="button"
+          aria-label={ariaLabel}
+          className={cn(
+            'inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-gray-500 transition-colors outline-none hover:bg-gray-100 hover:text-gray-700 focus-visible:ring-1 focus-visible:ring-primary',
+            className
+          )}
+        >
+          <MoreVertical size={18} aria-hidden />
+        </button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
+          align="end"
+          sideOffset={4}
+          className="z-50 min-w-32 rounded-lg border border-gray-300 bg-white py-1 shadow-[0_6px_20px_rgba(0,0,0,0.1)]"
+        >
+          {items.map((item) => (
+            <DropdownMenu.Item
+              key={item.label}
+              disabled={item.disabled}
+              onSelect={item.onSelect}
+              className={cn(
+                'flex cursor-pointer items-center gap-2 px-3 py-2 text-m-14 outline-none data-[disabled]:cursor-default data-[disabled]:opacity-40 data-[highlighted]:bg-gray-50',
+                item.destructive ? 'text-destructive' : 'text-gray-900'
+              )}
+            >
+              {item.icon && (
+                <span className="flex h-4 w-4 shrink-0 items-center justify-center">
+                  {item.icon}
+                </span>
+              )}
+              {item.label}
+            </DropdownMenu.Item>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
+  )
+}

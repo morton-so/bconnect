@@ -5,14 +5,14 @@
 
 export DATABASE_URL=postgresql://user:password@host:5432/dbname
 # 발급처 : [Railway : postgres](https://railway.com/project/90cd6d09-4c7b-415f-b13f-3d6b6051769a/service/e2f6cab1-4676-4762-bff2-a03b3aefc5fc)
-# 의존성 : @bconnect/data-jobs
+# 의존성 : @bconnect/batch
 # 설명 : 원클릭 적재 DB TCP 프록시 URL (현재 prod)
 
 # 공공데이터
 
 export DATA_GO_SERVICE_KEY=your_data_go_kr_service_key
 # 발급처 : [공공데이터포털 : 마이페이지 인증키](https://www.data.go.kr)
-# 의존성 : @bconnect/data-jobs, apps/api
+# 의존성 : @bconnect/batch, apps/api
 # 설명 : 공공데이터 조회 서비스 키
 
 # Sentry
@@ -40,5 +40,5 @@ export FIGMA_ACCESS_TOKEN=your_figma_access_token
 
 export SLACK_WEBHOOK_URL=your_slack_webhook_url
 # 발급처 : [Slack : Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)
-# 의존성 : @bconnect/data-jobs
+# 의존성 : @bconnect/batch
 # 설명 : Slack 모니터링 알림 웹훅 URL

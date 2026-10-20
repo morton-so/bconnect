@@ -1,8 +1,5 @@
 import type { PathItemObject, SchemaObject } from 'openapi3-ts/oas31'
 
-/**
- * Spring Security 필터 기반 인증 엔드포인트 보완
- */
 export const authSupplementPaths: Record<string, PathItemObject> = {
   '/api/v1/auth/otp/verify': {
     post: {
@@ -55,8 +52,8 @@ export const authSupplementSchemas: Record<string, SchemaObject> = {
     type: 'object',
     required: ['phone', 'code'],
     properties: {
-      phone: { type: 'string', pattern: '\\d{10,11}' },
-      code: { type: 'string', pattern: '\\d{6}' },
+      phone: { type: 'string', pattern: '^01\\d{8,9}$' },
+      code: { type: 'string', pattern: '^\\d{6}$' },
     },
   },
   VerifyOtpLoginResponse: {

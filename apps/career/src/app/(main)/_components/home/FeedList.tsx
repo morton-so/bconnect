@@ -99,7 +99,7 @@ export function FeedList() {
           key={item.postId}
           content={item.content}
           canManage={item.isMine}
-          editHref={`/profile/works/${item.postId}/edit`}
+          editHref={`/profile/posts/${item.postId}/edit`}
           onDelete={() => setPendingDeleteId(item.postId)}
         />
       ))}
@@ -123,7 +123,6 @@ export function FeedList() {
         destructive
         onConfirm={() => {
           if (pendingDeleteId == null) return
-          // deletePost→getFeeds 무효화는 config(mutationInvalidates)가 자동 처리 (ADR-0025).
           deletePost({ id: pendingDeleteId })
           setPendingDeleteId(null)
         }}

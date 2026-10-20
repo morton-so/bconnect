@@ -10,7 +10,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import {
   useGetMyCredentials,
   useGetMyMember,
@@ -21,13 +20,13 @@ import {
   AttachmentContext,
   AttachmentType,
 } from '@bconnect/api-client'
-import type { CredentialType, CreateCredentialRequest } from '@bconnect/api-client'
+import type { CredentialType } from '@bconnect/api-client'
 import { ConfirmDialog, Tab, TopBar, toast, type FileValue } from '@bconnect/ui'
 import { useQueryState, parseAsStringLiteral } from 'nuqs'
 import { OneClickTab } from './_components/OneClickTab'
 import { CertificateTab } from './_components/CertificateTab'
 import { QualificationTab } from './_components/QualificationTab'
-import { APPLY_TAB_KEYS } from '../_lib/applyTabs'
+import { APPLY_TAB_KEYS } from '../_lib/apply-tabs'
 
 const TAB_ITEMS = [
   { key: 'one-click', label: '원클릭 조회' },
@@ -35,7 +34,6 @@ const TAB_ITEMS = [
   { key: 'qualification', label: '자격증' },
 ]
 
-// presign → S3 PUT → confirm 2-phase 업로드. CREDENTIAL 컨텍스트의 contextId는 본인 memberId.
 async function uploadCredentialFile(file: File, memberId: number): Promise<number> {
   const [presigned] = await createAttachmentPresign({
     context: AttachmentContext.CREDENTIAL,
@@ -55,7 +53,6 @@ async function uploadCredentialFile(file: File, memberId: number): Promise<numbe
 }
 
 export default function CertificationApplyPage() {
-  const router = useRouter()
   // 탭/서브탭 전환은 히스토리를 쌓지 않음(replace) → TopBar 뒤로가기가 탭을 되돌리지 않고 화면을 정상 이탈
   const [activeTab, setActiveTab] = useQueryState(
     'tab',
@@ -71,7 +68,6 @@ export default function CertificationApplyPage() {
     setSubTab(null)
   }
 
-  // 내 자격 증명은 useGetMyCredentials(무인자) — profileId 로 조회하던 useGetCredentials 대체.
   const {
     data: credentials,
     isLoading: isCredentialsLoading,
@@ -81,23 +77,16 @@ export default function CertificationApplyPage() {
 
   const { data: me } = useGetMyMember()
 
-  // create/deleteCredential→getMyCredentials 무효화는 config(mutationInvalidates)가 자동 처리 (ADR-0025).
   const { mutateAsync: createCredentialAsync } = useCreateCredential()
-
-  const handleOneClickApply = async (requests: CreateCredentialRequest[]) => {
-    await Promise.all(requests.map((data) => createCredentialAsync({ data })))
-  }
 
   const { mutate: deleteCredential } = useDeleteCredential()
 
-  // 하단 자격 증명 목록 상태 — 각 탭에 주입.
   const listIsLoading = isCredentialsLoading
   const listIsError = isCredentialsError
   const handleRetry = () => {
     refetchCredentials()
   }
 
-  // 파일 제출 — presign 업로드 후 attachmentId로 credential 생성. 성공 여부를 돌려줘 탭이 폼 리셋을 결정.
   const handleSubmit = async (
     type: CredentialType,
     payload: { file: FileValue | null; note?: string }
@@ -126,14 +115,13 @@ export default function CertificationApplyPage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar variant="default" title="자격 증명 신청" onBack={() => router.back()} />
+      <TopBar variant="default" title="자격 증명 신청" backHref="/profile/certifications" />
 
       <Tab items={TAB_ITEMS} activeKey={activeTab} onChange={handleTabChange} />
 
       {activeTab === 'one-click' && (
         <OneClickTab
           credentials={credentialsList}
-          onApply={handleOneClickApply}
           onRequestDelete={setPendingDeleteId}
           isLoading={listIsLoading}
           isError={listIsError}

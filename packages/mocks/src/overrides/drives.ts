@@ -32,19 +32,6 @@ import type {
 import { http, HttpResponse } from 'msw'
 import { rememberUpload } from './_uploads'
 
-/**
- * 저장소(drives/notes/attachments) **stateful** mock.
- * 폴더/메모 CRUD 와 presign → PUT → confirm → 드라이브 바인딩 업로드 체인이 모듈 메모리에
- * 반영돼 재조회 시 즉시 보인다. 하드 리로드 시 시드 리셋.
- *
- * BE 실동작 모사:
- * - GET /drives 는 projectId 필터, GET /drives/me 는 회원 접근 가능한 전체
- * - presign 은 pending 첨부 생성 + 가짜 uploadUrl(`/mock-s3/{id}`) 반환 — PUT 은 아래
- *   raw 핸들러가 200 으로 받는다 (실 S3 왕복 없음)
- * - confirm 후 POST /drives/{id}/attachments 로 바인딩돼야 이미지 목록에 나타남
- * - 업로드 이미지 url 은 placeholder (mock 은 파일 바이트를 보존하지 않음)
- */
-
 const nowStamp = (): string => new Date().toISOString().slice(0, 19) + 'Z'
 
 const placeholderImage = (label: string): string =>
@@ -154,7 +141,6 @@ const notes = new Map<number, Note[]>([
   ],
 ])
 
-// presign 됐지만 아직 드라이브에 바인딩 안 된 첨부
 const pending = new Map<number, Attachment>()
 
 let nextDriveId = 100
@@ -191,7 +177,7 @@ export const drivesOverrides = [
     drives = drives.map((d) =>
       d.id === id ? { ...d, title: body.title, modifiedAt: nowStamp() } : d
     )
-    return { success: true }
+    return null
   }),
 
   getDeleteDriveMockHandler((info) => {
@@ -199,7 +185,7 @@ export const drivesOverrides = [
     drives = drives.filter((d) => d.id !== id)
     images.delete(id)
     notes.delete(id)
-    return { success: true }
+    return null
   }),
 
   getGetDriveImagesMockHandler((info): Attachment[] => images.get(Number(info.params.id)) ?? []),
@@ -229,7 +215,7 @@ export const drivesOverrides = [
         list.map((n) => (n.id === id ? { ...n, content: body.content, modifiedAt: nowStamp() } : n))
       )
     }
-    return { success: true }
+    return null
   }),
 
   getDeleteNoteMockHandler((info) => {
@@ -240,7 +226,7 @@ export const drivesOverrides = [
         list.filter((n) => n.id !== id)
       )
     }
-    return { success: true }
+    return null
   }),
 
   getCreateAttachmentPresignMockHandler(async (info): Promise<PresignedFile[]> => {
@@ -263,7 +249,6 @@ export const drivesOverrides = [
     })
   }),
 
-  // presigned PUT 수신부 — 실 S3 대역. 바이트는 소켓 mock 이 되돌려줄 수 있게 붙잡아 둔다.
   http.put('*/mock-s3/:id', async ({ params, request }) => {
     await rememberUpload(Number(params.id), request)
     return new HttpResponse(null, { status: 200 })
@@ -286,7 +271,7 @@ export const drivesOverrides = [
       }
     }
     images.set(driveId, list)
-    return { success: true }
+    return null
   }),
 
   getDeleteDriveAttachmentsMockHandler((info) => {
@@ -296,6 +281,6 @@ export const drivesOverrides = [
       driveId,
       (images.get(driveId) ?? []).filter((a) => a.id !== attachmentId)
     )
-    return { success: true }
+    return null
   }),
 ]

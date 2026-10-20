@@ -1,8 +1,7 @@
 'use client'
 
 import { Tag } from '@bconnect/ui'
-import { ROLE_LABELS, TRADE_LABELS } from '@bconnect/api-client'
-import { REGION_LABELS } from '@/lib/region'
+import { REGION_LABELS, ROLE_LABELS, TRADE_LABELS } from '@bconnect/api-client'
 import { formatExperienceRange } from '@/lib/experience-range'
 import { useFilterParams } from '@/hooks/useFilterParams'
 

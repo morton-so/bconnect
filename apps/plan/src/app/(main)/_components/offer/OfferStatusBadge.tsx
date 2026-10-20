@@ -1,25 +1,18 @@
+import { OfferStatus } from '@bconnect/api-client'
 import { cn } from '@bconnect/ui'
-import type { OfferStatus } from '@/app/(main)/projects/[projectId]/schedule/_components/schedule-grid/types'
-
-const STYLES: Record<OfferStatus, string> = {
-  offered: 'border-primary bg-secondary font-semibold text-primary',
-  waiting: 'border-[#e5e5e5] bg-white font-normal text-[#a5a5a5]',
-}
-
-const LABELS: Record<OfferStatus, string> = {
-  offered: '섭외중',
-  waiting: '대기중',
-}
 
 export function OfferStatusBadge({ status }: { status: OfferStatus }) {
+  const isActive = status === OfferStatus.ACTIVE
   return (
     <span
       className={cn(
         'inline-flex h-[22px] shrink-0 items-center justify-center rounded-[4px] border px-2 text-[11px] leading-[16.5px] whitespace-nowrap',
-        STYLES[status]
+        isActive
+          ? 'border-primary bg-secondary font-semibold text-primary'
+          : 'border-[#e5e5e5] bg-white font-normal text-[#a5a5a5]'
       )}
     >
-      {LABELS[status]}
+      {isActive ? '섭외중' : '대기중'}
     </span>
   )
 }

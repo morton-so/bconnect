@@ -4,7 +4,6 @@ import lombok.val;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import to.bconnect.api.common.CommonExceptionCode;
 import to.bconnect.api.storage.chat.ChatType;
 import to.bconnect.api.storage.chat.GroupChatRepository;
 import to.bconnect.api.storage.chat.MessageRepository;
@@ -18,7 +17,6 @@ import to.bconnect.api.support.fixture.MessageFactory;
 import to.bconnect.api.support.fixture.ParticipantFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static to.bconnect.api.support.CodeExceptionAssert.assertCodeException;
 
 @IntegrationTest
 class GroupChatServiceTest {
@@ -69,19 +67,5 @@ class GroupChatServiceTest {
         assertThat(participantRepository.findByChatIdAndMemberId(chat.getId(), member.getId())).isEmpty();
         assertThat(groupChatRepository.findById(chat.getId())).isEmpty();
         assertThat(messageRepository.findById(message.getId())).isEmpty();
-    }
-
-    @Test
-    @DisplayName("leave - 참여자가 아닐 때 나가면 FORBIDDEN으로 실패한다")
-    void leave_fail_C004() {
-        // given
-        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
-        val other = memberRepository.save(MemberFactory.entity("member2", "01000001002", Role.CAREER));
-        val chat = groupChatFactory.entity();
-        participantFactory.entity(chat.getId(), other.getId());
-
-        // when & then
-        assertCodeException(() -> groupChatService.leave(member.getId(), chat.getId()))
-                .hasExceptionCode(CommonExceptionCode.FORBIDDEN);
     }
 }

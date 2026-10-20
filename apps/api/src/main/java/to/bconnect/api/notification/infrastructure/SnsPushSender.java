@@ -17,6 +17,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static to.bconnect.api.common.CommonUtils.mask;
 import static to.bconnect.api.common.CommonUtils.nullToEmpty;
@@ -61,20 +62,16 @@ public class SnsPushSender implements PushSender {
 
     // FCM v1 message.data 는 값이 모두 String 이어야 한다
     private String message(PushNotification command) {
-        val title = command.title();
-        val referenceType = command.referenceType();
-        val referenceId = command.referenceId();
+        val title = nullToEmpty(command.title());
 
         val data = new HashMap<String, String>();
-        data.put("notification_id", String.valueOf(command.id()));
-        data.put("reference_type", referenceType == null ? "" : referenceType.name().toLowerCase());
-        data.put("reference_id", referenceId == null ? "" : String.valueOf(referenceId));
+        data.put("title", title);
+        data.put("body", nullToEmpty(command.body()));
+        data.put("notification_id", nullToEmpty(Objects.toString(command.id(), null)));
+        data.put("reference_type", nullToEmpty(Objects.toString(command.referenceType(), null)).toLowerCase());
+        data.put("reference_id", nullToEmpty(Objects.toString(command.referenceId(), null)));
 
-        val fcmV1 = Map.of("fcmV1Message", Map.of("message", Map.of(
-                "notification", Map.of(
-                        "title", title,
-                        "body", command.body()),
-                "data", data)));
+        val fcmV1 = Map.of("fcmV1Message", Map.of("message", Map.of("data", data)));
         val message = Map.of(
                 "default", title,
                 "GCM", objectMapper.writeValueAsString(fcmV1)

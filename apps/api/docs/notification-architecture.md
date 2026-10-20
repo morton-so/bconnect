@@ -132,15 +132,16 @@ graph LR
 
 | 위치 | 필드 | 값                               | 비고            |
 |---|---|---------------------------------|---------------|
-| notification | title | `PushNotification.title`        |               |
-| notification | body | `PushNotification.body`         | 최대 100자       |
-| data | notification_id | 저장된 알림 id                       | 미저장시 `"null"` |
-| data | reference_type | `NotificationReferenceType` 소문자 | 없으면 `""`      |
-| data | reference_id | reference_id | 없으면 `""`      |
+| data | title | `PushNotification.title`        | 없으면 빈문자열      |
+| data | body | `PushNotification.body`         | 최대 100자       |
+| data | notification_id | 저장된 알림 id                       | 미저장시 빈문자열    |
+| data | reference_type | `NotificationReferenceType` 소문자 | 없으면 빈문자열      |
+| data | reference_id | reference_id | 없으면 빈문자열      |
 
 - `MessageStructure=json` 으로 최상위 `default` · `GCM` 키를 발송한다
 - `GCM` 값은 FCM v1 `fcmV1Message` 래퍼다.
 - FCM v1 `data` 값은 모두 string 이어야 한다.
+- 중복 알림 발송 방지 및 커스텀 로직 구현을 위해 `notification`을 사용하지 않는다.
 
 ## SNS 에러 핸들링
 

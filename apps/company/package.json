@@ -15,8 +15,9 @@
   "dependencies": {
     "@bconnect/api-client": "workspace:*",
     "@bconnect/config": "workspace:*",
-    "@bconnect/features": "workspace:*",
+    "@bconnect/lib": "workspace:*",
     "@bconnect/ui": "workspace:*",
+    "@hookform/resolvers": "catalog:",
     "@next/third-parties": "catalog:",
     "@sentry/nextjs": "catalog:",
     "@vercel/analytics": "catalog:",
@@ -24,6 +25,7 @@
     "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "react-hook-form": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

@@ -199,7 +199,6 @@ function rewriteOperationIds(api: OpenAPIObject): void {
   }
 }
 
-// Spring 바인딩·orval URL 빌더 둘 다 flat 쿼리 전제 — 객체 파라미터(CursorLimit 등)를 프로퍼티 단위로 펼친다
 function flattenObjectQueryParams(api: OpenAPIObject, schemas: Record<string, SchemaObject>): void {
   for (const item of Object.values(api.paths ?? {})) {
     if (!item || typeof item !== 'object') continue
@@ -212,7 +211,7 @@ function flattenObjectQueryParams(api: OpenAPIObject, schemas: Record<string, Sc
         const ref = p.schema && '$ref' in p.schema ? p.schema.$ref : undefined
         if (p.in !== 'query' || !ref) return [param]
         const target = schemas[ref.replace('#/components/schemas/', '')]
-        if (!target?.properties) return [param] // enum 등 비-객체 $ref 는 유지
+        if (!target?.properties) return [param]
         return Object.entries(target.properties).map(([name, schema]): ParameterObject => ({
           name,
           in: 'query',
@@ -240,7 +239,7 @@ function extractData(schema: SchemaObject): SchemaObject | ReferenceObject | und
   if (props?.success && props?.data) {
     const data = props.data
     const isEmpty = typeof data === 'object' && !('$ref' in data) && Object.keys(data).length === 0
-    return isEmpty ? undefined : data
+    return isEmpty ? { type: 'null' } : data
   }
   return undefined
 }

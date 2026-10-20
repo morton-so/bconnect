@@ -14,10 +14,9 @@ import {
 } from '@bconnect/ui'
 import { StorageExplorerView } from '@bconnect/features'
 import type { Folder } from '@bconnect/features'
-import { matchHangul } from '@bconnect/config/search'
-import { useAllFolders, useFolderMutations } from '@/lib/storage/hooks'
+import { matchHangul } from '@bconnect/lib/search'
+import { useAllFolders, useFolderMutations } from '../_hooks/useDrive'
 
-/** career 저장소 탐색기 루트 — 검색(초성) + 폴더 목록 + 인라인 생성/이름수정 + FAB(폴더 추가). */
 export function CareerStorageExplorer() {
   const { data: folders, isLoading, isError } = useAllFolders()
   const { createFolder, updateFolder, deleteFolder } = useFolderMutations()
@@ -27,7 +26,6 @@ export function CareerStorageExplorer() {
   const [kebabFor, setKebabFor] = useState<Folder | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Folder | null>(null)
 
-  // 한글 초성 + 부분 문자열 검색 (es-hangul 기반 공용 매처)
   const filtered = useMemo(
     () => (folders ?? []).filter((f) => matchHangul(f.title, query)),
     [folders, query]
@@ -35,7 +33,7 @@ export function CareerStorageExplorer() {
 
   return (
     <>
-      <TopBar variant="default" title="저장소" />
+      <TopBar variant="default" title="저장소" showBack={false} />
       <div className="p-4">
         <StorageExplorerView
           folders={filtered}

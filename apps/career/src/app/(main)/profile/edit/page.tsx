@@ -1,6 +1,3 @@
-/**
- * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1235-4100
- */
 'use client'
 
 import { useEffect } from 'react'
@@ -32,9 +29,12 @@ import {
 } from '@bconnect/ui'
 import { TRADE_LABELS, TRADE_GROUPS } from '@bconnect/api-client'
 import { AddressField } from '@/components/AddressField'
-import { isCompleteAddress } from '@bconnect/config/address'
-import { MAX_TRADES, profileEditSchema, type ProfileEditFormData } from './schema'
+import { isCompleteAddress } from '@bconnect/lib/address'
+import { MAX_TRADES, profileEditSchema, type ProfileEditFormData } from './_lib/schema'
 
+/**
+ * @figma https://www.figma.com/design/EFXofON7gTFbmbE2kB31SS?node-id=1235-4100
+ */
 export default function ProfileEditPage() {
   const router = useRouter()
 
@@ -44,11 +44,9 @@ export default function ProfileEditPage() {
   const updateAboutMutation = useUpdateMyProfileAbout()
 
   const form = useForm<ProfileEditFormData>({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- zod v4 + @hookform/resolvers 타입 호환 workaround
-    resolver: zodResolver(profileEditSchema as any),
+    resolver: zodResolver(profileEditSchema),
     mode: 'onTouched',
     defaultValues: {
-      phone: '',
       primaryTrade: undefined,
       trades: [],
       experience: undefined,
@@ -65,7 +63,6 @@ export default function ProfileEditPage() {
     formState: { isSubmitting },
   } = form
 
-  // 데이터 로드 후 폼 초기값 설정
   useEffect(() => {
     if (profile) {
       // TODO: BE required 처리 후 type narrowing 필요. profile 필수 표시값이 optional emit이라 폼 초기값에서 임시 fallback 중.
@@ -93,14 +90,13 @@ export default function ProfileEditPage() {
     try {
       const promises: Promise<unknown>[] = []
 
-      // Profile 업데이트 — role(ProfileRole) 은 편집 대상이 아니라 기존 값 유지 (필수 필드)
       promises.push(
         updateProfileMutation.mutateAsync({
           data: {
             // TODO: BE required 처리 후 type narrowing 필요. Profile.role 필수값이 optional emit이라 임시 cast로 유지.
             role: profile?.role as ProfileRole,
-            primaryTrade: data.primaryTrade as Trade,
-            trades: data.trades as Trade[],
+            primaryTrade: data.primaryTrade,
+            trades: data.trades,
             experience: data.experience,
             headline: data.headline || undefined,
             address: data.address,
@@ -118,28 +114,23 @@ export default function ProfileEditPage() {
       }
 
       await Promise.all(promises)
-
-      // 캐시 무효화는 orval config(mutationInvalidates)가 담당 —
-      // updateMyProfile/About→getMyProfile (ADR-0025)
-      router.back()
+      router.replace('/profile')
     } catch (err) {
       console.error('프로필 수정 실패:', err)
     }
   }
 
-  const toggleTrade = (tradeValue: string) => {
+  const toggleTrade = (tradeValue: Trade) => {
     const currentTrades = watchedTrades ?? []
     if (currentTrades.includes(tradeValue)) {
-      const updated = currentTrades.filter((t: string) => t !== tradeValue)
+      const updated = currentTrades.filter((t) => t !== tradeValue)
       setValue('trades', updated, { shouldValidate: true })
-      // 대표분야가 제거되면 첫번째로 변경
       if (watchedPrimaryTrade === tradeValue) {
-        setValue('primaryTrade', updated[0] ?? undefined, { shouldValidate: true })
+        setValue('primaryTrade', updated[0] as Trade, { shouldValidate: true })
       }
     } else if (currentTrades.length < MAX_TRADES) {
       const updated = [...currentTrades, tradeValue]
       setValue('trades', updated, { shouldValidate: true })
-      // 대표분야 미설정 시 자동 설정
       if (!watchedPrimaryTrade) {
         setValue('primaryTrade', tradeValue, { shouldValidate: true })
       }
@@ -149,7 +140,7 @@ export default function ProfileEditPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col">
-        <TopBar variant="default" title="프로필 수정" onBack={() => router.back()} />
+        <TopBar variant="default" title="프로필 수정" backHref="/profile" />
         <div className="flex flex-1 items-center justify-center py-20">
           <p className="text-m-14 text-gray-500">로딩 중...</p>
         </div>
@@ -164,7 +155,7 @@ export default function ProfileEditPage() {
         title="프로필 수정"
         actionText={isSaving ? '저장 중...' : '완료'}
         onAction={handleSubmit(onSubmit, scrollToError)}
-        onBack={() => router.back()}
+        backHref="/profile"
       />
 
       <Form {...form}>
@@ -219,7 +210,7 @@ export default function ProfileEditPage() {
             placeholder="선택해주세요"
             options={(watchedTrades ?? []).map((trade) => ({
               value: trade,
-              label: TRADE_LABELS[trade as Trade],
+              label: TRADE_LABELS[trade],
             }))}
           />
 
@@ -236,7 +227,7 @@ export default function ProfileEditPage() {
             control={control}
             name="headline"
             label="한줄소개"
-            placeholder="한줄소개를 입력해주세요 (최대 20글자)"
+            placeholder="한줄소개를 입력해주세요 (최대 50글자)"
           />
 
           <TextareaField

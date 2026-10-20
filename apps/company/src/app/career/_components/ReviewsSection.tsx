@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { REVIEWS } from '../_data'
+import { REVIEWS } from '../_lib/data'
 import { SectionHead } from './SectionHead'
 
 export function ReviewsSection() {
@@ -17,7 +17,7 @@ export function ReviewsSection() {
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Image
                     key={i}
-                    src="/landing/star.svg"
+                    src="/icons/star.svg"
                     alt=""
                     width={20}
                     height={20}

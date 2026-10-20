@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { FEATURES } from '../_data'
+import { FEATURES } from '../_lib/data'
 import { SectionHead } from './SectionHead'
 
 export function FeaturesSection() {

@@ -1,7 +1,7 @@
 import { cn } from '@bconnect/ui'
 import type { MouseEvent } from 'react'
 import { barColor } from '@/lib/task-colors'
-import type { BarSegment } from './types'
+import type { BarSegment } from '@/app/(main)/calendar/_lib/types'
 
 interface TaskBarProps {
   segment: BarSegment

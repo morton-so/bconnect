@@ -1,5 +1,5 @@
 import { cn } from '@bconnect/ui'
-import { WEEKDAY_LABELS } from './date-helpers'
+import { WEEKDAY_LABELS } from '@/app/(main)/calendar/_lib/date-helpers'
 
 export function WeekdayHeader() {
   return (

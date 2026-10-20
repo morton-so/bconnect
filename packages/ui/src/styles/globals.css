@@ -1,10 +1,7 @@
 @import 'tailwindcss';
 
-@source '../../apps/career/src/**/*.{ts,tsx}';
-@source '../../apps/plan/src/**/*.{ts,tsx}';
 @source '../components/**/*.{ts,tsx}';
 @source '../../../features/src/**/*.{ts,tsx}';
-@source '../../../push/src/**/*.{ts,tsx}';
 
 /**
  * Morton Design System — Design Tokens (Color), Typography, Font
@@ -62,7 +59,7 @@
   --color-secondary-foreground: var(--color-primary-700);
   --color-ring: var(--color-primary-500);
 
-  /* feedback — 상태 알림. 현재 error 만 도입 (warning·success·info 보류, ADR-0012 §5) */
+  /* TODO: feedback — 상태 알림. 현재 error 만 도입 (warning·success·info 보류, ADR-0012 §5) */
   --color-destructive: var(--color-red-500);
 
   /* border — 외곽선 · 구분선 · 입력 필드 */

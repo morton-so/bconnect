@@ -1,10 +1,10 @@
 'use client'
 
-import { gridRangeOf, monthShift } from './date-helpers'
+import { gridRangeOf, monthShift } from '@/app/(main)/calendar/_lib/date-helpers'
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@bconnect/ui'
 import { useEffect, useState } from 'react'
 import { CalendarMonth } from './CalendarMonth'
-import type { CalendarBarTask } from './types'
+import type { CalendarBarTask } from '@/app/(main)/calendar/_lib/types'
 
 interface MonthCarouselProps {
   month: string

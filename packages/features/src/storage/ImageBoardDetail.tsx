@@ -1,33 +1,24 @@
 'use client'
 
 import { Button, Select } from '@bconnect/ui'
-import { BoardMetadataTable } from './_parts/BoardMetadataTable'
-import { BoardPositionPicker } from './_parts/BoardPositionPicker'
+import { BoardMetadataTable } from './BoardMetadataTable'
+import { BoardPositionPicker } from './BoardPositionPicker'
 import type { BoardImage, BoardPosition, BoardRow, Folder } from './types'
 
 export interface ImageBoardDetailProps {
   image: BoardImage
   folders: Folder[]
-  /** 메타 행 편집(없으면 읽기전용 표). */
   onChangeRows?: (rows: BoardRow[]) => void
-  /** 보드 코너 위치(career 업로드 배치). */
   onChangePosition?: (position: BoardPosition) => void
-  /** 폴더 이동. */
   onMoveFolder?: (folderId: string) => void
   onChangeDescription?: (text: string) => void
-  /** 제출 버튼(설명 아래) — plan 파일상세·career 보드작성. */
   onSubmit?: () => void
-  /** career 사진정보입력: 이 사진 선택 해제. */
   onDeselect?: () => void
   showPositionPicker?: boolean
   submitLabel?: string
   readOnly?: boolean
 }
 
-/**
- * 동산보드 상세/편집 폼 (메타표 + 위치 + 폴더 + 설명 + 제출). 사진/캐러셀은 부모가 렌더.
- * 소비처: plan 우측 파일상세, career 파일상세 — 둘 다 showPositionPicker. career 업로드 게이트는 onDeselect 추가.
- */
 export function ImageBoardDetail({
   image,
   folders,

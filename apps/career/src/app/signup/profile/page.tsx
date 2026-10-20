@@ -4,15 +4,14 @@
 'use client'
 
 import { AddressField } from '@/components/AddressField'
-import { SIGNUP_ROLES } from '@/lib/role-labels'
+import { SIGNUP_ROLES } from './_lib/role-labels'
 import {
   ROLE_LABELS,
-  Trade,
   TRADE_LABELS,
   refreshAccessToken,
   useCreateProfile,
 } from '@bconnect/api-client'
-import { isCompleteAddress } from '@bconnect/config/address'
+import { isCompleteAddress } from '@bconnect/lib/address'
 import {
   Form,
   FormControl,
@@ -31,23 +30,21 @@ import {
   useServerError,
 } from '@bconnect/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { SignupHeader } from '@/components/SignupHeader'
 import { TradeSelector } from './_components/TradeSelector'
-import { MAX_TRADES, profileSchema, type ProfileFormData } from './schema'
+import { MAX_TRADES, profileSchema, type ProfileFormData } from './_lib/schema'
 
 export default function SignupProfilePage() {
-  const router = useRouter()
   const createProfileMutation = useCreateProfile()
 
   const form = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     mode: 'onTouched',
     defaultValues: {
-      fields: [],
-      primaryField: undefined,
+      trades: [],
+      primaryTrade: undefined,
       experience: undefined,
       role: undefined,
       address: undefined,
@@ -58,21 +55,16 @@ export default function SignupProfilePage() {
 
   const server = useServerError(control, passthroughError<ProfileFormData>())
 
-  const watchedFields = useWatch({ control, name: 'fields' })
-  const watchedPrimaryField = useWatch({ control, name: 'primaryField' })
+  const watchedTrades = useWatch({ control, name: 'trades' })
+  const watchedPrimaryTrade = useWatch({ control, name: 'primaryTrade' })
 
-  const selectedFields = watchedFields || []
+  const selectedTrades = watchedTrades || []
 
-  // 공종 선택 시 대표분야 자동 설정
   useEffect(() => {
-    if (
-      watchedFields &&
-      watchedFields.length > 0 &&
-      !watchedFields.includes(watchedPrimaryField as string)
-    ) {
-      setValue('primaryField', watchedFields[0])
+    if (watchedTrades && watchedTrades.length > 0 && !watchedTrades.includes(watchedPrimaryTrade)) {
+      setValue('primaryTrade', watchedTrades[0])
     }
-  }, [watchedFields, watchedPrimaryField, setValue])
+  }, [watchedTrades, watchedPrimaryTrade, setValue])
 
   const scrollToError = useScrollToError()
 
@@ -82,8 +74,8 @@ export default function SignupProfilePage() {
       await createProfileMutation.mutateAsync({
         data: {
           role: data.role,
-          primaryTrade: data.primaryField as Trade,
-          trades: data.fields as Trade[],
+          primaryTrade: data.primaryTrade,
+          trades: data.trades,
           experience: data.experience,
           headline: data.headline || undefined,
           address: data.address,
@@ -98,7 +90,7 @@ export default function SignupProfilePage() {
 
   return (
     <div className="flex h-dvh flex-col">
-      <SignupHeader step={3} onBack={() => router.back()} />
+      <SignupHeader step={3} backHref="/signup/member" />
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit, scrollToError)}
@@ -110,18 +102,18 @@ export default function SignupProfilePage() {
               <br />
               역할을 선택해주세요
             </h1>
-            <TradeSelector control={control} name="fields" max={MAX_TRADES} />
+            <TradeSelector control={control} name="trades" max={MAX_TRADES} />
             <SelectField
               control={control}
-              name="primaryField"
+              name="primaryTrade"
               label="대표분야"
               required
               fitContent
-              disabled={selectedFields.length === 0}
+              disabled={selectedTrades.length === 0}
               placeholder="선택해주세요"
-              options={selectedFields.map((trade) => ({
+              options={selectedTrades.map((trade) => ({
                 value: trade,
-                label: TRADE_LABELS[trade as Trade],
+                label: TRADE_LABELS[trade],
               }))}
             />
             <NumberField
@@ -167,8 +159,8 @@ export default function SignupProfilePage() {
               name="headline"
               type="text"
               label="한줄소개"
-              maxLength={20}
-              placeholder="한줄소개를 입력해주세요 (최대 20글자)"
+              maxLength={50}
+              placeholder="한줄소개를 입력해주세요 (최대 50글자)"
             />
             <FormError error={server.formError} />
           </div>

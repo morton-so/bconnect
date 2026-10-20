@@ -21,14 +21,6 @@ export interface UseOtpTimerResult {
   expired: boolean
 }
 
-/**
- * OTP 만료 시각 (ISO string) 을 받아 초 단위 카운트다운을 1초 간격으로 갱신하고, 만료 시 타이머를 멈춘다.
- * `expiresAt` 변경 시 자동 리셋 — `key` prop trick 불필요.
- *
- * - `remainingSeconds`: 남은 초 (만료 시 0)
- * - `formatted`: `m:ss` 형식 (`0:42`)
- * - `expired`: `remainingSeconds === 0`
- */
 export function useOtpTimer(expiresAt: string | null): UseOtpTimerResult {
   const [now, setNow] = useState(() => Date.now())
   const remainingSeconds = calculateRemainingSeconds(expiresAt, now)

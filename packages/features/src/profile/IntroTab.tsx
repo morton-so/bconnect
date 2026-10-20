@@ -1,0 +1,127 @@
+'use client'
+
+import { Fragment } from 'react'
+import Link from 'next/link'
+import { getCredentialLabel, TRADE_LABELS } from '@bconnect/api-client'
+import type { CredentialSummary, Profile, Recommendation } from '@bconnect/api-client'
+import { Skeleton, SkillTag } from '@bconnect/ui'
+import { RecommendationList } from './RecommendationList'
+
+export interface ProfileEditHrefs {
+  certifications?: string
+  about?: string
+  recommendations?: string
+}
+
+interface IntroTabProps {
+  profile?: Profile
+  credentials?: CredentialSummary[]
+  receivedRecommendations?: Recommendation[]
+  sentRecommendations?: Recommendation[]
+  editHrefs?: ProfileEditHrefs
+  onHideRecommendation?: (id: number) => void
+  onDeleteRecommendation?: (id: number) => void
+}
+
+export function IntroTab({
+  profile,
+  credentials,
+  receivedRecommendations,
+  sentRecommendations,
+  editHrefs,
+  onHideRecommendation,
+  onDeleteRecommendation,
+}: IntroTabProps) {
+  const credentialsLoading = credentials === undefined
+  const accepted = (credentials ?? []).filter((c) => c.status === 'ACCEPTED')
+  const trades = profile?.trades ?? []
+
+  return (
+    <div className="flex flex-col gap-6 px-4 py-4">
+      <section className="flex flex-col gap-3">
+        <SectionHeader title="인증" editHref={editHrefs?.certifications} />
+        {credentialsLoading ? (
+          <div className="flex flex-wrap gap-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-[35px] w-20 rounded" />
+            ))}
+          </div>
+        ) : accepted.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {accepted.map((c) => (
+              <span
+                key={c.id}
+                className="inline-flex items-center rounded border border-[#E5E5E5] bg-white px-3 py-1.5 text-r-14 text-[#7B7B7B]"
+              >
+                {/* TODO: BE required 처리 후 type narrowing 필요. Credential.type은 라벨 필수값인데 optional emit이라 빈값으로 silent fallback 중. */}
+                {c.type ? getCredentialLabel(c.type) : ''}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="text-r-14 text-gray-500">등록된 자격 증명이 없습니다</p>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <SectionHeader title="공종" />
+        {trades.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            {trades.map((trade) => (
+              <SkillTag key={trade} label={TRADE_LABELS[trade]} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-r-14 text-gray-500">등록된 공종이 없습니다</p>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <SectionHeader title="소개" editHref={editHrefs?.about} />
+        {profile?.about ? (
+          <p className="text-r-14 leading-[22.4px] whitespace-pre-wrap text-gray-900">
+            {renderWithHashtags(profile.about)}
+          </p>
+        ) : (
+          <p className="text-r-14 text-gray-500">등록된 소개가 없습니다</p>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <SectionHeader title="추천서" editHref={editHrefs?.recommendations} />
+        <RecommendationList
+          received={receivedRecommendations}
+          sent={sentRecommendations}
+          variant="inline"
+          onHide={onHideRecommendation}
+          onDelete={onDeleteRecommendation}
+        />
+      </section>
+    </div>
+  )
+}
+
+function SectionHeader({ title, editHref }: { title: string; editHref?: string }) {
+  return (
+    <div className="flex items-center justify-between">
+      <h3 className="text-sb-16 text-gray-900">{title}</h3>
+      {editHref && (
+        <Link href={editHref} className="cursor-pointer text-r-12 text-primary underline">
+          편집
+        </Link>
+      )}
+    </div>
+  )
+}
+
+function renderWithHashtags(text: string) {
+  return text.split(/(#\S+)/g).map((part, i) =>
+    part.startsWith('#') ? (
+      <span key={i} className="text-primary">
+        {part}
+      </span>
+    ) : (
+      <Fragment key={i}>{part}</Fragment>
+    )
+  )
+}

@@ -3,9 +3,9 @@
  */
 'use client'
 
-import { emptyAddressDraft, mapKakaoAddress } from '@bconnect/config/address'
-import type { AddressDraft } from '@bconnect/config/address'
-import { UnknownSidoError, UNKNOWN_SIDO_MESSAGE } from '@bconnect/config/errors'
+import { emptyAddressDraft, mapKakaoAddress } from '@bconnect/lib/address'
+import type { AddressDraft } from '@bconnect/lib/address'
+import { UnknownSidoError, UNKNOWN_SIDO_MESSAGE } from '@bconnect/lib/errors'
 import {
   AddressSearchDrawer,
   cn,
@@ -34,11 +34,9 @@ interface AddressFieldProps<T extends FieldValues> {
   description?: string
   /** 라벨에 필수 표시(*). 상세주소는 BE 제약이 없어 대상 아님 — 도로명 주소만 필수. */
   required?: boolean
-  /** 레이아웃 변형. row 는 다른 *Field 와 동일 — 현장주소·상세주소 각각 라벨 좌측 고정폭 row. */
   layout?: FieldLayout
 }
 
-/** 주소 검색 트리거 + 선택 도로명 표시 + 상세주소 입력. 폼 값은 AddressDraft(위경도 0). */
 export function AddressField<T extends FieldValues>({
   control,
   name,

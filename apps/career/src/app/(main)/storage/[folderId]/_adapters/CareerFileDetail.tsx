@@ -2,19 +2,17 @@
 
 import { useEffect, useState } from 'react'
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@bconnect/ui'
-import { formatDate } from '@bconnect/config/date'
-import { useFolderImages } from '@/lib/storage/hooks'
+import { formatDate } from '@bconnect/lib/date'
+import { useFolderImages } from '@/app/(main)/storage/_hooks/useDrive'
 
 interface CareerFileDetailProps {
   folderId: string
   selectedId: string
-  /** 캐러셀 스와이프로 다른 사진 선택 → ?file 갱신(push) */
   onSelectImage: (id: string) => void
 }
 
 /**
- * career 파일 상세 — 좌우 스와이프 캐러셀로 사진 이동. 동산보드 메타·설명·폴더 이동
- * 편집은 BE 저장 엔드포인트가 없어 비활성 — BE 지원 시 복원 (features ImageBoardDetail 재사용).
+ * TODO: 동산보드 메타·설명·폴더 이동 편집은 BE 저장 엔드포인트가 없어 비활성 — BE 지원 시 복원 (features ImageBoardDetail 재사용).
  */
 export function CareerFileDetail({ folderId, selectedId, onSelectImage }: CareerFileDetailProps) {
   const { data: images } = useFolderImages(folderId)
@@ -27,7 +25,6 @@ export function CareerFileDetail({ folderId, selectedId, onSelectImage }: Career
   const image = list[index]
 
   const [api, setApi] = useState<CarouselApi>()
-  // 캐러셀 스와이프 → ?file 동기화
   useEffect(() => {
     if (!api) return
     const onSelect = () => {
@@ -39,7 +36,6 @@ export function CareerFileDetail({ folderId, selectedId, onSelectImage }: Career
       api.off('select', onSelect)
     }
   }, [api, list, selectedId, onSelectImage])
-  // ?file 외부 변경 → 캐러셀 동기화
   useEffect(() => {
     if (api && api.selectedScrollSnap() !== index) api.scrollTo(index, true)
   }, [api, index])

@@ -173,6 +173,11 @@ graph LR
   - 자바 빈 유효성 : Request DTO 필드 어노테이션
   - 비즈니스 유효성 : Request DTO의 toCommand 메서드
   - DB 제약 : `schema.sql`
+- Request DTO 어노테이션은 OpenAPI 스펙을 거쳐 프론트엔드 zod 스키마로 생성됩니다
+  - 공백 불가 문자열은 `@NotBlank` 대신 `@NotNull` + `@Pattern` 사용
+  - `@Pattern` 정규식은 `^...$`로 감싸 전체 일치로 작성
+  - DTO 유효성 검증 정규식은 인라인 대신 `common/Regex` 상수로 선언
+  - `@Positive`, `@PositiveOrZero` 대신 `@Min`, `@Max` 사용
 
 ## 참조
 

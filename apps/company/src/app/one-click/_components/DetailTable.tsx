@@ -1,4 +1,4 @@
-import type { CheckDetail } from '@bconnect/features/one-click'
+import type { CheckDetail } from '../_lib/types'
 
 interface DetailTableProps {
   details: CheckDetail[]

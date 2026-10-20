@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
+import type { AgentationProps } from 'agentation'
 import {
   QueryClientProvider,
   ReactQueryDevtools,
@@ -12,9 +14,28 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { Toaster } from '@bconnect/ui'
 import type { ReactNode } from 'react'
 import '../env'
-import { MswProvider, DevToolbar } from '@bconnect/devtools'
-import { usePushNotificationListener, InAppNotification } from '@bconnect/push'
+import { MswProvider } from '@bconnect/mocks'
+import { usePushNotificationListener, InAppNotification } from '@bconnect/features'
 import { REFERENCE_PATHS } from '@/lib/notification-routes'
+
+const AGENT_SYNC_ENDPOINT = 'http://localhost:4747'
+
+const Agentation = dynamic<AgentationProps>(
+  () =>
+    import('agentation')
+      .then((mod) => mod.Agentation)
+      .catch((e) => {
+        console.error('[Agentation] 로드 실패', e)
+        return () => null
+      }),
+  { ssr: false }
+)
+
+function AgentationBar() {
+  return process.env.NODE_ENV === 'development' ? (
+    <Agentation endpoint={AGENT_SYNC_ENDPOINT} />
+  ) : null
+}
 
 // MswProvider → FCM 순서로 초기화
 function PostMSWBootstrap({ children }: { children: ReactNode }) {
@@ -23,8 +44,6 @@ function PostMSWBootstrap({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (initialized.current) return
     initialized.current = true
-    // 로그아웃 상태면 스킵 — 선제 refresh 가 게스트 방문마다 401 을 만든다.
-    // 힌트가 있는데 세션이 무효면 refresh 실패가 힌트 쿠키를 스스로 지운다 (client.ts).
     if (readAuthHint()) refreshAccessToken()
   }, [])
 
@@ -45,7 +64,7 @@ export function Providers({ children }: { children: ReactNode }) {
             {children}
             <Toaster />
             <ReactQueryDevtools initialIsOpen={false} />
-            <DevToolbar />
+            <AgentationBar />
           </PostMSWBootstrap>
         </QueryClientProvider>
       </NuqsAdapter>

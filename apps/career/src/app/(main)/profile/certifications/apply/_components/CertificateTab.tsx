@@ -15,12 +15,16 @@ import {
 import { useQueryState, parseAsStringLiteral } from 'nuqs'
 import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { credentialSchema, type CredentialFormInput, type CredentialFormValues } from './schema'
+import {
+  credentialSchema,
+  type CredentialFormInput,
+  type CredentialFormValues,
+} from '../_lib/schema'
 import {
   CERTIFICATE_SUB_KEYS,
   CERTIFICATE_SUB_TABS,
-} from '@/app/(main)/profile/certifications/_lib/applyTabs'
-import { CredentialList } from '@/app/(main)/profile/certifications/_components/CredentialList'
+} from '@/app/(main)/profile/certifications/_lib/apply-tabs'
+import { CredentialList } from './CredentialList'
 
 interface CertificateTabProps {
   credentials: Credential[]
@@ -62,12 +66,10 @@ export function CertificateTab({
   const isOther = activeSubTab === 'other'
   const filteredCredentials = credentials.filter((c) => c.type === info.type)
 
-  // 서브탭 전환 시 입력값 초기화 — 한 탭에서 고른 파일이 다른 탭으로 새지 않게.
   useEffect(() => {
     form.reset({ file: null, note: '' })
   }, [activeSubTab, form])
 
-  // 실패 시 리셋하지 않아 고른 파일이 유지 — 재시도 가능.
   const submit = form.handleSubmit(async (data) => {
     const ok = await onSubmit(info.type, { file: data.file, note: isOther ? data.note : undefined })
     if (ok) form.reset({ file: null, note: '' })

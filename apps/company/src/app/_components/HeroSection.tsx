@@ -1,12 +1,12 @@
 import Image from 'next/image'
-import { HERO } from '../_data'
+import { HERO } from '../_lib/data'
 import { HeroCta } from './HeroCta'
 
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-primary-600">
       <Image
-        src="/landing/hero-tools.png"
+        src="/images/hero-tools.png"
         alt=""
         fill
         priority

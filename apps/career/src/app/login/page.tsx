@@ -8,7 +8,8 @@
 import { login } from '@bconnect/features'
 import { useSignupStore } from '@/stores/signup-store'
 import { useSendOtp, useVerifyOtp } from '@bconnect/api-client'
-import { formatPhoneNumber, isValidPhoneNumber, toNationalNumber } from '@bconnect/config/phone'
+import { formatPhoneNumber } from '@bconnect/lib/phone'
+import { Regex } from '@bconnect/lib/regex'
 import { Form, FormSubmitButton, TextField, passthroughError, useServerError } from '@bconnect/ui'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
@@ -16,7 +17,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { SignupHeader } from '@/components/SignupHeader'
 import { OtpTimer } from './_components/OtpTimer'
-import { loginSchema, type LoginFormData } from './schema'
+import { loginSchema, type LoginFormData } from './_lib/schema'
 
 type Step = 'phone' | 'otp'
 
@@ -45,14 +46,14 @@ export default function LoginPage() {
 
   const phoneValue = useWatch({ control: form.control, name: 'phone' })
   const codeValue = useWatch({ control: form.control, name: 'code' })
-  const isPhoneValid = isValidPhoneNumber(phoneValue ?? '')
+  const isPhoneValid = loginSchema.shape.phone.safeParse(phoneValue).success
   const isCodeValid = (codeValue ?? '').length === 6
 
   const sendCode = async () => {
     const phone = form.getValues('phone')
     try {
       const result = await sendCodeMutation.mutateAsync({
-        data: { phone: toNationalNumber(phone) },
+        data: { phone },
       })
       if (result.expiresAt) {
         setExpiresAt(result.expiresAt)
@@ -73,7 +74,7 @@ export default function LoginPage() {
     }
     try {
       const result = await verifyCodeMutation.mutateAsync({
-        data: { phone: toNationalNumber(phone), code },
+        data: { phone, code },
       })
       lastFailedAttempt.current = null
       if (result.registered) {
@@ -120,7 +121,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <SignupHeader step={1} onBack={() => (step === 'otp' ? setStep('phone') : router.back())} />
+      <SignupHeader
+        step={1}
+        onBack={() => setStep('phone')}
+        backHref={step === 'phone' ? '/' : undefined}
+      />
 
       <Form {...form}>
         <form onSubmit={handleSubmit} className="flex flex-1 flex-col gap-6 px-4 pt-3">
@@ -141,7 +146,8 @@ export default function LoginPage() {
               placeholder="010-1234-5678"
               description="품앗이 서비스는 인증된 기술자만 이용하실 수 있어요."
               disabled={step === 'otp'}
-              transform={formatPhoneNumber}
+              transform={(raw) => raw.replace(Regex.NON_DIGIT, '').slice(0, 11)}
+              format={formatPhoneNumber}
               serverError={phoneServer.fieldError('phone')}
             />
           </div>
@@ -156,7 +162,7 @@ export default function LoginPage() {
               enterKeyHint="done"
               placeholder="숫자 6자리"
               hint="타인에게 인증번호를 공유하지 마세요."
-              transform={(raw) => raw.replace(/\D/g, '').slice(0, 6)}
+              transform={(raw) => raw.replace(Regex.NON_DIGIT, '').slice(0, 6)}
               serverError={codeServer.fieldError('code')}
               rightElement={
                 <OtpTimer

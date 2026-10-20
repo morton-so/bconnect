@@ -43,7 +43,7 @@ plan 공정표에서 "없는 프로젝트 진입 시 안내 화면" 요구가 �
 
 단점
 
-- 거칠다. 같은 `404`의 서로 다른 원인을 구분 못 함. 또 일부 앱 레벨 에러는 envelope 특성상 HTTP `200`에 `success:false`로 오므로 status만으론 못 잡는 경우가 존재.
+- 거칠다. 같은 `404`의 서로 다른 원인을 구분 못 함.
 
 ### 옵션 3: 하이브리드. HTTP status 1차, 필요 시 code 2차
 
@@ -63,9 +63,9 @@ plan 공정표에서 "없는 프로젝트 진입 시 안내 화면" 요구가 �
 - 2차 분기는 `code`, 다음이 모두 성립할 때만 사용한다:
   1. 같은 HTTP status가 서로 다른 UX로 갈라져야 하고,
   2. 그 `code`가 실질적으로 안정적인 신호이며 자주 바뀌지 않고,
-  3. status만으론 표현이 불가능하다. 앱 에러가 HTTP `200`+`success:false`로 오는 경우가 예시다. 이땐 status가 `200`이라 code가 유일 신호다.
+  3. status만으론 표현이 불가능하다.
 
-이를 위해 `ApiError`에 원본 HTTP `status`를 실어준다. `customFetch`의 두 throw 지점이 `response.status`를 전달한다. HTTPError는 `error.response.status`를 쓴다. 기존 `code`+`message` 시그니처는 하위호환 유지. `status`는 optional 3번째 인자다.
+이를 위해 `ApiError`에 원본 HTTP `status`를 실어준다. `customFetch`는 HTTPError의 `error.response.status`를 전달한다. 기존 `code`+`message` 시그니처는 하위호환 유지. `status`는 optional 3번째 인자다.
 
 `message`는 종전대로 BE passthrough다. 근거는 ADR-0015다. 사람이 읽는 텍스트는 code/status 분기와 별개 축이다.
 
@@ -78,15 +78,14 @@ plan 공정표에서 "없는 프로젝트 진입 시 안내 화면" 요구가 �
   - status 기반이라 BE 에러 코드 개명·신설에 FE가 깨지지 않는다.
   - `ApiError.status`가 앱 전역에서 사용 가능해져 향후 에러 UX의 토대가 된다. 재시도 가능 여부, 4xx/5xx 구분 등이다.
 - 나쁜 결과 / 리스크:
-  - 앱 레벨 에러가 HTTP `200`+`success:false`로 오면 `status`가 `200`이라 status 분기가 무력하다. 이 경우 반드시 2차인 `code`로 내려가야 한다. 판단 규율을 지키지 않으면 놓칠 수 있다.
   - "언제 2차(code)까지 가는가"가 사람 판단이라 남용/과소 사용 여지가 있다. 위 3조건으로 제약한다.
 - 중립적 결과:
   - `code`는 `ApiError`에 계속 보존한다. 2차 분기 경로와 디버깅/로깅에 쓰인다.
-  - `401`/`403`은 별도 경로로 이미 처리된다. 해당 경로는 `customFetch` afterResponse 훅의 토큰 재발급이며 ADR-0015 관련이다. 본 결정의 UX 분기와 층이 다르다.
+  - `401`은 별도 경로로 이미 처리된다. 해당 경로는 `customFetch` afterResponse 훅의 토큰 재발급이며 ADR-0015 관련이다. 본 결정의 UX 분기와 층이 다르다.
 
 ## 메모
 
-- 구현: `packages/api-client/src/client.ts` 에 `ApiError.status` + 두 throw 지점. `apps/plan/.../schedule/_components/schedule-content.tsx` 가 첫 적용.
+- 구현: `packages/api-client/src/client.ts` 에 `ApiError.status`와 HTTPError 변환 지점. `apps/plan/.../schedule/_components/ScheduleContent.tsx` 가 첫 적용.
 
 ## 참조
 

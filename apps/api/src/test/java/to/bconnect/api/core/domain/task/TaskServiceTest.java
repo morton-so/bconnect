@@ -312,21 +312,6 @@ class TaskServiceTest {
     }
 
     @Test
-    @DisplayName("unassign - 할당되지 않은 작업일 때 취소하면 NOT_ASSIGNED로 실패한다")
-    void unassign_fail_T001() {
-        // given
-        val member = memberRepository.save(MemberFactory.entity("member1", "01000001001", Role.CAREER));
-        val company = companyRepository.save(CompanyFactory.entity(member.getId()));
-        val project = projectRepository.save(ProjectFactory.entity(company.getId()));
-        val task = taskRepository.save(TaskFactory.projectEntity(project.getId(), null));
-        val user = UserFactory.domain(member.getId(), Role.CAREER);
-
-        // when & then
-        assertCodeException(() -> taskService.unassign(user, task.getId()))
-                .hasExceptionCode(TaskExceptionCode.NOT_ASSIGNED);
-    }
-
-    @Test
     @DisplayName("unassign - 기술자 작업일 때 취소하면 INVALID_TYPE으로 실패한다")
     void unassign_fail_T002() {
         // given

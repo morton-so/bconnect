@@ -1,7 +1,6 @@
 'use client'
 
 import { useCallback, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
 import {
   OfferStatus,
   useAcceptOffer,
@@ -30,20 +29,15 @@ import {
   type OfferMessageDetail,
   type OfferMessageEntry,
 } from '@bconnect/features'
-import { toast } from '@bconnect/ui'
-import { careerShell } from '@/app/(main)/_adapters/careerShell'
+import { serverErrorMessage, toast, TopBar } from '@bconnect/ui'
 
-/** 메시지 목록 (/messages) — My 훅 + 병렬 Profile 보강을 resolve 해 MessagesView 로 내려준다. */
 export function CareerMessagesList() {
-  const router = useRouter()
   const { data: me, isLoading: isMeLoading } = useGetMyMember()
   const currentUserId = me?.id
-  // 내 채팅 = DM + 그룹 병합 (통합 목록 엔드포인트 부재 → FE 병합)
   const dm = useGetDirectChats()
   const group = useGetGroupChats()
   const allChats = useMemo(() => toChatSummaries(dm.data, group.data), [dm.data, group.data])
 
-  // 상대방 member id 모음 — members 에서 본인 제외
   const otherMemberIds = useMemo(() => {
     const ids = new Set<number>()
     for (const chat of allChats) {
@@ -53,7 +47,6 @@ export function CareerMessagesList() {
     return [...ids]
   }, [allChats, currentUserId])
 
-  // 병렬 Profile 조회 — chat 응답에 없는 풍부 정보(address, primaryTrade) 보강
   const profileQueries = useQueries({
     queries: otherMemberIds.map((id) => ({
       ...getGetProfileQueryOptions(id),
@@ -81,14 +74,17 @@ export function CareerMessagesList() {
     <MessagesView
       data={data}
       chatHref={(chatId) => `/messages/${chatId}`}
-      renderShell={careerShell(() => router.push('/'))}
+      renderShell={({ title, children }) => (
+        <div className="flex flex-col">
+          <TopBar variant="default" title={title} backHref="/" />
+          {children}
+        </div>
+      )}
     />
   )
 }
 
-/** 채팅방 (/messages/[chatId]) — chat·상대 Profile·본인 id 를 resolve 해 ChatView 로 내려준다. */
 export function CareerChatRoom({ chatId }: { chatId: number }) {
-  const router = useRouter()
   const currentUserId = useGetMyMember().data?.id
   // TODO: 단건 조회 엔드포인트 부재 → DM 목록에서 filter.
   const { data: directChats, isLoading, isError } = useGetDirectChats()
@@ -195,7 +191,7 @@ export function CareerChatRoom({ chatId }: { chatId: number }) {
         applyOfferStatus(variables.id, OfferStatus.ACCEPTED)
         toast({ description: '섭외를 수락했어요', variant: 'success' })
       },
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
   const deny = useDenyOffer<Error>({
@@ -204,7 +200,7 @@ export function CareerChatRoom({ chatId }: { chatId: number }) {
         applyOfferStatus(variables.id, OfferStatus.DENIED)
         toast({ description: '섭외를 거절했어요', variant: 'success' })
       },
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
   const pendingOfferId =
@@ -258,7 +254,12 @@ export function CareerChatRoom({ chatId }: { chatId: number }) {
         pendingOfferId,
         pendingAction,
       }}
-      renderShell={careerShell(() => router.back(), { fill: true })}
+      renderShell={({ title, children }) => (
+        <div className="flex min-h-0 flex-1 flex-col">
+          <TopBar variant="default" title={title} backHref="/messages" />
+          {children}
+        </div>
+      )}
     />
   )
 }

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { parseAsString, parseAsStringEnum, useQueryState } from 'nuqs'
 import { Fab, ImageUploadIcon, Tab, TopBar, useToast } from '@bconnect/ui'
 import { FolderImagesView } from '@bconnect/features'
-import { useFolder, useFolderImages, useUploadImages } from '@/lib/storage/hooks'
+import { useFolder, useFolderImages, useUploadImages } from '@/app/(main)/storage/_hooks/useDrive'
 import { CareerMemoTab } from './CareerMemoTab'
 import { CareerFileDetail } from './CareerFileDetail'
 
@@ -13,7 +13,6 @@ const MIN_COLS = 2
 const MAX_COLS = 5
 const clampCols = (n: number) => Math.min(MAX_COLS, Math.max(MIN_COLS, n))
 
-/** career 폴더 화면 — 고정 앱바+Tab + 갤러리(핀치/Ctrl휠 줌)/메모 + 업로드 FAB(OS 다중선택). ?file= 시 캐러셀 파일상세. */
 export function CareerFolderView({ folderId }: { folderId: string }) {
   const router = useRouter()
   const { data: folder } = useFolder(folderId)
@@ -24,7 +23,6 @@ export function CareerFolderView({ folderId }: { folderId: string }) {
     'tab',
     parseAsStringEnum<'images' | 'memo'>(['images', 'memo']).withDefault('images')
   )
-  // ?file 은 push (뒤로가기로 갤러리 복귀 — replace 아님)
   const [file, setFile] = useQueryState('file', parseAsString.withOptions({ history: 'push' }))
   const [columns, setColumns] = useState(3)
 
@@ -35,12 +33,10 @@ export function CareerFolderView({ folderId }: { folderId: string }) {
 
   const title = folder?.title ?? '폴더'
   const onBack = () => {
-    if (file)
-      setFile(null) // 파일 포커스 해제 → 갤러리
-    else router.push('/storage') // 히스토리 이전이 아니라 상위 path(탐색기)로
+    if (file) setFile(null)
+    else router.push('/storage')
   }
 
-  // 데스크톱 Ctrl+휠 줌 — passive:false 로 브라우저 확대 막고 열 수 조정
   useEffect(() => {
     const el = galleryRef.current
     if (!el) return
@@ -56,7 +52,6 @@ export function CareerFolderView({ folderId }: { folderId: string }) {
     return () => el.removeEventListener('wheel', onWheel)
   }, [])
 
-  // 모바일 핀치 줌 (두 손가락) — 벌리면 확대(열↓), 오므리면 축소(열↑)
   const onTouchMove = (e: React.TouchEvent) => {
     if (e.touches.length !== 2) return
     const [a, b] = [e.touches[0], e.touches[1]]
@@ -75,7 +70,7 @@ export function CareerFolderView({ folderId }: { folderId: string }) {
     lastPinch.current = 0
   }
 
-  // 업로드 FAB → OS 파일 선택 후 바로 서버 업로드 (보드 작성 단계는 BE 메타 저장 지원 시 복원)
+  // TODO: 보드 작성 단계는 BE 메타 저장 지원 시 복원
   const handlePicked = (e: React.ChangeEvent<HTMLInputElement>) => {
     const picked = Array.from(e.target.files ?? [])
     e.target.value = ''

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda'
 
-// 환경변수 검증
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
 const AWS_REGION = process.env.AWS_REGION
@@ -14,7 +13,6 @@ function validateEnvVars(): string | null {
   return null
 }
 
-// Lambda 클라이언트 (환경변수 있을 때만 초기화)
 const lambdaClient =
   AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY && AWS_REGION
     ? new LambdaClient({
@@ -27,7 +25,6 @@ const lambdaClient =
     : null
 
 export async function POST(request: NextRequest) {
-  // 환경변수 검증
   const envError = validateEnvVars()
   if (envError || !lambdaClient) {
     console.error('Environment validation failed:', envError)
@@ -35,7 +32,6 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // multipart/form-data로 파일 받기
     const formData = await request.formData()
     const file = formData.get('file') as File | null
 
@@ -43,7 +39,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: '파일이 없습니다' }, { status: 400 })
     }
 
-    // ZIP 파일 검증
     if (!file.name.endsWith('.zip')) {
       return NextResponse.json(
         { success: false, error: 'ZIP 파일만 업로드 가능합니다' },
@@ -51,7 +46,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 파일 크기 제한 (50MB)
     const MAX_SIZE = 50 * 1024 * 1024
     if (file.size > MAX_SIZE) {
       return NextResponse.json(
@@ -60,11 +54,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 파일을 Buffer로 변환
     const arrayBuffer = await file.arrayBuffer()
     const buffer = Buffer.from(arrayBuffer)
 
-    // Lambda 호출
     const command = new InvokeCommand({
       FunctionName: LAMBDA_FUNCTION_NAME,
       Payload: JSON.stringify({
@@ -75,7 +67,6 @@ export async function POST(request: NextRequest) {
 
     const response = await lambdaClient.send(command)
 
-    // Lambda 응답 파싱
     if (response.FunctionError) {
       console.error('Lambda error:', response.FunctionError)
       return NextResponse.json(
@@ -90,7 +81,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Lambda 응답이 없습니다' }, { status: 500 })
     }
 
-    // Lambda가 반환한 body 파싱
     const body = typeof payload.body === 'string' ? JSON.parse(payload.body) : payload.body
 
     return NextResponse.json(body)

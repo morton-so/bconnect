@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# career TWA 빌드 툴체인 셋업 (JDK17 + Android cmdline-tools + Bubblewrap 설정).
-# 최초 1회 또는 툴체인 유실 시 실행. 자세한 함정은 README.md 참조.
-
 echo "[1/5] JDK17 (Temurin) download + extract"
 rm -rf ~/.bubblewrap/jdk
 rm -rf ~/jdk17 && mkdir -p ~/jdk17
@@ -23,8 +20,6 @@ SDKM="$HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager"
 echo "[3/5] accept licenses"
 yes | "$SDKM" --sdk_root="$HOME/android-sdk" --licenses > /dev/null 2>&1 || true
 
-# build-tools 34.0.0 는 필수 — bubblewrap core 가 BUILD_TOOLS_VERSION 을 34.0.0 로 핀하고
-# 서명에 build-tools/34.0.0/apksigner·zipalign 경로를 쓴다. 35.0.0 만으론 빌드 실패.
 echo "[4/5] install platform-tools + platforms;android-35 + build-tools 34.0.0(필수)·35.0.0"
 "$SDKM" --sdk_root="$HOME/android-sdk" \
   "platform-tools" "platforms;android-35" \

@@ -11,5 +11,5 @@ export interface RegisterMemberRequest {
   /** @minLength 1 */
   name: string;
   birth: string;
-  marketingConsent?: boolean;
+  marketingConsent: boolean;
 }

@@ -9,10 +9,6 @@ import { useSelectedTask } from '@/hooks/useSelectedTask'
 import { useOfferQueue } from '@/hooks/useOfferQueue'
 import { useAllProjectTasks } from '@/hooks/useAllProjectTasks'
 
-/**
- * 탐색 '선택 모드' 바 — 프로젝트+작업 선택 셀렉트 + 섭외 대기열 칩.
- * 선택은 useSelectedTask(URL `?project=&task=`), 큐 수는 useOfferQueue facade. 인증 사용자 전용.
- */
 export function TaskSelectBar() {
   const isAuthenticated = useAuthHint()
   const { tasks, projectTitleById } = useAllProjectTasks()
@@ -24,7 +20,7 @@ export function TaskSelectBar() {
   if (!isAuthenticated) return null
 
   const options = tasks.map((t) => ({
-    value: t.id,
+    value: String(t.id),
     label: `${projectTitleById.get(t.projectId) ?? '프로젝트'} | ${t.title}`,
   }))
 
@@ -34,11 +30,11 @@ export function TaskSelectBar() {
         clearable
         fitContent
         placeholder="프로젝트 · 작업 선택"
-        value={taskId ?? ''}
-        onChange={(v) => select(typeof v === 'string' && v ? v : null)}
+        value={taskId != null ? String(taskId) : ''}
+        onChange={(v) => select(typeof v === 'string' && v ? Number(v) : null)}
         options={options}
       />
-      {taskId && (
+      {taskId != null && (
         <Link
           href={isQueueOpen ? closeHref : panelHref(`task/${taskId}`)}
           scroll={false}

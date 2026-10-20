@@ -52,6 +52,7 @@ export default defineConfig({
                 'acceptCredential',
                 'denyCredential',
                 'deleteCredential',
+                'createOneClickValidation',
               ],
               invalidates: ['getCredentials', 'getMyCredentials'],
             },
@@ -87,6 +88,27 @@ export default defineConfig({
           format: {
             'image-url': () => 'https://placehold.co/600x400',
           },
+        },
+      },
+    },
+  },
+  zod: {
+    input: {
+      target: `${process.env.API_URL}/v3/api-docs.yaml`,
+      override: {
+        transformer: './orval.transformer.ts',
+      },
+    },
+    output: {
+      mode: 'single',
+      client: 'zod',
+      target: './src/generated/zod.ts',
+      override: {
+        zod: {
+          version: 4,
+          generateReusableSchemas: true,
+          generate: { param: false, query: false, header: false, body: true, response: false },
+          params: { path: './src/zod-messages.ts', name: 'zodParams' },
         },
       },
     },

@@ -1,5 +1,3 @@
-import { z } from 'zod'
-
 export const EXPERIENCE_MIN = 0
 export const EXPERIENCE_FILTER_MAX = 10 // 필터 상한
 
@@ -19,5 +17,3 @@ export const formatExperienceRange = ([min, max]: ExperienceRange) => {
 
 export const formatExperienceYears = (years: number) =>
   years >= EXPERIENCE_FILTER_MAX ? `${EXPERIENCE_FILTER_MAX}년 이상` : `${years}년`
-
-export const experienceSchema = z.number({ error: '경력을 입력해주세요' }).int()

@@ -3,16 +3,14 @@
 import {
   TASK_PROGRESS_LABELS,
   TASK_STATUS_WORKER_LABELS,
-  TaskProgress,
   TaskStatus,
-  Trade,
   TRADE_LABELS,
   TRADE_LIST,
   useDeleteTask,
   useUpdateTaskAssignee,
   useUpdateTaskWorker,
 } from '@bconnect/api-client'
-import { addressField, isCompleteAddress } from '@bconnect/config/address'
+import { isCompleteAddress } from '@bconnect/lib/address'
 import {
   ConfirmDialog,
   DateRangeField,
@@ -25,44 +23,23 @@ import {
   TextField,
   TextareaField,
   cn,
+  serverErrorMessage,
   toast,
 } from '@bconnect/ui'
-import { formatPeriod } from '@bconnect/config/date'
+import { formatPeriod } from '@bconnect/lib/date'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { AddressField } from '@/components/AddressField'
 import { useShareCurrentUrl } from '@/hooks/useShareCurrentUrl'
-import type { CalendarTask } from '../calendar/types'
+import {
+  assigneeEditSchema,
+  workerEditSchema,
+  type AssigneeEditValues,
+  type WorkerEditValues,
+} from '@/app/(main)/calendar/_lib/schema'
+import type { CalendarTask } from '@/app/(main)/calendar/_lib/types'
 import { TaskActionDrawer } from './TaskActionDrawer'
-
-const assigneeEditSchema = z.object({
-  title: z.string().min(1, '제목을 입력해주세요.'),
-  progress: z.nativeEnum(TaskProgress),
-  memo: z.string(),
-})
-
-const workerEditSchema = assigneeEditSchema
-  .extend({
-    company: z.string().min(1, '업체명을 입력해주세요.'),
-    start: z.string().min(1, '시작일을 선택해주세요.'),
-    end: z.string().min(1, '종료일을 선택해주세요.'),
-    address: addressField('현장주소'),
-    trades: z.array(z.nativeEnum(Trade)).min(1, '공종을 1개 이상 선택해주세요.'),
-  })
-  .superRefine((v, ctx) => {
-    if (v.start > v.end) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: '종료일은 시작일 이후여야 해요.',
-        path: ['end'],
-      })
-    }
-  })
-
-type AssigneeEditValues = z.infer<typeof assigneeEditSchema>
-type WorkerEditValues = z.infer<typeof workerEditSchema>
 
 const PROGRESS_OPTIONS = Object.entries(TASK_PROGRESS_LABELS).map(([value, label]) => ({
   value,
@@ -122,7 +99,7 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
   })
 
   const onError = (error: unknown) =>
-    toast({ description: (error as Error).message, variant: 'error' })
+    toast({ description: serverErrorMessage(error), variant: 'error' })
 
   const onSaved = () => {
     toast({ description: '수정되었어요', variant: 'success' })
@@ -151,17 +128,14 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
 
   const onSubmit = task.canManage
     ? workerForm.handleSubmit((vals) => {
-        const address = vals.address
-        if (!isCompleteAddress(address)) return
-
         updateWorker({
           id: task.id,
           data: {
             title: vals.title,
             progress: vals.progress,
-            memo: vals.memo.trim(),
+            memo: vals.memo?.trim(),
             company: vals.company,
-            address,
+            address: isCompleteAddress(vals.address) ? vals.address : undefined,
             trades: vals.trades,
             start: vals.start,
             end: vals.end,
@@ -171,7 +145,7 @@ export function TaskDetailCard({ task, selectedDay, selectedMonth }: TaskDetailC
     : assigneeForm.handleSubmit((vals) =>
         updateAssignee({
           id: task.id,
-          data: { title: vals.title, progress: vals.progress, memo: vals.memo.trim() },
+          data: { title: vals.title, progress: vals.progress, memo: vals.memo?.trim() },
         })
       )
 

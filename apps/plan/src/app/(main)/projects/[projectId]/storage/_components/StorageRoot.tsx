@@ -16,9 +16,8 @@ import { StorageExplorerView } from '@bconnect/features'
 import type { Folder } from '@bconnect/features'
 import { useGetProject } from '@bconnect/api-client'
 import { StorageHeader } from './StorageHeader'
-import { useFolderMutations, useFolders } from '@/lib/storage/hooks'
+import { useFolderMutations, useFolders } from '../_hooks/useDrive'
 
-/** plan 동산보드 루트 — 폴더 목록(좌) + 빈 상태 안내(우), 컬럼 비율 드래그 리사이즈. 폴더 미선택 시. */
 export function StorageRoot({ projectId }: { projectId: string }) {
   const { data: folders, isLoading, isError } = useFolders(projectId)
   const { createFolder, updateFolder, deleteFolder } = useFolderMutations(projectId)

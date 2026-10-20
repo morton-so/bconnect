@@ -2,17 +2,13 @@
 
 import Link from 'next/link'
 import { Button, SkillTag } from '@bconnect/ui'
-import { TRADE_LABELS } from '@bconnect/api-client'
+import { ROLE_LABELS, TRADE_LABELS } from '@bconnect/api-client'
 import type { Trade } from '@bconnect/api-client'
 import { usePanelNav } from '@/hooks/usePanelNav'
 import type { CrawledTechnicianItem } from '@/hooks/useTechnicianItems'
 import { CrawledImage, CrawledSourceBadge } from './CrawledImage'
 
 /**
- * 크롤링 기술자 카드 — 전시 전용 (회원 아님).
- * TechnicianCard 와 같은 카드 골격이되 회원 전용 요소(별점·통계·메시지)는 없고,
- * 출처 표기 + 상세 패널 + 전화/출처 링크만 제공한다.
- *
  * @figma-todo 크롤링 기술자 카드 디자인 미정
  */
 
@@ -25,10 +21,9 @@ export function CrawledTechnicianCard({ item }: CrawledTechnicianCardProps) {
   const detailHref = panelHref(`crawled/${item.crawledId}`)
 
   const metaParts = [
-    // 표시명이 대표자명일 때 업체명 병기 (업체명 폴백 표시 중이면 중복이라 생략)
     item.company !== item.name ? item.company : null,
     item.location,
-    item.grade,
+    item.role && ROLE_LABELS[item.role],
     item.experienceYears != null && item.experienceYears > 0 ? `${item.experienceYears}년` : null,
   ].filter(Boolean)
 
@@ -68,7 +63,6 @@ export function CrawledTechnicianCard({ item }: CrawledTechnicianCardProps) {
             </div>
           )}
 
-          {/* 액션 — 상세 패널 + 전화 (전화 없으면 출처 링크) */}
           <div className="mt-auto flex gap-2.5">
             <Button asChild variant="outline" size="full" className="h-10">
               <Link href={detailHref} scroll={false}>

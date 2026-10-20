@@ -1,11 +1,5 @@
-export { ScheduleContent } from './schedule-content'
+export { ScheduleContent } from './ScheduleContent'
 export { ScheduleGrid } from './schedule-grid'
-export type {
-  OfferQueueItem,
-  OfferStatus,
-  ScheduleGridProps,
-  ScheduleTask,
-  TaskAssignee,
-} from './schedule-grid'
-export { ScheduleHeader } from './schedule-header'
-export { ScheduleFooter } from './schedule-footer'
+export type { ScheduleGridProps, ScheduleTask } from './schedule-grid'
+export { ScheduleHeader } from './ScheduleHeader'
+export { ScheduleFooter } from './ScheduleFooter'

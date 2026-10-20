@@ -28,9 +28,9 @@ import {
   useGetMyMember,
   useQueryClient,
 } from '@bconnect/api-client'
-import { formatRegistrationNumber } from '@bconnect/config/brn'
+import { formatRegistrationNumber } from '@bconnect/lib/brn'
 import { CertificateField } from './_components/CertificateField'
-import { corpSchema, type CorpFormData } from './schema'
+import { corpSchema, type CorpFormData } from './_lib/schema'
 
 // presign → S3 PUT → confirm
 async function uploadCertificate(file: File, memberId: number): Promise<number> {
@@ -65,8 +65,8 @@ export default function SignupCorpPage() {
     resolver: zodResolver(corpSchema),
     mode: 'onTouched',
     defaultValues: {
-      companyName: '',
-      bizNumber: '',
+      name: '',
+      brn: '',
     },
   })
   const { control, handleSubmit } = form
@@ -83,7 +83,7 @@ export default function SignupCorpPage() {
       setUploaded({ file: data.certificate, id: attachmentId })
 
       await createCompanyMutation.mutateAsync({
-        data: { name: data.companyName, brn: data.bizNumber, attachmentId },
+        data: { name: data.name, brn: data.brn, attachmentId },
       })
 
       await queryClient.invalidateQueries({ queryKey: getGetMyMemberQueryKey() })
@@ -93,8 +93,6 @@ export default function SignupCorpPage() {
       })
       router.replace('/')
     } catch (err) {
-      // capture 는 라이브 폼 값(getValues)으로 스냅샷 — data 는 zod transform(bizNumber digit화)을
-      // 거쳐 useWatch 가 보는 표시값과 달라, 넘기면 staleness 판정이 에러를 즉시 숨긴다.
       server.capture(err, form.getValues())
     }
   }
@@ -108,14 +106,14 @@ export default function SignupCorpPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="flex w-100 flex-col gap-3">
             <TextField
               control={control}
-              name="companyName"
+              name="name"
               type="text"
               label="업체명"
               placeholder="모튼디자인"
             />
             <TextField
               control={control}
-              name="bizNumber"
+              name="brn"
               type="text"
               label="사업자등록번호"
               description="동일한 업장의 중복 가입을 방지해요"

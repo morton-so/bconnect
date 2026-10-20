@@ -5,28 +5,28 @@ import {
   useDenyCoworkerRequest,
   useDeleteCoworkerRequest,
 } from '@bconnect/api-client'
-import { toast } from '@bconnect/ui'
+import { serverErrorMessage, toast } from '@bconnect/ui'
 
 // 무효화(수락/거절→받은목록·동료목록 / 취소→보낸목록)는 orval mutationInvalidates 가 자동 처리 (ADR-0025)
 export function useCoworkerRequestActions() {
   const accept = useAcceptCoworkerRequest<Error>({
     mutation: {
       onSuccess: () => toast({ description: '동료 요청을 수락했어요', variant: 'success' }),
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
 
   const deny = useDenyCoworkerRequest<Error>({
     mutation: {
       onSuccess: () => toast({ description: '동료 요청을 거절했어요', variant: 'success' }),
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
 
   const cancel = useDeleteCoworkerRequest<Error>({
     mutation: {
       onSuccess: () => toast({ description: '동료 요청을 취소했어요', variant: 'success' }),
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
 

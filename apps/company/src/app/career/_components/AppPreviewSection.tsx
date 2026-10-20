@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { PREVIEWS } from '../_data'
+import { PREVIEWS } from '../_lib/data'
 
 export function AppPreviewSection() {
   return (
@@ -33,7 +33,7 @@ export function AppPreviewSection() {
                 {preview.bullets.map((bullet) => (
                   <li key={bullet} className="flex items-center gap-2.5">
                     <Image
-                      src="/landing/check.svg"
+                      src="/icons/check.svg"
                       alt=""
                       width={24}
                       height={24}

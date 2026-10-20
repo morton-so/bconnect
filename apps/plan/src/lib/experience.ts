@@ -1,5 +1,7 @@
-// TODO: apps/career/src/lib/experience.ts 와 중복 — packages/config/experience 로 추출 필요
-export type ExperienceLevel = 'newcomer' | '1-3' | '3-5' | '5-10' | '10+'
+// TODO: apps/career/src/lib/experience-range.ts 와 중복 — packages/config/experience 로 추출 필요
+export const EXPERIENCE_VALUES = ['newcomer', '1-3', '3-5', '5-10', '10+'] as const
+
+export type ExperienceLevel = (typeof EXPERIENCE_VALUES)[number]
 
 export interface ExperienceOption {
   id: ExperienceLevel

@@ -10,4 +10,4 @@ export * from './icons'
 export * from './hooks'
 
 // Utils
-export * from './utils'
+export * from './lib/utils'

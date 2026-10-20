@@ -1,4 +1,4 @@
-import { INSIGHTS } from '../_data'
+import { INSIGHTS } from '../_lib/data'
 import { SectionHead } from './SectionHead'
 
 export function InsightsSection() {

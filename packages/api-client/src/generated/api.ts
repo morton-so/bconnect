@@ -30,7 +30,6 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  ApiResponseVoid,
   Attachment,
   CheckUsernameParams,
   CheckUsernameResponse,
@@ -152,7 +151,7 @@ export const getUpdateTaskWorkerUrl = (id: number,) => {
 }
 
 export const updateTaskWorker = async (id: number,
-    updateWorkerTaskRequest: UpdateWorkerTaskRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    updateWorkerTaskRequest: UpdateWorkerTaskRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -168,7 +167,7 @@ export const updateTaskWorker = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateTaskWorkerUrl(id),
+return customFetch<null>(getUpdateTaskWorkerUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -241,7 +240,7 @@ export const getUpdateTaskCompanyUrl = (id: number,) => {
 }
 
 export const updateTaskCompany = async (id: number,
-    updateProjectTaskRequest: UpdateProjectTaskRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    updateProjectTaskRequest: UpdateProjectTaskRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -257,7 +256,7 @@ export const updateTaskCompany = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateTaskCompanyUrl(id),
+return customFetch<null>(getUpdateTaskCompanyUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -330,7 +329,7 @@ export const getUpdateTaskAssigneeUrl = (id: number,) => {
 }
 
 export const updateTaskAssignee = async (id: number,
-    updateAssigneeTaskRequest: UpdateAssigneeTaskRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    updateAssigneeTaskRequest: UpdateAssigneeTaskRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -346,7 +345,7 @@ export const updateTaskAssignee = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateTaskAssigneeUrl(id),
+return customFetch<null>(getUpdateTaskAssigneeUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -418,9 +417,9 @@ export const getDeleteTaskAssigneeUrl = (id: number,) => {
   return `/api/v1/tasks/${id}/assignee`
 }
 
-export const deleteTaskAssignee = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteTaskAssignee = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteTaskAssigneeUrl(id),
+  return customFetch<null>(getDeleteTaskAssigneeUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -487,7 +486,7 @@ export const getUpdateRecommendationUrl = (id: number,) => {
 }
 
 export const updateRecommendation = async (id: number,
-    updateRecommendationRequest: UpdateRecommendationRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    updateRecommendationRequest: UpdateRecommendationRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -503,7 +502,7 @@ export const updateRecommendation = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateRecommendationUrl(id),
+return customFetch<null>(getUpdateRecommendationUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -575,9 +574,9 @@ export const getDeleteRecommendationUrl = (id: number,) => {
   return `/api/v1/recommendations/${id}`
 }
 
-export const deleteRecommendation = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteRecommendation = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteRecommendationUrl(id),
+  return customFetch<null>(getDeleteRecommendationUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -797,7 +796,7 @@ export const getUpdateProjectUrl = (id: number,) => {
 }
 
 export const updateProject = async (id: number,
-    updateProjectRequest: UpdateProjectRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    updateProjectRequest: UpdateProjectRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -813,7 +812,7 @@ export const updateProject = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateProjectUrl(id),
+return customFetch<null>(getUpdateProjectUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -879,9 +878,9 @@ export const getDeleteProjectUrl = (id: number,) => {
   return `/api/v1/projects/${id}`
 }
 
-export const deleteProject = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteProject = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteProjectUrl(id),
+  return customFetch<null>(getDeleteProjectUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -1094,7 +1093,7 @@ export const getUpdateMyProfileUrl = () => {
   return `/api/v1/profiles/me`
 }
 
-export const updateMyProfile = async (updateProfileRequest: UpdateProfileRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const updateMyProfile = async (updateProfileRequest: UpdateProfileRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1110,7 +1109,7 @@ export const updateMyProfile = async (updateProfileRequest: UpdateProfileRequest
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateMyProfileUrl(),
+return customFetch<null>(getUpdateMyProfileUrl(),
   {
     ...options,
     method: 'PUT',
@@ -1182,7 +1181,7 @@ export const getUpdateMyProfileAboutUrl = () => {
   return `/api/v1/profiles/me/about`
 }
 
-export const updateMyProfileAbout = async (updateProfileAboutRequest: UpdateProfileAboutRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const updateMyProfileAbout = async (updateProfileAboutRequest: UpdateProfileAboutRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1198,7 +1197,7 @@ export const updateMyProfileAbout = async (updateProfileAboutRequest: UpdateProf
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateMyProfileAboutUrl(),
+return customFetch<null>(getUpdateMyProfileAboutUrl(),
   {
     ...options,
     method: 'PUT',
@@ -1271,7 +1270,7 @@ export const getUpdatePostUrl = (id: number,) => {
 }
 
 export const updatePost = async (id: number,
-    updatePostRequest: UpdatePostRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    updatePostRequest: UpdatePostRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1287,7 +1286,7 @@ export const updatePost = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdatePostUrl(id),
+return customFetch<null>(getUpdatePostUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -1359,9 +1358,9 @@ export const getDeletePostUrl = (id: number,) => {
   return `/api/v1/posts/${id}`
 }
 
-export const deletePost = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deletePost = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeletePostUrl(id),
+  return customFetch<null>(getDeletePostUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -1433,7 +1432,7 @@ export const getReorderOffersUrl = () => {
   return `/api/v1/offers/reorder`
 }
 
-export const reorderOffers = async (reorderOfferRequest: ReorderOfferRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const reorderOffers = async (reorderOfferRequest: ReorderOfferRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1449,7 +1448,7 @@ export const reorderOffers = async (reorderOfferRequest: ReorderOfferRequest, op
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getReorderOffersUrl(),
+return customFetch<null>(getReorderOffersUrl(),
   {
     ...options,
     method: 'PUT',
@@ -1516,7 +1515,7 @@ export const getUpdateNoteUrl = (id: number,) => {
 }
 
 export const updateNote = async (id: number,
-    updateNoteRequest: UpdateNoteRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    updateNoteRequest: UpdateNoteRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1532,7 +1531,7 @@ export const updateNote = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateNoteUrl(id),
+return customFetch<null>(getUpdateNoteUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -1598,9 +1597,9 @@ export const getDeleteNoteUrl = (id: number,) => {
   return `/api/v1/notes/${id}`
 }
 
-export const deleteNote = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteNote = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteNoteUrl(id),
+  return customFetch<null>(getDeleteNoteUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -1813,7 +1812,7 @@ export const getUpdateMyMemberUrl = () => {
   return `/api/v1/members/me`
 }
 
-export const updateMyMember = async (updateMemberRequest: UpdateMemberRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const updateMyMember = async (updateMemberRequest: UpdateMemberRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1829,7 +1828,7 @@ export const updateMyMember = async (updateMemberRequest: UpdateMemberRequest, o
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateMyMemberUrl(),
+return customFetch<null>(getUpdateMyMemberUrl(),
   {
     ...options,
     method: 'PUT',
@@ -1901,9 +1900,9 @@ export const getDeleteMyMemberUrl = () => {
   return `/api/v1/members/me`
 }
 
-export const deleteMyMember = async ( options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteMyMember = async ( options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteMyMemberUrl(),
+  return customFetch<null>(getDeleteMyMemberUrl(),
   {
     ...options,
     method: 'DELETE'
@@ -1969,7 +1968,7 @@ export const getUpdateMyMemberPictureUrl = () => {
   return `/api/v1/members/me/picture`
 }
 
-export const updateMyMemberPicture = async (updatePictureRequest: UpdatePictureRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const updateMyMemberPicture = async (updatePictureRequest: UpdatePictureRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -1985,7 +1984,7 @@ export const updateMyMemberPicture = async (updatePictureRequest: UpdatePictureR
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateMyMemberPictureUrl(),
+return customFetch<null>(getUpdateMyMemberPictureUrl(),
   {
     ...options,
     method: 'PUT',
@@ -2052,7 +2051,7 @@ export const getUpdateDriveNameUrl = (id: number,) => {
 }
 
 export const updateDriveName = async (id: number,
-    updateDriveRequest: UpdateDriveRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    updateDriveRequest: UpdateDriveRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -2068,7 +2067,7 @@ export const updateDriveName = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateDriveNameUrl(id),
+return customFetch<null>(getUpdateDriveNameUrl(id),
   {
     ...options,
     method: 'PUT',
@@ -2281,7 +2280,7 @@ export const getUpdateMyCompanyUrl = () => {
   return `/api/v1/companies/me`
 }
 
-export const updateMyCompany = async (updateCompanyRequest: UpdateCompanyRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const updateMyCompany = async (updateCompanyRequest: UpdateCompanyRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -2297,7 +2296,7 @@ export const updateMyCompany = async (updateCompanyRequest: UpdateCompanyRequest
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getUpdateMyCompanyUrl(),
+return customFetch<null>(getUpdateMyCompanyUrl(),
   {
     ...options,
     method: 'PUT',
@@ -2363,9 +2362,9 @@ export const getDeleteMyCompanyUrl = () => {
   return `/api/v1/companies/me`
 }
 
-export const deleteMyCompany = async ( options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteMyCompany = async ( options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteMyCompanyUrl(),
+  return customFetch<null>(getDeleteMyCompanyUrl(),
   {
     ...options,
     method: 'DELETE'
@@ -2695,9 +2694,9 @@ export const getShowRecommendationUrl = (id: number,) => {
   return `/api/v1/recommendations/${id}/show`
 }
 
-export const showRecommendation = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const showRecommendation = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getShowRecommendationUrl(id),
+  return customFetch<null>(getShowRecommendationUrl(id),
   {
     ...options,
     method: 'POST'
@@ -2769,9 +2768,9 @@ export const getHideRecommendationUrl = (id: number,) => {
   return `/api/v1/recommendations/${id}/hide`
 }
 
-export const hideRecommendation = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const hideRecommendation = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getHideRecommendationUrl(id),
+  return customFetch<null>(getHideRecommendationUrl(id),
   {
     ...options,
     method: 'POST'
@@ -3484,7 +3483,7 @@ export const getCreateOneClickValidationUrl = () => {
   return `/api/v1/one-click/validation`
 }
 
-export const createOneClickValidation = async (validateBusinessRequest: ValidateBusinessRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const createOneClickValidation = async (validateBusinessRequest: ValidateBusinessRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -3500,7 +3499,7 @@ export const createOneClickValidation = async (validateBusinessRequest: Validate
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getCreateOneClickValidationUrl(),
+return customFetch<null>(getCreateOneClickValidationUrl(),
   {
     ...options,
     method: 'POST',
@@ -3516,7 +3515,7 @@ return customFetch<ApiResponseVoid>(getCreateOneClickValidationUrl(),
 export const getCreateOneClickValidationMutationKey = () => ['createOneClickValidation'] as const;
 
 export const getCreateOneClickValidationMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(queryClient: QueryClient, options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext>, skipInvalidation?: boolean, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext> => {
 
 const mutationKey = getCreateOneClickValidationMutationKey();
@@ -3535,12 +3534,17 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
           return  createOneClickValidation(data,requestOptions)
         }
 
+  const onSuccess = (data: Awaited<ReturnType<typeof createOneClickValidation>>, variables: CreateOneClickValidationMutationVariables, onMutateResult: TContext, context: MutationFunctionContext) => {
+        if (!options?.skipInvalidation) {
+        queryClient.invalidateQueries({ predicate: (query) => [getGetCredentialsQueryKey(), getGetMyCredentialsQueryKey()].some((queryKey) => matchQuery({ queryKey }, query)) });
+        }
+        mutationOptions?.onSuccess?.(data, variables, onMutateResult, context);
+      };
 
 
 
 
-
-  return  { mutationFn, ...mutationOptions }}
+  return  { ...mutationOptions, mutationFn, onSuccess }}
 
     export type CreateOneClickValidationMutationResult = NonNullable<Awaited<ReturnType<typeof createOneClickValidation>>>
     export type CreateOneClickValidationMutationBody = ValidateBusinessRequest
@@ -3548,14 +3552,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type CreateOneClickValidationMutationVariables = {data: ValidateBusinessRequest}
 
     export const useCreateOneClickValidation = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createOneClickValidation>>, TError,CreateOneClickValidationMutationVariables, TContext>, skipInvalidation?: boolean, request?: SecondParameter<typeof customFetch>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createOneClickValidation>>,
         TError,
         CreateOneClickValidationMutationVariables,
         TContext
       > => {
-      return useMutation(getCreateOneClickValidationMutationOptions(options), queryClient);
+      const backupQueryClient = useQueryClient();
+      return useMutation(getCreateOneClickValidationMutationOptions(queryClient ?? backupQueryClient, options), queryClient);
     }
 
 export const getCreateOfferUrl = () => {
@@ -3648,9 +3653,9 @@ export const getDenyOfferUrl = (id: number,) => {
   return `/api/v1/offers/${id}/deny`
 }
 
-export const denyOffer = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const denyOffer = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDenyOfferUrl(id),
+  return customFetch<null>(getDenyOfferUrl(id),
   {
     ...options,
     method: 'POST'
@@ -3722,9 +3727,9 @@ export const getCancelOfferUrl = (id: number,) => {
   return `/api/v1/offers/${id}/cancel`
 }
 
-export const cancelOffer = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const cancelOffer = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getCancelOfferUrl(id),
+  return customFetch<null>(getCancelOfferUrl(id),
   {
     ...options,
     method: 'POST'
@@ -3790,9 +3795,9 @@ export const getAcceptOfferUrl = (id: number,) => {
   return `/api/v1/offers/${id}/accept`
 }
 
-export const acceptOffer = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const acceptOffer = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getAcceptOfferUrl(id),
+  return customFetch<null>(getAcceptOfferUrl(id),
   {
     ...options,
     method: 'POST'
@@ -3864,9 +3869,9 @@ export const getUpdateNotificationReadUrl = (id: number,) => {
   return `/api/v1/notifications/${id}/read`
 }
 
-export const updateNotificationRead = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const updateNotificationRead = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getUpdateNotificationReadUrl(id),
+  return customFetch<null>(getUpdateNotificationReadUrl(id),
   {
     ...options,
     method: 'POST'
@@ -3938,9 +3943,9 @@ export const getUpdateNotificationsReadUrl = () => {
   return `/api/v1/notifications/read`
 }
 
-export const updateNotificationsRead = async ( options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const updateNotificationsRead = async ( options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getUpdateNotificationsReadUrl(),
+  return customFetch<null>(getUpdateNotificationsReadUrl(),
   {
     ...options,
     method: 'POST'
@@ -4796,7 +4801,7 @@ export const getCreateDriveAttachmentsUrl = (id: number,) => {
 }
 
 export const createDriveAttachments = async (id: number,
-    uploadDriveRequest: UploadDriveRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    uploadDriveRequest: UploadDriveRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -4812,7 +4817,7 @@ export const createDriveAttachments = async (id: number,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getCreateDriveAttachmentsUrl(id),
+return customFetch<null>(getCreateDriveAttachmentsUrl(id),
   {
     ...options,
     method: 'POST',
@@ -5113,7 +5118,7 @@ export const getCreateDeviceUrl = () => {
   return `/api/v1/devices`
 }
 
-export const createDevice = async (registerDeviceRequest: RegisterDeviceRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const createDevice = async (registerDeviceRequest: RegisterDeviceRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -5129,7 +5134,7 @@ export const createDevice = async (registerDeviceRequest: RegisterDeviceRequest,
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getCreateDeviceUrl(),
+return customFetch<null>(getCreateDeviceUrl(),
   {
     ...options,
     method: 'POST',
@@ -5195,7 +5200,7 @@ export const getDeleteDeviceUrl = () => {
   return `/api/v1/devices`
 }
 
-export const deleteDevice = async (unregisterDeviceRequest: UnregisterDeviceRequest, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteDevice = async (unregisterDeviceRequest: UnregisterDeviceRequest, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -5211,7 +5216,7 @@ export const deleteDevice = async (unregisterDeviceRequest: UnregisterDeviceRequ
     }
     return headers;
   };
-return customFetch<ApiResponseVoid>(getDeleteDeviceUrl(),
+return customFetch<null>(getDeleteDeviceUrl(),
   {
     ...options,
     method: 'DELETE',
@@ -5519,9 +5524,9 @@ export const getDenyCredentialUrl = (id: number,) => {
   return `/api/v1/credentials/${id}/deny`
 }
 
-export const denyCredential = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const denyCredential = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDenyCredentialUrl(id),
+  return customFetch<null>(getDenyCredentialUrl(id),
   {
     ...options,
     method: 'POST'
@@ -5593,9 +5598,9 @@ export const getAcceptCredentialUrl = (id: number,) => {
   return `/api/v1/credentials/${id}/accept`
 }
 
-export const acceptCredential = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const acceptCredential = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getAcceptCredentialUrl(id),
+  return customFetch<null>(getAcceptCredentialUrl(id),
   {
     ...options,
     method: 'POST'
@@ -5755,9 +5760,9 @@ export const getDenyCoworkerRequestUrl = (id: number,) => {
   return `/api/v1/coworker-requests/${id}/deny`
 }
 
-export const denyCoworkerRequest = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const denyCoworkerRequest = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDenyCoworkerRequestUrl(id),
+  return customFetch<null>(getDenyCoworkerRequestUrl(id),
   {
     ...options,
     method: 'POST'
@@ -5829,9 +5834,9 @@ export const getAcceptCoworkerRequestUrl = (id: number,) => {
   return `/api/v1/coworker-requests/${id}/accept`
 }
 
-export const acceptCoworkerRequest = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const acceptCoworkerRequest = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getAcceptCoworkerRequestUrl(id),
+  return customFetch<null>(getAcceptCoworkerRequestUrl(id),
   {
     ...options,
     method: 'POST'
@@ -6145,9 +6150,9 @@ export const getDenyCompanyUrl = (id: number,) => {
   return `/api/v1/companies/${id}/deny`
 }
 
-export const denyCompany = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const denyCompany = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDenyCompanyUrl(id),
+  return customFetch<null>(getDenyCompanyUrl(id),
   {
     ...options,
     method: 'POST'
@@ -6213,9 +6218,9 @@ export const getAcceptCompanyUrl = (id: number,) => {
   return `/api/v1/companies/${id}/accept`
 }
 
-export const acceptCompany = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const acceptCompany = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getAcceptCompanyUrl(id),
+  return customFetch<null>(getAcceptCompanyUrl(id),
   {
     ...options,
     method: 'POST'
@@ -6363,9 +6368,9 @@ export const getLogoutUrl = () => {
   return `/api/v1/auth/logout`
 }
 
-export const logout = async ( options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const logout = async ( options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getLogoutUrl(),
+  return customFetch<null>(getLogoutUrl(),
   {
     ...options,
     method: 'POST'
@@ -11837,9 +11842,9 @@ export const getDeleteTaskUrl = (id: number,) => {
   return `/api/v1/tasks/${id}`
 }
 
-export const deleteTask = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteTask = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteTaskUrl(id),
+  return customFetch<null>(getDeleteTaskUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -11911,9 +11916,9 @@ export const getDeleteGroupChatMeUrl = (id: number,) => {
   return `/api/v1/group-chats/${id}/me`
 }
 
-export const deleteGroupChatMe = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteGroupChatMe = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteGroupChatMeUrl(id),
+  return customFetch<null>(getDeleteGroupChatMeUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -11979,9 +11984,9 @@ export const getDeleteDriveUrl = (id: number,) => {
   return `/api/v1/drives/${id}`
 }
 
-export const deleteDrive = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteDrive = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteDriveUrl(id),
+  return customFetch<null>(getDeleteDriveUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -12049,9 +12054,9 @@ export const getDeleteDriveAttachmentsUrl = (id: number,
 }
 
 export const deleteDriveAttachments = async (id: number,
-    attachmentId: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+    attachmentId: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteDriveAttachmentsUrl(id,attachmentId),
+  return customFetch<null>(getDeleteDriveAttachmentsUrl(id,attachmentId),
   {
     ...options,
     method: 'DELETE'
@@ -12117,9 +12122,9 @@ export const getDeleteCredentialUrl = (id: number,) => {
   return `/api/v1/credentials/${id}`
 }
 
-export const deleteCredential = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteCredential = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteCredentialUrl(id),
+  return customFetch<null>(getDeleteCredentialUrl(id),
   {
     ...options,
     method: 'DELETE'
@@ -12191,9 +12196,9 @@ export const getDeleteCoworkerUrl = (memberId: number,) => {
   return `/api/v1/coworkers/${memberId}`
 }
 
-export const deleteCoworker = async (memberId: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteCoworker = async (memberId: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteCoworkerUrl(memberId),
+  return customFetch<null>(getDeleteCoworkerUrl(memberId),
   {
     ...options,
     method: 'DELETE'
@@ -12265,9 +12270,9 @@ export const getDeleteCoworkerRequestUrl = (id: number,) => {
   return `/api/v1/coworker-requests/${id}`
 }
 
-export const deleteCoworkerRequest = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<ApiResponseVoid> => {
+export const deleteCoworkerRequest = async (id: number, options?: Parameters<typeof customFetch>[1]): Promise<null> => {
 
-  return customFetch<ApiResponseVoid>(getDeleteCoworkerRequestUrl(id),
+  return customFetch<null>(getDeleteCoworkerRequestUrl(id),
   {
     ...options,
     method: 'DELETE'

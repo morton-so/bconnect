@@ -2,9 +2,10 @@ package to.bconnect.api.core.presentation.v1.request;
 
 import to.bconnect.api.common.CodeException;
 import to.bconnect.api.common.CommonExceptionCode;
-import jakarta.validation.constraints.NotBlank;
+import to.bconnect.api.common.Regex;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import to.bconnect.api.core.domain.task.CreateProjectTask;
 import to.bconnect.api.storage.profile.Trade;
 
@@ -16,7 +17,7 @@ public record CreateProjectTaskRequest(
         @NotNull LocalDate start,
         @NotNull LocalDate end,
         @NotNull Long projectId,
-        @NotBlank String title,
+        @NotNull @Pattern(regexp = Regex.NOT_BLANK) String title,
         String requirement,
         String memo
 ) {

@@ -12,14 +12,13 @@
 
 ## EsLint 적용 범위
 
-| 패키지        | base.js | prettier | markdownlint | lychee | figma.js                  |
-| ------------- | ------- | -------- | ------------ | ------ | ------------------------- |
-| root          | ○       | ○        | ○            | ○      | X                         |
-| apps/career   | ○       | ○        | ○            | ○      | `**/page.tsx`             |
-| apps/plan     | ○       | ○        | ○            | ○      | `**/page.tsx`             |
-| apps/company  | ○       | ○        | ○            | ○      | `**/page.tsx`             |
-| packages/ui   | ○       | ○        | ○            | ○      | `src/components/**/*.tsx` |
-| packages/push | ○       | ○        | ○            | ○      | X                         |
+| 패키지       | base.js | prettier | markdownlint | lychee | figma.js                  |
+| ------------ | ------- | -------- | ------------ | ------ | ------------------------- |
+| root         | ○       | ○        | ○            | ○      | X                         |
+| apps/career  | ○       | ○        | ○            | ○      | `**/page.tsx`             |
+| apps/plan    | ○       | ○        | ○            | ○      | `**/page.tsx`             |
+| apps/company | ○       | ○        | ○            | ○      | `**/page.tsx`             |
+| packages/ui  | ○       | ○        | ○            | ○      | `src/components/**/*.tsx` |
 
 ## 명령어
 

@@ -3,8 +3,8 @@
  */
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
-import { getCompanyInfo } from '@bconnect/features/one-click'
-import { brnField, formatRegistrationNumber, isValidRegistrationNumber } from '@bconnect/config/brn'
+import { getCompanyInfo } from './_lib/one-click'
+import { brnField, formatRegistrationNumber, isValidRegistrationNumber } from '@bconnect/lib/brn'
 import { SearchBar } from './_components/SearchBar'
 import { TipBanner } from './_components/TipBanner'
 import { CompanyHeader } from './_components/CompanyHeader'

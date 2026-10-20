@@ -1,15 +1,15 @@
 import { useQueryStates, parseAsArrayOf, parseAsInteger, parseAsStringLiteral } from 'nuqs'
-import { Trade, ProfileRole } from '@bconnect/api-client'
-import { REGIONS, type Region } from '@/lib/region'
+import { Trade, ProfileRole, Region } from '@bconnect/api-client'
 import { isFullExperienceRange, type ExperienceRange } from '@/lib/experience-range'
 
 const TRADE_VALUES = Object.values(Trade)
 const ROLE_VALUES = Object.values(ProfileRole)
+const REGION_VALUES = Object.values(Region)
 
 const filterParsers = {
   trades: parseAsArrayOf(parseAsStringLiteral(TRADE_VALUES)).withDefault([]),
   roles: parseAsArrayOf(parseAsStringLiteral(ROLE_VALUES)).withDefault([]),
-  regions: parseAsArrayOf(parseAsStringLiteral(REGIONS)).withDefault([]),
+  regions: parseAsArrayOf(parseAsStringLiteral(REGION_VALUES)).withDefault([]),
   exp: parseAsArrayOf(parseAsInteger),
 }
 
@@ -39,10 +39,8 @@ export function useFilterParams() {
         : [...regions, target],
     })
 
-  // 슬라이더 full-range 는 필터 해제와 동치 → null
   const setExperience = (range: ExperienceRange | null) =>
     setParams({ exp: range && !isFullExperienceRange(range) ? [range[0], range[1]] : null })
-
   const removeTrade = (target: Trade) => setParams({ trades: trades.filter((t) => t !== target) })
   const removeRole = (target: ProfileRole) =>
     setParams({ roles: roles.filter((r) => r !== target) })

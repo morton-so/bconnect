@@ -4,7 +4,6 @@ import { sentryBuildOptions } from '@bconnect/config/sentry'
 import { noindexHeaders } from '@bconnect/config/seo'
 
 const nextConfig: NextConfig = {
-  // Vercel monorepo: apps/company
   headers: async () => noindexHeaders(),
 }
 

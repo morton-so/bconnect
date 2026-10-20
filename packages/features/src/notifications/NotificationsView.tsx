@@ -11,12 +11,12 @@ import {
 } from '@bconnect/api-client'
 import type { Notification } from '@bconnect/api-client'
 import { NotificationItem, Skeleton } from '@bconnect/ui'
-import { formatRelativeTime } from '@bconnect/config/date'
-import { PanelShell } from '../_shared/PanelShell'
-import { PanelScroll } from '../_shared/PanelScroll'
-import { PanelMessage } from '../_shared/PanelMessage'
+import { formatRelativeTime } from '@bconnect/lib/date'
+import { PanelShell } from '../PanelShell'
+import { PanelScroll } from '../PanelScroll'
+import { PanelMessage } from '../PanelMessage'
 import { useNotifications, useUnreadNotificationCount } from './useNotifications'
-import { groupChatNotifications } from './_parts/groupChatNotifications'
+import { groupChatNotifications } from './group-chat-notifications'
 
 type NotificationsViewShellProps =
   | {
@@ -34,17 +34,12 @@ type NotificationsViewShellProps =
       onClose?: never
     }
   | {
-      /** 기본 패널 쉘 (plan) */
       renderShell?: never
       closeHref: string
       onClose: () => void
     }
 
 export type NotificationsViewProps = NotificationsViewShellProps & {
-  /**
-   * 알림 클릭 시 이동할 목적지 href. `undefined` 를 반환하면 이동 없이 읽음 처리만 한다.
-   * 앱별 라우팅(career 경로 / plan `?panel=`)이 달라 앱에서 주입한다.
-   */
   resolveHref?: (notification: Notification) => string | undefined
 }
 
@@ -55,8 +50,6 @@ export function NotificationsView(props: NotificationsViewProps) {
   const unreadCount = useUnreadNotificationCount()
   const queryClient = useQueryClient()
 
-  // 그룹 내 안 읽은 id 를 전부 개별 읽음 처리하고(bulk-by-id 엔드포인트 없음) 마지막에 한 번만 무효화.
-  // 개별 hook 을 N 번 부르면 성공마다 재조회가 몰리므로(thundering) raw 함수 + 단일 invalidate.
   const readOnClick = (unreadIds: number[]) => {
     if (unreadIds.length === 0) return
     Promise.all(unreadIds.map((id) => updateNotificationRead(id))).then(() => {

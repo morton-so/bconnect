@@ -1,13 +1,13 @@
 'use client'
 
-import { formatPeriod } from '@bconnect/config/date'
+import { formatPeriod } from '@bconnect/lib/date'
 import { Button, PlusIcon, TopBar } from '@bconnect/ui'
 import { useCalendarParams } from '../_hooks/useCalendarParams'
 import { useCalendarTasks } from '../_hooks/useCalendarTasks'
 import { CalendarMemberPicker } from './CalendarMemberPicker'
 import { CalendarHeader } from './calendar/CalendarHeader'
 import { MonthCarousel } from './calendar/MonthCarousel'
-import { dayInTask, monthShift } from './calendar/date-helpers'
+import { dayInTask, monthShift } from '../_lib/date-helpers'
 import { TaskDetailCard } from './detail/TaskDetailCard'
 
 /** 캘린더 오케스트레이터 */

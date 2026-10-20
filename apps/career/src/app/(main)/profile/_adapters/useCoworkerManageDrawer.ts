@@ -7,7 +7,7 @@ import {
   useGetSentCoworkerRequests,
 } from '@bconnect/api-client'
 import type { Coworker } from '@bconnect/api-client'
-import { toast } from '@bconnect/ui'
+import { serverErrorMessage, toast } from '@bconnect/ui'
 import { useCoworkerActions } from './useCoworkerActions'
 import { useCoworkerRequestActions } from './useCoworkerRequestActions'
 import { useMessageMember } from './useMessageMember'
@@ -40,7 +40,7 @@ export function useCoworkerManageDrawer() {
   const add = useCreateCoworkerRequest<Error>({
     mutation: {
       onSuccess: () => toast({ description: '동료 요청을 보냈어요', variant: 'success' }),
-      onError: (error) => toast({ description: error.message, variant: 'error' }),
+      onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
     },
   })
 

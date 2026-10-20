@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
-import '@bconnect/ui/styles.css'
+import '@bconnect/ui/globals.css'
 import { SERVICE_NAME, SITE_URL, BRAND_COLOR } from '@bconnect/config/site'
 import { Providers } from './providers'
 import { Analytics } from '@vercel/analytics/next'
@@ -9,7 +9,7 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import { env } from '@/env'
 
 const pretendard = localFont({
-  src: '../../../../packages/ui/src/fonts/PretendardVariable.woff2',
+  src: '../../../../packages/ui/src/PretendardVariable.woff2',
   display: 'swap',
   weight: '45 920',
   style: 'normal',
@@ -54,10 +54,10 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
-      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
-    apple: '/apple-touch-icon.png',
+    apple: '/icons/apple-touch-icon.png',
   },
 }
 

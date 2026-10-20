@@ -9,7 +9,7 @@ career·plan 두 Next.js App Router 앱의 공통 프론트엔드 규칙입니�
 - 각 앱 CLAUDE.md가 `@import`로 로드
 - 파일명이 정확히 `CLAUDE.md`가 아니라 자동 로드 안 됨
 - 명시 import한 career·plan만 로드
-- `apps/api`는 Spring Framework, `apps/crawler`는 Python이라 작업 시 안 딸려옴
+- `apps/api`는 Spring Framework라 작업 시 안 딸려옴
 - 위반 시 dev 깨짐 또는 prod 사고
 
 ## 인증 미들웨어 · Public routes
@@ -60,7 +60,6 @@ career·plan 두 Next.js App Router 앱의 공통 프론트엔드 규칙입니�
   - 아이콘 전용 버튼은 `aria-label` 필수
   - `<button type="button">` 으로 폼 submit 오발 방지
   - 모바일 탭 타겟 44px 이상 권장. `h-11`
-- 클래스 SSOT 가 있으면 우선. 예 `_field-base.ts`
 
 ## 도메인 enum·라벨 · `@bconnect/api-client` SSOT
 
@@ -73,9 +72,9 @@ career·plan 두 Next.js App Router 앱의 공통 프론트엔드 규칙입니�
 - `generated/`는 orval 산출물. 직접 수정 금지
 - enum에 없는 값은 BE spec 이슈로 확장
 
-## 에러 클래스 · `@bconnect/config/errors` SSOT
+## 에러 클래스 · `@bconnect/lib/errors` SSOT
 
-도메인 에러 클래스와 사용자 노출 카피는 [packages/config/errors/index.ts](../../packages/config/errors/index.ts)가 SSOT입니다.
+도메인 에러 클래스와 사용자 노출 카피는 [packages/lib/src/errors.ts](../../packages/lib/src/errors.ts)가 SSOT입니다.
 
 ## 폼 제출 버튼 · `FormSubmitButton`
 
@@ -83,24 +82,48 @@ RHF `<Form>` 안 제출 버튼은 `FormSubmitButton`을 씁니다. raw `<Button 
 
 - ESLint 강제
 
-## 날짜·공통 데이터 유틸 · `@bconnect/config` 선확인
+## 날짜·공통 데이터 유틸 · `@bconnect/lib` 선확인
 
-날짜 계산은 `@bconnect/config/date`가 SSOT입니다. 일수 차·더하기·월 경계 등이 대상입니다.
+날짜 계산은 `@bconnect/lib/date`가 SSOT입니다. 일수 차·더하기·월 경계 등이 대상입니다.
 
 - 제공 함수는 `daysBetween`·`addDays`·`todayIso` 등
-- 포맷·전화·주소·동의 항목도 `@bconnect/config/*`가 SSOT
+- 포맷·전화·주소·동의 항목도 `@bconnect/lib/*`가 SSOT
 - 앱 로컬에 `Date.parse` 직접 계산 헬퍼를 재작성하기 전에 공용 패키지를 먼저 확인
 - 로컬 중복 헬퍼는 반올림·경계 처리 드리프트를 만듦. "feat(career): 피드 카드 건축주명·시공기간 실데이터 배선" 리뷰에서 실측
 
 ## 네이밍 · 상태 관리
 
-- 파일. 컴포넌트는 `UpperCamelCase.tsx`, 유틸은 `lowerCamelCase.ts`
+- 파일. 컴포넌트는 `PascalCase.tsx`, 유틸은 `kebab-case.ts`, 훅은 `useCamelCase.ts`
+  - Next.js 특수 파일, `components/shadcn/*`, orval `generated/`는 예외
 - boolean prop 은 `is/has/can/should` 접두
 - 상태 3분법
   - 서버는 TanStack Query generated hooks
   - 클라이언트는 Zustand
   - 폼은 react-hook-form + zod. [react-hook-form.md](../how-to/react-hook-form.md)
 - `'use client'` 는 필요할 때만. hooks·이벤트·브라우저 API가 해당
+
+## 앱 디렉토리 규칙
+
+파일은 유형 폴더에 두고, 사용 범위의 최소 공통 상위에 둡니다.
+
+| 유형                 | 앱 전역          | 라우트 세그먼트 전용 |
+| -------------------- | ---------------- | -------------------- |
+| 컴포넌트             | `src/components` | `_components`        |
+| 훅                   | `src/hooks`      | `_hooks`             |
+| 순수 함수·상수·타입  | `src/lib`        | `_lib`               |
+| Zustand 스토어       | `src/stores`     | 없음                 |
+| features View 어댑터 | 없음             | `_adapters`          |
+| 서버 액션            | 없음             | `_actions`           |
+
+- 범위 판정
+  - 여러 URL 세그먼트가 쓰면 앱 전역 폴더
+  - route group `(main)` 은 앱 전역으로 취급
+  - 한 URL 세그먼트만 쓰면 그 세그먼트의 `_` 폴더
+  - 여러 앱이 쓰면 `packages/*`. 도메인 enum 은 `@bconnect/api-client`
+- 폼 스키마는 한 파일 전용이어도 세그먼트 `_lib/schema.ts`
+- import 는 같은 폴더와 한 단계 상위만 상대 경로, 그 이상은 `@/` alias. ESLint `no-restricted-imports` 가 강제
+- 근거. Next.js 문서는 `_folder` 를 "Not routable" private folder 로 정의하고 `_components`·`_lib` 를 예시로 듦
+  - `components`·`lib` 이름은 "no special framework significance"
 
 ## Env vars · `@bconnect/config/env`
 
@@ -122,6 +145,10 @@ Zod 검증된 `env` 객체를 사용합니다. `process.env.X` 직접 접근은 
 - 대신 `<Link>` 사용. 버튼은 `<Button asChild>`
 - 불가피한 imperative 는 핸들러 내부면 비대상. mutation onSuccess 등이 해당
 - `router.back()` 허용
+- 뒤로가기 버튼은 이전 방문 페이지가 아닌 상위 경로로 이동. TopBar `backHref` 사용
+  - 타인 프로필 `/profile/[memberId]` 는 이전 방문 페이지로 이동
+  - 로그인·회원가입은 이전 단계로 이동, 첫 단계는 `/`
+- 저장 성공 후에도 상위 경로로 `router.replace`
 
 ## 공유 화면 · `packages/features`의 `*View` 소비
 
@@ -129,11 +156,13 @@ career·plan 공통 화면은 `packages/features`의 `<도메인>View` 하나로
 
 - 앱 로컬 재구현은 안티패턴
 - `*View`는 순수 표현. 앱이 데이터 fetch 해 `data` prop 으로 내림
-- 셸은 `renderShell`. plan 은 생략 시 기본 `PanelShell`
+- 셸은 `renderShell`. plan 은 생략 시 기본 `PanelShell`, career 는 `renderShell` 에서 `TopBar` 직접 렌더
 - 액션·편집은 `actionSlot`·`editHrefs` 슬롯 주입. 부재 시 읽기전용
 - mutation·공유는 앱측
 - 여러 페이지가 쓰면 어댑터를 `_adapters/`로 분리. 단일이면 `page.tsx` 인라인
-- features 폴더. 루트는 공개로 `*View`와 `index.ts`, `_parts/`는 내부
+- features 폴더. 도메인 폴더에 그 도메인 파일을 모두 두고, 여러 도메인이 쓰는 파일은 `src/` 바로 아래
+  - 파일이 하나뿐인 도메인은 폴더 없이 `src/` 바로 아래. 예 `session.ts`
+  - 공개 여부는 폴더가 아니라 `index.ts` export 로 구분
 
 ## 이미지 · private CloudFront는 plain `<img>`
 
@@ -210,25 +239,25 @@ career·plan 공통 화면은 `packages/features`의 `<도메인>View` 하나로
 packages/ui/
 ├── src/
 │   ├── components/
-│   │   ├── ui/
-│   │   │   ├── shadcn/          # shadcn registry vanilla
-│   │   │   │   ├── accordion.tsx
-│   │   │   │   ├── form.tsx
-│   │   │   │   └── label.tsx
-│   │   │   ├── form/            # 우리 form-coupled wrapper — RHF context 소비
-│   │   │   │   ├── TextField.tsx
-│   │   │   │   ├── TextareaField.tsx
-│   │   │   │   ├── FormError.tsx
-│   │   │   │   └── FormSubmitButton.tsx
-│   │   │   ├── _field-base.ts   # Input/Textarea 공통 클래스 SSOT (drift 차단)
-│   │   │   ├── Button.tsx       # 디자인 시스템 base (Figma 시안 매핑)
-│   │   │   └── ...              # 도메인 컴포넌트 (Chat*, Feed, TopBar 등)
+│   │   ├── shadcn/              # shadcn registry 기반, 일부 파일 수정됨
+│   │   │   ├── accordion.tsx
+│   │   │   ├── form.tsx
+│   │   │   └── label.tsx
+│   │   ├── form/                # 우리 form-coupled wrapper — RHF context 소비
+│   │   │   ├── TextField.tsx
+│   │   │   ├── TextareaField.tsx
+│   │   │   ├── FormError.tsx
+│   │   │   └── FormSubmitButton.tsx
+│   │   ├── _field-base.ts       # Input/Textarea 공통 클래스 SSOT (drift 차단)
+│   │   ├── Button.tsx           # 디자인 시스템 base (Figma 시안 매핑)
+│   │   ├── ...                  # 도메인 컴포넌트 (Chat*, Feed, TopBar 등)
 │   │   └── index.ts             # barrel export
 │   ├── icons/                   # 아이콘 컴포넌트
-│   ├── hooks/                   # useServerError, useAllFieldsFilled 등
+│   ├── hooks/                   # useServerError, useUnsavedGuard 등
 │   ├── lib/utils.ts             # cn() 함수
-│   └── styles/globals.css       # CSS Variables + 디자인 시스템 @figma URL
-└── components.json              # shadcn CLI 설정 (ui alias → src/components/ui/shadcn)
+│   ├── styles/globals.css       # CSS Variables + 디자인 시스템 @figma URL
+│   └── PretendardVariable.woff2
+└── components.json              # shadcn CLI 설정 (ui alias → #components/shadcn)
 ```
 
 ---
@@ -247,8 +276,17 @@ packages/ui/
 | 제출 버튼            | `<FormSubmitButton isLoading={mutation.isPending}>`          |
 | 폼 외 단일 버튼      | `<Button isLoading={...}>`. `loadingText` 폐기, spinner 통일 |
 | 서버 에러 derive     | `useServerError(control, mapError)`                          |
-| 기본 mapError        | `passthroughError(field?)`. BE message 그대로                |
+| 기본 mapError        | `passthroughError(field?, messages?)`                        |
+| 폼 외 에러 문구      | `serverErrorMessage(error, messages?)`. toast 등             |
 | 특수 분기 type guard | `isApiErrorShape(err)`                                       |
+
+### 서버 에러 문구
+
+[useServerError.ts](../../packages/ui/src/hooks/useServerError.ts)의 `serverErrorMessage`가 에러 코드로 문구를 고릅니다.
+
+- 1순위 : 에러 코드에 따른 개별 메시지 맵 `messages`
+- 2순위 : 에러 코드에 따른 공통 메시지 맵 `SERVER_ERROR_MESSAGES`
+- 3순위 : 백엔드 에러 코드 메시지 `error.message`
 
 ### DO
 
@@ -267,7 +305,6 @@ packages/ui/
   - 라벨 옆 빨간 별표 자동
   - HTML native required 는 발동 안 함. zod 가 검증
 - FormProvider 의존 컴포넌트는 런타임 가드 `if (!formContext) throw`. TS 강제 불가
-- Input·Textarea 등 폼 필드 base 클래스는 [_field-base.ts](../../packages/ui/src/components/ui/_field-base.ts) 의 `FIELD_*` 상수 사용
 
 ### DON'T
 
@@ -276,8 +313,9 @@ packages/ui/
 - `setError('root')` 또는 onChange 마다 `clearErrors`. "fix(plan): login 페이지 FormInput error prop 누락 수정" 버그 클래스
 - `form.watch()` 호출. `useWatch` 훅 사용. React Compiler 호환
 - `packages/ui` 가 `@bconnect/api-client` 에 import 의존. duck typing 인 `isApiErrorShape` 사용
-- 호출부 기본 문구 분기. `customFetch` 가 모든 실패에 메시지를 담으므로 `error.message` 를 그대로 표시
-- shadcn primitive `ui/shadcn/*` 직접 수정. 확장은 wrapper 에서. 예로 `TextField` 가 `TextFieldControl` 로 aria 흡수
+- 호출부에서 `error.message` 직접 표시. `serverErrorMessage` 또는 `passthroughError` 사용
+- 생성 스키마 검증 메시지를 폼에 인라인 작성. `zod-messages.ts` 의 `MESSAGES` 에 추가
+- shadcn primitive `components/shadcn/*` 직접 수정. 확장은 wrapper 에서. 예로 `TextField` 가 `TextFieldControl` 로 aria 흡수
 - `text-bconnect-*` prefix 사용. globals.css 에 정의 없는 미정의 토큰이라 Tailwind 무시
 
 ---

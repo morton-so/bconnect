@@ -1,7 +1,7 @@
-# 가입 · 인증 가드
+# 인증 상태에 따른 페이지 접근 권한
 
 > 대상: 프론트엔드 개발자<br>
-> 학습 목표: plan, career 앱의 가입 흐름과 경로별 가드 동작을 확인한다<br>
+> 학습 목표: plan, career 사용자 권한에 따른 페이지별 가드 동작을 확인한다<br>
 > 위치: `apps/plan`, `apps/career`
 
 ## 판정 기준
@@ -44,7 +44,7 @@
 - [signup/layout.tsx](../../apps/plan/src/app/signup/layout.tsx)
 - [SignupGuard.tsx](../../apps/plan/src/components/SignupGuard.tsx)
 - [(main)/layout.tsx](<../../apps/plan/src/app/(main)/layout.tsx>)
-- [AccessGuard.tsx](../../packages/features/src/_shared/AccessGuard.tsx)
+- [AccessGuard.tsx](../../packages/features/src/AccessGuard.tsx)
 
 ## career
 
@@ -74,4 +74,4 @@
 - [SignupGuard.tsx](../../apps/career/src/components/SignupGuard.tsx)
 - [(main)/layout.tsx](<../../apps/career/src/app/(main)/layout.tsx>)
 - [instagram/layout.tsx](../../apps/career/src/app/instagram/layout.tsx)
-- [AccessGuard.tsx](../../packages/features/src/_shared/AccessGuard.tsx)
+- [AccessGuard.tsx](../../packages/features/src/AccessGuard.tsx)
