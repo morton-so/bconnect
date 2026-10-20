@@ -37,7 +37,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           roleFallback="/signup/corp"
           loginFallback={isPublicPath(pathname) ? undefined : '/login'}
         >
-          <main className="flex h-full min-w-0 flex-1 [scrollbar-width:none] justify-start overflow-y-auto [&::-webkit-scrollbar]:hidden">
+          <main className="flex h-full min-w-0 flex-1 justify-start overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex min-h-full w-full flex-col">{children}</div>
           </main>
           <Suspense>

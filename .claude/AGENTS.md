@@ -7,16 +7,14 @@
 - `apps/career` - 기술자용 앱
 - `apps/plan` - 업체용 웹
 - `apps/company` - 회사 홈페이지
-- `apps/crawler` - 기술자 크롤러
 - `apps/api` - API 서버 (Spring Framework)
 - `packages/ui` - 공유 UI 컴포넌트 (Tailwind V4)
 - `packages/api-client` - 자동 생성 API 클라이언트 (Orval)
 - `packages/config` - 공유 설정
+- `packages/lib` - 공유 유틸
 - `packages/features` - 공유 UI
-- `packages/mocks` - MSW 핸들러
-- `packages/devtools` - 개발 도구 (MSW, Agentation)
-- `packages/push` - 푸시 알림 UI · 클라이언트
-- `packages/data-jobs` - 원클릭 조회 데이터 동기화
+- `packages/mocks` - MSW 핸들러 · Provider
+- `packages/batch` - 원클릭 조회 데이터 동기화
 
 ## 가이드
 
@@ -24,6 +22,7 @@
 - 사용자가 승인한 사항과 AI가 제안한 사항을 구분
 - 특정 명령어에 대한 오류가 3회 이상 발생한 경우 해당 작업을 생략·보고
 - 보고서 생성시 HTML 형식 우선
+- 문서와 코드가 불일치하는 경우 코드 우선, 문서 업데이트
 
 ## Next.js
 
@@ -69,7 +68,6 @@
 - [피그마 매핑](../docs/reference/figma-mapping.md)
 - [API 클라이언트](../docs/reference/package-api-client.md)
 - [MSW 핸들러 패키지](../docs/reference/package-mocks.md)
-- [기술자 크롤러](../docs/reference/app-crawler.md)
 - [인프라](../docs/reference/infra.md)
 - 기술적 의사결정 문서 : `docs/explanation/adr`
 

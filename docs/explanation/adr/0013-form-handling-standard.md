@@ -66,7 +66,7 @@ BConnect 프론트엔드의 폼 처리가 페이지마다 갈라져 있다. `app
 
 - 검증 또는 제출이 있는 폼은 `react-hook-form` + `@hookform/resolvers/zod` 사용. 수동 `useState` 폼 금지.
 - 단순 검색·필터·URL-state 입력(nuqs)은 폼이 아니므로 제외한다. bare `Input`을 사용한다.
-- 검증 스키마는 zod v4를 쓰고 `schema.ts`에 분리한다. `zod/v3` compat import 금지.
+- 검증 스키마는 zod v4를 쓴다. 스키마는 사용 파일 수와 관계없이 세그먼트 `_lib/schema.ts`에 둔다. `zod/v3` compat import 금지.
 - 검증 타이밍은 `mode: 'onTouched'`. blur 후 첫 검증, 이후 onChange 처럼 갱신한다. `isValid` 게이팅 버튼을 유지하면서 첫 타이핑 중 naggy 한 에러 노출을 피한다. onSubmit 은 제출 전 isValid 가 갱신되지 않아 버튼이 안 열린다.
 
 ### 2. 컴포넌트 레이어: shadcn Form + `*Field` 래퍼

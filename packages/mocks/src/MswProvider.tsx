@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 
-// MSW 비활성화 옵션
-const enabled = false
+// 로컬 개발 서버에서만 MSW 활성화
+const enabled = process.env.NODE_ENV === 'development'
 
 async function enableMocking() {
   const { worker } = await import('./browser')

@@ -6,7 +6,7 @@
 
 `@bconnect/api-client`
 
-백엔드에서 생성한 OpenAPI 명세를 Orval로 소비합니다. 산출물은 TanStack Query hook · MSW mock · TypeScript 타입입니다.
+백엔드에서 생성한 OpenAPI 명세를 Orval로 소비합니다. 산출물은 TanStack Query hook · MSW mock · TypeScript 타입 · Zod 요청 본문 스키마입니다.
 
 ## 파이프라인
 
@@ -19,13 +19,15 @@
      - Schema
      - TanStack Query Hook
      - MSW Mock
+     - Zod 요청 본문 스키마
 
 ## 명령어
 
-| 명령어                | 설명                       |
-| --------------------- | -------------------------- |
-| `pnpm generate`       | OpenAPI 스펙으로 코드 생성 |
-| `pnpm generate:watch` | OpenAPI 변경시에만 생성    |
+| 명령어                          | 설명                                 |
+| ------------------------------- | ------------------------------------ |
+| `pnpm generate`                 | OpenAPI 스펙으로 `morton`·`zod` 생성 |
+| `pnpm generate:watch`           | OpenAPI 변경시에만 생성              |
+| `pnpm exec orval --project zod` | Zod 스키마만 생성                    |
 
 OpenAPI 명세 URL → Orval 생성 → 컴파일
 
@@ -43,8 +45,10 @@ packages/api-client/
 └── src/
     ├── generated/         # Orval 산출물
     │   ├── api.ts         # TanStack Query hooks
+    │   ├── zod.ts         # Zod 요청 본문 스키마
     │   └── schemas/       # TypeScript 타입
     ├── client.ts          # HTTP 클라이언트 + 응답 공통처리 (직접 작성)
+    ├── zod-messages.ts    # Zod 오류 메시지 매핑
     ├── labels.ts          # 스키마
     ├── query-client.ts    # QueryClient 설정
     └── index.ts           # 공개 exports
@@ -76,6 +80,7 @@ packages/api-client/
 6. 공통 응답 unwrap
    - 배경 : API 공통 응답 형식인 `ApiResponse`에 따라 예외 처리를 추상화하고 필요한 데이터만 추출
    - 규칙 : `customFetch` 참고
+   - 규칙 : `data`가 없는 응답은 `null` 타입으로 생성. `customFetch`도 빈 본문이면 `null` 반환
 
 7. 고아 스키마 제거. `$ref` 미도달 대상
 
@@ -173,8 +178,9 @@ mutation 성공 시 관련 query 캐시 무효화를 `orval.config.ts` 의 `quer
 모든 hook 의 fetch 를 `customFetch` 로 위임합니다. 담당 범위입니다.
 
 - envelope unwrap. `{success, data}` 에서 `data` 만 반환하므로 hook 의 `data` 가 raw payload
+- envelope 없는 2xx JSON 은 그대로 반환. 생성 MSW mock 이 envelope 을 제거한 응답을 주기 때문
 - 401 자동 retry. access token 만료 시 refresh 후 재시도
-- ApiError 변환. `{success: false, error}` 를 `ApiError` 로 throw
+- ApiError 변환. 4xx·5xx 응답의 `{success: false, error}` 를 `ApiError` 로 throw
 - 그 외 실패도 `ApiError` 로 throw. 네트워크 단절·타임아웃·envelope 없는 HTTP 응답은 `알 수 없는 오류가 발생했습니다. 다시 시도해주세요.` 를 담음
 
 ## 인증 처리
@@ -197,8 +203,9 @@ setAccessToken(null)
 ### 리프레시 토큰
 
 - httpOnly secure 쿠키에 저장. 백엔드 강제
-- 401 응답 시 자동으로 `/api/v1/auth/refresh` 호출
-- 갱신 성공 시 원래 요청 재시도
+- 401 응답 시 자동으로 `/api/v1/auth/refresh` 호출. OTP 발송·검증 요청은 제외
+- 갱신 성공 시 원래 요청을 한 번 재시도
+- 갱신이 401 로 거부되면 access token 과 로그인 표시 쿠키를 지움. 네트워크 오류와 5xx 는 상태를 유지하고 다음 401 에서 다시 갱신
 
 ## enum
 
@@ -208,6 +215,44 @@ BE `ModelResolver.enumsAsRef=true` 설정으로 enum 이 named `$ref` 로 emit �
 - TS `enum` 은 아니며 사용감은 동일
 - FE 후처리 불필요
 - enum-coupled 한글 라벨은 `src/labels.ts`. `TRADE_LABELS` 등
+
+## Zod 요청 본문 스키마
+
+`orval.config.ts`의 `zod` 프로젝트가 백엔드 Request DTO 어노테이션으로 Zod 스키마를 생성합니다.
+
+- 산출물 : `src/generated/zod.ts`
+- import 경로 : `@bconnect/api-client/zod`
+- 설정 : `override.zod`
+  - `version: 4`
+  - `generateReusableSchemas: true`. `Address`·`Trade` 등 공유 스키마를 별도 상수로 생성
+  - `generate`는 `body`만 `true`
+  - `params`는 `src/zod-messages.ts`의 `zodParams`
+- 스키마마다 값과 함께 `X`·`XOutput` 타입을 export. 각각 `zod.input`·`zod.output`
+- `@Pattern` 정규식은 `xxxRegExp` 상수로 함께 export
+
+```typescript
+import { RegisterMemberRequest } from '@bconnect/api-client/zod'
+
+// TODO: 업데이트 필요
+const memberSchema = RegisterMemberRequest.omit({ marketingConsent: true })
+```
+
+### 검증 메시지
+
+생성 코드는 검증기마다 `zodParams`를 호출합니다. `zodParams`는 `MESSAGES` 맵에서 문구를 찾습니다.
+
+- 키 구조는 `MESSAGES[스키마명][필드명][검증기]`
+- enum 등 object가 아닌 스키마는 필드명 단계 없이 검증기를 바로 씀. 예 `Trade: { enum: '...' }`
+- 키가 없으면 `올바르지 않은 입력입니다.`
+- `Messages` 타입이 생성 스키마명과 필드명을 검사
+- 런타임 호출이라 문구 수정에는 재생성이 필요 없음
+
+### 재생성
+
+- 백엔드 DTO 변경은 dev 배포 후 재생성해야 반영
+- 배포 전 생성물은 이전 제약 기준이라 검증이 약할 수 있음
+- 명령은 `packages/api-client`에서 `API_URL=https://api.dev.bconnect.to pnpm exec orval --project zod`
+- 루트 `.envrc`의 `API_URL`은 `http://localhost:8080`이라 dev 스펙 생성시 직접 지정
 
 ## 참조
 
@@ -230,8 +275,9 @@ pnpm api:generate
 
 ```text
 packages/api-client/src/
-└── generated/                  # orval 산출물 (gitignored), FE가 참조
+└── generated/                  # orval 산출물, 커밋 대상, FE가 참조
     ├── api.ts                  # 모든 hook + handler aggregator
+    ├── zod.ts                  # Zod 요청 본문 스키마
     └── schemas/                # 도메인 타입 정의
 ```
 
@@ -266,7 +312,7 @@ function EditProfile() {
       { data: formData },
       {
         onSuccess: () => toast.success('저장 완료'),
-        onError: (error) => toast.error(error.message),
+        onError: (error) => toast({ description: serverErrorMessage(error), variant: 'error' }),
       }
     )
   }
@@ -279,6 +325,8 @@ function EditProfile() {
 
 - 스펙 입력은 dev API 서버의 `/v3/api-docs.yaml`. 리포에 spec 파일을 커밋하지 않음
   - BE 변경은 dev 배포 후 재생성에 반영
-  - 로컬 BE 대상 생성은 `API_URL` 환경변수로 오버라이드. 예 `API_URL=http://localhost:8080 pnpm api:generate`
-- 로컬 재생성은 orval 단독인 `pnpm api:generate`. 생성물 `generated/`는 커밋 대상
+  - `orval.config.ts`는 `API_URL` 환경변수에서 스펙을 읽음
+  - 루트 `.envrc` 기본값은 `http://localhost:8080`
+  - dev 스펙 생성은 `API_URL=https://api.dev.bconnect.to`를 지정. 예 `API_URL=https://api.dev.bconnect.to pnpm api:generate`
+- 로컬 재생성은 `pnpm api:generate`. orval 생성 후 `pnpm typecheck`까지 실행. 생성물 `generated/`는 커밋 대상
 - 타입 불일치는 대개 BE-FE 계약 drift. BE 갱신 또는 FE 호출부 정합으로 해소

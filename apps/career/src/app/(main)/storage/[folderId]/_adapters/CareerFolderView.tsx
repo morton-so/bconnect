@@ -33,8 +33,7 @@ export function CareerFolderView({ folderId }: { folderId: string }) {
 
   const title = folder?.title ?? '폴더'
   const onBack = () => {
-    if (file)
-      setFile(null)
+    if (file) setFile(null)
     else router.push('/storage')
   }
 

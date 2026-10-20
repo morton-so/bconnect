@@ -140,8 +140,7 @@
 | AT002 | TOO_MANY_FILES | 400 | INFO | 한 번에 업로드할 수 있는 파일 수를 초과했습니다. |
 | AT003 | UNSUPPORTED_FILE_TYPE | 415 | WARN | 허용되지 않는 파일 형식입니다. |
 | AT004 | NOT_COMPLETED | 400 | INFO | 업로드가 완료되지 않은 첨부파일입니다. |
-| AT005 | INVALID_LINKED | 404 | INFO | 연결되지 않은 첨부파일입니다. |
-| AT006 | NOT_FOUND | 404 | INFO | 존재하지 않는 첨부파일입니다. |
+| AT005 | INVALID_LINKED | 404 | INFO | 유효하지 않은 첨부파일입니다. |
 
 ## OneClickExceptionCode
 

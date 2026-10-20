@@ -22,7 +22,7 @@ ADR-0017은 plan 우측 패널을 path 기반 parallel route slot(`@panel`)으�
 제약/force:
 
 - ADR-0017 이 path 기반을 택한 핵심 이유는 닫기/뒤로/새로고침/공유의 web 시맨틱을 프레임워크에 위임하는 것이다. 새 설계도 이 이점을 잃으면 안 된다.
-- career, 즉 기술자 PWA 는 `@panel`을 쓰지 않는다. 프로필/메시지/알림이 전부 full-page 라우트다. `careerShell` 로 래핑하며 근거는 ADR-0020 이다. career 는 이 변경과 무관해야 한다.
+- career, 즉 기술자 PWA 는 `@panel`을 쓰지 않는다. 프로필/메시지/알림이 전부 full-page 라우트다. `renderShell` 에서 `TopBar` 로 래핑하며 근거는 ADR-0020 이다. career 는 이 변경과 무관해야 한다.
 - 공유 뷰 패키지 `@bconnect/features`는 그대로 유지해야 한다. ADR-0020 의 presentation-only 계약이다.
 
 ## 선택지

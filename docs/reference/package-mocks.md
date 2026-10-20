@@ -21,14 +21,16 @@ pnpm install
 packages/mocks/src/
 ├── overrides/
 │   ├── auth.ts                   # OTP 검증 stateful, signup/login 분기, error 응답
-│   └── notifications.ts          # 알림 목록·읽음 상태 stateful (커서 페이징, 뱃지 연동)
-├── handlers.ts                   # [...overrides, ...getBconnectAPIMock()]
-└── browser.ts                    # setupWorker (브라우저 dev, 유일한 진입점)
+│   ├── notifications.ts          # 알림 목록·읽음 상태 stateful (커서 페이징, 뱃지 연동)
+│   └── ...                       # 그 외 12개 도메인. `_` 접두 2개 파일은 handlers.ts 미등록
+├── handlers.ts                   # [globalDelay, ...overrides, ...getBconnectAPIMock()]
+├── browser.ts                    # setupWorker. MswProvider 가 동적 import
+└── MswProvider.tsx               # worker 기동 게이트 (패키지 유일한 진입점)
 ```
 
 ## 환경변수
 
-없음.
+- `NODE_ENV` : Next.js 가 자동 설정. `next dev` 의 `development` 일 때만 MSW 활성화
 
 ## 핵심 패턴 · orval generated + thin override
 
@@ -37,8 +39,9 @@ packages/mocks/src/
   - spec 변경 시 자동 동기화
 - override 는 손으로 작성. stateful flow 만 대상
   - 예. OTP 발송과 검증 매칭, signup/login 분기, 알림 읽음 상태
-- 합치기 순서는 `[...overrides, ...getBconnectAPIMock()]`
+- 합치기 순서는 `[globalDelay, ...overrides, ...getBconnectAPIMock()]`
   - 배열 앞쪽인 override 가 우선 매칭
+  - `globalDelay` 는 경로에 `/api/` 가 포함된 요청만 2초 지연 후 다음 핸들러로 넘김
 
 ## 사용처
 
@@ -47,23 +50,22 @@ packages/mocks/src/
 대상은 `apps/{career,plan}` 입니다.
 
 ```typescript
-// apps/career/src/components/msw-provider.tsx
-const { worker } = await import('@bconnect/mocks/browser')
-await worker.start()
+// apps/{career,plan}/src/app/Providers.tsx
+import { MswProvider } from '@bconnect/mocks'
 ```
 
 활성화 흐름입니다.
 
 1. `app/layout.tsx` 가 `<Providers>` 렌더
 2. `<Providers>` 가 `<MswProvider>` 로 wrap. `worker.start()` 완료까지 children 렌더 차단
-3. dev 환경에서 SW 등록 완료 후 children 렌더
+3. 로컬 `next dev` 에서 SW 등록 완료 후 children 렌더
 4. 이후 모든 `fetch()` 가 SW 거치며 handler 매칭 시 mock 응답 반환
    - 매칭 우선순위는 배열 앞쪽. overrides 가 generated 보다 우선
 5. handler 없는 요청은 msw 기본값 `onUnhandledRequest: 'warn'` 으로 경고 후 실 네트워크 통과
 
-fetch 부수효과는 `<MswProvider>` 안쪽에서 실행되어야 race 가 안 납니다. `refreshAccessToken()`·`usePushNotifications()` 가 해당합니다.
+fetch 부수효과는 `<MswProvider>` 안쪽에서 실행되어야 race 가 안 납니다. `refreshAccessToken()`·`usePushNotificationListener()` 가 해당합니다.
 
-- `providers.tsx` 의 `<PostMSWBootstrap>` 가 그 역할
+- career 는 `Providers.tsx` 의 `<PostMSWBootstrap>`, plan 은 `<PushBootstrap>` 가 그 역할
 
 ### Node 테스트
 
@@ -84,9 +86,9 @@ fetch 부수효과는 `<MswProvider>` 안쪽에서 실행되어야 race 가 안 
 
 ## Mock API (MSW)
 
-dev 환경에서 모든 API 요청은 MSW 가 가로채서 mock 응답으로 답합니다. MSW는 Mock Service Worker입니다.
+로컬 `next dev` 에서 모든 API 요청은 MSW 가 가로채서 mock 응답으로 답합니다. MSW는 Mock Service Worker입니다.
 
-- prod 빌드에선 `NODE_ENV` 가드로 `@bconnect/mocks` 가 tree-shake
+- `next build` 산출물에선 `NODE_ENV` 가드로 worker 를 기동하지 않음. dev·preview·prod 배포 모두 해당
 - career·plan 둘 다 `@bconnect/mocks` 를 써서 자동 적용됨
 
 상세는 패키지 SoT 를 참고합니다.

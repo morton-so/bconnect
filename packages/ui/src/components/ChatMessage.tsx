@@ -141,13 +141,7 @@ ChatMessage.displayName = 'ChatMessage'
 function ImageGrid({ images, className }: { images: ChatMessageImage[]; className?: string }) {
   const isSingle = images.length === 1
   return (
-    <div
-      className={cn(
-        'grid w-max gap-1',
-        isSingle ? 'grid-cols-1' : 'grid-cols-2',
-        className
-      )}
-    >
+    <div className={cn('grid w-max gap-1', isSingle ? 'grid-cols-1' : 'grid-cols-2', className)}>
       {images.map((image) => (
         <img
           key={image.id}

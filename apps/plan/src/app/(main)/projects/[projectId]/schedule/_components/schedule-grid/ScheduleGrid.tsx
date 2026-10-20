@@ -158,7 +158,7 @@ export function ScheduleGrid({ projectId, today: todayProp }: ScheduleGridProps)
     <div
       ref={scrollRef}
       onWheel={handleWheel}
-      className="w-full [scrollbar-width:thin] [scrollbar-color:#d0d0d0_transparent] overflow-x-auto bg-white font-sans"
+      className="w-full overflow-x-auto bg-white font-sans [scrollbar-color:#d0d0d0_transparent] [scrollbar-width:thin]"
     >
       <table
         aria-label="공정표"
